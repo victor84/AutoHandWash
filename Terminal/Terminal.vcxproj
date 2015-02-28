@@ -55,6 +55,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>Tools;Tools\Logging;Tools\SerialPort;Tools\Settings;Tools\Threading;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,6 +81,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>Tools;Tools\Logging;Tools\SerialPort;Tools\Settings;Tools\Threading;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,6 +114,10 @@
     <ClInclude Include="Tools\SerialPort\SerialEx.h" />
     <ClInclude Include="Tools\SerialPort\SerialMFC.h" />
     <ClInclude Include="Tools\SerialPort\SerialWnd.h" />
+    <ClInclude Include="Tools\Settings\SettingsLoader.h" />
+    <ClInclude Include="Tools\SimpleLexicalCast.h" />
+    <ClInclude Include="Tools\Threading\CriticalSectionLocker.h" />
+    <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -124,6 +130,10 @@
     <ClCompile Include="Tools\SerialPort\Serial.cpp" />
     <ClCompile Include="Tools\SerialPort\SerialEx.cpp" />
     <ClCompile Include="Tools\SerialPort\SerialWnd.cpp" />
+    <ClCompile Include="Tools\Settings\SettingsLoader.cpp" />
+    <ClCompile Include="Tools\SimpleLexicalCast.cpp" />
+    <ClCompile Include="Tools\Threading\CriticalSectionLocker.cpp" />
+    <ClCompile Include="Tools\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Terminal.rc" />

@@ -31,6 +31,18 @@
     <Filter Include="Файлы исходного кода\Tools\SerialPort">
       <UniqueIdentifier>{81bf0570-498f-4d67-adcf-935ab6c24891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\Tools\Settings">
+      <UniqueIdentifier>{7b5aca7e-f829-4cc2-b669-0dcde56df72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools\Settings">
+      <UniqueIdentifier>{d241d51a-407f-45ed-90ce-0bbd688785c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Tools\Threading">
+      <UniqueIdentifier>{aec4d91d-69c2-4bc6-9917-03fed15b618a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools\Threading">
+      <UniqueIdentifier>{311b9b57-325e-4d1e-9357-f7f379d9d1e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,6 +78,18 @@
     <ClInclude Include="Tools\SerialPort\SerialWnd.h">
       <Filter>Заголовочные файлы\Tools\SerialPort</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\Settings\SettingsLoader.h">
+      <Filter>Заголовочные файлы\Tools\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\SimpleLexicalCast.h">
+      <Filter>Заголовочные файлы\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\tools.h">
+      <Filter>Заголовочные файлы\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Threading\CriticalSectionLocker.h">
+      <Filter>Заголовочные файлы\Tools\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Terminal.cpp">
@@ -88,6 +112,18 @@
     </ClCompile>
     <ClCompile Include="Tools\SerialPort\SerialWnd.cpp">
       <Filter>Файлы исходного кода\Tools\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Settings\SettingsLoader.cpp">
+      <Filter>Файлы исходного кода\Tools\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\SimpleLexicalCast.cpp">
+      <Filter>Файлы исходного кода\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\tools.cpp">
+      <Filter>Файлы исходного кода\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Threading\CriticalSectionLocker.cpp">
+      <Filter>Файлы исходного кода\Tools\Threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
