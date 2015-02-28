@@ -53,6 +53,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,6 +79,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,6 +107,11 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Terminal.h" />
     <ClInclude Include="TerminalDlg.h" />
+    <ClInclude Include="tools\Logging\TraceError.h" />
+    <ClInclude Include="Tools\SerialPort\Serial.h" />
+    <ClInclude Include="Tools\SerialPort\SerialEx.h" />
+    <ClInclude Include="Tools\SerialPort\SerialMFC.h" />
+    <ClInclude Include="Tools\SerialPort\SerialWnd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -112,6 +120,10 @@
     </ClCompile>
     <ClCompile Include="Terminal.cpp" />
     <ClCompile Include="TerminalDlg.cpp" />
+    <ClCompile Include="Tools\Logging\TraceError.cpp" />
+    <ClCompile Include="Tools\SerialPort\Serial.cpp" />
+    <ClCompile Include="Tools\SerialPort\SerialEx.cpp" />
+    <ClCompile Include="Tools\SerialPort\SerialWnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Terminal.rc" />

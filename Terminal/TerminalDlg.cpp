@@ -51,6 +51,7 @@ CTerminalDlg::CTerminalDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CTerminalDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 void CTerminalDlg::DoDataExchange(CDataExchange* pDX)
@@ -97,6 +98,7 @@ BOOL CTerminalDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Мелкий значок
 
 	// TODO: добавьте дополнительную инициализацию
+	_tr_error->trace_message(_T("Инициализация окна..."));
 
 	return TRUE;  // возврат значения TRUE, если фокус не передан элементу управления
 }

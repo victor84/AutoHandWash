@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Заголовочные файлы\Tools">
+      <UniqueIdentifier>{b447a009-aa6b-46b3-81c2-3f8fed79c433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Tools\Logging">
+      <UniqueIdentifier>{9b5dd5d2-909f-4d94-8945-451c89f0cec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools">
+      <UniqueIdentifier>{601318fe-c926-4ba6-980d-df3c5cba4d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools\Logging">
+      <UniqueIdentifier>{4a19a066-029b-444c-b7a0-620c5e09315f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Tools\SerialPort">
+      <UniqueIdentifier>{9df5998a-4590-48ea-a903-ca9c31aa1369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools\SerialPort">
+      <UniqueIdentifier>{81bf0570-498f-4d67-adcf-935ab6c24891}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +51,21 @@
     <ClInclude Include="Resource.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="tools\Logging\TraceError.h">
+      <Filter>Заголовочные файлы\Tools\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\SerialPort\Serial.h">
+      <Filter>Заголовочные файлы\Tools\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\SerialPort\SerialEx.h">
+      <Filter>Заголовочные файлы\Tools\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\SerialPort\SerialMFC.h">
+      <Filter>Заголовочные файлы\Tools\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\SerialPort\SerialWnd.h">
+      <Filter>Заголовочные файлы\Tools\SerialPort</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Terminal.cpp">
@@ -43,6 +76,18 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Logging\TraceError.cpp">
+      <Filter>Файлы исходного кода\Tools\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\SerialPort\Serial.cpp">
+      <Filter>Файлы исходного кода\Tools\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\SerialPort\SerialEx.cpp">
+      <Filter>Файлы исходного кода\Tools\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\SerialPort\SerialWnd.cpp">
+      <Filter>Файлы исходного кода\Tools\SerialPort</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

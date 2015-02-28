@@ -2,12 +2,16 @@
 // TerminalDlg.h : файл заголовка
 //
 
+#include "Tools/Logging/TraceError.h"
+
 #pragma once
 
 
 // диалоговое окно CTerminalDlg
 class CTerminalDlg : public CDialog
 {
+	tools::logging::CTraceError* _tr_error;
+
 // Создание
 public:
 	CTerminalDlg(CWnd* pParent = NULL);	// стандартный конструктор

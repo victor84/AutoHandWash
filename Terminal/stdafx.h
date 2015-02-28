@@ -34,10 +34,14 @@
 #include <afxcontrolbars.h>     // поддержка MFC для лент и панелей управления
 
 
+// stl
+#include <string>
+#include <vector>
+#include <sstream>
 
 
-
-
+// other
+#include <tchar.h>
 
 
 
