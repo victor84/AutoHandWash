@@ -12,14 +12,14 @@ CPacketParser::~CPacketParser()
 {
 }
 
-e_parse_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappers::_tag_data_const& data, 
+e_convert_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappers::_tag_data_const& data, 
 												   OUT std::vector<tag_transport_packet>& result_packets)
 {
 	if ((nullptr == data.p_data) || (0 == data.data_size))
-		return e_parse_result::empty_data;
+		return e_convert_result::empty_data;
 
 	if (data.data_size < 7)
-		return e_parse_result::invalid_data;
+		return e_convert_result::invalid_data;
 
 	_raw_data.free_data();
 	_raw_data.copy_data_inside(data.p_data, data.data_size);
@@ -28,15 +28,15 @@ e_parse_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappers
 
 	uint32_t offset = 0;
 
-	e_parse_result result = e_parse_result::success;
+	e_convert_result result = e_convert_result::success;
 
 	while (offset < _raw_data.data_size)
 	{
 		tag_transport_packet new_packet;
 
-		if (e_parse_result::invalid_data == get_transport_packet(offset, new_packet))
+		if (e_convert_result::invalid_data == get_transport_packet(offset, new_packet))
 		{
-			result = e_parse_result::invalid_data;
+			result = e_convert_result::invalid_data;
 			break;
 		}
 		result_packets.push_back(new_packet);
@@ -45,13 +45,13 @@ e_parse_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappers
 	return result;
 }
 
-e_parse_result CPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT tag_transport_packet& result_packet)
+e_convert_result CPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT tag_transport_packet& result_packet)
 {
 	if ((_raw_data.data_size - offset) < 7)
-		return e_parse_result::invalid_data;
+		return e_convert_result::invalid_data;
 
 	if (begin_byte != (uint16_t)_raw_data.p_data[offset])
-		return e_parse_result::invalid_data;
+		return e_convert_result::invalid_data;
 
 	result_packet.begin = (uint16_t)_raw_data.p_data[offset];
 
@@ -71,8 +71,10 @@ e_parse_result CPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT 
 
 	result_packet.end = (uint16_t)_raw_data.p_data[offset];
 
-	if (end_byte != result_packet.end)
-		return e_parse_result::invalid_data;
+	offset += 2;
 
-	return e_parse_result::success;
+	if (end_byte != result_packet.end)
+		return e_convert_result::invalid_data;
+
+	return e_convert_result::success;
 }

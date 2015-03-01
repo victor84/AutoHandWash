@@ -6,11 +6,11 @@ namespace tools
 
 namespace data_wrappers
 {
-// указатель на буфер данных и его размер
+// СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р±СѓС„РµСЂ РґР°РЅРЅС‹С… Рё РµРіРѕ СЂР°Р·РјРµСЂ
 struct _tag_data_const
 {
-	const byte	*p_data;		// указатель на буфер
-	uint32_t	data_size;		// размер данных (не буфера)
+	const byte	*p_data;		// СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р±СѓС„РµСЂ
+	uint32_t	data_size;		// СЂР°Р·РјРµСЂ РґР°РЅРЅС‹С… (РЅРµ Р±СѓС„РµСЂР°)
 
 	_tag_data_const() : p_data(nullptr), data_size(NULL)
 	{
@@ -36,14 +36,14 @@ struct _tag_data_const
 
 };
 
-// указатель на данные и размер данных
-// производит также выделение и освобождение памяти под данные
+// СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РґР°РЅРЅС‹Рµ Рё СЂР°Р·РјРµСЂ РґР°РЅРЅС‹С…
+// РїСЂРѕРёР·РІРѕРґРёС‚ С‚Р°РєР¶Рµ РІС‹РґРµР»РµРЅРёРµ Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё РїРѕРґ РґР°РЅРЅС‹Рµ
 struct _tag_data_managed
 {
 protected:
 	Concurrency::critical_section _cs;
 
-	// выделение памяти для данных
+	// РІС‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РґР»СЏ РґР°РЅРЅС‹С…
 	bool alloc_data(const uint32_t& size)
 	{
 		free_data();
@@ -58,9 +58,9 @@ protected:
 	}
 
 public:
-	byte		*p_data;				// указатель на буфер
-	uint32_t	data_size;				// размер буфера
-	bool		free_after_destruct;	// освобождать после деструкции
+	byte		*p_data;				// СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р±СѓС„РµСЂ
+	uint32_t	data_size;				// СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР°
+	bool		free_after_destruct;	// РѕСЃРІРѕР±РѕР¶РґР°С‚СЊ РїРѕСЃР»Рµ РґРµСЃС‚СЂСѓРєС†РёРё
 
 	_tag_data_managed() : p_data(nullptr), data_size(0), free_after_destruct(true)
 	{
@@ -88,7 +88,7 @@ public:
 		copy_data_inside(const_data.p_data, const_data.data_size);
 	}
 
-	// копирование данных в экземпляр
+	// РєРѕРїРёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С… РІ СЌРєР·РµРјРїР»СЏСЂ
 	BOOL copy_data_inside(const void *from, const uint32_t& size)
 	{
 		Concurrency::critical_section::scoped_lock locker(_cs);
@@ -104,7 +104,7 @@ public:
 		return (0 == memcpy_s(p_data, data_size, from, size));
 	}
 
-	// освобождение памяти для данных
+	// РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё РґР»СЏ РґР°РЅРЅС‹С…
 	void free_data()
 	{
 		delete[] p_data;

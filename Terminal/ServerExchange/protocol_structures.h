@@ -12,6 +12,14 @@
 
 namespace server_exchange
 {
+// результат преобразования данных
+enum class e_convert_result
+{
+	invalid_data,	// неверные данные
+	success,		// успех
+	empty_data		// пустой блок данных
+};
+
 // начало пакета
 const uint16_t begin_byte = 0xf00d;
 
