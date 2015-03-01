@@ -33,18 +33,27 @@
 
 #include <afxcontrolbars.h>     // поддержка MFC для лент и панелей управления
 
-
 // stl
 #include <string>
 #include <vector>
 #include <sstream>
 #include <locale>
+#include <thread>
 
-
-// other
+// strings
 #include <tchar.h>
 
+// windows
+#include <ppl.h>
+#include <agents.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
+#ifdef DEBUG
+	// подключаем детектор утечек памяти
+	#include "vld.h"
+	#pragma comment(lib, "vld.lib")
+#endif
 
 #ifdef _UNICODE
 #if defined _M_IX86

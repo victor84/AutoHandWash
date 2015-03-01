@@ -43,6 +43,15 @@
     <Filter Include="Файлы исходного кода\Tools\Threading">
       <UniqueIdentifier>{311b9b57-325e-4d1e-9357-f7f379d9d1e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Additionally">
+      <UniqueIdentifier>{acc55d2d-69ce-46e1-bdca-05208b67bbe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Tools\Networking">
+      <UniqueIdentifier>{cc7c4395-eed8-4c33-8b6d-f26fa51a6dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Tools\Networking">
+      <UniqueIdentifier>{03fbd658-e4ad-41e9-b5fa-01cc9518da83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,6 +99,18 @@
     <ClInclude Include="Tools\Threading\CriticalSectionLocker.h">
       <Filter>Заголовочные файлы\Tools\Threading</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\Networking\AsyncClientSocket.h">
+      <Filter>Заголовочные файлы\Tools\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Networking\SocketUtils.h">
+      <Filter>Заголовочные файлы\Tools\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\lock_vector.h">
+      <Filter>Заголовочные файлы\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\raw_data_warappers.h">
+      <Filter>Заголовочные файлы\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Terminal.cpp">
@@ -125,6 +146,9 @@
     <ClCompile Include="Tools\Threading\CriticalSectionLocker.cpp">
       <Filter>Файлы исходного кода\Tools\Threading</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\Networking\AsyncClientSocket.cpp">
+      <Filter>Файлы исходного кода\Tools\Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Terminal.rc">
@@ -134,6 +158,18 @@
   <ItemGroup>
     <None Include="res\Terminal.rc2">
       <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="dbghelp.dll">
+      <Filter>Additionally</Filter>
+    </None>
+    <None Include="vld.ini">
+      <Filter>Additionally</Filter>
+    </None>
+    <None Include="vld_x86.dll">
+      <Filter>Additionally</Filter>
+    </None>
+    <None Include="Microsoft.DTfW.DHL.manifest">
+      <Filter>Additionally</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
