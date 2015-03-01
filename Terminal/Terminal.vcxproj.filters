@@ -52,6 +52,12 @@
     <Filter Include="Файлы исходного кода\Tools\Networking">
       <UniqueIdentifier>{03fbd658-e4ad-41e9-b5fa-01cc9518da83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\ServerExchange">
+      <UniqueIdentifier>{e3d41f4b-6ab4-4ae7-89ed-522c5522687a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\ServerExchange">
+      <UniqueIdentifier>{b3bd391d-7e00-4054-bf5f-e20e474053b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -110,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Tools\raw_data_warappers.h">
       <Filter>Заголовочные файлы\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol_structures.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
