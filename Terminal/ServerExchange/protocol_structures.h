@@ -21,10 +21,10 @@ enum class e_convert_result
 };
 
 // начало пакета
-const uint16_t begin_byte = 0xf00d;
+const uint16_t begin_bytes = 0xf00d;
 
 // конец пакета
-const uint16_t end_byte = 0x1013;
+const uint16_t end_bytes = 0x1013;
 
 // тип пакета
 enum class e_packet_type : byte
@@ -55,10 +55,10 @@ struct tag_transport_packet
 	uint16_t								end;		// окончание пакета
 
 	tag_transport_packet()
-		: begin (begin_byte)
+		: begin (begin_bytes)
 		, type (e_packet_type::unknown)
 		, length (0)
-		, end (end_byte)
+		, end (end_bytes)
 	{
 
 	}

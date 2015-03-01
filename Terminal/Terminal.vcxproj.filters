@@ -123,6 +123,9 @@
     <ClInclude Include="ServerExchange\PacketParser.h">
       <Filter>Заголовочные файлы\ServerExchange</Filter>
     </ClInclude>
+    <ClInclude Include="ServerExchange\PacketToRawData.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Terminal.cpp">
@@ -162,6 +165,9 @@
       <Filter>Файлы исходного кода\Tools\Networking</Filter>
     </ClCompile>
     <ClCompile Include="ServerExchange\PacketParser.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\PacketToRawData.cpp">
       <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
   </ItemGroup>

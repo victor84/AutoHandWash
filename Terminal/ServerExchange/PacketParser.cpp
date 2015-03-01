@@ -50,30 +50,24 @@ e_convert_result CPacketParser::get_transport_packet(IN OUT uint32_t& offset, OU
 	if ((_raw_data.data_size - offset) < 7)
 		return e_convert_result::invalid_data;
 
-	if (begin_byte != (uint16_t)_raw_data.p_data[offset])
+	if (begin_bytes != *((uint16_t*)&_raw_data.p_data[offset]))
 		return e_convert_result::invalid_data;
 
-	result_packet.begin = (uint16_t)_raw_data.p_data[offset];
-
+	result_packet.begin = *((uint16_t*)&_raw_data.p_data[offset]);
 	offset += 2;
 	
-	result_packet.type = static_cast<e_packet_type>(_raw_data.p_data[offset]);
+	result_packet.type = static_cast<e_packet_type>(_raw_data.p_data[offset++]);
 
-	++offset;
-
-	result_packet.length = (uint16_t)_raw_data.p_data[offset];
-
+	result_packet.length = *((uint16_t*)&_raw_data.p_data[offset]);
 	offset += 2;
 
 	result_packet.data.copy_data_inside(static_cast<void*>(&_raw_data.p_data[offset]), result_packet.length);
-
 	offset += result_packet.length;
 
-	result_packet.end = (uint16_t)_raw_data.p_data[offset];
-
+	result_packet.end = *((uint16_t*)&_raw_data.p_data[offset]);
 	offset += 2;
 
-	if (end_byte != result_packet.end)
+	if (end_bytes != result_packet.end)
 		return e_convert_result::invalid_data;
 
 	return e_convert_result::success;

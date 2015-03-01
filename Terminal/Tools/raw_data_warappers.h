@@ -43,20 +43,6 @@ struct _tag_data_managed
 protected:
 	Concurrency::critical_section _cs;
 
-	// выделение памяти для данных
-	bool alloc_data(const uint32_t& size)
-	{
-		free_data();
-		if (0 == size)
-			return false;
-
-		p_data = new byte[size];
-		if (nullptr != p_data)
-			data_size = size;
-
-		return (nullptr != p_data);
-	}
-
 public:
 	byte		*p_data;				// указатель на буфер
 	uint32_t	data_size;				// размер буфера
@@ -86,6 +72,20 @@ public:
 	_tag_data_managed(const _tag_data_const& const_data) : p_data(nullptr), data_size(NULL), free_after_destruct(true)
 	{
 		copy_data_inside(const_data.p_data, const_data.data_size);
+	}
+
+	// выделение памяти для данных
+	bool alloc_data(const uint32_t& size)
+	{
+		free_data();
+		if (0 == size)
+			return false;
+
+		p_data = new byte[size];
+		if (nullptr != p_data)
+			data_size = size;
+
+		return (nullptr != p_data);
 	}
 
 	// копирование данных в экземпляр
