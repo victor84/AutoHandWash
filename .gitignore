@@ -7,3 +7,5 @@
 /Terminal/*.opensdf
 /Terminal/*.suo
 /Terminal/ipch/
+/Terminal/Debug/Terminal.tlog
+/Terminal/Debug/
