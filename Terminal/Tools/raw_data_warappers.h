@@ -9,14 +9,14 @@ namespace data_wrappers
 // указатель на буфер данных и его размер
 struct _tag_data_const
 {
-	const BYTE	*p_data;		// указатель на буфер
-	SIZE_T		data_size;		// размер данных (не буфера)
+	const byte	*p_data;		// указатель на буфер
+	uint32_t	data_size;		// размер данных (не буфера)
 
 	_tag_data_const() : p_data(nullptr), data_size(NULL)
 	{
 	}
 
-	_tag_data_const(const BYTE *data, const SIZE_T& size)
+	_tag_data_const(const byte *data, const uint32_t& size)
 	{
 		p_data = data;
 		data_size = size;
@@ -44,15 +44,13 @@ protected:
 	Concurrency::critical_section _cs;
 
 	// выделение пам€ти дл€ данных
-	BOOL alloc_data(const SIZE_T& size)
+	bool alloc_data(const uint32_t& size)
 	{
-		// ASSERT(NULL != size);
 		free_data();
-		if (NULL == size)
-			return FALSE;
+		if (0 == size)
+			return false;
 
-		p_data = new BYTE[size];
-		// p_data = reinterpret_cast<BYTE*>(Concurrency::Alloc(data_size));
+		p_data = new byte[size];
 		if (nullptr != p_data)
 			data_size = size;
 
@@ -60,16 +58,16 @@ protected:
 	}
 
 public:
-	BYTE	*p_data;				// указатель на буфер
-	SIZE_T	data_size;				// размер буфера
-	bool	free_after_destruct;	// освобождать после деструкции
+	byte		*p_data;				// указатель на буфер
+	uint32_t	data_size;				// размер буфера
+	bool		free_after_destruct;	// освобождать после деструкции
 
-	_tag_data_managed() : p_data(nullptr), data_size(NULL), free_after_destruct(true)
+	_tag_data_managed() : p_data(nullptr), data_size(0), free_after_destruct(true)
 	{
 
 	}
 
-	_tag_data_managed(const _tag_data_managed& ob) : p_data(nullptr), data_size(NULL), free_after_destruct(true)
+	_tag_data_managed(const _tag_data_managed& ob) : p_data(nullptr), data_size(0), free_after_destruct(true)
 	{
 		copy_data_inside(ob.p_data, ob.data_size);
 	}
@@ -80,7 +78,7 @@ public:
 			free_data();
 	}
 
-	_tag_data_managed(const VOID *data, const SIZE_T& size) : p_data(nullptr), data_size(NULL), free_after_destruct(true)
+	_tag_data_managed(const void *data, const uint32_t& size) : p_data(nullptr), data_size(NULL), free_after_destruct(true)
 	{
 		copy_data_inside(data, size);
 	}
@@ -91,7 +89,7 @@ public:
 	}
 
 	// копирование данных в экземпл€р
-	BOOL copy_data_inside(const VOID *from, const SIZE_T& size)
+	BOOL copy_data_inside(const void *from, const uint32_t& size)
 	{
 		Concurrency::critical_section::scoped_lock locker(_cs);
 		if (nullptr == from)
@@ -103,7 +101,7 @@ public:
 		if (FALSE == alloc_data(size))
 			return FALSE;
 
-		return (NULL == memcpy_s(p_data, data_size, from, size));
+		return (0 == memcpy_s(p_data, data_size, from, size));
 	}
 
 	// освобождение пам€ти дл€ данных
@@ -112,7 +110,7 @@ public:
 		delete[] p_data;
 		// Concurrency::Free(p_data);
 		p_data = nullptr;
-		data_size = NULL;
+		data_size = 0;
 	}
 
 	_tag_data_managed& operator=(const _tag_data_managed& ob)

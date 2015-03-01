@@ -117,7 +117,10 @@
     <ClInclude Include="Tools\raw_data_warappers.h">
       <Filter>Заголовочные файлы\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="protocol_structures.h">
+    <ClInclude Include="ServerExchange\protocol_structures.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\PacketParser.h">
       <Filter>Заголовочные файлы\ServerExchange</Filter>
     </ClInclude>
   </ItemGroup>
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="Tools\Networking\AsyncClientSocket.cpp">
       <Filter>Файлы исходного кода\Tools\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\PacketParser.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

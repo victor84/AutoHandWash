@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h";
+#include "stdafx.h"
 #include "raw_data_warappers.h"
 /*!
  * \file protocol_structures.h
@@ -21,7 +21,8 @@ const uint16_t end_byte = 0x1013;
 // тип пакета
 enum class e_packet_type : byte
 {
-	id = 0	// пакет идентификации терминала
+	unknown = 0,	// неизвестно
+	id = 1			// пакет идентификации терминала
 };
 
 /******************************************************************************************
@@ -41,9 +42,18 @@ struct tag_transport_packet
 {
 	uint16_t								begin;		// начальные байты 0x0d и 0xf0
 	e_packet_type							type;		// тип пакета
-	byte									length;		// длина данных (без учёта последних байт)
+	uint16_t								length;		// длина данных (без учёта последних байт)
 	tools::data_wrappers::_tag_data_managed	data;		// даннные
 	uint16_t								end;		// окончание пакета
+
+	tag_transport_packet()
+		: begin (begin_byte)
+		, type (e_packet_type::unknown)
+		, length (0)
+		, end (end_byte)
+	{
+
+	}
 };
 
 
