@@ -1,12 +1,12 @@
 //{{NO_DEPENDENCIES}}
 // Включаемый файл, созданный в Microsoft Visual C++.
-// Используется Terminal.rc
+// Используется TerminalApp.rc
 //
 #define IDR_MAINFRAME					128
 #define IDM_ABOUTBOX					0x0010
 #define IDD_ABOUTBOX					100
 #define IDS_ABOUTBOX					101
-#define IDD_TERMINAL_DIALOG				102
+#define IDD_TERMINALAPP_DIALOG				102
 
 // Следующие значения по умолчанию для новых объектов
 //

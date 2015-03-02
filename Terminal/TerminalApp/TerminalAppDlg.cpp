@@ -1,10 +1,10 @@
 
-// TerminalDlg.cpp : файл реализации
+// TerminalAppDlg.cpp : файл реализации
 //
 
 #include "stdafx.h"
-#include "Terminal.h"
-#include "TerminalDlg.h"
+#include "TerminalApp.h"
+#include "TerminalAppDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -43,32 +43,31 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// диалоговое окно CTerminalDlg
+// диалоговое окно CTerminalAppDlg
 
 
 
-CTerminalDlg::CTerminalDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CTerminalDlg::IDD, pParent)
+CTerminalAppDlg::CTerminalAppDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CTerminalAppDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
-void CTerminalDlg::DoDataExchange(CDataExchange* pDX)
+void CTerminalAppDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CTerminalDlg, CDialog)
+BEGIN_MESSAGE_MAP(CTerminalAppDlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
 
-// обработчики сообщений CTerminalDlg
+// обработчики сообщений CTerminalAppDlg
 
-BOOL CTerminalDlg::OnInitDialog()
+BOOL CTerminalAppDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -98,12 +97,11 @@ BOOL CTerminalDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Мелкий значок
 
 	// TODO: добавьте дополнительную инициализацию
-	_tr_error->trace_message(_T("Инициализация окна..."));
 
 	return TRUE;  // возврат значения TRUE, если фокус не передан элементу управления
 }
 
-void CTerminalDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CTerminalAppDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -120,7 +118,7 @@ void CTerminalDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  чтобы нарисовать значок.  Для приложений MFC, использующих модель документов или представлений,
 //  это автоматически выполняется рабочей областью.
 
-void CTerminalDlg::OnPaint()
+void CTerminalAppDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -147,7 +145,7 @@ void CTerminalDlg::OnPaint()
 
 // Система вызывает эту функцию для получения отображения курсора при перемещении
 //  свернутого окна.
-HCURSOR CTerminalDlg::OnQueryDragIcon()
+HCURSOR CTerminalAppDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }

@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{929DE1DA-2285-40C9-9620-3A5D70D18F11}</ProjectGuid>
-    <RootNamespace>Terminal</RootNamespace>
+    <ProjectGuid>{C3FA07F2-21AA-4466-A1E9-CAAD24160C67}</ProjectGuid>
+    <RootNamespace>TerminalApp</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -53,16 +53,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>Tools;Tools\Logging;Tools\SerialPort;Tools\Settings;Tools\Threading;$(ProjectDir);Tools\visual_leak_detector;Tools\Networking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Tools\visual_leak_detector;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -83,17 +78,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>Tools;Tools\Logging;Tools\SerialPort;Tools\Settings;Tools\Threading;$(ProjectDir);Tools\visual_leak_detector;Tools\Networking;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>Tools\visual_leak_detector;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -111,60 +102,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ServerExchange\PacketParser.h" />
-    <ClInclude Include="ServerExchange\PacketToRawData.h" />
-    <ClInclude Include="ServerExchange\protocol_structures.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Terminal.h" />
-    <ClInclude Include="TerminalDlg.h" />
-    <ClInclude Include="Tools\lock_vector.h" />
-    <ClInclude Include="tools\Logging\TraceError.h" />
-    <ClInclude Include="Tools\Networking\AsyncClientSocket.h" />
-    <ClInclude Include="Tools\Networking\SocketUtils.h" />
-    <ClInclude Include="Tools\raw_data_warappers.h" />
-    <ClInclude Include="Tools\SerialPort\Serial.h" />
-    <ClInclude Include="Tools\SerialPort\SerialEx.h" />
-    <ClInclude Include="Tools\SerialPort\SerialMFC.h" />
-    <ClInclude Include="Tools\SerialPort\SerialWnd.h" />
-    <ClInclude Include="Tools\Settings\SettingsLoader.h" />
-    <ClInclude Include="Tools\SimpleLexicalCast.h" />
-    <ClInclude Include="Tools\Threading\CriticalSectionLocker.h" />
-    <ClInclude Include="Tools\tools.h" />
+    <ClInclude Include="TerminalApp.h" />
+    <ClInclude Include="TerminalAppDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ServerExchange\PacketParser.cpp" />
-    <ClCompile Include="ServerExchange\PacketToRawData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Terminal.cpp" />
-    <ClCompile Include="TerminalDlg.cpp" />
-    <ClCompile Include="Tools\Logging\TraceError.cpp" />
-    <ClCompile Include="Tools\Networking\AsyncClientSocket.cpp" />
-    <ClCompile Include="Tools\SerialPort\Serial.cpp" />
-    <ClCompile Include="Tools\SerialPort\SerialEx.cpp" />
-    <ClCompile Include="Tools\SerialPort\SerialWnd.cpp" />
-    <ClCompile Include="Tools\Settings\SettingsLoader.cpp" />
-    <ClCompile Include="Tools\SimpleLexicalCast.cpp" />
-    <ClCompile Include="Tools\Threading\CriticalSectionLocker.cpp" />
-    <ClCompile Include="Tools\tools.cpp" />
+    <ClCompile Include="TerminalApp.cpp" />
+    <ClCompile Include="TerminalAppDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Terminal.rc" />
+    <ResourceCompile Include="TerminalApp.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dbghelp.dll" />
-    <None Include="res\Terminal.rc2" />
-    <None Include="vld.ini" />
-    <None Include="vld_x86.dll" />
+    <None Include="res\TerminalApp.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Terminal.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.DTfW.DHL.manifest" />
+    <Image Include="res\TerminalApp.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

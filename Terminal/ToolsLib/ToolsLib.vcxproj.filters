@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Logging">
+      <UniqueIdentifier>{1462e1b1-a281-4bfb-b46e-42d14b1df065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Logging">
+      <UniqueIdentifier>{e8a4aceb-1aa8-4509-9094-ff117a64c5b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Networking">
+      <UniqueIdentifier>{ccf5ed33-a55a-47bf-aa3e-be6575d0eb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Networking">
+      <UniqueIdentifier>{e15f7444-11d8-455c-9c52-d8dc7487042d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\SerialPort">
+      <UniqueIdentifier>{ab4eff8b-ae88-47e0-a51c-cd1b6078205a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\SerialPort">
+      <UniqueIdentifier>{24b871cd-3718-4179-82c8-3dbf871325cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Settings">
+      <UniqueIdentifier>{b1a6cabd-ab07-4467-b090-1cb45151673d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Settings">
+      <UniqueIdentifier>{aca96697-fb7b-4c30-b3a3-55fb5e8ccf3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Threading">
+      <UniqueIdentifier>{27675179-a38b-4d9a-9487-6b4e401191b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Threading">
+      <UniqueIdentifier>{a9397df7-9859-4611-bd1c-9faef7e36c14}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="lock_vector.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="raw_data_warappers.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleLexicalCast.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\TraceError.h">
+      <Filter>Заголовочные файлы\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\AsyncClientSocket.h">
+      <Filter>Заголовочные файлы\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\SocketUtils.h">
+      <Filter>Заголовочные файлы\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort\Serial.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort\SerialEx.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort\SerialMFC.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort\SerialWnd.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsLoader.h">
+      <Filter>Заголовочные файлы\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Threading\CriticalSectionLocker.h">
+      <Filter>Заголовочные файлы\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx\stdafx.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SimpleLexicalCast.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\TraceError.cpp">
+      <Filter>Файлы исходного кода\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\AsyncClientSocket.cpp">
+      <Filter>Файлы исходного кода\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort\Serial.cpp">
+      <Filter>Файлы исходного кода\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort\SerialEx.cpp">
+      <Filter>Файлы исходного кода\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort\SerialWnd.cpp">
+      <Filter>Файлы исходного кода\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsLoader.cpp">
+      <Filter>Файлы исходного кода\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Threading\CriticalSectionLocker.cpp">
+      <Filter>Файлы исходного кода\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx\stdafx.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

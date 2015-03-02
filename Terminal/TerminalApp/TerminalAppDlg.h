@@ -1,23 +1,19 @@
 
-// TerminalDlg.h : файл заголовка
+// TerminalAppDlg.h : файл заголовка
 //
-
-#include "Tools/Logging/TraceError.h"
 
 #pragma once
 
 
-// диалоговое окно CTerminalDlg
-class CTerminalDlg : public CDialog
+// диалоговое окно CTerminalAppDlg
+class CTerminalAppDlg : public CDialog
 {
-	tools::logging::CTraceError* _tr_error;
-
 // Создание
 public:
-	CTerminalDlg(CWnd* pParent = NULL);	// стандартный конструктор
+	CTerminalAppDlg(CWnd* pParent = NULL);	// стандартный конструктор
 
 // Данные диалогового окна
-	enum { IDD = IDD_TERMINAL_DIALOG };
+	enum { IDD = IDD_TERMINALAPP_DIALOG };
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// поддержка DDX/DDV

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы\ServerExchange">
+      <UniqueIdentifier>{5f7ca7f1-f81c-40fb-b9c1-9ad34bf5bb4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\ServerExchange">
+      <UniqueIdentifier>{60634807-1e3b-45b6-8dc3-2aa482a04f58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\PacketParser.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\PacketToRawData.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\protocol_structures.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx\stdafx.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ServerExchange\PacketParser.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\PacketToRawData.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx\stdafx.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -210,7 +210,7 @@ DWORD CSerialEx::ThreadProc (void)
 	{
 #ifndef SERIAL_NO_OVERLAPPED
 		// Use overlapped structure
-		LPOVERLAPPED lpOverlapped = 0;
+		// LPOVERLAPPED lpOverlapped = 0;
 
 		// Reset the event handle
 		::ResetEvent(m_hevtOverlappedWorkerThread);

@@ -1,5 +1,5 @@
 
-// Terminal.h : главный файл заголовка для приложения PROJECT_NAME
+// TerminalApp.h : главный файл заголовка для приложения PROJECT_NAME
 //
 
 #pragma once
@@ -11,14 +11,14 @@
 #include "resource.h"		// основные символы
 
 
-// CTerminalApp:
-// О реализации данного класса см. Terminal.cpp
+// CTerminalAppApp:
+// О реализации данного класса см. TerminalApp.cpp
 //
 
-class CTerminalApp : public CWinApp
+class CTerminalAppApp : public CWinApp
 {
 public:
-	CTerminalApp();
+	CTerminalAppApp();
 
 // Переопределение
 public:
@@ -29,4 +29,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CTerminalApp theApp;
+extern CTerminalAppApp theApp;

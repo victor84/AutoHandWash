@@ -1,26 +1,26 @@
 
-// Terminal.cpp : Определяет поведение классов для приложения.
+// TerminalApp.cpp : Определяет поведение классов для приложения.
 //
 
 #include "stdafx.h"
-#include "Terminal.h"
-#include "TerminalDlg.h"
+#include "TerminalApp.h"
+#include "TerminalAppDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CTerminalApp
+// CTerminalAppApp
 
-BEGIN_MESSAGE_MAP(CTerminalApp, CWinApp)
+BEGIN_MESSAGE_MAP(CTerminalAppApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// создание CTerminalApp
+// создание CTerminalAppApp
 
-CTerminalApp::CTerminalApp()
+CTerminalAppApp::CTerminalAppApp()
 {
 	// поддержка диспетчера перезагрузки
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -30,14 +30,14 @@ CTerminalApp::CTerminalApp()
 }
 
 
-// Единственный объект CTerminalApp
+// Единственный объект CTerminalAppApp
 
-CTerminalApp theApp;
+CTerminalAppApp theApp;
 
 
-// инициализация CTerminalApp
+// инициализация CTerminalAppApp
 
-BOOL CTerminalApp::InitInstance()
+BOOL CTerminalAppApp::InitInstance()
 {
 	// InitCommonControlsEx() требуется для Windows XP, если манифест
 	// приложения использует ComCtl32.dll версии 6 или более поздней версии для включения
@@ -70,7 +70,7 @@ BOOL CTerminalApp::InitInstance()
 	// например на название организации
 	SetRegistryKey(_T("Локальные приложения, созданные с помощью мастера приложений"));
 
-	CTerminalDlg dlg;
+	CTerminalAppDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
