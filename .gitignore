@@ -9,3 +9,7 @@
 /Terminal/ipch/
 /Terminal/Debug/Terminal.tlog
 /Terminal/Debug/
+
+/Server/bin/
+/Server/obj/
+
