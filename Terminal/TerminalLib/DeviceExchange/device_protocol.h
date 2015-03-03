@@ -38,6 +38,9 @@ PC должен сам записать в них свои данные
 // команды от устройства
 enum class e_command_from_device : byte
 {
+	// пуста€ команда
+	empty = 0x00,
+
 	// CMD=0x01 Ќажата кнопка, DATA0 = 0x01Е 0x08
 	button_press = 0x01,
 
@@ -74,6 +77,9 @@ enum class e_command_from_device : byte
 // команды от pc
 enum class e_command_from_pc : byte
 {
+	// пуста€ команда
+	empty = 0x00,
+
 	// CMD=0x10 ¬ключить клапан. DATA0=0x01Е0x08 Ц номер клапана
 	open_valve = 0x10,
 
@@ -121,7 +127,7 @@ const byte end_byte = 0xa0;
 
 #pragma pack(push, 1)
 // команда от устройства
-struct tag_command_from_device
+struct tag_packet_from_device
 {
 	byte begin;						// 0x0A Ц начало пакета
 	e_command_from_device command;	// CMD Ц команда
@@ -133,10 +139,25 @@ struct tag_command_from_device
 	byte data5;						// данные5
 	byte crc;						// CRC Ц контрольна€ сумма = CMD xor DATA0 xor DATA1 xor DATA2 xor DATA3 xor DATA4 xor DATA5
 	byte end;						// конец пакета
+
+	tag_packet_from_device()
+		:begin(begin_byte)
+		, command(e_command_from_device::empty)
+		, data0(0)
+		, data1(0)
+		, data2(0)
+		, data3(0)
+		, data4(0)
+		, data5(0)
+		, crc(0)
+		, end(end_byte)
+	{
+
+	}
 };
 
 // команда от pc
-struct tag_command_from_pc
+struct tag_packet_from_pc
 {
 	byte begin;					// 0x0A Ц начало пакета
 	e_command_from_pc command;	// CMD Ц команда
@@ -148,8 +169,31 @@ struct tag_command_from_pc
 	byte data5;					// данные5
 	byte crc;					// CRC Ц контрольна€ сумма = CMD xor DATA0 xor DATA1 xor DATA2 xor DATA3 xor DATA4 xor DATA5
 	byte end;					// конец пакета
+
+	tag_packet_from_pc()
+		:begin(begin_byte)
+		, command(e_command_from_pc::empty)
+		, data0(0)
+		, data1(0)
+		, data2(0)
+		, data3(0)
+		, data4(0)
+		, data5(0)
+		, crc(0)
+		, end(end_byte)
+	{
+
+	}
 };
 #pragma pack(pop)
+
+// результат преобразовани€ данных
+enum class e_convert_result
+{
+	invalid_data,	// неверные данные
+	success,		// успех
+	empty_data		// пустой блок данных
+};
 
 }
 
