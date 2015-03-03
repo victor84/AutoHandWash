@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "TerminalTest.h"
-#include "..\TerminalLib\ServerExchange\PacketToRawData.h"
-#include "..\TerminalLib\ServerExchange\PacketParser.h"
+#include "PacketToRawData.h"
+#include "ServerPacketParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,7 +53,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 	pack_to_raw.CreateRawData(transport_packet, out_data);
 
-	server_exchange::CPacketParser parser;
+	server_exchange::CServerPacketParser parser;
 	std::vector<server_exchange::tag_transport_packet> new_transport_packets;
 	parser.ParseTransportPacket(out_data, new_transport_packets);
 

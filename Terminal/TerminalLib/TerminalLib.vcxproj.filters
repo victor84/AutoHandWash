@@ -19,6 +19,12 @@
     <Filter Include="Файлы исходного кода\ServerExchange">
       <UniqueIdentifier>{60634807-1e3b-45b6-8dc3-2aa482a04f58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\DeviceExchange">
+      <UniqueIdentifier>{dbdb97ee-c637-4ca2-af09-55951a12f078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\DeviceExchange">
+      <UniqueIdentifier>{2fdb1b13-69eb-4e95-b416-2ad32fa37579}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -26,9 +32,6 @@
   <ItemGroup>
     <ClInclude Include="targetver.h">
       <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerExchange\PacketParser.h">
-      <Filter>Заголовочные файлы\ServerExchange</Filter>
     </ClInclude>
     <ClInclude Include="ServerExchange\PacketToRawData.h">
       <Filter>Заголовочные файлы\ServerExchange</Filter>
@@ -39,16 +42,28 @@
     <ClInclude Include="stdafx\stdafx.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="DeviceExchange\device_protocol.h">
+      <Filter>Заголовочные файлы\DeviceExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceExchange\DevicePacketParser.h">
+      <Filter>Заголовочные файлы\DeviceExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\ServerPacketParser.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ServerExchange\PacketParser.cpp">
-      <Filter>Файлы исходного кода\ServerExchange</Filter>
-    </ClCompile>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
       <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
     <ClCompile Include="stdafx\stdafx.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceExchange\DevicePacketParser.cpp">
+      <Filter>Файлы исходного кода\DeviceExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\ServerPacketParser.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

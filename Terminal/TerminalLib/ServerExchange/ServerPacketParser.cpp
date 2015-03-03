@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "PacketParser.h"
+#include "ServerPacketParser.h"
 
 using namespace server_exchange;
 
-CPacketParser::CPacketParser()
+CServerPacketParser::CServerPacketParser()
 {
 }
 
 
-CPacketParser::~CPacketParser()
+CServerPacketParser::~CServerPacketParser()
 {
 }
 
-e_convert_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappers::_tag_data_const& data, 
+e_convert_result CServerPacketParser::ParseTransportPacket(IN const tools::data_wrappers::_tag_data_const& data, 
 												   OUT std::vector<tag_transport_packet>& result_packets)
 {
 	if ((nullptr == data.p_data) || (0 == data.data_size))
@@ -45,7 +45,7 @@ e_convert_result CPacketParser::ParseTransportPacket(IN const tools::data_wrappe
 	return result;
 }
 
-e_convert_result CPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT tag_transport_packet& result_packet)
+e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT tag_transport_packet& result_packet)
 {
 	if ((_raw_data.data_size - offset) < 7)
 		return e_convert_result::invalid_data;

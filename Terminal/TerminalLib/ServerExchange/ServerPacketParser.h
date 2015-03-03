@@ -18,7 +18,7 @@ namespace server_exchange
 
 
 // ѕарсер пакетов обмена с сервером
-class CPacketParser
+class CServerPacketParser
 {
 	// сырые прин€тые данные
 	tools::data_wrappers::_tag_data_managed _raw_data;
@@ -30,8 +30,8 @@ class CPacketParser
 
 
 public:
-	CPacketParser();
-	virtual ~CPacketParser();
+	CServerPacketParser();
+	virtual ~CServerPacketParser();
 
 	// парсинг данных транспортного уровн€
 	e_convert_result ParseTransportPacket(IN const tools::data_wrappers::_tag_data_const& data,
