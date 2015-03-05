@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx/stdafx.h"
 #include "TraceError.h"
 #include "..\SimpleLexicalCast.h"
 
@@ -16,12 +17,6 @@ namespace settings
 class CSettingsLoader
 {
 public:
-
-	// идентификаторы параметров дл€ чтени€
-	/*enum class e_parameter_id
-	{
-		error				= -1
-	};*/
 
 	// тип значени€ параметра
 	enum class e_parameter_data_type
@@ -154,15 +149,13 @@ private:
 
 	struct _tag_parameter
 	{
-		CString id;
 		CString group;
 		CString name;
 
 		_tag_parameter_value val;
 
 		_tag_parameter(CSimpleLexicalCast& lex_cast) 
-			: id(_T(""))
-			, group(_T(""))
+			: group(_T(""))
 			, name(_T(""))
 			, val(&lex_cast)
 		{
@@ -203,12 +196,11 @@ private:
 
 	BOOL create_file_name();
 
-	_tag_parameter create_param(const CString& id, 
-								const e_parameter_data_type& type, 
+	_tag_parameter create_param(const e_parameter_data_type& type, 
 								const CString& group, 
 								const CString name);
 
-	BOOL find_parameter(const CString& param_id);
+	BOOL find_parameter(const CString& param_name);
 
 	BOOL read_current_parameter();
 
@@ -222,8 +214,7 @@ public:
 	virtual ~CSettingsLoader(void);
 
 	// ƒобавление параметра дл€ чтени€ из файла
-	void add_parameter(const CString& id,
-					   const e_parameter_data_type& type,
+	void add_parameter(const e_parameter_data_type& type,
 					   const CString& group,
 					   const CString name);
 
@@ -231,13 +222,13 @@ public:
 	BOOL read_all();
 
 	// чтение указанного параметра
-	BOOL read(const CString& parameter_id);
+	BOOL read(const CString& parameter_name);
 
-	CStringW	get_string(const CString& parameter_id);
-	INT			get_int(const CString& parameter_id);
+	CStringW get_string(const CString& parameter_name);
+	INT get_int(const CString& parameter_name);
 
-	BOOL		save_parameter(const CString& parameter_id, const CString& str);
-	BOOL		save_parameter(const CString& parameter_id, const INT& val);
+	BOOL		save_parameter(const CString& parameter_name, const CString& str);
+	BOOL		save_parameter(const CString& parameter_name, const INT& val);
 };
 
 }

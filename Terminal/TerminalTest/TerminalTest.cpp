@@ -7,6 +7,7 @@
 #include "ServerPacketParser.h"
 #include "device_protocol.h"
 #include "DevicePacketConvertor.h"
+#include "SingleServerSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,6 +84,21 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 	device_packet_convertor.Parse(out_data, command_from_device);
 
+	tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
+	tools::networking::CSingleServerSocket server(received_data);
+	tools::networking::tag_connection_params connection_params;
+	connection_params.port = "26001";
+
+
+	server.Start(connection_params);
+
+	::system("pause");
+
+	server.Stop();
+
+	::system("pause");
+
+	delete tools::logging::CTraceError::get_instance();
 
 	return nRetCode;
 }

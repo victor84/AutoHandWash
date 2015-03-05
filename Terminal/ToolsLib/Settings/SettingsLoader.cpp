@@ -32,34 +32,31 @@ CSettingsLoader::~CSettingsLoader(void)
 {
 }
 
-void CSettingsLoader::add_parameter(const CString& id, 
-									const e_parameter_data_type& type, 
+void CSettingsLoader::add_parameter(const e_parameter_data_type& type, 
 									const CString& group, 
 									const CString name)
 {
-	_v_parameters.push_back(create_param(id, type, group, name));
+	_v_parameters.push_back(create_param(type, group, name));
 }
 
-CSettingsLoader::_tag_parameter CSettingsLoader::create_param(const CString& id, 
-															  const e_parameter_data_type& type, 
+CSettingsLoader::_tag_parameter CSettingsLoader::create_param(const e_parameter_data_type& type, 
 															  const CString& group, 
 															  const CString name)
 {
 	_tag_parameter param(_lex_cast);
 
-	param.id = id;
 	param.group = group;
 	param.name = name;
 	param.val.data_type = type;
 	return param;
 }
 
-BOOL CSettingsLoader::find_parameter( const CString& param_id )
+BOOL CSettingsLoader::find_parameter( const CString& param_name )
 {
 	_current_parameter = _v_parameters.begin();
 	for (;_v_parameters.end() != _current_parameter; ++_current_parameter)
 	{
-		if (param_id == _current_parameter->id)
+		if (param_name == _current_parameter->name)
 			return TRUE;
 	}
 	return FALSE;
@@ -69,7 +66,6 @@ BOOL CSettingsLoader::read_current_parameter()
 {
 	if (_v_parameters.end() == _current_parameter)
 		return FALSE;
-
 
 	_current_parameter->val.clear();
 
@@ -83,7 +79,6 @@ BOOL CSettingsLoader::read_current_parameter()
 
 	if (0 == read_count)
 		return TRUE;
-
 
 	switch (_current_parameter->val.data_type)
 	{
@@ -122,10 +117,10 @@ BOOL CSettingsLoader::read_all()
 	return result;
 }
 
-BOOL CSettingsLoader::read( const CString& parameter_id )
+BOOL CSettingsLoader::read( const CString& parameter_name )
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_id))
+	if (FALSE == find_parameter(parameter_name))
 		return FALSE;
 
 	return read_current_parameter();
@@ -141,38 +136,38 @@ BOOL CSettingsLoader::create_file_name()
 	return TRUE;
 }
 
-CStringW CSettingsLoader::get_string( const CString& parameter_id )
+CStringW CSettingsLoader::get_string( const CString& parameter_name )
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_id))
+	if (FALSE == find_parameter(parameter_name))
 		return L"";
 
 	return *_current_parameter;
 }
 
-INT CSettingsLoader::get_int( const CString& parameter_id )
+INT CSettingsLoader::get_int( const CString& parameter_name )
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_id))
+	if (FALSE == find_parameter(parameter_name))
 		return 0;
 	
 	return *_current_parameter;
 }
 
-BOOL CSettingsLoader::save_parameter(const CString& parameter_id, const CString& str)
+BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const CString& str)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_id))
+	if (FALSE == find_parameter(parameter_name))
 		return FALSE;
 
 	_current_parameter->val = str;
 	return write_current_parameter();
 }
 
-BOOL CSettingsLoader::save_parameter(const CString& parameter_id, const INT& val)
+BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const INT& val)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_id))
+	if (FALSE == find_parameter(parameter_name))
 		return FALSE;
 
 	_current_parameter->val = val;
