@@ -22,6 +22,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerminalTest", "TerminalTes
 		{5D55BCD8-65E9-4FB9-ABD5-70EA5A1CFC88} = {5D55BCD8-65E9-4FB9-ABD5-70EA5A1CFC88}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerminalEmulator", "TerminalEmulator\TerminalEmulator.vcxproj", "{EBEEF6C6-A5B0-4EC4-8BE1-9343CD785F36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C63274A8-6AA9-4330-910F-E8B94EAA7E92} = {C63274A8-6AA9-4330-910F-E8B94EAA7E92}
+		{5D55BCD8-65E9-4FB9-ABD5-70EA5A1CFC88} = {5D55BCD8-65E9-4FB9-ABD5-70EA5A1CFC88}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -44,6 +50,10 @@ Global
 		{C1C27FD6-C9B6-40AB-8214-270BF46F6CCB}.Debug|Win32.Build.0 = Debug|Win32
 		{C1C27FD6-C9B6-40AB-8214-270BF46F6CCB}.Release|Win32.ActiveCfg = Release|Win32
 		{C1C27FD6-C9B6-40AB-8214-270BF46F6CCB}.Release|Win32.Build.0 = Release|Win32
+		{EBEEF6C6-A5B0-4EC4-8BE1-9343CD785F36}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EBEEF6C6-A5B0-4EC4-8BE1-9343CD785F36}.Debug|Win32.Build.0 = Debug|Win32
+		{EBEEF6C6-A5B0-4EC4-8BE1-9343CD785F36}.Release|Win32.ActiveCfg = Release|Win32
+		{EBEEF6C6-A5B0-4EC4-8BE1-9343CD785F36}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

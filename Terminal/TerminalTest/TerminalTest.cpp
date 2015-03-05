@@ -22,6 +22,10 @@ using namespace device_exchange;
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
+	UNREFERENCED_PARAMETER(argc);
+	UNREFERENCED_PARAMETER(argv);
+	UNREFERENCED_PARAMETER(envp);
+
 	int nRetCode = 0;
 
 	HMODULE hModule = ::GetModuleHandle(NULL);
