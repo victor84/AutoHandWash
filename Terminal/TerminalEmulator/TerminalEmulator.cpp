@@ -13,7 +13,10 @@
 
 CWinApp theApp;
 
-using namespace std;
+
+
+
+
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
@@ -44,4 +47,14 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 
 	return nRetCode;
+}
+
+void Initialize()
+{
+
+}
+
+void PrepareExit()
+{
+
 }
