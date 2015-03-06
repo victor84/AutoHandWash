@@ -4,6 +4,7 @@
 
 namespace device_exchange
 {
+// Конвертор сообщений от/для устройства
 template<typename _PacketType>
 class CDevicePacketConvertor
 {

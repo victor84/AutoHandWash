@@ -93,6 +93,9 @@
     <ClInclude Include="stdafx\stdafx.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Networking\SingleServerSocket.h">
+      <Filter>Заголовочные файлы\Networking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleLexicalCast.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="stdafx\stdafx.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\SingleServerSocket.cpp">
+      <Filter>Файлы исходного кода\Networking</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

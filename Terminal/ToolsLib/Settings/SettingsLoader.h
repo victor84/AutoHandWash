@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx/stdafx.h"
 #include "TraceError.h"
 #include "..\SimpleLexicalCast.h"
 
@@ -16,12 +17,6 @@ namespace settings
 class CSettingsLoader
 {
 public:
-
-	// идентификаторы параметров дл€ чтени€
-	enum class e_parameter_id
-	{
-		error				= -1
-	};
 
 	// тип значени€ параметра
 	enum class e_parameter_data_type
@@ -152,26 +147,15 @@ public:
 
 private:
 
-	// тип параметра по хранению
-	enum class _e_parameter_storage_type
-	{
-		file	// параметр хранитс€ в файле
-		,db		// параметр хранитс€ в Ѕƒ
-	};
-
 	struct _tag_parameter
 	{
-		e_parameter_id id;
-		_e_parameter_storage_type storage_type;
 		CString group;
 		CString name;
 
 		_tag_parameter_value val;
 
 		_tag_parameter(CSimpleLexicalCast& lex_cast) 
-			: id(e_parameter_id::error)
-			, storage_type(_e_parameter_storage_type::db)
-			, group(_T(""))
+			: group(_T(""))
 			, name(_T(""))
 			, val(&lex_cast)
 		{
@@ -212,11 +196,11 @@ private:
 
 	BOOL create_file_name();
 
-	_tag_parameter create_param(const e_parameter_id& id, const _e_parameter_storage_type& storage_type, const e_parameter_data_type& type, const CString& group, const CString name);
+	_tag_parameter create_param(const e_parameter_data_type& type, 
+								const CString& group, 
+								const CString name);
 
-	void fill_parameters();
-
-	BOOL find_parameter(const e_parameter_id& param_id);
+	BOOL find_parameter(const CString& param_name);
 
 	BOOL read_current_parameter();
 
@@ -229,17 +213,22 @@ public:
 
 	virtual ~CSettingsLoader(void);
 
+	// ƒобавление параметра дл€ чтени€ из файла
+	void add_parameter(const e_parameter_data_type& type,
+					   const CString& group,
+					   const CString name);
+
 	// чтение всех настроек
 	BOOL read_all();
 
 	// чтение указанного параметра
-	BOOL read(const e_parameter_id& parameter_id);
+	BOOL read(const CString& parameter_name);
 
-	CStringW	get_string(const e_parameter_id& parameter_id);
-	INT			get_int(const e_parameter_id& parameter_id);
+	CStringW get_string(const CString& parameter_name);
+	INT get_int(const CString& parameter_name);
 
-	BOOL		save_parameter(const e_parameter_id& parameter_id, const CString& str);
-	BOOL		save_parameter(const e_parameter_id& parameter_id, const INT& val);
+	BOOL		save_parameter(const CString& parameter_name, const CString& str);
+	BOOL		save_parameter(const CString& parameter_name, const INT& val);
 };
 
 }
