@@ -2,12 +2,10 @@
 #include "SingleServerSocket.h"
 #include "tools.h"
 
-
 using namespace tools::networking;
 
 CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
-										 : _received_data(received_data)
-										 , _can_new_accept(true)
+										 : _socket_stream(received_data)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));
@@ -85,7 +83,7 @@ bool CSingleServerSocket::check_socket_fn_result_and(const INT& valid_val)
 	if (valid_val == _socket_fn_result)
 		return true;
 
-	_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+	_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 
 	return false;
 }
@@ -95,7 +93,7 @@ bool CSingleServerSocket::check_socket_fn_result_not(const INT& invalid_val)
 	if (invalid_val != _socket_fn_result)
 		return true;
 
-	_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+	_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 
 	return false;
 }
@@ -108,18 +106,13 @@ void CSingleServerSocket::cleanup()
 		_addr_results = nullptr;
 	}
 
-	if (INVALID_SOCKET != _client_socket)
-	{
-		::shutdown(_client_socket, SD_BOTH);
-		::closesocket(_client_socket);
-		_client_socket = INVALID_SOCKET;
-	}
-
 	if (INVALID_SOCKET != _listen_socket)
 	{
 		::closesocket(_listen_socket);
 		_listen_socket = INVALID_SOCKET;
 	}
+
+	_socket_stream.Stop();
 }
 
 e_socket_result CSingleServerSocket::Start(const tag_connection_params& params)
@@ -136,91 +129,62 @@ void tools::networking::CSingleServerSocket::listen_method()
 {
 	while (_work_loop_status == _e_work_loop_status::ok)
 	{
-		while (false == _can_new_accept)
-			Concurrency::wait(500);
-
 		SOCKADDR_STORAGE	sock_address;
 		INT					sock_address_len = sizeof(sock_address);
 		CHAR				servstr[NI_MAXSERV];
 		CHAR				hoststr[NI_MAXHOST];
-		_client_socket = INVALID_SOCKET;
+		SOCKET				client_socket = INVALID_SOCKET;
 
 		ZeroMemory(&sock_address, sizeof(sock_address));
 		ZeroMemory(&servstr, sizeof(servstr));
 		ZeroMemory(&hoststr, sizeof(hoststr));
 
-		_client_socket = ::accept(_listen_socket, (SOCKADDR*)&sock_address, &sock_address_len);
+		client_socket = ::accept(_listen_socket, (SOCKADDR*)&sock_address, &sock_address_len);
 
-		_socket_fn_result = static_cast<INT>(_client_socket);
+		_socket_fn_result = static_cast<INT>(client_socket);
 		if (FALSE == check_socket_fn_result_not(INVALID_SOCKET))
 		{
+			_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 			_tr_error->trace_error(_T("accept error"));
 			continue;
 		}
 
 		_socket_fn_result = getnameinfo((SOCKADDR*)&sock_address,
-								 sock_address_len,
-								 hoststr,
-								 _countof(hoststr),
-								 servstr,
-								 _countof(servstr),
-								 NI_NUMERICHOST | NI_NUMERICSERV);
+										 sock_address_len,
+										 hoststr,
+										 _countof(hoststr),
+										 servstr,
+										 _countof(servstr),
+										 NI_NUMERICHOST | NI_NUMERICSERV);
 		if (FALSE == check_socket_fn_result_and(NULL))
 		{
 			_tr_error->trace_error(_T("getnameinfo error"));
 			continue;
 		}
 
-
 		_str_str.str(_T(""));
 		_str_str << _T("соединение с хостом: ") << hoststr
 			<< _T(" удалённый порт: ") << servstr;
 		_tr_error->trace_message(_str_str.str());
-		_can_new_accept = false;
 
-		if (true == _client_thread.joinable())
-			_client_thread.join();
-		_client_thread = std::thread(&CSingleServerSocket::client_method, this);
+		_socket_stream.Start(client_socket,
+							 &_stream_end_status,
+							 std::bind(std::mem_fn(&CSingleServerSocket::on_complete_stream_fn), this));
+
+		// ожидание завершения потока сокета
+		_lock_wait_stream = new std::unique_lock<std::mutex>(_wait_stream_mutex);
+		
+		while (_e_work_loop_status::ok == _stream_end_status)
+			_cv.wait(*_lock_wait_stream);
+
+		delete _lock_wait_stream;
+		_lock_wait_stream = nullptr;
 	}
 }
 
-void tools::networking::CSingleServerSocket::client_method()
+void CSingleServerSocket::on_complete_stream_fn()
 {
-	_e_check_socket_result cs_result = _e_check_socket_result::error;
-
-	while (true)
-	{
-		cs_result = check_socket(_e_check_socket_type::read);
-		if (_e_check_socket_result::error == cs_result)
-			break;
-
-		if (_e_check_socket_result::ready == cs_result)
-		{
-			e_socket_result receive_result = receive_data();
-			if (e_socket_result::error == receive_result)
-				break;
-		}
-
-		cs_result = check_socket(_e_check_socket_type::write);
-		if (_e_check_socket_result::error == cs_result)
-			break;
-
-		if ((_e_check_socket_result::ready == cs_result) && (false == _data_to_send.empty()))
-		{
-			if (e_socket_result::error == send_data())
-				break;
-		}
-
-		Concurrency::wait(500);
-	}
-
-	_tr_error->trace_message(_T("Клиент отключился"));
-
-	::shutdown(_client_socket, SD_BOTH);
-	::closesocket(_client_socket);
-	_client_socket = INVALID_SOCKET;
-
-	_can_new_accept = true;
+	_cv.notify_one();
 }
 
 e_socket_result CSingleServerSocket::Stop()
@@ -232,99 +196,7 @@ e_socket_result CSingleServerSocket::Stop()
 	if (_listen_thread.joinable())
 		_listen_thread.join();
 
-	if (_client_thread.joinable())
-		_client_thread.join();
-
 	_init_state = _e_init_state::not_init;
 
 	return e_socket_result::success;
 }
-
-e_socket_result CSingleServerSocket::receive_data()
-{
-	_received_bytes_count = ::recv(_client_socket, _received_buffer, sizeof(_received_buffer), 0);
-	if (0 == _received_bytes_count)
-	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
-		_tr_error->trace_error(_T("принято 0 байт"));
-		return e_socket_result::error;
-	}
-
-	if (SOCKET_ERROR == _received_bytes_count)
-	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
-		_tr_error->trace_error(_T("ошибка при приёме данных из сокета"));
-
-		return e_socket_result::error;
-	}
-
-	data_wrappers::_tag_data_managed received_data(_received_buffer, _received_bytes_count);
-
-	_received_data.push_back(received_data);
-
-	return e_socket_result::success;
-}
-
-CSingleServerSocket::_e_check_socket_result CSingleServerSocket::check_socket(const _e_check_socket_type& cst)
-{
-	INT result = 0;
-	fd_set* sock_set_read = nullptr;
-	fd_set* sock_set_write = nullptr;
-
-	fd_set	sock_set;
-	FD_ZERO(&sock_set);
-	FD_SET(_client_socket, &sock_set);
-
-	timeval	wait_time;
-	wait_time.tv_sec = 0;
-	wait_time.tv_usec = 5000;
-
-	switch (cst)
-	{
-		case _e_check_socket_type::read:	sock_set_read = &sock_set;	break;
-		case _e_check_socket_type::write:	sock_set_write = &sock_set;	break;
-		default: return _e_check_socket_result::error;
-	}
-
-	result = ::select(0, sock_set_read, sock_set_write, nullptr, &wait_time);
-	if (SOCKET_ERROR == result)
-	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
-		return _e_check_socket_result::error;
-	}
-
-	return (0 == result) ? _e_check_socket_result::not_ready : _e_check_socket_result::ready;
-}
-
-e_socket_result CSingleServerSocket::send_data()
-{
-	if (true == _data_to_send.empty())
-		return e_socket_result::success;
-
-	std::vector<data_wrappers::_tag_data_const> data_collection = _data_to_send.get_with_cleanup();
-
-	for (data_wrappers::_tag_data_const packet : data_collection)
-	{
-		INT result = ::send(_client_socket, reinterpret_cast<PCSTR>(packet.p_data), packet.data_size, 0);
-
-		packet.free_data();
-
-		if (SOCKET_ERROR == result)
-		{
-			_tr_error->trace_error(_T("ошибка при отправке данных в сокет"));
-			_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
-
-			return e_socket_result::error;
-		}
-
-		if (0 == result)
-		{
-			_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
-			_tr_error->trace_error(_T("0 == result"));
-			return e_socket_result::error;
-		}
-	}
-
-	return e_socket_result::success;
-}
-

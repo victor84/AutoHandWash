@@ -22,6 +22,8 @@ CWinApp theApp;
 using namespace std;
 using namespace device_exchange;
 
+tools::logging::CTraceError* tr_error;
+
 void TestClient(tools::networking::tag_connection_params connection_params,
 				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data);
 
@@ -54,6 +56,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 		nRetCode = 1;
 		return nRetCode;
 	}
+
+	tr_error = tools::logging::CTraceError::get_instance();
 
 	// TODO: Вставьте сюда код для приложения.
 	server_exchange::CPacketToRawData pack_to_raw;
@@ -100,7 +104,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	// TestServer(connection_params, received_data);
 	TestClient(connection_params, received_data);
 
-	delete tools::logging::CTraceError::get_instance();
+	delete tr_error;
 
 	return nRetCode;
 }
@@ -115,9 +119,9 @@ void TestClient(tools::networking::tag_connection_params connection_params,
 	::system("pause");
 
 	client.CloseConnection();
+	tr_error->trace_error(_T("Соединение клиента закрыто"));
 
 	::system("pause");
-
 }
 
 void TestServer(tools::networking::tag_connection_params connection_params, 
@@ -131,6 +135,8 @@ void TestServer(tools::networking::tag_connection_params connection_params,
 	::system("pause");
 
 	server.Stop();
+
+	tr_error->trace_error(_T("Сервер остановлен"));
 
 	::system("pause");
 }

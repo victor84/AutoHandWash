@@ -56,7 +56,6 @@ class CAsyncClientSocket
 	// true если _socket_fn_result не равен invalid_val
 	bool check_socket_fn_result_not(const INT& invalid_val);
 
-
 	// таймер переподключения
 	Concurrency::timer<INT>* _reconnection_timer;
 
@@ -72,15 +71,14 @@ class CAsyncClientSocket
 	// остановка по внутренним причинам
 	e_socket_result inner_close_connection();
 
+	// вызывается при завершении работы потока обработки сокета
+	void on_complete_stream_fn();
 
 	CAsyncClientSocket(const CAsyncClientSocket& ob);
 
 public:
 	CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data);
 	virtual ~CAsyncClientSocket();
-
-	// вызывается при завершении работы потока обработки сокета
-	void on_complete_stream_fn();
 
 	void Send(data_wrappers::_tag_data_const data);
 

@@ -29,6 +29,14 @@ struct tag_connection_params
 	std::string	address;				// адрес
 	std::string	port;					// порт
 	int			reconnection_timeout;	// таймаут переподключения при разрыве соединения
+
+	tag_connection_params()
+		: address("")
+		, port("")
+		, reconnection_timeout(10000)
+	{
+
+	}
 };
 
 // статус выполнения основного рабочего цикла

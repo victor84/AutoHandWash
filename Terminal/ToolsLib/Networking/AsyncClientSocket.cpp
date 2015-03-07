@@ -42,7 +42,7 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 		_str_str.str(_T(""));
 		_str_str << _T("Не удалось подключиться к хосту: ") << _connection_params.address.c_str()
 			<< _T(" на порт ") << _connection_params.port.c_str()
-			<< _T(" ошибка: ") << _tr_error->format_sys_message(WSAGetLastError());
+			<< _T(" ошибка: ") << _tr_error->format_sys_message(::WSAGetLastError());
 
 		_tr_error->trace_error(_str_str.str());
 
@@ -127,7 +127,7 @@ e_socket_result CAsyncClientSocket::init()
 	if (_client_socket == INVALID_SOCKET)
 	{
 		_str_str.str(_T(""));
-		_str_str << _T("Не удалось создать сокет. Ошибка ") << _tr_error->format_sys_message(WSAGetLastError());
+		_str_str << _T("Не удалось создать сокет. Ошибка ") << _tr_error->format_sys_message(::WSAGetLastError());
 		_tr_error->trace_error(_str_str.str());
 		cleanup_and_return_error;
 	}
@@ -153,7 +153,7 @@ bool CAsyncClientSocket::check_socket_fn_result_and(const INT& valid_val)
 	if (valid_val == _socket_fn_result)
 		return true;
 
-	_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+	_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 
 	return false;
 }
@@ -163,16 +163,13 @@ bool CAsyncClientSocket::check_socket_fn_result_not(const INT& invalid_val)
 	if (invalid_val != _socket_fn_result)
 		return true;
 
-	_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+	_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 
 	return false;
 }
 
 e_socket_result CAsyncClientSocket::CloseConnection()
 {
-	if (_e_connection_state::not_connected == _connection_state)
-		return e_socket_result::was_disconnected;
-
 	if (nullptr != _reconnection_timer)
 	{
 		_reconnection_timer->stop();
@@ -191,13 +188,12 @@ void CAsyncClientSocket::start_reconnection_timer()
 	if (0 == _connection_params.reconnection_timeout)
 		return;
 	
-	if (nullptr == _reconnection_timer)
-	{
-		_reconnection_timer = new Concurrency::timer<INT>(_connection_params.reconnection_timeout,
-														    1,
-															&_reconnection_method,
-															true);
-	}
+	delete _reconnection_timer;
+	_reconnection_timer = new Concurrency::timer<INT>(_connection_params.reconnection_timeout,
+														1,
+														&_reconnection_method,
+														false);
+	
 	_reconnection_timer->start();
 }
 

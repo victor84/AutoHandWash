@@ -8,8 +8,8 @@ CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data)
 	: _received_data(received_data)
 	, _start_state(_e_init_state::not_init)
 {
+	_tr_error = tools::logging::CTraceError::get_instance();
 }
-
 
 CSocketStream::~CSocketStream()
 {
@@ -40,9 +40,6 @@ e_socket_result CSocketStream::Stop()
 		return e_socket_result::was_disconnected;
 
 	_work_loop_status = _e_work_loop_status::stop;
-
-	/*if (true == _this_thread.joinable())
-		_this_thread.join();*/
 
 	return e_socket_result::success;
 }
@@ -130,7 +127,7 @@ CSocketStream::_e_check_socket_result CSocketStream::check_socket(const _e_check
 	result = ::select(0, sock_set_read, sock_set_write, nullptr, &wait_time);
 	if (SOCKET_ERROR == result)
 	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+		_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 		return _e_check_socket_result::error;
 	}
 
@@ -142,14 +139,14 @@ e_socket_result CSocketStream::receive_data()
 	_received_bytes_count = ::recv(_client_socket, _received_buffer, sizeof(_received_buffer), 0);
 	if (0 == _received_bytes_count)
 	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+		_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 		_tr_error->trace_error(_T("принято 0 байт"));
 		return e_socket_result::error;
 	}
 
 	if (SOCKET_ERROR == _received_bytes_count)
 	{
-		_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+		_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 		_tr_error->trace_error(_T("ошибка при приёме данных из сокета"));
 
 		return e_socket_result::error;
@@ -178,14 +175,14 @@ e_socket_result CSocketStream::send_data()
 		if (SOCKET_ERROR == result)
 		{
 			_tr_error->trace_error(_T("ошибка при отправке данных в сокет"));
-			_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+			_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 
 			return e_socket_result::error;
 		}
 
 		if (0 == result)
 		{
-			_tr_error->trace_error(_tr_error->format_sys_message(WSAGetLastError()));
+			_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
 			_tr_error->trace_error(_T("0 == result"));
 			return e_socket_result::error;
 		}
