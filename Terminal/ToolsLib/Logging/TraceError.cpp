@@ -9,6 +9,8 @@ namespace logging
 CTraceError* CTraceError::_instance = NULL;
 
 CTraceError::CTraceError(VOID)
+	: _short_messages_storage(nullptr)
+	, _full_messages_storage(nullptr)
 {
 	fill_type_mapping();
 }
@@ -36,8 +38,7 @@ CTraceError::_tag_msg_type_mapping CTraceError::make_type_mapping( TRACE_MSG_TYP
 
 CTraceError::~CTraceError()
 {
-	// delete _instance;
-	// delete _log_agent;
+	_instance = nullptr;
 }
 
 void CTraceError::trace( std::wstring text, std::string function_name, TRACE_MSG_TYPE type, BOOL show_msgbox /*= FALSE*/, CWnd* pParentWnd /*= NULL*/, DWORD thread_id /*= GetCurrentThreadId()*/ )
@@ -51,9 +52,15 @@ void CTraceError::trace( std::wstring text, std::string function_name, TRACE_MSG
 
 	mes <<  _T("[") << text << _T("]");
 
+	if (nullptr != _short_messages_storage)
+		_short_messages_storage->push_back(text);
+
 	if(!function_name.empty())
 		mes << _T(" в функции [") << std::wstring(function_name.begin(), function_name.end()) << _T("]");
 	mes << "\n";
+
+	if (nullptr != _full_messages_storage)
+		_full_messages_storage->push_back(mes.str());
 
 	::OutputDebugString(mes.str().c_str());
 
@@ -97,7 +104,13 @@ std::wstring CTraceError::format_sys_message( DWORD mes_id )
 	return message_buf;
 }
 
-std::wstring CTraceError::get_type_text( TRACE_MSG_TYPE type )
+void CTraceError::set_messages_storages(tools::lock_vector<std::wstring>* short_messages_storage, tools::lock_vector<std::wstring>* full_messages_storage)
+{
+	_short_messages_storage = short_messages_storage;
+	_full_messages_storage = full_messages_storage;
+}
+
+std::wstring CTraceError::get_type_text(TRACE_MSG_TYPE type)
 {
 	_tag_msg_type_mapping* ptt = find_type_text(type);
 

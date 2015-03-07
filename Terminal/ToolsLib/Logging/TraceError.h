@@ -1,4 +1,5 @@
 #pragma once
+#include "lock_vector.h"
 
 namespace tools
 {
@@ -40,6 +41,11 @@ private:
 	// соответствия
 	std::vector <_tag_msg_type_mapping> _v_type_text;
 
+	// хранилище сообщений лога без дополнительной информации
+	tools::lock_vector<std::wstring>* _short_messages_storage;
+
+	tools::lock_vector<std::wstring>* _full_messages_storage;
+
 	void fill_type_mapping();
 
 	_tag_msg_type_mapping make_type_mapping(TRACE_MSG_TYPE type, UINT msg_box_icon, std::wstring text);
@@ -47,6 +53,9 @@ private:
 	_tag_msg_type_mapping* find_type_text(TRACE_MSG_TYPE type);
 
 	UINT get_type_msg_box_icon(TRACE_MSG_TYPE type);
+
+	// возвращает текст типа сообщения
+	std::wstring get_type_text(TRACE_MSG_TYPE type);
 
 protected:
 	CTraceError(void);
@@ -110,8 +119,10 @@ public:
 	// возвращает текст системной ошибки по её коду
 	std::wstring format_sys_message(DWORD mes_id);
 
-	// возвращает текст типа сообщения
-	std::wstring get_type_text(TRACE_MSG_TYPE type);
+	// задание хранилищ для сообщений
+	void set_messages_storages(tools::lock_vector<std::wstring>* short_messages_storage,
+							   tools::lock_vector<std::wstring>* full_messages_storage);
+
 };
 }
 

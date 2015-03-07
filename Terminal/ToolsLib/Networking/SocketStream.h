@@ -73,6 +73,8 @@ class CSocketStream
 
 	std::function<void()> _on_complete_fn;
 
+	bool _thread_running;
+
 	void thread_method();
 
 	// очистка сокета

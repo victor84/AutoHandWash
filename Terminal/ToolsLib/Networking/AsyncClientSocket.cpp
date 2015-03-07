@@ -13,14 +13,13 @@ CAsyncClientSocket::CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_da
 																	if (_e_connection_state::not_connected == _connection_state)
 																		OpenConnection(_connection_params);
 																})
-										
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 CAsyncClientSocket::~CAsyncClientSocket()
 {
-	CloseConnection();
+
 }
 
 e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& params)
@@ -34,9 +33,7 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 		return e_socket_result::error;
 
 	pause_reconnection_timer();
-
 	_socket_fn_result = ::connect(_client_socket, _addrptr->ai_addr, _addrptr->ai_addrlen);
-
 	if (false == check_socket_fn_result_not(SOCKET_ERROR))
 	{
 		_str_str.str(_T(""));
@@ -45,18 +42,13 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 			<< _T(" ошибка: ") << _tr_error->format_sys_message(::WSAGetLastError());
 
 		_tr_error->trace_error(_str_str.str());
-
 		_connection_state = _e_connection_state::not_connected;
-
 		start_reconnection_timer();
-
 		return e_socket_result::error;
 	}
 
 	_connection_state = _e_connection_state::connected;
-
 	_end_of_stream_status = _e_work_loop_status::ok;
-	
 	_socket_stream.Start(_client_socket,
 						 &_end_of_stream_status,
 						 std::bind(std::mem_fn(&CAsyncClientSocket::on_complete_stream_fn), this));
@@ -79,7 +71,6 @@ e_socket_result CAsyncClientSocket::inner_close_connection()
 
 	// если внезапно =( остановилось или оборвалось, перезапускаем
 	start_reconnection_timer();
-
 	return e_socket_result::success;
 }
 
@@ -89,12 +80,10 @@ e_socket_result CAsyncClientSocket::init()
 		return e_socket_result::success;
 
 	_init_state = _e_init_state::not_init;
-
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));
 
 	WSADATA wsa_data;
 	ZeroMemory(&wsa_data, sizeof(wsa_data));
-
 	if (0 != WSAStartup(MAKEWORD(2, 2), &wsa_data))
 	{
 		_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
@@ -121,7 +110,6 @@ e_socket_result CAsyncClientSocket::init()
 		_tr_error->trace_error(_str_str.str());
 		cleanup_and_return_error;
 	}
-
 	_addrptr = _addr_results;
 	_client_socket = ::socket(_addrptr->ai_family, _addrptr->ai_socktype, _addrptr->ai_protocol);
 	if (_client_socket == INVALID_SOCKET)
@@ -131,7 +119,6 @@ e_socket_result CAsyncClientSocket::init()
 		_tr_error->trace_error(_str_str.str());
 		cleanup_and_return_error;
 	}
-
 	return e_socket_result::success;
 }
 

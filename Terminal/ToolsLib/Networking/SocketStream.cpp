@@ -7,6 +7,7 @@ using namespace tools::data_wrappers;
 CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data)
 	: _received_data(received_data)
 	, _start_state(_e_init_state::not_init)
+	, _thread_running(false)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -23,13 +24,11 @@ e_socket_result CSocketStream::Start(const SOCKET& socket_to_process,
 		return e_socket_result::was_connected;
 
 	_client_socket = socket_to_process;
-
 	_on_complete_fn = on_complete_fn;
-
 	_end_status = end_status;
 	_work_loop_status = _e_work_loop_status::ok;
+	_thread_running = true;
 	_this_thread = std::thread(&CSocketStream::thread_method, this);
-
 	_start_state = _e_init_state::was_init;
 	return e_socket_result::success;
 }
@@ -40,6 +39,9 @@ e_socket_result CSocketStream::Stop()
 		return e_socket_result::was_disconnected;
 
 	_work_loop_status = _e_work_loop_status::stop;
+
+	while (true == _thread_running)
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 	return e_socket_result::success;
 }
@@ -56,7 +58,6 @@ void CSocketStream::thread_method()
 			_work_loop_status = _e_work_loop_status::error;
 			break;
 		}
-
 		if (_e_check_socket_result::ready == cs_result)
 		{
 			e_socket_result receive_result = receive_data();
@@ -66,14 +67,12 @@ void CSocketStream::thread_method()
 				break;
 			}
 		}
-
 		cs_result = check_socket(_e_check_socket_type::write);
 		if (_e_check_socket_result::error == cs_result)
 		{
 			_work_loop_status = _e_work_loop_status::error;
 			break;
 		}
-
 		if ((_e_check_socket_result::ready == cs_result) && (false == _data_to_send.empty()))
 		{
 			if (e_socket_result::error == send_data())
@@ -82,15 +81,13 @@ void CSocketStream::thread_method()
 				break;
 			}
 		}
-
 		Concurrency::wait(500);
 	}
 
 	*_end_status = _work_loop_status;
-
 	cleanup();
-
 	_on_complete_fn();
+	_thread_running = false;
 }
 
 void CSocketStream::cleanup()
@@ -153,7 +150,6 @@ e_socket_result CSocketStream::receive_data()
 	}
 
 	data_wrappers::_tag_data_managed received_data(_received_buffer, _received_bytes_count);
-
 	_received_data.push_back(received_data);
 
 	return e_socket_result::success;
@@ -169,17 +165,14 @@ e_socket_result CSocketStream::send_data()
 	for (data_wrappers::_tag_data_const packet : data_collection)
 	{
 		INT result = ::send(_client_socket, reinterpret_cast<PCSTR>(packet.p_data), packet.data_size, 0);
-
 		packet.free_data();
 
 		if (SOCKET_ERROR == result)
 		{
 			_tr_error->trace_error(_T("ошибка при отправке данных в сокет"));
 			_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
-
 			return e_socket_result::error;
 		}
-
 		if (0 == result)
 		{
 			_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
