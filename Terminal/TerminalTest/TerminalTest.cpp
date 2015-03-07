@@ -8,6 +8,7 @@
 #include "device_protocol.h"
 #include "DevicePacketConvertor.h"
 #include "SingleServerSocket.h"
+#include "AsyncClientSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,6 +21,13 @@ CWinApp theApp;
 
 using namespace std;
 using namespace device_exchange;
+
+void TestClient(tools::networking::tag_connection_params connection_params,
+				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data);
+
+void TestServer(tools::networking::tag_connection_params connection_params,
+				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data);
+
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
@@ -85,9 +93,37 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	device_packet_convertor.Parse(out_data, command_from_device);
 
 	tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
-	tools::networking::CSingleServerSocket server(received_data);
 	tools::networking::tag_connection_params connection_params;
-	connection_params.port = "26001";
+	connection_params.address = "127.0.0.1";
+	connection_params.port = "26000";
+
+	// TestServer(connection_params, received_data);
+	TestClient(connection_params, received_data);
+
+	delete tools::logging::CTraceError::get_instance();
+
+	return nRetCode;
+}
+
+void TestClient(tools::networking::tag_connection_params connection_params,
+				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
+{
+	tools::networking::CAsyncClientSocket client(received_data);
+
+	client.OpenConnection(connection_params);
+
+	::system("pause");
+
+	client.CloseConnection();
+
+	::system("pause");
+
+}
+
+void TestServer(tools::networking::tag_connection_params connection_params, 
+				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
+{
+	tools::networking::CSingleServerSocket server(received_data);
 
 
 	server.Start(connection_params);
@@ -97,8 +133,5 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	server.Stop();
 
 	::system("pause");
-
-	delete tools::logging::CTraceError::get_instance();
-
-	return nRetCode;
 }
+

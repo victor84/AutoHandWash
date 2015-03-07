@@ -4,33 +4,25 @@
 #include "raw_data_warappers.h"
 #include "lock_vector.h"
 
+
+/*!
+ * \file SingleServerSocket.h
+ *
+ * \author Victor Mulika
+ * \date 06 Март 2015
+ *
+ * 
+ */
+
+
+
 namespace tools
 {
 namespace networking
 {
 class CSingleServerSocket
 {
-	// статус выполнения основного рабочего цикла
-	enum class _e_work_loop_status
-	{
-		ok,		// цикл продолжается
-		error,	// возникла ошибка
-		stop	// указали остановиться снаружи
-	};
 
-	// состояние соединения
-	enum class _e_connection_state
-	{
-		not_connected,
-		connected
-	};
-
-	// состояние инициализации
-	enum class _e_init_state
-	{
-		not_init,
-		was_init
-	};
 
 	// тип проверки сокета на готовность
 	enum class _e_check_socket_type

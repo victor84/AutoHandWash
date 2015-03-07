@@ -95,6 +95,7 @@
     <ClInclude Include="Logging\TraceError.h" />
     <ClInclude Include="Networking\AsyncClientSocket.h" />
     <ClInclude Include="Networking\SingleServerSocket.h" />
+    <ClInclude Include="Networking\SocketStream.h" />
     <ClInclude Include="Networking\SocketUtils.h" />
     <ClInclude Include="raw_data_warappers.h" />
     <ClInclude Include="SerialPort\Serial.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="Logging\TraceError.cpp" />
     <ClCompile Include="Networking\AsyncClientSocket.cpp" />
     <ClCompile Include="Networking\SingleServerSocket.cpp" />
+    <ClCompile Include="Networking\SocketStream.cpp" />
     <ClCompile Include="SerialPort\Serial.cpp" />
     <ClCompile Include="SerialPort\SerialEx.cpp" />
     <ClCompile Include="SerialPort\SerialWnd.cpp" />

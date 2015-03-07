@@ -30,5 +30,30 @@ struct tag_connection_params
 	std::string	port;					// порт
 	int			reconnection_timeout;	// таймаут переподключения при разрыве соединения
 };
+
+// статус выполнения основного рабочего цикла
+enum class _e_work_loop_status
+{
+	ok,		// цикл продолжается
+	error,	// возникла ошибка
+	stop	// указали остановиться снаружи
+};
+
+// состояние соединения
+enum class _e_connection_state
+{
+	not_connected,
+	connected
+};
+
+// состояние инициализации
+enum class _e_init_state
+{
+	not_init,	// инициализация не была произведена
+	was_init	// инициализация успешна
+};
+
+
+
 }
 }

@@ -96,6 +96,9 @@
     <ClInclude Include="Networking\SingleServerSocket.h">
       <Filter>Заголовочные файлы\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="Networking\SocketStream.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleLexicalCast.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Networking\SingleServerSocket.cpp">
       <Filter>Файлы исходного кода\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\SocketStream.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
