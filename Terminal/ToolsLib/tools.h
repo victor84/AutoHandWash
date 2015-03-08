@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "raw_data_warappers.h"
 
 ///////////////////////////////////////////
 // вспомогательные функции
@@ -41,5 +42,26 @@ namespace tools
 	// конвертирование строк
 	std::wstring string_to_wstring(const std::string& str);
 	std::string wstring_to_string(const std::wstring& str);
+
+	// вывод бинарных данных в формате hex
+	std::wstring binary_to_hex(const data_wrappers::_tag_data_const bin_data);
+
+	// hex строка в бинарные данные
+	data_wrappers::_tag_data_managed hex_to_binary(const std::wstring& hex_string);
+
+	// удаление из коллекции по условию
+	template<typename _ColType, typename _PredicateType>
+	_ColType remove_if(_ColType begin, _ColType end, _PredicateType predicate)
+	{
+		_ColType dest = begin;
+		for (_ColType itr = begin; itr != end; ++itr)
+		{
+			if (!predicate(*itr))
+				*(dest++) = *itr;
+		}
+		return dest;
+	}
+
+	uint32_t char_to_int(char input);
 
 };

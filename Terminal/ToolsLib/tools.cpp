@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "tools.h"
+#include <iomanip>
 
 void tools::remove_extra_backslash( CString& str )
 {
@@ -214,4 +215,52 @@ std::string tools::wstring_to_string( const std::wstring& str )
 	delete[] buf;
 
 	return result;
+}
+
+
+
+std::wstring tools::binary_to_hex(const data_wrappers::_tag_data_const bin_data)
+{
+	std::wstringstream str_str;
+	str_str << std::hex << std::setfill(_T('0'));
+	for (uint32_t i = 0; i < bin_data.data_size; ++i)
+	{
+		byte b = bin_data.p_data[i];
+		str_str << std::setw(2) << static_cast<unsigned>(b);
+	}
+	return str_str.str();
+}
+
+tools::data_wrappers::_tag_data_managed tools::hex_to_binary(const std::wstring& hex_string)
+{
+	std::string str = wstring_to_string(hex_string);
+
+	str.erase(tools::remove_if(str.begin(), str.end(), isspace), str.end());
+	tools::data_wrappers::_tag_data_managed result;
+
+	uint32_t string_size = str.size();
+
+	if ((0 == string_size) || ((string_size % 2) != 0))
+		return result;
+
+	result.alloc_data(string_size / 2);
+
+	for (uint32_t str_pos = 0, bin_pos = 0; str_pos < string_size; str_pos += 2, ++bin_pos)
+	{
+		result.p_data[bin_pos] = char_to_int(str[str_pos]) * 16 + char_to_int(str[str_pos + 1]);
+	}
+
+	return result;
+}
+
+uint32_t tools::char_to_int(char input)
+{
+	if (input >= '0' && input <= '9')
+		return input - '0';
+	if (input >= 'A' && input <= 'F')
+		return input - 'A' + 10;
+	if (input >= 'a' && input <= 'f')
+		return input - 'a' + 10;
+	else
+		return 0;
 }

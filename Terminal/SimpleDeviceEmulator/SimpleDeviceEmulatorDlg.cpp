@@ -13,6 +13,24 @@
 #define new DEBUG_NEW
 #endif
 
+using namespace device_exchange;
+
+// вывод сообщения в интерфейс
+#define LOG(str) { _tr_error->trace_message(str); show_log(); }
+
+void CSimpleDeviceEmulatorDlg::fill_packets_types()
+{
+	_packets_types.clear();
+
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::button_press,			_T("Нажата кнопка")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::bill_acceptor,			_T("Данные от купюроприемника или монетоприемника")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::hopper_issue_coin,		_T("Выдана монета хоппером")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::discount_card_issued,	_T("Выдана дисконтная карта")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::data_from_eeprom,		_T("Передать данные из EEPROM")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::buttons_state,			_T("Выдача статуса всех кнопок")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::command_confirmation,	_T("Подтверждение выполнения команды")));
+	_packets_types.push_back(_tag_packet_type(e_command_from_device::error,					_T("Ошибка")));
+}
 
 void CSimpleDeviceEmulatorDlg::show_log()
 {
@@ -23,6 +41,22 @@ void CSimpleDeviceEmulatorDlg::show_log()
 	}
 
 	UpdateData(FALSE);
+}
+
+void CSimpleDeviceEmulatorDlg::show_packets_types()
+{
+	m_PacketTypeCombo.ResetContent();
+
+	for (_tag_packet_type packet_type : _packets_types)
+	{
+		m_PacketTypeCombo.AddString(packet_type.name);
+	}
+}
+
+CSimpleDeviceEmulatorDlg::_tag_packet_type CSimpleDeviceEmulatorDlg::get_selected_packet_type(INT sel_num)
+{
+	_tag_packet_type result = _packets_types[sel_num];
+	return result;
 }
 
 // диалоговое окно CSimpleDeviceEmulatorDlg
@@ -37,10 +71,7 @@ CSimpleDeviceEmulatorDlg::CSimpleDeviceEmulatorDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	_tr_error = tools::logging::CTraceError::get_instance();
-
 	_tr_error->set_messages_storages(&_log_messages, nullptr);
-
-
 }
 
 void CSimpleDeviceEmulatorDlg::DoDataExchange(CDataExchange* pDX)
@@ -57,6 +88,8 @@ BEGIN_MESSAGE_MAP(CSimpleDeviceEmulatorDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_CONNECT_BUTTON, &CSimpleDeviceEmulatorDlg::OnBnClickedConnectButton)
 	ON_WM_CLOSE()
+	ON_CBN_SELCHANGE(IDC_PACKET_TYPE_COMBO, &CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo)
+	ON_BN_CLICKED(IDC_SEND_DATA_BUTTON, &CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton)
 END_MESSAGE_MAP()
 
 
@@ -72,6 +105,10 @@ BOOL CSimpleDeviceEmulatorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Мелкий значок
 
 	// TODO: добавьте дополнительную инициализацию
+	fill_packets_types();
+	show_packets_types();
+
+	m_PacketTypeCombo.SetCurSel(0);
 
 	return TRUE;  // возврат значения TRUE, если фокус не передан элементу управления
 }
@@ -137,4 +174,47 @@ void CSimpleDeviceEmulatorDlg::OnClose()
 	_tr_error = nullptr;
 
 	CDialogEx::OnClose();
+}
+
+
+void CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo()
+{
+	INT selected_item = m_PacketTypeCombo.GetCurSel();
+
+	if (CB_ERR == selected_item)
+		return;
+
+	_current_packet_type = get_selected_packet_type(selected_item);
+
+	_packet_from_device.clear();
+
+	_packet_from_device.command = _current_packet_type.command;
+
+	tools::data_wrappers::_tag_data_managed raw_data;
+
+	_packet_convertor.CreateRawData(_packet_from_device, raw_data);
+
+	m_PacketData = tools::binary_to_hex(raw_data).c_str();
+
+	UpdateData(FALSE);
+}
+
+void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
+{
+	UpdateData(TRUE);
+
+	std::wstring packet_hex = m_PacketData.GetString();
+
+	tools::data_wrappers::_tag_data_managed raw_data;
+
+	raw_data = tools::hex_to_binary(packet_hex);
+
+	if (nullptr == raw_data.p_data)
+	{
+		LOG(_T("Неверный формат данных"));
+		return;
+	}
+
+	_client_socket.Send(raw_data);
+	LOG(_T("Отправлен пакет данных: ") + packet_hex);
 }

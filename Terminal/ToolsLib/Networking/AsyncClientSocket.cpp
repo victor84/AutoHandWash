@@ -19,7 +19,7 @@ CAsyncClientSocket::CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_da
 
 CAsyncClientSocket::~CAsyncClientSocket()
 {
-
+	CloseConnection();
 }
 
 e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& params)

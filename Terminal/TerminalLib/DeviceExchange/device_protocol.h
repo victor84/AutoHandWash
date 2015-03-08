@@ -141,18 +141,22 @@ struct tag_packet_from_device
 	byte end;						// конец пакета
 
 	tag_packet_from_device()
-		:begin(begin_byte)
-		, command(e_command_from_device::empty)
-		, data0(0)
-		, data1(0)
-		, data2(0)
-		, data3(0)
-		, data4(0)
-		, data5(0)
-		, crc(0)
-		, end(end_byte)
 	{
+		clear();
+	}
 
+	void clear()
+	{
+		begin	= begin_byte;
+		command	= e_command_from_device::empty;
+		data0	= 0;
+		data1	= 0;
+		data2	= 0;
+		data3	= 0;
+		data4	= 0;
+		data5	= 0;
+		crc		= 0;
+		end		= end_byte;
 	}
 };
 
@@ -171,18 +175,22 @@ struct tag_packet_from_pc
 	byte end;					// конец пакета
 
 	tag_packet_from_pc()
-		:begin(begin_byte)
-		, command(e_command_from_pc::empty)
-		, data0(0)
-		, data1(0)
-		, data2(0)
-		, data3(0)
-		, data4(0)
-		, data5(0)
-		, crc(0)
-		, end(end_byte)
 	{
+		clear();
+	}
 
+	void clear()
+	{
+		begin = begin_byte;
+		command = e_command_from_pc::empty;
+		data0 = 0;
+		data1 = 0;
+		data2 = 0;
+		data3 = 0;
+		data4 = 0;
+		data5 = 0;
+		crc = 0;
+		end = end_byte;
 	}
 };
 #pragma pack(pop)
