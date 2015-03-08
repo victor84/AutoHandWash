@@ -112,7 +112,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 void TestClient(tools::networking::tag_connection_params connection_params,
 				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
 {
-	tools::networking::CAsyncClientSocket client(received_data);
+	tools::networking::CAsyncClientSocket client(received_data, nullptr);
 
 	client.OpenConnection(connection_params);
 
@@ -127,7 +127,7 @@ void TestClient(tools::networking::tag_connection_params connection_params,
 void TestServer(tools::networking::tag_connection_params connection_params, 
 				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
 {
-	tools::networking::CSingleServerSocket server(received_data);
+	tools::networking::CSingleServerSocket server(received_data, nullptr);
 
 
 	server.Start(connection_params);

@@ -247,7 +247,7 @@ tools::data_wrappers::_tag_data_managed tools::hex_to_binary(const std::wstring&
 
 	for (uint32_t str_pos = 0, bin_pos = 0; str_pos < string_size; str_pos += 2, ++bin_pos)
 	{
-		result.p_data[bin_pos] = char_to_int(str[str_pos]) * 16 + char_to_int(str[str_pos + 1]);
+		result.p_data[bin_pos] = static_cast<byte>(char_to_int(str[str_pos]) * 0x10 + char_to_int(str[str_pos + 1]));
 	}
 
 	return result;

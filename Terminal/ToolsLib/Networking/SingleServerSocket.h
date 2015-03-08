@@ -74,7 +74,8 @@ class CSingleServerSocket
 	CSingleServerSocket(const CSingleServerSocket& ob);
 
 public:
-	CSingleServerSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data);
+	CSingleServerSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
+						std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
 	virtual ~CSingleServerSocket();
 
 

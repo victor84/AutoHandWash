@@ -18,9 +18,8 @@ enum class e_socket_result
 {
 	success,			// успех
 	error,				// ошибка
-	was_connected,		// соединение было установлено
-	was_disconnected	// соединение было разорвано
-
+	was_connected,		// соединение было ранее установлено
+	was_disconnected	// соединение было ранее разорвано
 };
 
 // параметры соединенияЫ

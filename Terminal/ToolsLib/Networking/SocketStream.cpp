@@ -4,10 +4,12 @@
 using namespace tools::networking;
 using namespace tools::data_wrappers;
 
-CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data)
+CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data,
+							 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 	: _received_data(received_data)
 	, _start_state(_e_init_state::not_init)
 	, _thread_running(false)
+	, _on_data_received(on_data_received)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -23,7 +25,10 @@ e_socket_result CSocketStream::Start(const SOCKET& socket_to_process,
 	if (_e_init_state::was_init == _start_state)
 		return e_socket_result::was_connected;
 
-	_client_socket = socket_to_process;
+	if (true == _thread_running)
+		return e_socket_result::was_connected;
+
+	_socket = socket_to_process;
 	_on_complete_fn = on_complete_fn;
 	_end_status = end_status;
 	_work_loop_status = _e_work_loop_status::ok;
@@ -94,8 +99,8 @@ void CSocketStream::cleanup()
 {
 	_this_thread.detach();
 
-	::closesocket(_client_socket);
-	_client_socket = INVALID_SOCKET;
+	::closesocket(_socket);
+	_socket = INVALID_SOCKET;
 
 	_start_state = _e_init_state::not_init;
 }
@@ -108,7 +113,7 @@ CSocketStream::_e_check_socket_result CSocketStream::check_socket(const _e_check
 
 	fd_set	sock_set;
 	FD_ZERO(&sock_set);
-	FD_SET(_client_socket, &sock_set);
+	FD_SET(_socket, &sock_set);
 
 	timeval	wait_time;
 	wait_time.tv_sec = 0;
@@ -133,7 +138,7 @@ CSocketStream::_e_check_socket_result CSocketStream::check_socket(const _e_check
 
 e_socket_result CSocketStream::receive_data()
 {
-	_received_bytes_count = ::recv(_client_socket, _received_buffer, sizeof(_received_buffer), 0);
+	_received_bytes_count = ::recv(_socket, _received_buffer, sizeof(_received_buffer), 0);
 	if (0 == _received_bytes_count)
 	{
 		_tr_error->trace_error(_tr_error->format_sys_message(::WSAGetLastError()));
@@ -152,6 +157,9 @@ e_socket_result CSocketStream::receive_data()
 	data_wrappers::_tag_data_managed received_data(_received_buffer, _received_bytes_count);
 	_received_data.push_back(received_data);
 
+	if (_on_data_received)
+		_on_data_received(received_data);
+
 	return e_socket_result::success;
 }
 
@@ -164,7 +172,7 @@ e_socket_result CSocketStream::send_data()
 
 	for (data_wrappers::_tag_data_const packet : data_collection)
 	{
-		INT result = ::send(_client_socket, reinterpret_cast<PCSTR>(packet.p_data), packet.data_size, 0);
+		INT result = ::send(_socket, reinterpret_cast<PCSTR>(packet.p_data), packet.data_size, 0);
 		packet.free_data();
 
 		if (SOCKET_ERROR == result)

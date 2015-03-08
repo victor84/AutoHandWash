@@ -38,14 +38,19 @@ class CAsyncClientSocket
 	// результат выполнения функции windows socket
 	INT _socket_fn_result;
 
+	// параметры подключения
 	tag_connection_params _connection_params;
 
+	// состояние подключения
 	_e_connection_state _connection_state;
+
+	// состояние инициализации
 	_e_init_state _init_state;
 
 	// статус обработки данных
 	_e_work_loop_status _end_of_stream_status;
 
+	// инициализация сокета
 	e_socket_result init();
 
 	void cleanup();
@@ -77,7 +82,8 @@ class CAsyncClientSocket
 	CAsyncClientSocket(const CAsyncClientSocket& ob);
 
 public:
-	CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data);
+	CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
+					   std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
 	virtual ~CAsyncClientSocket();
 
 	void Send(data_wrappers::_tag_data_const data);

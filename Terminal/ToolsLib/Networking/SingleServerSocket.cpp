@@ -4,8 +4,9 @@
 
 using namespace tools::networking;
 
-CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
-										 : _socket_stream(received_data)
+CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data,
+										 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
+										 : _socket_stream(received_data, on_data_received)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));

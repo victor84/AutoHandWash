@@ -18,6 +18,9 @@ using namespace device_exchange;
 // вывод сообщения в интерфейс
 #define LOG(str) { _tr_error->trace_message(str); show_log(); }
 
+// обновление элементов UI
+#define UPDATE_UI(save_and_validate) { this->SendMessage(WM_ON_CUSTOM_UPDATE_CONTROLS, save_and_validate, 0); }
+
 void CSimpleDeviceEmulatorDlg::fill_packets_types()
 {
 	_packets_types.clear();
@@ -40,7 +43,7 @@ void CSimpleDeviceEmulatorDlg::show_log()
 		m_Log.Append(_T("\r\n"));
 	}
 
-	UpdateData(FALSE);
+	UPDATE_UI(FALSE);
 }
 
 void CSimpleDeviceEmulatorDlg::show_packets_types()
@@ -51,6 +54,18 @@ void CSimpleDeviceEmulatorDlg::show_packets_types()
 	{
 		m_PacketTypeCombo.AddString(packet_type.name);
 	}
+}
+
+LRESULT CSimpleDeviceEmulatorDlg::OnCustomUpdate(WPARAM update, LPARAM)
+{
+	UpdateData(update);
+
+	SCROLLINFO si;
+	ZeroMemory(&si, sizeof(si));
+	m_LogControll.GetScrollInfo(SB_VERT, &si, SIF_RANGE);
+	m_LogControll.LineScroll(si.nMax);
+
+	return 1;
 }
 
 CSimpleDeviceEmulatorDlg::_tag_packet_type CSimpleDeviceEmulatorDlg::get_selected_packet_type(INT sel_num)
@@ -65,13 +80,21 @@ CSimpleDeviceEmulatorDlg::CSimpleDeviceEmulatorDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSimpleDeviceEmulatorDlg::IDD, pParent)
 	, m_PortValue(_T("26000"))
 	, m_PacketData(_T(""))
-	, _client_socket(_received_data)
 	, m_Log(_T(""))
+	, _client_socket(_received_data, 
+					std::bind(std::mem_fn(&CSimpleDeviceEmulatorDlg::on_data_received_fn), this, std::placeholders::_1))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	_tr_error = tools::logging::CTraceError::get_instance();
 	_tr_error->set_messages_storages(&_log_messages, nullptr);
+}
+
+void CSimpleDeviceEmulatorDlg::on_data_received_fn(tools::data_wrappers::_tag_data_managed data)
+{
+	std::wstring hex_string = tools::binary_to_hex(data);
+
+	LOG(_T("Приняты данные: ") + hex_string);
 }
 
 void CSimpleDeviceEmulatorDlg::DoDataExchange(CDataExchange* pDX)
@@ -81,6 +104,7 @@ void CSimpleDeviceEmulatorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PACKET_TYPE_COMBO, m_PacketTypeCombo);
 	DDX_Text(pDX, IDC_PACKET_DATA_EDIT, m_PacketData);
 	DDX_Text(pDX, IDC_LOG_EDIT, m_Log);
+	DDX_Control(pDX, IDC_LOG_EDIT, m_LogControll);
 }
 
 BEGIN_MESSAGE_MAP(CSimpleDeviceEmulatorDlg, CDialogEx)
@@ -90,6 +114,7 @@ BEGIN_MESSAGE_MAP(CSimpleDeviceEmulatorDlg, CDialogEx)
 	ON_WM_CLOSE()
 	ON_CBN_SELCHANGE(IDC_PACKET_TYPE_COMBO, &CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo)
 	ON_BN_CLICKED(IDC_SEND_DATA_BUTTON, &CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton)
+	ON_MESSAGE(WM_ON_CUSTOM_UPDATE_CONTROLS, &CSimpleDeviceEmulatorDlg::OnCustomUpdate)
 END_MESSAGE_MAP()
 
 
@@ -151,7 +176,7 @@ HCURSOR CSimpleDeviceEmulatorDlg::OnQueryDragIcon()
 
 void CSimpleDeviceEmulatorDlg::OnBnClickedConnectButton()
 {
-	UpdateData(TRUE);
+	UPDATE_UI(TRUE);
 
 	tools::networking::tag_connection_params connection_params;
 	connection_params.address = "127.0.0.1";
@@ -176,7 +201,6 @@ void CSimpleDeviceEmulatorDlg::OnClose()
 	CDialogEx::OnClose();
 }
 
-
 void CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo()
 {
 	INT selected_item = m_PacketTypeCombo.GetCurSel();
@@ -196,12 +220,12 @@ void CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo()
 
 	m_PacketData = tools::binary_to_hex(raw_data).c_str();
 
-	UpdateData(FALSE);
+	UPDATE_UI(FALSE);
 }
 
 void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
 {
-	UpdateData(TRUE);
+	UPDATE_UI(TRUE);
 
 	std::wstring packet_hex = m_PacketData.GetString();
 
@@ -215,6 +239,26 @@ void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
 		return;
 	}
 
+	if (e_convert_result::success != _packet_convertor.ParseWithUpdateCheckSum(raw_data, _packet_from_device))
+	{
+		LOG(_T("Неверный формат пакета"));
+		return;
+	}
+
+	_packet_convertor.CreateRawData(_packet_from_device, raw_data);
+
+	packet_hex = tools::binary_to_hex(raw_data);
+
 	_client_socket.Send(raw_data);
 	LOG(_T("Отправлен пакет данных: ") + packet_hex);
+
+	m_PacketData = packet_hex.c_str();
+	UPDATE_UI(FALSE);
+}
+
+void CSimpleDeviceEmulatorDlg::OnOK()
+{
+	// TODO: добавьте специализированный код или вызов базового класса
+
+	// CDialogEx::OnOK();
 }

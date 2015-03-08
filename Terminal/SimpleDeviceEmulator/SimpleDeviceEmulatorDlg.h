@@ -8,6 +8,7 @@
 #include "device_protocol.h"
 #include "DevicePacketConvertor.h"
 
+#define WM_ON_CUSTOM_UPDATE_CONTROLS WM_USER + 50
 
 // диалоговое окно CSimpleDeviceEmulatorDlg
 class CSimpleDeviceEmulatorDlg : public CDialogEx
@@ -43,6 +44,9 @@ class CSimpleDeviceEmulatorDlg : public CDialogEx
 	// Лог
 	CString m_Log;
 
+	// Элемент для отображения лога
+	CEdit m_LogControll;
+
 	tools::networking::CAsyncClientSocket _client_socket;
 
 	tools::lock_vector<tools::data_wrappers::_tag_data_const> _received_data;
@@ -61,13 +65,15 @@ class CSimpleDeviceEmulatorDlg : public CDialogEx
 
 	device_exchange::CDevicePacketConvertor<device_exchange::tag_packet_from_device> _packet_convertor;
 
-	
+	void on_data_received_fn(tools::data_wrappers::_tag_data_managed data);
 
 	void fill_packets_types();
 
 	void show_log();
 
 	void show_packets_types();
+
+	LRESULT OnCustomUpdate(WPARAM update, LPARAM);
 
 // Создание
 public:
@@ -92,6 +98,7 @@ protected:
 	afx_msg void OnBnClickedConnectButton();
 	afx_msg void OnClose();
 	afx_msg void OnCbnSelchangePacketTypeCombo();
-public:
 	afx_msg void OnBnClickedSendDataButton();
+
+	virtual void OnOK();
 };

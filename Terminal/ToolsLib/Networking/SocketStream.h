@@ -40,13 +40,12 @@ class CSocketStream
 		not_ready	// сокет не готов для действия
 	};
 
-
 	tools::logging::CTraceError* _tr_error;
 
 	// работа с текстами ошибок
 	std::wstringstream _str_str;
 
-	SOCKET	_client_socket;
+	SOCKET	_socket;
 
 	// буфер для приёма данных
 	CHAR _received_buffer[0x10000];
@@ -71,7 +70,11 @@ class CSocketStream
 
 	_e_init_state _start_state;
 
+	// вызывается по завершении потока
 	std::function<void()> _on_complete_fn;
+
+	// вызывается при получении данных
+	std::function<void(tools::data_wrappers::_tag_data_managed)> _on_data_received;
 
 	bool _thread_running;
 
@@ -93,7 +96,8 @@ class CSocketStream
 
 public:
 
-	CSocketStream(tools::lock_vector<data_wrappers::_tag_data_const>& received_data);
+	CSocketStream(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
+				  std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
 	virtual ~CSocketStream();
 
 	// запуск

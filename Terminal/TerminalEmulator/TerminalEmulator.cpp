@@ -23,7 +23,7 @@ tools::logging::CTraceError* tr_error;
 
 tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
 
-tools::networking::CSingleServerSocket server_socket(received_data);
+tools::networking::CSingleServerSocket server_socket(received_data, nullptr);
 
 tools::lock_vector<std::wstring> log_messages;
 

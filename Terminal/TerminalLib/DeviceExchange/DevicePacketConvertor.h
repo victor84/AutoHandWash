@@ -45,6 +45,23 @@ public:
 		return e_convert_result::success;
 	}
 
+	// Парсинг с вычислением и записью в пакет контрольной суммы
+	e_convert_result ParseWithUpdateCheckSum(IN const tools::data_wrappers::_tag_data_const& data,
+										   OUT _PacketType& packet)
+	{
+		if (data.data_size != sizeof(tag_packet_from_device))
+			return e_convert_result::invalid_data;
+
+		packet = *(tag_packet_from_device*)data.p_data;
+
+		packet.begin = begin_byte;
+		packet.end = end_byte;
+
+		packet.crc = CalcCheckSum(packet);
+
+		return e_convert_result::success;
+	}
+
 	// получение сырых данных из пакета
 	e_convert_result CreateRawData(IN OUT _PacketType& packet, OUT tools::data_wrappers::_tag_data_managed& data)
 	{
