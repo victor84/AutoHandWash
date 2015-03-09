@@ -164,8 +164,8 @@ void tools::networking::CSingleServerSocket::listen_method()
 		}
 
 		_str_str.str(_T(""));
-		_str_str << _T("соединение с хостом: ") << hoststr
-			<< _T(" удалённый порт: ") << servstr;
+		_str_str << _T("Cоединение с хостом: ") << hoststr
+					<< _T(" удалённый порт: ") << servstr;
 		_tr_error->trace_message(_str_str.str());
 
 		_socket_stream.Start(client_socket,

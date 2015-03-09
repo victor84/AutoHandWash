@@ -209,15 +209,10 @@ void CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo()
 		return;
 
 	_current_packet_type = get_selected_packet_type(selected_item);
-
 	_packet_from_device.clear();
-
 	_packet_from_device.command = _current_packet_type.command;
-
 	tools::data_wrappers::_tag_data_managed raw_data;
-
 	_packet_convertor.CreateRawData(_packet_from_device, raw_data);
-
 	m_PacketData = tools::binary_to_hex(raw_data).c_str();
 
 	UPDATE_UI(FALSE);
@@ -228,9 +223,7 @@ void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
 	UPDATE_UI(TRUE);
 
 	std::wstring packet_hex = m_PacketData.GetString();
-
 	tools::data_wrappers::_tag_data_managed raw_data;
-
 	raw_data = tools::hex_to_binary(packet_hex);
 
 	if (nullptr == raw_data.p_data)
@@ -246,9 +239,7 @@ void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
 	}
 
 	_packet_convertor.CreateRawData(_packet_from_device, raw_data);
-
 	packet_hex = tools::binary_to_hex(raw_data);
-
 	_client_socket.Send(raw_data);
 	LOG(_T("Отправлен пакет данных: ") + packet_hex);
 

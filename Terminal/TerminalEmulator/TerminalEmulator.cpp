@@ -6,6 +6,8 @@
 #include "SettingsLoader.h"
 #include "SingleServerSocket.h"
 #include "tools.h"
+#include "DeveiceMessageDescription.h"
+#include "DevicePacketConvertor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,21 +19,28 @@
 CWinApp theApp;
 
 using namespace tools::settings;
+using namespace device_exchange;
 
 CSettingsLoader* settings_loader;
 tools::logging::CTraceError* tr_error;
 
 tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
 
-tools::networking::CSingleServerSocket server_socket(received_data, nullptr);
+void on_data_received(tools::data_wrappers::_tag_data_managed data);
+
+tools::networking::CSingleServerSocket server_socket(received_data, &on_data_received);
 
 tools::lock_vector<std::wstring> log_messages;
+
+CDeveiceMessageDescription _device_message_descriptor;
+
+CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
 
 void Initialize();
 void PrepareExit();
 void show_messages();
 
-#define log(str) { tr_error->trace_message(str); show_messages(); };
+#define LOG(str) { tr_error->trace_message(str); show_messages(); };
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
@@ -82,15 +91,12 @@ void Initialize()
 
 	if (tools::networking::e_socket_result::success == server_socket.Start(connection_params))
 	{
-		log(_T("Сервер запущен"));
+		LOG(_T("\r\nСервер запущен\r\n"));
 	}
 	else
 	{
-		log(_T("Ошибка запуска сервера"));
+		LOG(_T("\r\nОшибка запуска сервера\r\n"));
 	}
-
-
-
 }
 
 void PrepareExit()
@@ -109,6 +115,16 @@ void show_messages()
 	}
 }
 
+void on_data_received(tools::data_wrappers::_tag_data_managed data)
+{
+	tag_packet_from_device packet;
+
+	_device_packet_convertor.Parse(data, packet);
+
+	std::wstring describe_text = _device_message_descriptor.describe_message(packet);
+
+	LOG(describe_text);
+}
 
 
 
