@@ -21,7 +21,7 @@
           <ul class="nav navbar-nav">
             @If.MasterPage.IsAuthenticated
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Иванов Иван</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Model.MasterPage.UserName</a>
                 <ul class="dropdown-menu">
                     <li>
                         <form id="logoutform" method="post" action="/logout">

@@ -1,6 +1,7 @@
 ﻿using Nancy;
 using Server.Models;
 using System.Dynamic;
+using System.Linq;
 
 namespace Server.Modules
 {
@@ -26,7 +27,18 @@ namespace Server.Modules
                 Model.MasterPage = new MasterPageModel();
                 Model.MasterPage.Title = "Автомойки";
                 Model.MasterPage.ProjectName = "Автомойки";
-                Model.MasterPage.IsAuthenticated = (ctx.CurrentUser != null);
+                bool isAuthenticated = (ctx.CurrentUser != null);
+                Model.MasterPage.IsAuthenticated = isAuthenticated;
+                if (isAuthenticated)
+                {
+                    Model.MasterPage.UserName = ctx.CurrentUser.UserName;
+                    var claim = ctx.CurrentUser.Claims.FirstOrDefault();
+                    if (claim != null)
+                    {
+                        Model.MasterPage.Claim = claim;
+                        Model.MasterPage.IsAdmin = (claim == "admin") ? true : false;
+                    }
+                }
                 return null;
             });
         }

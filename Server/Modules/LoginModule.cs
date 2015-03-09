@@ -1,13 +1,18 @@
-﻿using System;
-using Nancy;
+﻿using Nancy.Extensions;
 using Nancy.Authentication.Forms;
+using Server.Services;
+using System.Linq;
 
 namespace Server.Modules
 {
     public class LoginModule : BaseModule
     {
-        public LoginModule()
+        private readonly IAuth _auth;
+        
+        public LoginModule(IAuth auth)
         {
+            _auth = auth;
+            
             Get["/"] = Index;
             Get["/login"] = Login;
             Post["/login"] = DoLogin;
@@ -28,12 +33,12 @@ namespace Server.Modules
         {
             var username = (string)this.Request.Form.Username;
             var password = (string)this.Request.Form.Password;
-
-            // TODO: Здесь надо сделать выборку пользователя из БД, используя его имя.
-            // var user = _dbService.GetByUserName(name);
-            // TODO: Проверку на валидность пользователя
-            Guid userIdentifier = new Guid("52AC6CED-995A-4A42-8E06-50058BF91B19");
-            return this.LoginAndRedirect(userIdentifier);
+            var user = _auth.GetUserByName(username);
+            if (user == null || user.Password != password)
+            {
+                return Context.GetRedirect("~/login?error=true&username=" + username);
+            }
+            return this.LoginAndRedirect(user.Id);
         }
 
         private dynamic Logout(dynamic parameters)

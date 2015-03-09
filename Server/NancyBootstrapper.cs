@@ -9,7 +9,7 @@ namespace Server
 {
     public class NancyBootstrapper : DefaultNancyBootstrapper
     {
-        protected override void ApplicationStartup(Nancy.TinyIoc.TinyIoCContainer container, IPipelines pipelines)
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             var cryptographyConfiguration = new CryptographyConfiguration(
             new RijndaelEncryptionProvider(new PassphraseKeyGenerator("AutoHandWashSecretPass", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 })),
@@ -26,7 +26,7 @@ namespace Server
             FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
         }
 
-        protected override void ConfigureRequestContainer(Nancy.TinyIoc.TinyIoCContainer container, NancyContext context)
+        protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
             container.Register<IUserMapper, UserMapper>();
