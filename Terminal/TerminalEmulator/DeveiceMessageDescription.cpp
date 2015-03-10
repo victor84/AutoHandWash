@@ -8,10 +8,21 @@ void CDeveiceMessageDescription::fill_descriptors_storage()
 {
 	_descriptors_storage.clear();
 
-	_descriptors_storage.insert(_Storage_Elem_Type(e_command_from_device::button_press, 
-		std::bind(std::mem_fn(&CDeveiceMessageDescription::button_press), this, std::placeholders::_1)));
+// #define add_descriptor(id, fn) 	_descriptors_storage.insert(_Storage_Elem_Type(id, std::bind(std::mem_fn(&CDeveiceMessageDescription::fn), this, std::placeholders::_1)));
 
+	add_descriptor(e_command_from_device::button_press, &CDeveiceMessageDescription::button_press);
+	add_descriptor(e_command_from_device::bill_acceptor, &CDeveiceMessageDescription::bill_acceptor);
+	add_descriptor(e_command_from_device::hopper_issue_coin, &CDeveiceMessageDescription::hopper_issue_coin);
+	add_descriptor(e_command_from_device::discount_card_issued, &CDeveiceMessageDescription::discount_card_issued);
+	add_descriptor(e_command_from_device::data_from_eeprom, &CDeveiceMessageDescription::data_from_eeprom);
+	add_descriptor(e_command_from_device::buttons_state, &CDeveiceMessageDescription::buttons_state);
+	add_descriptor(e_command_from_device::command_confirmation, &CDeveiceMessageDescription::command_confirmation);
+	add_descriptor(e_command_from_device::error, &CDeveiceMessageDescription::error);
+}
 
+void CDeveiceMessageDescription::add_descriptor(device_exchange::e_command_from_device command, bool(CDeveiceMessageDescription::*fn)(const device_exchange::tag_packet_from_device&))
+{
+	_descriptors_storage.insert(_Storage_Elem_Type(command, std::bind(std::mem_fn(fn), this, std::placeholders::_1)));
 }
 
 bool CDeveiceMessageDescription::describe_raw(const device_exchange::tag_packet_from_device& message)
@@ -58,6 +69,79 @@ bool CDeveiceMessageDescription::button_press(const device_exchange::tag_packet_
 	{
 		_str_str << _T("Номер кнопки: ") << ++button_num << _T("\r\n");
 	}
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::bill_acceptor(const device_exchange::tag_packet_from_device& message)
+{
+	_str_str << _T("Данные от купюроприемника или монетоприемника. Сумма: ") 
+				<< message.data0 
+				<< _T("\r\n");
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::hopper_issue_coin(const device_exchange::tag_packet_from_device& message)
+{
+	_str_str << _T("Выдана монета хоппером. Осталось выдать: ") 
+		<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0)))
+				<< _T("\r\n");
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::discount_card_issued(const device_exchange::tag_packet_from_device&)
+{
+	_str_str << _T("Выдана дисконтная карта.\r\n");
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::data_from_eeprom(const device_exchange::tag_packet_from_device& message)
+{
+	_str_str << _T("Данные из EEPROM. Номер ячейки ") << message.data0 << _T("\r\n")
+				<< _T("Данные: ") 
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data1, sizeof(message.data1)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data2, sizeof(message.data2)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data3, sizeof(message.data3)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data4, sizeof(message.data4)))
+				<< _T("\r\n");
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::buttons_state(const device_exchange::tag_packet_from_device& message)
+{
+	_str_str << _T("Состояние кнопок.") << _T("\r\n");
+
+	byte all_state = message.data0;
+
+	for (byte bn = 1; bn <= 8; ++bn)
+	{
+		_str_str << _T("Кнопка №") << bn;
+		if (true != (all_state & 0x01))
+			_str_str << _T(" не");
+
+		_str_str << _T(" нажата\r\n");
+		all_state >>= 1;
+	}
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::command_confirmation(const device_exchange::tag_packet_from_device&)
+{
+	_str_str << _T("Подтверждение команды.\r\n");
+
+	return true;
+}
+
+bool CDeveiceMessageDescription::error(const device_exchange::tag_packet_from_device& message)
+{
+	_str_str << _T("Ошибка. Код: ")
+		<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0)))
+		<< _T("\r\n");
 
 	return true;
 }
