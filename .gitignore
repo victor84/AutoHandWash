@@ -13,3 +13,6 @@
 /Server/bin/
 /Server/obj/
 
+/Terminal/SimpleDeviceEmulator/Debug
+*.aps
+*.log
