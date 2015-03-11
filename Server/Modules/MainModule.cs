@@ -7,7 +7,7 @@ namespace Server.Modules
         {
             this.RequiresAuthentication();
             Get["/groups"] = TestSignalR;
-            Get["/washings"] = Washings;
+            Get["/terminals"] = Terminals;
         }
 
         private dynamic TestSignalR(dynamic parameters)
@@ -15,9 +15,9 @@ namespace Server.Modules
             return View["TestSignalR", Model];
         }
 
-        private dynamic Washings(dynamic parameters)
+        private dynamic Terminals(dynamic parameters)
         {
-            return View["Washings", Model];
+            return View["Terminals", Model];
         }
     }
 }

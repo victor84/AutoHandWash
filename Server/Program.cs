@@ -8,7 +8,8 @@ namespace Server
         private static ServiceInfo serviceInfo = new ServiceInfo() 
         { 
             Url = "http://localhost:8080",
-            HubName = "testHub"
+            HubName = "testHub",
+            Port = 13000
         };
         
         private static void Main(string[] args)

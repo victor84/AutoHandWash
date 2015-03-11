@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNet.SignalR.Client;
-using System.Threading;
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Server
 {
     public class TcpServer
     {
+        private string ipString = "127.0.0.1";
         private volatile bool running;
         private Task task;
-        public TcpServer(string url, string hubName)
+
+        public TcpServer(int port)
         {
-            task = new Task(() => Main(url, hubName));
+            task = new Task(() => Main(port));
         }
 
         public void Start()
@@ -23,21 +26,34 @@ namespace Server
         {
             running = false;
         }
-            
-        private void Main(string url, string hubName)
+
+        private void Main(int port)
         {
-            HubConnection hubConnection = null;
-            IHubProxy hubProxy = null;
-            while (running)
+            TcpListener server = null;
+            try
             {
-                if (hubConnection == null || hubProxy == null)
+                IPAddress localAddr = IPAddress.Parse(ipString);
+                server = new TcpListener(localAddr, port);
+                server.Start();
+                byte[] bytes = new byte[256];
+                while (running)
                 {
-                    hubConnection = new HubConnection(url);
-                    hubProxy = hubConnection.CreateHubProxy(hubName);
-                    hubConnection.Start().Wait();
+                    TcpClient client = server.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        // response = IParser.Response(bytes);
+                        // data = IParser.Convert(bytes);
+                        // IHub.Send(data);
+                        stream.Write(bytes, 0, bytes.Length);
+                    }
+                    client.Close();
                 }
-                hubProxy.Invoke("Send", "Craig", "12345");
-                Thread.Sleep(100);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Main: {0}", e);
             }
         }
     }
