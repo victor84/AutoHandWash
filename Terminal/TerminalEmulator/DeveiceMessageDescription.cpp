@@ -76,7 +76,7 @@ bool CDeveiceMessageDescription::button_press(const device_exchange::tag_packet_
 bool CDeveiceMessageDescription::bill_acceptor(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Данные от купюроприемника или монетоприемника. Сумма: ") 
-				<< message.data0 
+				<< _byteswap_ushort(*((uint16_t*)&message.data0))
 				<< _T("\r\n");
 
 	return true;
@@ -84,9 +84,7 @@ bool CDeveiceMessageDescription::bill_acceptor(const device_exchange::tag_packet
 
 bool CDeveiceMessageDescription::hopper_issue_coin(const device_exchange::tag_packet_from_device& message)
 {
-	_str_str << _T("Выдана монета хоппером. Осталось выдать: ") 
-		<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0)))
-				<< _T("\r\n");
+	_str_str << _T("Выдана монета хоппером. Осталось выдать: ") << message.data0 << _T("\r\n");
 
 	return true;
 }
@@ -102,10 +100,10 @@ bool CDeveiceMessageDescription::data_from_eeprom(const device_exchange::tag_pac
 {
 	_str_str << _T("Данные из EEPROM. Номер ячейки ") << message.data0 << _T("\r\n")
 				<< _T("Данные: ") 
-				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data1, sizeof(message.data1)))
-				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data2, sizeof(message.data2)))
-				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data3, sizeof(message.data3)))
 				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data4, sizeof(message.data4)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data3, sizeof(message.data3)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data2, sizeof(message.data2)))
+				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data1, sizeof(message.data1)))
 				<< _T("\r\n");
 
 	return true;

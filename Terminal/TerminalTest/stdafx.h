@@ -50,6 +50,9 @@
 // com
 #include <comdef.h>
 
+// std
+#include <stdlib.h>
+
 #ifdef DEBUG
 	// подключаем детектор утечек памяти
 	#include "vld.h"

@@ -16,3 +16,16 @@
 /Terminal/SimpleDeviceEmulator/Debug
 *.aps
 *.log
+/Terminal/Release
+/Terminal/Release_Static
+/Terminal/Release_Static_XP
+/Terminal/SimpleDeviceEmulator
+/Terminal/TerminalApp
+/Terminal/TerminalEmulator
+/Terminal/TerminalLib
+/Terminal/TerminalTest
+/Terminal/ToolsLib/Debug
+/Terminal/ToolsLib/Release
+/Terminal/ToolsLib/Release_Static
+/Terminal/ToolsLib/Release_Static_XP/ToolsLib.tlog
+/Terminal/ToolsLib/Release_Static_XP
