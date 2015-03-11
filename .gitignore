@@ -19,9 +19,7 @@
 /Terminal/Release
 /Terminal/Release_Static
 /Terminal/Release_Static_XP
-/Terminal/SimpleDeviceEmulator
 /Terminal/TerminalApp
-/Terminal/TerminalEmulator
 /Terminal/TerminalLib
 /Terminal/TerminalTest
 /Terminal/ToolsLib/Debug
@@ -29,3 +27,11 @@
 /Terminal/ToolsLib/Release_Static
 /Terminal/ToolsLib/Release_Static_XP/ToolsLib.tlog
 /Terminal/ToolsLib/Release_Static_XP
+/Terminal/SimpleDeviceEmulator/Release/SimpleDeviceEmulator.res
+
+/Terminal/SimpleDeviceEmulator/Release_Static/SimpleDeviceEmulator.res
+/Terminal/SimpleDeviceEmulator/Release_Static_XP/SimpleDeviceEmulator.res
+/Terminal/TerminalEmulator/Debug/TerminalEmulator.res
+/Terminal/TerminalEmulator/Release/TerminalEmulator.res
+/Terminal/TerminalEmulator/Release_Static_XP/TerminalEmulator.res
+/Terminal/TerminalEmulator/Release_Static/TerminalEmulator.res

@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="TerminalEmulatorReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeveiceMessageDescription.h" />
