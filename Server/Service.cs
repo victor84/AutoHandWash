@@ -12,7 +12,7 @@ namespace Server
         public Service(ServiceInfo serviceInfo)
         {
             this.serviceInfo = serviceInfo;
-            tcpServer = new TcpServer(serviceInfo.Url, serviceInfo.HubName);
+            tcpServer = new TcpServer(serviceInfo.Port);
         }
 
         public void Start()

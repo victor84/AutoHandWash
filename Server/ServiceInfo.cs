@@ -10,5 +10,6 @@ namespace Server
     {
         public string Url { get; set; }
         public string HubName { get; set; }
+        public int Port { get; set; }
     }
 }
