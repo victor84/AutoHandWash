@@ -2,6 +2,7 @@
 using Nancy.Authentication.Forms;
 using Server.Services;
 using System.Linq;
+using Server.Models;
 
 namespace Server.Modules
 {
@@ -36,7 +37,9 @@ namespace Server.Modules
             var user = _auth.GetUserByName(username);
             if (user == null || user.Password != password)
             {
-                return Context.GetRedirect("~/login?error=true&username=" + username);
+                Model.LoginPage = new LoginPageModel();
+                Model.LoginPage.IsError = true;
+                return View["Login", Model];
             }
             return this.LoginAndRedirect(user.Id);
         }

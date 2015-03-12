@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hubs\TestHub.cs" />
+    <Compile Include="Models\LoginPageModel.cs" />
     <Compile Include="Models\MasterPageModel.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\LoginModule.cs" />

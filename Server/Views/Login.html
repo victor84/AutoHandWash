@@ -13,5 +13,9 @@
     <input type="text" name="Username" class="form-control" placeholder="Имя пользователя" required autofocus>
     <input type="password" name="Password" class="form-control" placeholder="Пароль" required>
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Войти" />
+        @If.LoginPage.IsError
+        <br />
+        <label>Неправильное имя пользователя или пароль!</label>
+        @EndIf
     </form>
 @EndSection

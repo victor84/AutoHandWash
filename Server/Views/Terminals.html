@@ -12,12 +12,14 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         Группа 1
+        @If.MasterPage.IsAdmin
         <div class="pull-right">
             <button type="submit" class="btn btn-success btn-xs">
                 <i class="fa fa-gear fa-fw"></i>
                 Параметры
             </button>
         </div>
+        @EndIf
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -33,27 +35,31 @@
                     <th>От мошек</th>
                     <th>Осмос</th>
                     <th>Пылесос</th>
+                    @If.MasterPage.IsAdmin
                     <th class="active"></th>
+                    @EndIf
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>1000</td>
+                    <td>50</td>
+                    <td>120</td>
+                    <td>120</td>
+                    <td>120</td>
+                    <td>120</td>
+                    <td>120</td>
+                    <td>120</td>
+                    <td>120</td>
+                    @If.MasterPage.IsAdmin
                     <td class="active">
                         <a href="#" role="button" class="btn btn-success btn-xs">
                             <i class="fa fa-gear fa-fw"></i>
                             Параметры
                         </a>
                     </td>
+                    @EndIf
                 </tr>
                 <tr>
                     <td>2</td>
@@ -66,12 +72,14 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    @If.MasterPage.IsAdmin
                     <td class="active">
                         <a href="#" role="button" class="btn btn-success btn-xs">
                             <i class="fa fa-gear fa-fw"></i>
                             Параметры
                         </a>
                     </td>
+                    @EndIf
                 </tr>
                 <tr>
                     <td>3</td>
@@ -84,12 +92,14 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    @If.MasterPage.IsAdmin
                     <td class="active">
                         <a href="#" role="button" class="btn btn-success btn-xs">
                             <i class="fa fa-gear fa-fw"></i>
                             Параметры
                         </a>
                     </td>
+                    @EndIf
                 </tr>
             </tbody>
         </table>
