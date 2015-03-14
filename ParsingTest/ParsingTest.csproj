@@ -48,7 +48,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Parsing\Parsing.csproj">
+    <ProjectReference Include="..\Parsing\Parsing.csproj">
       <Project>{2a3c0407-1dda-40af-88e3-0018cd08dd39}</Project>
       <Name>Parsing</Name>
     </ProjectReference>

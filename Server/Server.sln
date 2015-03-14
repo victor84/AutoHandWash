@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server.csproj", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parsing", "..\Parsing\Parsing.csproj", "{2A3C0407-1DDA-40AF-88E3-0018CD08DD39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsingTest", "ParsingTest\ParsingTest.csproj", "{9F7ECAA2-DE32-4DC8-81E4-C2BD94DAF18F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsingTest", "..\ParsingTest\ParsingTest.csproj", "{9F7ECAA2-DE32-4DC8-81E4-C2BD94DAF18F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
