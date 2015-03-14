@@ -17,7 +17,7 @@ e_convert_result CServerPacketParser::ParseTransportPacket(IN const tools::data_
 	if ((nullptr == data.p_data) || (0 == data.data_size))
 		return e_convert_result::empty_data;
 
-	if (data.data_size < 7)
+	if (data.data_size < 9)
 		return e_convert_result::invalid_data;
 
 	result_packets.clear();
@@ -45,7 +45,7 @@ e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offs
 														   IN const tools::data_wrappers::_tag_data_const& data,
 														   OUT tag_transport_packet& result_packet)
 {
-	if ((data.data_size - offset) < 7)
+	if ((data.data_size - offset) < 9)
 		return e_convert_result::invalid_data;
 
 	if (begin_bytes != *((uint16_t*)&data.p_data[offset]))
@@ -56,8 +56,8 @@ e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offs
 	
 	result_packet.type = static_cast<e_packet_type>(data.p_data[offset++]);
 
-	result_packet.length = *((uint16_t*)&data.p_data[offset]);
-	offset += 2;
+	result_packet.length = *((uint32_t*)&data.p_data[offset]);
+	offset += 4;
 
 	result_packet.data.copy_data_inside(static_cast<const void*>(&data.p_data[offset]), result_packet.length);
 	offset += result_packet.length;

@@ -19,8 +19,6 @@ namespace server_exchange
 // Парсер пакетов обмена с сервером
 class CServerPacketParser
 {
-	tools::logging::CTraceError* _tr_error;
-
 	// вычленение транспортного пакета из данных
 	// начиная с указанного отступа
 	// отступ обновляется

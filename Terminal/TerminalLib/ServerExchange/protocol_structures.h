@@ -52,7 +52,7 @@ struct tag_transport_packet
 {
 	uint16_t								begin;		// начальные байты 0x0d и 0xf0
 	e_packet_type							type;		// тип пакета
-	uint16_t								length;		// длина данных (без учёта последних байт)
+	uint32_t								length;		// длина данных (без учёта последних байт)
 	tools::data_wrappers::_tag_data_managed	data;		// даннные
 	uint16_t								end;		// окончание пакета
 
@@ -118,7 +118,8 @@ enum class e_terminal_state : byte
 {
 	work = 0,	// терминал в работе
 	idle = 1,	// простаивает
-	broken = 2	// сломан
+	broken = 2,	// сломан
+	blocked = 3	// заблокирован
 };
 
 #pragma pack(push, 1)

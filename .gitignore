@@ -37,3 +37,7 @@
 /Terminal/TerminalEmulator/Release_Static/TerminalEmulator.res
 /Terminal/TerminalEmulator/Debug/TerminalEmulator.tlog
 /Terminal/TerminalEmulator/Debug
+/Parsing/bin/Debug
+/Server/ParsingTest/bin/Debug
+/Server/ParsingTest/obj/Debug
+/Parsing/obj/Debug

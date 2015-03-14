@@ -47,11 +47,11 @@ public enum e_packet_type : byte
 // транспортный пакет, в котором передаются данные
 public struct tag_transport_packet 
 {
-	UInt16			begin;		// начальные байты 0x0d и 0xf0
-	e_packet_type	type;		// тип пакета
-	UInt16			length;		// длина данных (без учёта последних байт)
-	Byte[]          data;		// даннные
-	UInt16			end;		// окончание пакета
+    public UInt16 begin;		// начальные байты 0x0d и 0xf0
+    public e_packet_type type;		// тип пакета
+    public UInt32 length;		// длина данных (без учёта последних байт)
+    public Byte[] data;		// даннные
+    public UInt16 end;		// окончание пакета
 };
 
 /******************************************************************************************
@@ -66,8 +66,8 @@ public struct tag_transport_packet
 
 public struct tag_identification_packet
 {
-	char[]	group_name;		// название группы терминалов
-	char[]	terminal_name;	// название терминала
+	public char[]	group_name;		// название группы терминалов
+	public char[]	terminal_name;	// название терминала
 };
 
 
@@ -96,22 +96,23 @@ public enum e_terminal_state : byte
 {
 	work = 0,	// терминал в работе
 	idle = 1,	// простаивает
-	broken = 2	// сломан
+	broken = 2,	// сломан
+    blocked = 3	// заблокирован
 };
 
 // пакет с показаниями счётчиков
 public struct tag_counters_packet
 {
-	UInt32			    total_cache;			// Общий вход
-	UInt32			    current_cache;			// Текущий баланс
-	e_terminal_state	state;					// Состояние (работает, простой, сломана)
-	UInt32			    pressurized_water;		// Вода по давлением
-	UInt32			    water_without_pressure;	// Вода без давления
-	UInt32			    foam;					// Пена	
-	UInt32			    wax;					// Воск	
-	UInt32			    against_midges;			// От мошек
-	UInt32			    vacuum_cleaner;			// Пылесос	
-	UInt32			    air;					// Воздух	
+    public UInt32 total_cache;			// Общий вход
+    public UInt32 current_cache;			// Текущий баланс
+    public e_terminal_state state;					// Состояние (работает, простой, сломана)
+    public UInt32 pressurized_water;		// Вода по давлением
+    public UInt32 water_without_pressure;	// Вода без давления
+    public UInt32 foam;					// Пена	
+    public UInt32 wax;					// Воск	
+    public UInt32 against_midges;			// От мошек
+    public UInt32 vacuum_cleaner;			// Пылесос	
+    public UInt32 air;					// Воздух	
 };
 
 /******************************************************************************************
@@ -139,19 +140,19 @@ public struct tag_counters_packet
 
 public struct tag_settings_packet
 {
-    e_terminal_state    state;						// Состояние (работает, простой, сломана)
-    byte                bill_acceptor_impulse;		// Импульс купюроприёмника		
-    byte                coin_acceptor_impulse;		// Импульс монетоприёмника		
-    byte                free_idle_time;				// Время простоя				
-    UInt16              idle_time_cost;				// Стоимость минуты простоя	
-    byte                pause_before_advertising;	// Пауза перед показом рекламы
-    UInt32              pressurized_water;			// Вода по давлением
-    UInt32              water_without_pressure;		// Вода без давления
-    UInt32              foam;						// Пена	
-    UInt32              wax;						// Воск	
-    UInt32              against_midges;				// От мошек
-    UInt32              vacuum_cleaner;				// Пылесос	
-    UInt32              air;						// Воздух	
+    public e_terminal_state state;						// Состояние (работает, простой, сломана)
+    public byte bill_acceptor_impulse;		// Импульс купюроприёмника		
+    public byte coin_acceptor_impulse;		// Импульс монетоприёмника		
+    public byte free_idle_time;				// Время простоя				
+    public UInt16 idle_time_cost;				// Стоимость минуты простоя	
+    public byte pause_before_advertising;	// Пауза перед показом рекламы
+    public UInt32 pressurized_water;			// Вода по давлением
+    public UInt32 water_without_pressure;		// Вода без давления
+    public UInt32 foam;						// Пена	
+    public UInt32 wax;						// Воск	
+    public UInt32 against_midges;				// От мошек
+    public UInt32 vacuum_cleaner;				// Пылесос	
+    public UInt32 air;						// Воздух	
 };
 
 /******************************************************************************************
@@ -173,8 +174,8 @@ public enum e_processing_result : byte
 
 public struct tag_confirmation_packet
 {
-	e_packet_type		packet_type;	// тип пакета
-	e_processing_result	result;			// результат обработки
+    public e_packet_type packet_type;	// тип пакета
+    public e_processing_result result;			// результат обработки
 };
 
 /******************************************************************************************
@@ -200,10 +201,10 @@ public enum e_log_record_type : byte
 // запись лога
 public struct tag_log_record_message
 {
-	UInt64				date_time;	// Дата		
-	e_log_record_type	type;		// Тип записи	
-	UInt16				length;		// Длина записи
-	Char[]              text;		// Текст записи
+    public UInt64 date_time;	// Дата		
+    public e_log_record_type type;		// Тип записи	
+    public UInt16 length;		// Длина записи
+    public Char[] text;		// Текст записи
 };
 
 }
