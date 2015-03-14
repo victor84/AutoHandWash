@@ -42,3 +42,29 @@ e_convert_result CPacketToRawData::CreateRawData(IN const tag_transport_packet& 
 	return e_convert_result::success;
 }
 
+e_convert_result CPacketToRawData::CreateLogRecordPacketRawData(IN const tag_log_record_message& packet, 
+																OUT tools::data_wrappers::_tag_data_managed& result_data)
+{
+	uint32_t packet_size = (11 + packet.text.data_size);
+
+	result_data.alloc_data(packet_size);
+
+	byte* p_data = result_data.p_data;
+
+	*(uint64_t*)p_data = packet.date_time;
+	p_data += sizeof(packet.date_time);
+
+	*p_data = static_cast<byte>(packet.type);
+	p_data += sizeof(packet.type);
+
+	*(uint16_t*)p_data = packet.length;
+	p_data += sizeof(packet.length);
+
+	if (0 != memcpy_s(p_data, packet_size - 11, packet.text.p_data, packet.text.data_size))
+	{
+		return e_convert_result::invalid_data;
+	}
+
+	return e_convert_result::success;
+}
+

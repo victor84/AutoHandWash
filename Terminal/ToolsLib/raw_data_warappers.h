@@ -124,6 +124,15 @@ public:
 		return _tag_data_const(p_data, data_size);
 	}
 
+	operator void*()
+	{
+		return static_cast<void*>(this->p_data);
+	}
+
+	operator const void*()
+	{
+		return static_cast<const void*>(this->p_data);
+	}
 };
 }
 }

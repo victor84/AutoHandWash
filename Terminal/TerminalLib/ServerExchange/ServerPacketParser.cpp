@@ -7,7 +7,6 @@ CServerPacketParser::CServerPacketParser()
 {
 }
 
-
 CServerPacketParser::~CServerPacketParser()
 {
 }
@@ -21,20 +20,17 @@ e_convert_result CServerPacketParser::ParseTransportPacket(IN const tools::data_
 	if (data.data_size < 7)
 		return e_convert_result::invalid_data;
 
-	_raw_data.free_data();
-	_raw_data.copy_data_inside(data.p_data, data.data_size);
-
 	result_packets.clear();
 
 	uint32_t offset = 0;
 
 	e_convert_result result = e_convert_result::success;
 
-	while (offset < _raw_data.data_size)
+	while (offset < data.data_size)
 	{
 		tag_transport_packet new_packet;
 
-		if (e_convert_result::invalid_data == get_transport_packet(offset, new_packet))
+		if (e_convert_result::invalid_data == get_transport_packet(offset, data, new_packet))
 		{
 			result = e_convert_result::invalid_data;
 			break;
@@ -45,26 +41,28 @@ e_convert_result CServerPacketParser::ParseTransportPacket(IN const tools::data_
 	return result;
 }
 
-e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offset, OUT tag_transport_packet& result_packet)
+e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offset, 
+														   IN const tools::data_wrappers::_tag_data_const& data,
+														   OUT tag_transport_packet& result_packet)
 {
-	if ((_raw_data.data_size - offset) < 7)
+	if ((data.data_size - offset) < 7)
 		return e_convert_result::invalid_data;
 
-	if (begin_bytes != *((uint16_t*)&_raw_data.p_data[offset]))
+	if (begin_bytes != *((uint16_t*)&data.p_data[offset]))
 		return e_convert_result::invalid_data;
 
-	result_packet.begin = *((uint16_t*)&_raw_data.p_data[offset]);
+	result_packet.begin = *((uint16_t*)&data.p_data[offset]);
 	offset += 2;
 	
-	result_packet.type = static_cast<e_packet_type>(_raw_data.p_data[offset++]);
+	result_packet.type = static_cast<e_packet_type>(data.p_data[offset++]);
 
-	result_packet.length = *((uint16_t*)&_raw_data.p_data[offset]);
+	result_packet.length = *((uint16_t*)&data.p_data[offset]);
 	offset += 2;
 
-	result_packet.data.copy_data_inside(static_cast<void*>(&_raw_data.p_data[offset]), result_packet.length);
+	result_packet.data.copy_data_inside(static_cast<const void*>(&data.p_data[offset]), result_packet.length);
 	offset += result_packet.length;
 
-	result_packet.end = *((uint16_t*)&_raw_data.p_data[offset]);
+	result_packet.end = *((uint16_t*)&data.p_data[offset]);
 	offset += 2;
 
 	if (end_bytes != result_packet.end)
@@ -72,3 +70,6 @@ e_convert_result CServerPacketParser::get_transport_packet(IN OUT uint32_t& offs
 
 	return e_convert_result::success;
 }
+
+
+
