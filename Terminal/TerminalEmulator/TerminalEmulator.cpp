@@ -1,6 +1,5 @@
 // TerminalEmulator.cpp: определяет точку входа для консольного приложения.
 //
-
 #include "stdafx.h"
 #include "TerminalEmulator.h"
 #include "SettingsLoader.h"
@@ -8,6 +7,8 @@
 #include "tools.h"
 #include "DeveiceMessageDescription.h"
 #include "DevicePacketConvertor.h"
+#include "AsyncClientSocket.h"
+#include "TestLogic.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,17 +25,19 @@ using namespace device_exchange;
 CSettingsLoader* settings_loader;
 tools::logging::CTraceError* tr_error;
 
-tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
+tools::lock_vector<tools::data_wrappers::_tag_data_const> received_device_data;
 
-void on_data_received(tools::data_wrappers::_tag_data_managed data);
+void on_device_data_received(tools::data_wrappers::_tag_data_managed data);
 
-tools::networking::CSingleServerSocket server_socket(received_data, &on_data_received);
+tools::networking::CSingleServerSocket server_socket(received_device_data, &on_device_data_received);
 
 tools::lock_vector<std::wstring> log_messages;
 
 CDeveiceMessageDescription _device_message_descriptor;
-
 CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
+
+CTestLogic test_logic;
+
 
 void Initialize();
 void PrepareExit();
@@ -97,11 +100,18 @@ void Initialize()
 	{
 		LOG(_T("\r\nОшибка запуска сервера\r\n"));
 	}
+
+	connection_params.port = "13000";
+	connection_params.address = "127.0.0.1";
+	connection_params.reconnection_timeout = 10000;
+
+	test_logic.Start(connection_params);
 }
 
 void PrepareExit()
 {
 	server_socket.Stop();
+	test_logic.Stop();
 
 	delete settings_loader;
 	delete tr_error;
@@ -115,7 +125,7 @@ void show_messages()
 	}
 }
 
-void on_data_received(tools::data_wrappers::_tag_data_managed data)
+void on_device_data_received(tools::data_wrappers::_tag_data_managed data)
 {
 	tag_packet_from_device packet;
 
@@ -126,6 +136,10 @@ void on_data_received(tools::data_wrappers::_tag_data_managed data)
 	LOG(describe_text);
 }
 
+void on_server_data_received(tools::data_wrappers::_tag_data_managed data)
+{
+
+}
 
 
 

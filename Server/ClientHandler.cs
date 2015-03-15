@@ -9,14 +9,16 @@ namespace Server
 {
     public class ClientHandler
     {
-        private const int size = 1024;
+        private const int size = 0x10000;
         private TcpClient client;
         private NetworkStream stream;
         private PacketParser parser;
+        private PacketToRawData packetToRawData;
         public ClientHandler(TcpClient client)
         {
             this.client = client;
             this.parser = new PacketParser();
+            packetToRawData = new PacketToRawData();
         }
 
         public void Run()
@@ -33,12 +35,13 @@ namespace Server
                 {
                     try
                     {
-                        byte[] bytes = new byte[size];
-                        int i = 0;
-                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        byte[] receiveBuffer = new byte[size];
+                        Int32 readCount = 0;
+                        while ((readCount = stream.Read(receiveBuffer, 0, receiveBuffer.Length)) != 0)
                         {
+                            Byte[] data = receiveBuffer.SubArray(0, (UInt32)readCount);
                             IEnumerable<tag_transport_packet> transport_packets;
-                            var result = parser.ParseTransportPacket(bytes, out transport_packets);
+                            var result = parser.ParseTransportPacket(data, out transport_packets);
                             if (result != e_convert_result.success)
                             {
                                 Confirmation(e_packet_type.unknown, e_processing_result.failed);
@@ -83,10 +86,18 @@ namespace Server
 
         private void Confirmation(e_packet_type packet_type, e_processing_result result)
         {
-            tag_confirmation_packet confirmation_packet = new tag_confirmation_packet();
+            tag_confirmation_packet confirmation_packet;
+            tag_transport_packet transport_packet = new tag_transport_packet();
             confirmation_packet.packet_type = packet_type;
             confirmation_packet.result = result;
-            byte[] bytes = new byte[size];
+
+            transport_packet.type = e_packet_type.confirmation;
+            packetToRawData.CreateConfirmationPacketRawData(confirmation_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
             stream.Write(bytes, 0, bytes.Length);
         }
 
@@ -97,6 +108,13 @@ namespace Server
 
         private e_processing_result HandleId(tag_transport_packet packet)
         {
+            tag_identification_packet identificationPacket;
+
+            if (e_convert_result.success != parser.ParseIdentificationPacket(packet, out identificationPacket))
+                return e_processing_result.failed;
+
+            // TODO: обработка пакета идентификации
+
             return e_processing_result.success;
         }
 

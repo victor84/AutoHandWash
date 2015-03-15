@@ -55,6 +55,15 @@ public struct tag_transport_packet
     public Byte[] data;		    // даннные
     public UInt16 end;		    // окончание пакета
 
+    // устанавливает значения недостающих полей
+    // предварительно должны быть установлены поле данных и тип пакета
+    public void set_missing_values()
+    {
+        begin = tag_constants.begin_bytes;
+        end = tag_constants.end_bytes;
+        length = (UInt32)data.Length;
+    }
+
 };
 
 /******************************************************************************************

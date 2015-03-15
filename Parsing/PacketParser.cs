@@ -90,11 +90,11 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (40 != data.Length)
+            if (80 != data.Length)
                 return e_convert_result.invalid_data;
 
-            result_packet.group_name = data.SubArray(0, 20).ToCharArray();
-            result_packet.terminal_name = data.SubArray(20, 20).ToCharArray();
+            result_packet.group_name = UnicodeByteArrayToCharArray(data.SubArray(0, 40));
+            result_packet.terminal_name = UnicodeByteArrayToCharArray(data.SubArray(40, 40));
 
             return e_convert_result.success;
         }
@@ -239,7 +239,13 @@ namespace Parsing
             if (data.Length - offset != result_packet.length)
                 return e_convert_result.invalid_data;
 
-            Byte[] text_bytes = data.SubArray(offset, result_packet.length);
+            result_packet.text = UnicodeByteArrayToCharArray(data.SubArray(offset, result_packet.length));
+
+            return e_convert_result.success;
+        }
+
+        private Char[] UnicodeByteArrayToCharArray(Byte[] text_bytes)
+        {
             Char[] text_chars = new Char[text_bytes.Length / 2];
 
             for (int bn = 0, cn = 0; bn < text_bytes.Length; bn += 2, ++cn)
@@ -253,9 +259,7 @@ namespace Parsing
                 text_chars[cn] = Convert.ToChar(uni_code);
             }
 
-            result_packet.text = text_chars;
-
-            return e_convert_result.success;
+            return text_chars;
         }
 
     }
