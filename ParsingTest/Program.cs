@@ -37,6 +37,7 @@ namespace ParsingTest
             parser.ParseIdentificationPacket(parsed_tp.ElementAt(0), out parsed_ip);
 
             tag_counters_packet counters_packet;
+            counters_packet.date_time = (UInt64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             counters_packet.against_midges = 10;
             counters_packet.air = 20;
             counters_packet.current_cache = 100;

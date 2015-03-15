@@ -62,6 +62,12 @@ namespace Server
                                         case e_packet_type.settings:
                                             processing_result = HandleSettings(packet);
                                             break;
+                                        case e_packet_type.log:
+                                            processing_result = HandleLogRecordPacket(packet);
+                                            break;
+                                        case e_packet_type.confirmation:
+                                            processing_result = HandleConfirmationPacket(packet);
+                                            break;
                                         case e_packet_type.unknown:
                                             break;
                                     }
@@ -103,6 +109,13 @@ namespace Server
 
         private e_processing_result HandleCounters(tag_transport_packet packet)
         {
+            tag_counters_packet countersPacket;
+
+            if (e_convert_result.success != parser.ParseCountersPacket(packet, out countersPacket))
+                return e_processing_result.failed;
+
+            // TODO: обработка пакета с показаниями счётчиков
+
             return e_processing_result.success;
         }
 
@@ -120,7 +133,40 @@ namespace Server
 
         private e_processing_result HandleSettings(tag_transport_packet packet)
         {
+            tag_settings_packet settings_packet;
+
+            if (e_convert_result.success != parser.ParseSettingsPacket(packet, out settings_packet))
+                return e_processing_result.failed;
+
+            // TODO: обработка пакета с настройками от терминала
+
             return e_processing_result.success;
         }
+
+        private e_processing_result HandleLogRecordPacket(tag_transport_packet packet)
+        {
+            tag_log_record_packet log_record_packet;
+
+            if (e_convert_result.success != parser.ParseLogRecordPacket(packet, out log_record_packet))
+                return e_processing_result.failed;
+
+            // TODO: обработка пакета с настройками от терминала
+
+            return e_processing_result.success;
+        }
+
+        private e_processing_result HandleConfirmationPacket(tag_transport_packet packet)
+        {
+            tag_confirmation_packet confirmation_packet;
+
+            if (e_convert_result.success != parser.ParseConfirmationPacket(packet, out confirmation_packet))
+                return e_processing_result.failed;
+
+            // TODO: обработка пакета с настройками от терминала
+
+            return e_processing_result.success;
+        }
+
+
     }
 }

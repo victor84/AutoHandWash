@@ -88,6 +88,7 @@ public struct tag_identification_packet
 -------------------------------------------------------------------------------------
 Название						|	Длина	|	Тип		|	Фиксированное значение	|
 -------------------------------------------------------------------------------------
+Дата и время					|	  8		|ULONGLONG	|							|
 Общий вход						|	  4		|	UINT	|							|
 Текущий баланс					|	  4		|	UINT	|							|
 Состояние (работает, простой	|	  1		|	BYTE	|							|
@@ -115,6 +116,7 @@ public enum e_terminal_state : byte
 // пакет с показаниями счётчиков
 public struct tag_counters_packet
 {
+    public UInt64           date_time;              // Дата и время сообщения
     public UInt32           total_cache;			// Общий вход
     public UInt32           current_cache;			// Текущий баланс
     public e_terminal_state state;			        // Состояние (работает, простой, сломана)

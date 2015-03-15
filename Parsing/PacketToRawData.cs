@@ -42,6 +42,7 @@ namespace Parsing
         {
             List<Byte> collection = new List<Byte>();
 
+            collection.AddRange(BitConverter.GetBytes(packet.date_time));
             collection.AddRange(BitConverter.GetBytes(packet.total_cache));
             collection.AddRange(BitConverter.GetBytes(packet.current_cache));
             collection.Add((Byte)packet.state);

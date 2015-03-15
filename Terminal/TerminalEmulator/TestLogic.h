@@ -33,6 +33,11 @@ class CTestLogic
 
 	bool send_identification_packet();
 
+	bool send_settings_packet();
+
+	bool send_counters_packet();
+
+	bool send_log_record_packet();
 
 public:
 	CTestLogic();

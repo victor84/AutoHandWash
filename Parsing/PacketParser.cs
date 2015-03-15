@@ -109,10 +109,13 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (37 != data.Length)
+            if (45 != data.Length)
                 return e_convert_result.invalid_data;
 
             UInt16 offset = 0;
+
+            result_packet.date_time = BitConverter.ToUInt64(data.SubArray(offset, 8), 0);
+            offset += 8;
 
             result_packet.total_cache = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
