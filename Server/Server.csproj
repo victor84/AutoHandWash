@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientHandler.cs" />
     <Compile Include="Hubs\TestHub.cs" />
     <Compile Include="Models\LoginPageModel.cs" />
     <Compile Include="Models\MasterPageModel.cs" />
@@ -304,7 +305,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Parsing\Parsing.csproj">
+      <Project>{2a3c0407-1dda-40af-88e3-0018cd08dd39}</Project>
+      <Name>Parsing</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
