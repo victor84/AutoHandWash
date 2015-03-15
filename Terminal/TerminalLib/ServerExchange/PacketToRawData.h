@@ -64,7 +64,7 @@ public:
 	}
 
 	// создание сырых данных пакета с записью лога
-	e_convert_result CreateLogRecordPacketRawData(IN const tag_log_record_message& packet,
+	e_convert_result CreateLogRecordPacketRawData(IN const tag_log_record_packet& packet,
 												  OUT tools::data_wrappers::_tag_data_managed& result_data);
 
 };

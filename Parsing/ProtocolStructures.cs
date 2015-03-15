@@ -29,7 +29,9 @@ public enum e_packet_type : byte
 	unknown = 0,	// неизвестно
 	id = 1,			// пакет идентификации терминала
 	counters,		// показания счётчиков
-	settings		// настройки
+	settings,		// настройки
+    confirmation,   // подтверждение
+    log             // лог
 };
 
 /******************************************************************************************
@@ -48,10 +50,11 @@ public enum e_packet_type : byte
 public struct tag_transport_packet 
 {
     public UInt16 begin;		// начальные байты 0x0d и 0xf0
-    public e_packet_type type;		// тип пакета
+    public e_packet_type type;	// тип пакета
     public UInt32 length;		// длина данных (без учёта последних байт)
-    public Byte[] data;		// даннные
-    public UInt16 end;		// окончание пакета
+    public Byte[] data;		    // даннные
+    public UInt16 end;		    // окончание пакета
+
 };
 
 /******************************************************************************************
@@ -103,16 +106,16 @@ public enum e_terminal_state : byte
 // пакет с показаниями счётчиков
 public struct tag_counters_packet
 {
-    public UInt32 total_cache;			// Общий вход
-    public UInt32 current_cache;			// Текущий баланс
-    public e_terminal_state state;					// Состояние (работает, простой, сломана)
-    public UInt32 pressurized_water;		// Вода по давлением
-    public UInt32 water_without_pressure;	// Вода без давления
-    public UInt32 foam;					// Пена	
-    public UInt32 wax;					// Воск	
-    public UInt32 against_midges;			// От мошек
-    public UInt32 vacuum_cleaner;			// Пылесос	
-    public UInt32 air;					// Воздух	
+    public UInt32           total_cache;			// Общий вход
+    public UInt32           current_cache;			// Текущий баланс
+    public e_terminal_state state;			        // Состояние (работает, простой, сломана)
+    public UInt32           pressurized_water;		// Вода по давлением
+    public UInt32           water_without_pressure;	// Вода без давления
+    public UInt32           foam;					// Пена	
+    public UInt32           wax;					// Воск	
+    public UInt32           against_midges;			// От мошек
+    public UInt32           vacuum_cleaner;			// Пылесос	
+    public UInt32           air;					// Воздух	
 };
 
 /******************************************************************************************
@@ -140,18 +143,18 @@ public struct tag_counters_packet
 
 public struct tag_settings_packet
 {
-    public e_terminal_state state;						// Состояние (работает, простой, сломана)
+    public e_terminal_state state;			// Состояние (работает, простой, сломана)
     public byte bill_acceptor_impulse;		// Импульс купюроприёмника		
     public byte coin_acceptor_impulse;		// Импульс монетоприёмника		
     public byte free_idle_time;				// Время простоя				
-    public UInt16 idle_time_cost;				// Стоимость минуты простоя	
+    public UInt16 idle_time_cost;			// Стоимость минуты простоя	
     public byte pause_before_advertising;	// Пауза перед показом рекламы
-    public UInt32 pressurized_water;			// Вода по давлением
-    public UInt32 water_without_pressure;		// Вода без давления
+    public UInt32 pressurized_water;		// Вода по давлением
+    public UInt32 water_without_pressure;	// Вода без давления
     public UInt32 foam;						// Пена	
     public UInt32 wax;						// Воск	
-    public UInt32 against_midges;				// От мошек
-    public UInt32 vacuum_cleaner;				// Пылесос	
+    public UInt32 against_midges;			// От мошек
+    public UInt32 vacuum_cleaner;			// Пылесос	
     public UInt32 air;						// Воздух	
 };
 
@@ -175,7 +178,7 @@ public enum e_processing_result : byte
 public struct tag_confirmation_packet
 {
     public e_packet_type packet_type;	// тип пакета
-    public e_processing_result result;			// результат обработки
+    public e_processing_result result;	// результат обработки
 };
 
 /******************************************************************************************
@@ -199,12 +202,12 @@ public enum e_log_record_type : byte
 };
 
 // запись лога
-public struct tag_log_record_message
+public struct tag_log_record_packet
 {
-    public UInt64 date_time;	// Дата		
-    public e_log_record_type type;		// Тип записи	
-    public UInt16 length;		// Длина записи
-    public Char[] text;		// Текст записи
+    public UInt64 date_time;	    // Дата		
+    public e_log_record_type type;	// Тип записи	
+    public UInt16 length;		    // Длина записи
+    public Char[] text;		        // Текст записи
 };
 
 }

@@ -42,7 +42,7 @@ e_convert_result CPacketToRawData::CreateRawData(IN const tag_transport_packet& 
 	return e_convert_result::success;
 }
 
-e_convert_result CPacketToRawData::CreateLogRecordPacketRawData(IN const tag_log_record_message& packet, 
+e_convert_result CPacketToRawData::CreateLogRecordPacketRawData(IN const tag_log_record_packet& packet, 
 																OUT tools::data_wrappers::_tag_data_managed& result_data)
 {
 	uint32_t packet_size = (11 + packet.text.data_size);

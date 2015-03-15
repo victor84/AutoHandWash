@@ -32,7 +32,9 @@ enum class e_packet_type : byte
 	unknown = 0,	// неизвестно
 	id = 1,			// пакет идентификации терминала
 	counters,		// показания счётчиков
-	settings		// настройки
+	settings,		// настройки
+	confirmation,   // подтверждение
+	log             // лог
 };
 
 /******************************************************************************************
@@ -79,8 +81,8 @@ struct tag_transport_packet
 // пакет идентификации терминала
 struct tag_identification_packet
 {
-	char	group_name[20];		// название группы терминалов
-	char	terminal_name[20];	// название терминала
+	wchar_t	group_name[20];		// название группы терминалов
+	wchar_t	terminal_name[20];	// название терминала
 
 	tag_identification_packet()
 	{
@@ -244,7 +246,7 @@ struct tag_confirmation_packet
 Дата							|	8		|	ULONG	|							|
 Тип записи						|	1		|	BYTE	|							|
 Длина записи					|	2		|	USHORT	|							|
-Текст записи					|	1-65536	|CHAR ARRAY	|							|
+Текст записи					|	2-32768	|	WCHAR[]	|							|
 -------------------------------------------------------------------------------------
 ******************************************************************************************/
 // тип записи лога
@@ -256,14 +258,14 @@ enum class e_log_record_type : byte
 };
 
 // запись лога
-struct tag_log_record_message
+struct tag_log_record_packet
 {
 	uint64_t								date_time;	// Дата		
 	e_log_record_type						type;		// Тип записи	
 	uint16_t								length;		// Длина записи
 	tools::data_wrappers::_tag_data_managed	text;		// Текст записи
 
-	tag_log_record_message()
+	tag_log_record_packet()
 	{
 		clear();
 	}
