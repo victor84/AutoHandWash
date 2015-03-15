@@ -99,6 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHandler.cs" />
+    <Compile Include="Data\Group.cs" />
+    <Compile Include="Data\SettingsGroup.cs" />
+    <Compile Include="Data\SettingsTerminal.cs" />
+    <Compile Include="Data\Terminal.cs" />
     <Compile Include="Hubs\TestHub.cs" />
     <Compile Include="Models\LoginPageModel.cs" />
     <Compile Include="Models\MasterPageModel.cs" />
