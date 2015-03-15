@@ -15,7 +15,7 @@ namespace Server.Services
         {
             connectionString = string.Format("server={0};userid={1};password={2};database={3}", server, user, password, dbName);
         }
-        
+
         public User GetUserById(Guid id)
         {
             User user = null;

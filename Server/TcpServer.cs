@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -35,25 +36,16 @@ namespace Server
                 IPAddress localAddr = IPAddress.Parse(ipString);
                 server = new TcpListener(localAddr, port);
                 server.Start();
-                byte[] bytes = new byte[256];
                 while (running)
                 {
                     TcpClient client = server.AcceptTcpClient();
-                    NetworkStream stream = client.GetStream();
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        // response = IParser.Response(bytes);
-                        // data = IParser.Convert(bytes);
-                        // IHub.Send(data);
-                        stream.Write(bytes, 0, bytes.Length);
-                    }
-                    client.Close();
+                    ClientHandler handler = new ClientHandler(client);
+                    handler.Run();
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Main: {0}", e);
+                Console.WriteLine("TcpServer -> Main: {0}", e);
             }
         }
     }
