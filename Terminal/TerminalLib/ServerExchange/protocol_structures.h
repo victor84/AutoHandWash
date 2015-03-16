@@ -114,6 +114,7 @@ struct tag_identification_packet
 От мошек						|	4		|	UINT	|							|
 Пылесос							|	4		|	UINT	|							|
 Воздух							|	4		|	UINT	|							|
+Осмос							|	4		|	UINT	|							|
 -------------------------------------------------------------------------------------
 ******************************************************************************************/
 // состояние терминала
@@ -139,7 +140,8 @@ struct tag_counters_packet
 	uint32_t			wax;					// Воск	
 	uint32_t			against_midges;			// От мошек
 	uint32_t			vacuum_cleaner;			// Пылесос	
-	uint32_t			air;					// Воздух	
+	uint32_t			air;					// Воздух
+	uint32_t			osmosis;				// Осмос
 
 	tag_counters_packet()
 	{
@@ -173,6 +175,7 @@ struct tag_counters_packet
 От мошек						|	  4		|	UINT	|							|
 Пылесос							|	  4		|	UINT	|							|
 Воздух							|	  4		|	UINT	|							|
+Осмос							|	  4		|	UINT	|							|
 -------------------------------------------------------------------------------------
 ******************************************************************************************/
 #pragma pack(push, 1)
@@ -191,7 +194,8 @@ struct tag_settings_packet
 	uint32_t			wax;						// Воск	
 	uint32_t			against_midges;				// От мошек
 	uint32_t			vacuum_cleaner;				// Пылесос	
-	uint32_t			air;						// Воздух	
+	uint32_t			air;						// Воздух
+	uint32_t			osmosis;					// Осмос
 
 	tag_settings_packet()
 	{

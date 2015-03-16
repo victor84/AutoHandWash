@@ -53,6 +53,7 @@ namespace Parsing
             collection.AddRange(BitConverter.GetBytes(packet.against_midges));
             collection.AddRange(BitConverter.GetBytes(packet.vacuum_cleaner));
             collection.AddRange(BitConverter.GetBytes(packet.air));
+            collection.AddRange(BitConverter.GetBytes(packet.osmosis));
 
             result_data = collection.ToArray();
             return e_convert_result.success;
@@ -76,6 +77,7 @@ namespace Parsing
             collection.AddRange(BitConverter.GetBytes(packet.against_midges));
             collection.AddRange(BitConverter.GetBytes(packet.vacuum_cleaner));
             collection.AddRange(BitConverter.GetBytes(packet.air));
+            collection.AddRange(BitConverter.GetBytes(packet.osmosis));
 
             result_data = collection.ToArray();
             return e_convert_result.success;

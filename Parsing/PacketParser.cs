@@ -109,7 +109,7 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (45 != data.Length)
+            if (49 != data.Length)
                 return e_convert_result.invalid_data;
 
             UInt16 offset = 0;
@@ -146,6 +146,9 @@ namespace Parsing
             result_packet.air = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
+            result_packet.osmosis = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
+            offset += 4;
+
             return e_convert_result.success;
         }
 
@@ -159,7 +162,7 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (35 != data.Length)
+            if (39 != data.Length)
                 return e_convert_result.invalid_data;
 
             UInt16 offset = 0;
@@ -192,6 +195,9 @@ namespace Parsing
             offset += 4;
 
             result_packet.air = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
+            offset += 4;
+
+            result_packet.osmosis = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
             return e_convert_result.success;

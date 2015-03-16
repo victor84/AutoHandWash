@@ -42,6 +42,7 @@ namespace ParsingTest
             counters_packet.air = 20;
             counters_packet.current_cache = 100;
             counters_packet.foam = 30;
+            counters_packet.osmosis = 80;
             counters_packet.pressurized_water = 40;
             counters_packet.state = e_terminal_state.work;
             counters_packet.total_cache = 2000;
@@ -69,6 +70,7 @@ namespace ParsingTest
             settings_packet.coin_acceptor_impulse = 11;
             settings_packet.free_idle_time = 3;
             settings_packet.idle_time_cost = 10;
+            settings_packet.osmosis = 80;
             settings_packet.pause_before_advertising = 1;
             settings_packet.pressurized_water = 10;
             settings_packet.water_without_pressure = 20;
