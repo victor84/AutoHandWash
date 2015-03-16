@@ -19,43 +19,36 @@ namespace Server.Services
         public User GetUserById(Guid id)
         {
             User user = null;
-            MySqlConnection conn = null;
-            MySqlDataReader rdr = null;
             try
             {
-                conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string stm = @"SELECT * FROM users WHERE Id = '" + id + "'";
-                MySqlCommand cmd = new MySqlCommand(stm, conn);
-                rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                using (var conn = new MySqlConnection(connectionString))
                 {
-                    string userName = (string)rdr["UserName"];
-                    string password = (string)rdr["Password"];
-                    string claim = (string)rdr["Claim"];
-                    user = new User()
+                    using (var cmd = conn.CreateCommand())
                     {
-                        Id = id,
-                        UserName = userName,
-                        Password = password,
-                        Claims = new string[] { claim }
-                    };
+                        conn.Open();
+                        cmd.CommandText = @"SELECT * FROM users WHERE Id = '" + id + "'";
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string userName = (string)reader["UserName"];
+                                string password = (string)reader["Password"];
+                                string claim = (string)reader["Claim"];
+                                user = new User()
+                                {
+                                    Id = id,
+                                    UserName = userName,
+                                    Password = password,
+                                    Claims = new string[] { claim }
+                                };
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: {0}", ex.ToString());
-            }
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-                if (conn != null)
-                {
-                    conn.Close();
-                }
+                Console.WriteLine("GetUserById: {0}", ex.ToString());
             }
             return user;
         }
@@ -63,43 +56,36 @@ namespace Server.Services
         public User GetUserByName(string userName)
         {
             User user = null;
-            MySqlConnection conn = null;
-            MySqlDataReader rdr = null;
             try
             {
-                conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string stm = @"SELECT * FROM users WHERE UserName = '" + userName + "'";
-                MySqlCommand cmd = new MySqlCommand(stm, conn);
-                rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                using (var conn = new MySqlConnection(connectionString))
                 {
-                    Guid id = (Guid)rdr["Id"];
-                    string password = (string)rdr["Password"];
-                    string claim = (string)rdr["Claim"];
-                    user = new User()
+                    using (var cmd = conn.CreateCommand())
                     {
-                        Id = id,
-                        UserName = userName,
-                        Password = password,
-                        Claims = new string[] { claim }
-                    };
+                        conn.Open();
+                        cmd.CommandText = @"SELECT * FROM users WHERE UserName = '" + userName + "'";
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Guid id = (Guid)reader["Id"];
+                                string password = (string)reader["Password"];
+                                string claim = (string)reader["Claim"];
+                                user = new User()
+                                {
+                                    Id = id,
+                                    UserName = userName,
+                                    Password = password,
+                                    Claims = new string[] { claim }
+                                };
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: {0}", ex.ToString());
-            }
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-                if (conn != null)
-                {
-                    conn.Close();
-                }
+                Console.WriteLine("GetUserByName: {0}", ex.ToString());
             }
             return user;
         }

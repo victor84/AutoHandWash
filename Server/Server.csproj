@@ -116,6 +116,7 @@
     <Compile Include="ServiceInfo.cs" />
     <Compile Include="Services\Auth.cs" />
     <Compile Include="Services\IAuth.cs" />
+    <Compile Include="Services\ITerminals.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="Data\User.cs" />
