@@ -25,6 +25,12 @@
     <Filter Include="Файлы исходного кода\DeviceExchange">
       <UniqueIdentifier>{2fdb1b13-69eb-4e95-b416-2ad32fa37579}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\LogicStructures">
+      <UniqueIdentifier>{c72ce019-90e9-4141-86c4-bf3fc0f6d0ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\LogicStructures">
+      <UniqueIdentifier>{93db470d-30fa-469d-8fa0-41381167cd5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -50,6 +56,12 @@
     </ClInclude>
     <ClInclude Include="DeviceExchange\DevicePacketConvertor.h">
       <Filter>Заголовочные файлы\DeviceExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\data_from_device.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\data_from_pc.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

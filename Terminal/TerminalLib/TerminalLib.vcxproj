@@ -79,7 +79,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange;LogicStructures</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
@@ -167,6 +167,8 @@
   <ItemGroup>
     <ClInclude Include="DeviceExchange\DevicePacketConvertor.h" />
     <ClInclude Include="DeviceExchange\device_protocol.h" />
+    <ClInclude Include="LogicStructures\data_from_device.h" />
+    <ClInclude Include="LogicStructures\data_from_pc.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
     <ClInclude Include="ServerExchange\protocol_structures.h" />
     <ClInclude Include="ServerExchange\ServerPacketParser.h" />
