@@ -27,6 +27,15 @@ namespace logic_structures
 		}
 	};
 
+	// пустая команда
+	struct tag_pc_empty : tag_base_data_from_pc
+	{
+		tag_pc_empty() : tag_base_data_from_pc(e_command_from_pc::empty)
+		{
+
+		}
+	};
+
 	// открыть клапан (ОТСЧЁТ С 1)
 	struct tag_open_valve : tag_base_data_from_pc
 	{

@@ -18,11 +18,19 @@ namespace logic_structures
 // базовая структура
 struct tag_base_data_from_device
 {
-protected:
-
 	const device_exchange::e_command_from_device command_id;	// id команды
 
+protected:
 	tag_base_data_from_device(device_exchange::e_command_from_device cid) : command_id(cid)
+	{
+
+	}
+};
+
+// пустая структура
+struct tag_dev_empty : tag_base_data_from_device
+{
+	tag_dev_empty() : tag_base_data_from_device(e_command_from_device::empty)
 	{
 
 	}
@@ -56,7 +64,7 @@ struct tag_bill_acceptor : tag_base_data_from_device
 // Выдана монета хоппером
 struct tag_hopper_issue_coin : tag_base_data_from_device
 {
-	uint16_t balance;	// осталось выдать
+	byte balance;	// осталось выдать
 
 	tag_hopper_issue_coin() : tag_base_data_from_device(device_exchange::e_command_from_device::hopper_issue_coin)
 		, balance(0)

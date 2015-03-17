@@ -41,6 +41,7 @@
 #include <sstream>
 #include <locale>
 #include <thread>
+#include <map>
 
 // strings
 #include <tchar.h>

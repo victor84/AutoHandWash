@@ -8,8 +8,6 @@ void CDeveiceMessageDescription::fill_descriptors_storage()
 {
 	_descriptors_storage.clear();
 
-// #define add_descriptor(id, fn) 	_descriptors_storage.insert(_Storage_Elem_Type(id, std::bind(std::mem_fn(&CDeveiceMessageDescription::fn), this, std::placeholders::_1)));
-
 	add_descriptor(e_command_from_device::button_press, &CDeveiceMessageDescription::button_press);
 	add_descriptor(e_command_from_device::bill_acceptor, &CDeveiceMessageDescription::bill_acceptor);
 	add_descriptor(e_command_from_device::hopper_issue_coin, &CDeveiceMessageDescription::hopper_issue_coin);

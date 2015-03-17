@@ -169,6 +169,7 @@
     <ClInclude Include="DeviceExchange\device_protocol.h" />
     <ClInclude Include="LogicStructures\data_from_device.h" />
     <ClInclude Include="LogicStructures\data_from_pc.h" />
+    <ClInclude Include="LogicStructures\DeviceStructuresConverter.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
     <ClInclude Include="ServerExchange\protocol_structures.h" />
     <ClInclude Include="ServerExchange\ServerPacketParser.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LogicStructures\DeviceStructuresConverter.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp" />
     <ClCompile Include="stdafx\stdafx.cpp">

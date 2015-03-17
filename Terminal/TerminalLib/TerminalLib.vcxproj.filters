@@ -63,6 +63,9 @@
     <ClInclude Include="LogicStructures\data_from_pc.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
+    <ClInclude Include="LogicStructures\DeviceStructuresConverter.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp">
       <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="LogicStructures\DeviceStructuresConverter.cpp">
+      <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
