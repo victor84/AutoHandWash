@@ -1,25 +1,52 @@
-﻿using Nancy;
+﻿using LinqToDB.Data;
+using Nancy;
 using Nancy.Authentication.Forms;
 using Nancy.Security;
-using Server.Services;
 using System;
+using System.Linq;
 
 namespace Server
 {
     public class UserMapper : IUserMapper
     {
-        private readonly IAuth _auth;
-
-        public UserMapper(IAuth auth)
+        public static User GetUserById(Guid id)
         {
-            _auth = auth;
+            User user = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    user = db.GetTable<User>().Where(x => x.Id == id).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetUserById: {0}", ex);
+            }
+            return user;
+        }
+
+        public static User GetUserByName(string userName)
+        {
+            User user = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    user = db.GetTable<User>().Where(x => x.UserName == userName).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetUserByName: {0}", ex);
+            }
+            return user;
         }
         
         public IUserIdentity GetUserFromIdentifier(Guid identifier, NancyContext context)
         {
-            var user = _auth.GetUserById(identifier);
+            var user = GetUserById(identifier);
             return user;
         }
-
     }
 }
