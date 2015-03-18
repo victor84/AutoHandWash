@@ -7,18 +7,18 @@ namespace Server
     {
         private IDisposable webApp;
         private TcpServer tcpServer;
-        private ServiceInfo serviceInfo;
+        private AppSettings appSettings;
         
-        public Service(ServiceInfo serviceInfo)
+        public Service(AppSettings appSettings)
         {
-            this.serviceInfo = serviceInfo;
-            tcpServer = new TcpServer(serviceInfo.Port);
+            this.appSettings = appSettings;
+            tcpServer = new TcpServer(appSettings.Port);
         }
 
         public void Start()
         {
             tcpServer.Start();
-            webApp = WebApp.Start<Startup>(serviceInfo.Url);
+            webApp = WebApp.Start<Startup>(appSettings.BaseUri);
         }
 
         public void Stop()

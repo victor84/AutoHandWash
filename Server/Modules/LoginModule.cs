@@ -7,13 +7,9 @@ using Server.Models;
 namespace Server.Modules
 {
     public class LoginModule : BaseModule
-    {
-        private readonly IAuth _auth;
-        
-        public LoginModule(IAuth auth)
+    {   
+        public LoginModule()
         {
-            _auth = auth;
-            
             Get["/"] = Index;
             Get["/login"] = Login;
             Post["/login"] = DoLogin;
@@ -34,7 +30,7 @@ namespace Server.Modules
         {
             var username = (string)this.Request.Form.Username;
             var password = (string)this.Request.Form.Password;
-            var user = _auth.GetUserByName(username);
+            var user = UserMapper.GetUserByName(username);
             if (user == null || user.Password != password)
             {
                 Model.LoginPage = new LoginPageModel();
