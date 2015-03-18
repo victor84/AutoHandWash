@@ -30,7 +30,7 @@ namespace logic_structures
 	// пустая команда
 	struct tag_pc_empty : tag_base_data_from_pc
 	{
-		tag_pc_empty() : tag_base_data_from_pc(e_command_from_pc::empty)
+		tag_pc_empty() : tag_base_data_from_pc(device_exchange::e_command_from_pc::empty)
 		{
 
 		}

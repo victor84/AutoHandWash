@@ -97,7 +97,7 @@
       <Filter>Заголовочные файлы\Networking</Filter>
     </ClInclude>
     <ClInclude Include="Networking\SocketStream.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +135,7 @@
       <Filter>Файлы исходного кода\Networking</Filter>
     </ClCompile>
     <ClCompile Include="Networking\SocketStream.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\Networking</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -40,6 +40,8 @@ e_socket_result CSocketStream::Start(const SOCKET& socket_to_process,
 
 e_socket_result CSocketStream::Stop()
 {
+	clear_buffers();
+
 	if (_e_init_state::not_init == _start_state)
 		return e_socket_result::was_disconnected;
 
@@ -192,7 +194,18 @@ e_socket_result CSocketStream::send_data()
 	return e_socket_result::success;
 }
 
-void tools::networking::CSocketStream::Send(data_wrappers::_tag_data_const data)
+void CSocketStream::clear_buffers()
+{
+	if (false == _data_to_send.empty())
+	{
+		for (data_wrappers::_tag_data_const data : _data_to_send.get_with_cleanup())
+		{
+			data.free_data();
+		}
+	}
+}
+
+void CSocketStream::Send(tools::data_wrappers::_tag_data_const data)
 {
 	data_wrappers::_tag_data_managed man_data(data);
 	man_data.free_after_destruct = false;

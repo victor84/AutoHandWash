@@ -2,6 +2,8 @@
 #include "TestLogic.h"
 
 using namespace server_exchange;
+using namespace device_exchange;
+using namespace logic_structures;
 
 void CTestLogic::thread_method()
 {
@@ -12,17 +14,75 @@ void CTestLogic::thread_method()
 
 	while (true == _continue_work)
 	{
-		send_counters_packet();
+		// send_counters_packet();
 
-		send_log_record_packet();
+		// send_log_record_packet();
 
-		std::this_thread::sleep_for(std::chrono::seconds(20));
+		// std::this_thread::sleep_for(std::chrono::seconds(20));
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 
-void CTestLogic::on_data_received(tools::data_wrappers::_tag_data_managed data)
+void CTestLogic::on_server_data_received(tools::data_wrappers::_tag_data_managed data)
 {
 
+}
+
+void CTestLogic::on_device_data_received(tools::data_wrappers::_tag_data_managed data)
+{
+	tag_packet_from_device packet;
+
+	_device_packet_from_device_convertor.Parse(data, packet);
+
+	_tr_error->trace_message(_device_message_descriptor.describe_message(packet));
+
+	_received_device_packet = _device_structures_converter.Convert(packet);
+
+	process_device_packet();
+}
+
+void CTestLogic::process_device_packet()
+{
+	tag_bill_acceptor* ba		  = nullptr;
+	tag_button_press* bp		  = nullptr;
+	tag_buttons_state* bs		  = nullptr;
+	tag_command_confirmation* cc  = nullptr;
+	tag_data_from_eeprom* dfe	  = nullptr;
+	tag_discount_card_issued* dci = nullptr;
+	tag_dev_empty* de			  = nullptr;
+	tag_error* e				  = nullptr;
+	tag_hopper_issue_coin* hic	  = nullptr;
+
+	switch (_received_device_packet->command_id)
+	{
+		case e_command_from_device::bill_acceptor : 
+			ba = static_cast<tag_bill_acceptor*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::button_press :
+			bp = static_cast<tag_button_press*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::buttons_state :
+			bs = static_cast<tag_buttons_state*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::command_confirmation :
+			cc = static_cast<tag_command_confirmation*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::data_from_eeprom :
+			dfe = static_cast<tag_data_from_eeprom*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::discount_card_issued :
+			dci =static_cast<tag_discount_card_issued*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::empty :
+			de = static_cast<tag_dev_empty*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::error :
+			e = static_cast<tag_error*>(_received_device_packet.get());
+			break;
+		case e_command_from_device::hopper_issue_coin :
+			hic = static_cast<tag_hopper_issue_coin*>(_received_device_packet.get());
+			break;
+	}
 }
 
 bool CTestLogic::send_identification_packet()
@@ -48,7 +108,7 @@ bool CTestLogic::send_identification_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_socket.Send(raw_data);
+	_client_socket.Send(raw_data);
 
 	return true;
 }
@@ -82,7 +142,7 @@ bool CTestLogic::send_settings_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_socket.Send(raw_data);
+	_client_socket.Send(raw_data);
 
 	return true;
 }
@@ -114,7 +174,7 @@ bool CTestLogic::send_counters_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_socket.Send(raw_data);
+	_client_socket.Send(raw_data);
 
 	return true;
 }
@@ -144,14 +204,15 @@ bool CTestLogic::send_log_record_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_socket.Send(raw_data);
+	_client_socket.Send(raw_data);
 
 	return true;
 
 }
 
 CTestLogic::CTestLogic()
-	: _socket(_received_data, std::bind(std::mem_fn(&CTestLogic::on_data_received), this, std::placeholders::_1))
+	: _client_socket(_received_server_data, std::bind(std::mem_fn(&CTestLogic::on_server_data_received), this, std::placeholders::_1))
+	, _device_socket(_received_device_data, std::bind(std::mem_fn(&CTestLogic::on_device_data_received), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -160,12 +221,21 @@ CTestLogic::~CTestLogic()
 {
 }
 
-bool CTestLogic::Start(tools::networking::tag_connection_params connection_params)
+bool CTestLogic::Start(tools::networking::tag_connection_params server_connection_params, tools::networking::tag_connection_params device_connection_params)
 {
 	if (_continue_work == true)
 		return true;
 
-	_socket.OpenConnection(connection_params);
+	_client_socket.OpenConnection(server_connection_params);
+
+	if (tools::networking::e_socket_result::success == _device_socket.Start(device_connection_params))
+	{
+		_tr_error->trace_message(_T("\r\nСервер запущен\r\n"));
+	}
+	else
+	{
+		_tr_error->trace_message(_T("\r\nОшибка запуска сервера\r\n"));
+	}
 
 	_continue_work = true;
 	_this_thread = std::thread(&CTestLogic::thread_method, this);
@@ -183,5 +253,6 @@ void CTestLogic::Stop()
 	if (true == _this_thread.joinable())
 		_this_thread.join();
 
-	_socket.CloseConnection();
+	_client_socket.CloseConnection();
+	_device_socket.Stop();
 }

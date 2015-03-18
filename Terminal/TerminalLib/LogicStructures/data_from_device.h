@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "device_protocol.h"
+#include "raw_data_warappers.h"
 
 /*!
  * \file data_from_device.h
@@ -30,9 +31,16 @@ protected:
 // пустая структура
 struct tag_dev_empty : tag_base_data_from_device
 {
-	tag_dev_empty() : tag_base_data_from_device(e_command_from_device::empty)
+	tag_dev_empty() : tag_base_data_from_device(device_exchange::e_command_from_device::empty)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 
@@ -47,6 +55,13 @@ struct tag_button_press : tag_base_data_from_device
 	{
 		
 	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
+	}
 };
 
 // данные от купюроприёмника или монетоприёмника
@@ -58,6 +73,13 @@ struct tag_bill_acceptor : tag_base_data_from_device
 		, count(0)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 
@@ -71,6 +93,13 @@ struct tag_hopper_issue_coin : tag_base_data_from_device
 	{
 
 	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
+	}
 };
 
 // выдана дисконтная карта
@@ -79,6 +108,13 @@ struct tag_discount_card_issued : tag_base_data_from_device
 	tag_discount_card_issued() : tag_base_data_from_device(device_exchange::e_command_from_device::discount_card_issued)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 
@@ -93,6 +129,13 @@ struct tag_data_from_eeprom : tag_base_data_from_device
 		, value(0)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 
@@ -122,6 +165,13 @@ struct tag_buttons_state : tag_base_data_from_device
 	{
 
 	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
+	}
 };
 
 // подтверждение команды
@@ -133,6 +183,13 @@ struct tag_command_confirmation : tag_base_data_from_device
 		, command(device_exchange::e_command_from_pc::empty)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 
@@ -154,6 +211,13 @@ struct tag_error : tag_base_data_from_device
 		, code(e_device_error_code::error)
 	{
 
+	}
+
+	operator tools::data_wrappers::_tag_data_managed()
+	{
+		tools::data_wrappers::_tag_data_managed result;
+		result.copy_data_inside(this, sizeof(*this));
+		return result;
 	}
 };
 

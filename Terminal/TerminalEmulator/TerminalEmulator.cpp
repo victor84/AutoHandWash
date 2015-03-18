@@ -25,19 +25,11 @@ using namespace device_exchange;
 CSettingsLoader* settings_loader;
 tools::logging::CTraceError* tr_error;
 
-tools::lock_vector<tools::data_wrappers::_tag_data_const> received_device_data;
-
-void on_device_data_received(tools::data_wrappers::_tag_data_managed data);
-
-tools::networking::CSingleServerSocket server_socket(received_device_data, &on_device_data_received);
-
 tools::lock_vector<std::wstring> log_messages;
 
-CDeveiceMessageDescription _device_message_descriptor;
 CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
 
 CTestLogic test_logic;
-
 
 void Initialize();
 void PrepareExit();
@@ -72,7 +64,22 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	}
 
 	Initialize();
-	::system("pause");
+
+	std::wcout << _T("Enter для выхода...") << std::endl;
+
+	while (true)
+	{
+		show_messages();
+
+		::Sleep(1000);
+
+		if (0 != ::GetAsyncKeyState(VK_RETURN))
+		{
+			std::wcout << _T("Подготовка к выходу...") << std::endl;
+			break;
+		}
+	}
+
 	PrepareExit();
 	return nRetCode;
 }
@@ -89,28 +96,20 @@ void Initialize()
 
 	settings_loader->read_all();
 
-	tools::networking::tag_connection_params connection_params;
-	connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port")).GetString());
+	tools::networking::tag_connection_params server_connection_params;
+	server_connection_params.port = "13000";
+	server_connection_params.address = "127.0.0.1";
+	server_connection_params.reconnection_timeout = 10000;
 
-	if (tools::networking::e_socket_result::success == server_socket.Start(connection_params))
-	{
-		LOG(_T("\r\nСервер запущен\r\n"));
-	}
-	else
-	{
-		LOG(_T("\r\nОшибка запуска сервера\r\n"));
-	}
+	tools::networking::tag_connection_params device_connection_params;
+	device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port")).GetString());
 
-	connection_params.port = "13000";
-	connection_params.address = "127.0.0.1";
-	connection_params.reconnection_timeout = 10000;
 
-	test_logic.Start(connection_params);
+	test_logic.Start(server_connection_params, device_connection_params);
 }
 
 void PrepareExit()
 {
-	server_socket.Stop();
 	test_logic.Stop();
 
 	delete settings_loader;
@@ -123,22 +122,6 @@ void show_messages()
 	{
 		std::wcout << message << std::endl;
 	}
-}
-
-void on_device_data_received(tools::data_wrappers::_tag_data_managed data)
-{
-	tag_packet_from_device packet;
-
-	_device_packet_convertor.Parse(data, packet);
-
-	std::wstring describe_text = _device_message_descriptor.describe_message(packet);
-
-	LOG(describe_text);
-}
-
-void on_server_data_received(tools::data_wrappers::_tag_data_managed data)
-{
-
 }
 
 

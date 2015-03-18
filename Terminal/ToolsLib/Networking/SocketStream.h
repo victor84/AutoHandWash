@@ -83,6 +83,9 @@ class CSocketStream
 	// очистка сокета
 	void cleanup();
 
+	// очистить буферы даннфх
+	void clear_buffers();
+
 	// проверка сокета 
 	_e_check_socket_result check_socket(const _e_check_socket_type& cst);
 

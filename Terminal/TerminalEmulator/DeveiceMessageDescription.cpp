@@ -111,9 +111,9 @@ bool CDeveiceMessageDescription::buttons_state(const device_exchange::tag_packet
 {
 	_str_str << _T("Состояние кнопок.") << _T("\r\n");
 
-	byte all_state = message.data0;
+	uint16_t all_state = *((uint16_t*)&message.data0);
 
-	for (byte bn = 1; bn <= 8; ++bn)
+	for (byte bn = 1; bn <= 9; ++bn)
 	{
 		_str_str << _T("Кнопка №") << bn;
 		if (true != (all_state & 0x01))
