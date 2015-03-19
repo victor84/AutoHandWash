@@ -4,6 +4,15 @@
 #include "device_protocol.h"
 #include "data_from_pc.h"
 
+/*!
+ * \file PacketFromPcToLogicDataFromPcConverter.h
+ *
+ * \author Victor Mulika
+ * \date 19 Март 2015
+ *
+ * 
+ */
+
 namespace logic_structures
 {
 

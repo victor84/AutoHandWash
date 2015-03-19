@@ -69,10 +69,13 @@
     <ClInclude Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
-    <ClInclude Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.h">
+    <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
-    <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h">
+    <ClInclude Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,10 +92,13 @@
     <ClCompile Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.cpp">
       <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
-    <ClCompile Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.cpp">
+    <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp">
       <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
-    <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp">
+    <ClCompile Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.cpp">
+      <Filter>Файлы исходного кода\LogicStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.cpp">
       <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
   </ItemGroup>

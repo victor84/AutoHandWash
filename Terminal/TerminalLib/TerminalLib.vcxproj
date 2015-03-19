@@ -170,7 +170,8 @@
     <ClInclude Include="LogicStructures\BaseStructuresConvertor.h" />
     <ClInclude Include="LogicStructures\data_from_device.h" />
     <ClInclude Include="LogicStructures\data_from_pc.h" />
-    <ClInclude Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.h" />
+    <ClInclude Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.h" />
+    <ClInclude Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
@@ -180,7 +181,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.cpp" />
+    <ClCompile Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.cpp" />
+    <ClCompile Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "device_protocol.h"
+#include "raw_data_warappers.h"
 
 /*!
  * \file data_from_pc.h
@@ -17,10 +18,9 @@ namespace logic_structures
 	// базовая структура
 	struct tag_base_data_from_pc
 	{
-	protected:
-
 		const device_exchange::e_command_from_pc command_id;	// id команды
 
+	protected:
 		tag_base_data_from_pc(device_exchange::e_command_from_pc cid) : command_id(cid)
 		{
 
