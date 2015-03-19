@@ -63,6 +63,7 @@ public:
 	}
 
 	// получение сырых данных из пакета
+	// считает и пишет контрольную сумму
 	e_convert_result CreateRawData(IN OUT _PacketType& packet, OUT tools::data_wrappers::_tag_data_managed& data)
 	{
 		packet.crc = CalcCheckSum(packet);

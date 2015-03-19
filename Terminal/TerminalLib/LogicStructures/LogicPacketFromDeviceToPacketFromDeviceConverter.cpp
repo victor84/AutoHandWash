@@ -23,7 +23,6 @@ void CLogicPacketFromDeviceToPacketFromDeviceConverter::fill_handlers()
 	add_command_from_device_handler(e_command_from_device::buttons_state,			std::bind(std::mem_fn(&CLogicPacketFromDeviceToPacketFromDeviceConverter::convert_buttons_state), this, std::placeholders::_1));
 	add_command_from_device_handler(e_command_from_device::command_confirmation,	std::bind(std::mem_fn(&CLogicPacketFromDeviceToPacketFromDeviceConverter::convert_command_confirmation), this, std::placeholders::_1));
 	add_command_from_device_handler(e_command_from_device::error,					std::bind(std::mem_fn(&CLogicPacketFromDeviceToPacketFromDeviceConverter::convert_error), this, std::placeholders::_1));
-
 }
 
 device_exchange::tag_packet_from_device CLogicPacketFromDeviceToPacketFromDeviceConverter::handler_result_to_convert_result(tag_packet_from_device& result)

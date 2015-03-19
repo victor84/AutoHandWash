@@ -70,7 +70,10 @@
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
     <ClInclude Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +90,10 @@
       <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
     <ClCompile Include="LogicStructures\LogicPacketFromDeviceToPacketFromDeviceConverter.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\LogicStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp">
+      <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -34,6 +34,13 @@ namespace logic_structures
 		{
 
 		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
+		}
 	};
 
 	// открыть клапан (ОТСЧЁТ С 1)
@@ -45,6 +52,13 @@ namespace logic_structures
 			, number(0)
 		{
 
+		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
 		}
 	};
 
@@ -58,6 +72,13 @@ namespace logic_structures
 		{
 
 		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
+		}
 	};
 
 	// выдать монеты
@@ -70,6 +91,13 @@ namespace logic_structures
 		{
 
 		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
+		}
 	};
 
 	// выдать дисконтную карту
@@ -78,6 +106,13 @@ namespace logic_structures
 		tag_issue_discount_card() : tag_base_data_from_pc(device_exchange::e_command_from_pc::issue_discount_card)
 		{
 
+		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
 		}
 	};
 
@@ -90,6 +125,13 @@ namespace logic_structures
 			, cell_number(0)
 		{
 
+		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
 		}
 	};
 
@@ -105,6 +147,13 @@ namespace logic_structures
 		{
 
 		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
+		}
 	};
 
 	// запросить статус всех кнопок
@@ -113,6 +162,13 @@ namespace logic_structures
 		tag_buttons_status() : tag_base_data_from_pc(device_exchange::e_command_from_pc::buttons_status)
 		{
 
+		}
+
+		operator tools::data_wrappers::_tag_data_managed()
+		{
+			tools::data_wrappers::_tag_data_managed result;
+			result.copy_data_inside(this, sizeof(*this));
+			return result;
 		}
 	};
 
