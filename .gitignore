@@ -19,9 +19,6 @@
 /Terminal/Release
 /Terminal/Release_Static
 /Terminal/Release_Static_XP
-/Terminal/TerminalApp
-/Terminal/TerminalLib
-/Terminal/TerminalTest
 /Terminal/ToolsLib/Debug
 /Terminal/ToolsLib/Release
 /Terminal/ToolsLib/Release_Static
@@ -43,3 +40,12 @@
 /Parsing/obj/Debug
 /ParsingTest/bin/Debug
 /ParsingTest/obj/Debug
+/Terminal/TerminalLib/Debug
+/Terminal/TerminalTest/Debug
+/Terminal/TerminalApp/Debug
+/Terminal/TerminalApp/Release
+/Terminal/TerminalApp/Release_Static
+/Terminal/TerminalApp/Release_Static_XP
+/Terminal/TerminalTest/Release
+/Terminal/TerminalTest/Release_Static
+/Terminal/TerminalTest/Release_Static_XP

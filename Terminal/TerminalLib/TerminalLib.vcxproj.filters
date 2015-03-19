@@ -63,7 +63,10 @@
     <ClInclude Include="LogicStructures\data_from_pc.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
-    <ClInclude Include="LogicStructures\DeviceStructuresConverter.h">
+    <ClInclude Include="LogicStructures\BaseStructuresConvertor.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\PacketFromDeviceToDataFromDeviceConverter.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,7 +80,7 @@
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp">
       <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
-    <ClCompile Include="LogicStructures\DeviceStructuresConverter.cpp">
+    <ClCompile Include="LogicStructures\PacketFromDeviceToDataFromDeviceConverter.cpp">
       <Filter>Файлы исходного кода\LogicStructures</Filter>
     </ClCompile>
   </ItemGroup>

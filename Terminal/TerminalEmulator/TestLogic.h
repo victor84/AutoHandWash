@@ -9,6 +9,7 @@
 #include "SingleServerSocket.h"
 #include "DeveiceMessageDescription.h"
 #include "DevicePacketConvertor.h"
+#include "PacketFromDeviceToDataFromDeviceConverter.h"
 
 // тестовая логика эмулятора
 class CTestLogic
@@ -35,7 +36,8 @@ class CTestLogic
 	server_exchange::CServerPacketParser _packet_parser;
 	server_exchange::CPacketToRawData _packet_to_raw_data;
 
-	logic_structures::CDeviceStructuresConverter _device_structures_converter;
+	// logic_structures::CDeviceStructuresConverter _device_structures_converter;
+	logic_structures::CPacketFromDeviceToDataFromDeviceConverter _device_structures_converter;
 
 	device_exchange::CDevicePacketConvertor<device_exchange::tag_packet_from_device> _device_packet_from_device_convertor;
 

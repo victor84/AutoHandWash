@@ -36,7 +36,7 @@ void CTestLogic::on_device_data_received(tools::data_wrappers::_tag_data_managed
 
 	_tr_error->trace_message(_device_message_descriptor.describe_message(packet));
 
-	_received_device_packet = _device_structures_converter.Convert(packet);
+	_received_device_packet = _device_structures_converter.Convert(packet, static_cast<e_command_from_device>(packet.command));
 
 	process_device_packet();
 }

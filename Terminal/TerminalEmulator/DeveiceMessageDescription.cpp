@@ -48,25 +48,8 @@ bool CDeveiceMessageDescription::button_press(const device_exchange::tag_packet_
 {
 	_str_str << _T("Нажата кнопка. Данные: ") 
 				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0))) 
-				<< _T("\r\n");
-
-	byte button_num = 0;
-	byte data = message.data0;
-	for (; button_num < 8; ++button_num)
-	{
-		if (data & 0x01)
-			break;
-		data >>= 1;
-	}
-
-	if (8 == button_num)
-	{
-		_str_str << _T("Ни одна кнопка не нажата") << _T("\r\n");
-	}
-	else
-	{
-		_str_str << _T("Номер кнопки: ") << ++button_num << _T("\r\n");
-	}
+				<< _T("\r\n")
+				<< _T("Номер кнопки: ") << message.data0;
 
 	return true;
 }
