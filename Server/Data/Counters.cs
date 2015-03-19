@@ -19,9 +19,9 @@ namespace Server.Data
         [Column]
         public uint Balance { get; set; }
         [Column]
-        public uint ColdWater { get; set; }
+        public uint PressurizedWater { get; set; }
         [Column]
-        public uint HotWater { get; set; }
+        public uint NoPressurizedWater { get; set; }
         [Column]
         public uint Foam { get; set; }
         [Column]

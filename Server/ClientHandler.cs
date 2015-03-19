@@ -1,4 +1,5 @@
 ﻿using Parsing;
+using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -77,8 +78,9 @@ namespace Server
                         }
                         Thread.Sleep(1000);
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Console.WriteLine("ClientHandler -> Handle -> Loop: {0}", e);
                         break;
                     }
                 }
@@ -113,8 +115,6 @@ namespace Server
 
             if (e_convert_result.success != parser.ParseCountersPacket(packet, out countersPacket))
                 return e_processing_result.failed;
-
-            // TODO: обработка пакета с показаниями счётчиков
 
             return e_processing_result.success;
         }
