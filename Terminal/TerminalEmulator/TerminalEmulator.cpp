@@ -102,7 +102,7 @@ void Initialize()
 	server_connection_params.reconnection_timeout = 10000;
 
 	tools::networking::tag_connection_params device_connection_params;
-	device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port")).GetString());
+	device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port"), _T("device")).GetString());
 
 
 	test_logic.Start(server_connection_params, device_connection_params);

@@ -49,7 +49,7 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 	}
 
 	_connection_state = _e_connection_state::connected;
-	_end_of_stream_status = _e_work_loop_status::ok;
+	_end_of_stream_status = e_work_loop_status::ok;
 	_socket_stream.Start(_client_socket,
 						 &_end_of_stream_status,
 						 std::bind(std::mem_fn(&CAsyncClientSocket::on_complete_stream_fn), this));
@@ -59,7 +59,7 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 
 void CAsyncClientSocket::on_complete_stream_fn()
 {
-	if (_e_work_loop_status::error == _end_of_stream_status)
+	if (e_work_loop_status::error == _end_of_stream_status)
 		inner_close_connection();
 
 	_connection_state = _e_connection_state::not_connected;
@@ -77,10 +77,10 @@ e_socket_result CAsyncClientSocket::inner_close_connection()
 
 e_socket_result CAsyncClientSocket::init()
 {
-	if (_e_init_state::was_init == _init_state)
+	if (tools::e_init_state::was_init == _init_state)
 		return e_socket_result::success;
 
-	_init_state = _e_init_state::not_init;
+	_init_state = tools::e_init_state::not_init;
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));
 
 	WSADATA wsa_data;

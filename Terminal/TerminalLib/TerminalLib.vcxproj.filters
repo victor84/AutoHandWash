@@ -99,6 +99,9 @@
     <ClInclude Include="Settings\CorrespondSettings.h">
       <Filter>Заголовочные файлы\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="Logic\Logic.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="Settings\CorrespondSettings.cpp">
       <Filter>Файлы исходного кода\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\Logic.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

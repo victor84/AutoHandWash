@@ -39,11 +39,11 @@ class CSingleServerSocket
 
 	tag_connection_params _connection_params;
 
-	_e_init_state	_init_state;
+	tools::e_init_state	_init_state;
 
 	CSocketStream _socket_stream;
 
-	_e_work_loop_status _stream_end_status;
+	e_work_loop_status _stream_end_status;
 
 	std::mutex _wait_stream_mutex;
 	std::unique_lock<std::mutex>* _lock_wait_stream;
@@ -56,7 +56,7 @@ class CSingleServerSocket
 	std::thread _listen_thread;
 
 	// статус обработки данных
-	_e_work_loop_status _work_loop_status;
+	e_work_loop_status _work_loop_status;
 
 	// метод потока слушающего порта
 	void listen_method();

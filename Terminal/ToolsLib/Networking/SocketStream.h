@@ -6,6 +6,7 @@
 #include "SocketUtils.h"
 #include <mutex>
 #include <condition_variable>
+#include "tools_structures.h"
 
 
 /*!
@@ -63,12 +64,12 @@ class CSocketStream
 	std::thread _this_thread;
 
 	// статус обработки данных
-	_e_work_loop_status _work_loop_status;
+	e_work_loop_status _work_loop_status;
 
 	// сюда пишем статус окончания работы
-	_e_work_loop_status* _end_status;
+	e_work_loop_status* _end_status;
 
-	_e_init_state _start_state;
+	tools::e_init_state _start_state;
 
 	// вызывается по завершении потока
 	std::function<void()> _on_complete_fn;
@@ -105,7 +106,7 @@ public:
 
 	// запуск
 	e_socket_result Start(const SOCKET& socket_to_process,
-						  _e_work_loop_status* end_status,
+						  e_work_loop_status* end_status,
 						  std::function<void()> on_complete_fn);
 
 	// остановка

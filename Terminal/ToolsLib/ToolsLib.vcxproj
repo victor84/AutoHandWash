@@ -186,6 +186,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Threading\CriticalSectionLocker.h" />
     <ClInclude Include="tools.h" />
+    <ClInclude Include="tools_structures.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Logging\TraceError.cpp" />

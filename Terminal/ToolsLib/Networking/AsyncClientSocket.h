@@ -45,10 +45,10 @@ class CAsyncClientSocket
 	_e_connection_state _connection_state;
 
 	// состояние инициализации
-	_e_init_state _init_state;
+	tools::e_init_state _init_state;
 
 	// статус обработки данных
-	_e_work_loop_status _end_of_stream_status;
+	e_work_loop_status _end_of_stream_status;
 
 	// инициализация сокета
 	e_socket_result init();

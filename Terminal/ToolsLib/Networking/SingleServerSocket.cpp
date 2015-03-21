@@ -19,7 +19,7 @@ CSingleServerSocket::~CSingleServerSocket()
 
 e_socket_result CSingleServerSocket::init()
 {
-	if (_init_state == _e_init_state::was_init)
+	if (_init_state == tools::e_init_state::was_init)
 		return e_socket_result::success;
 
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));
@@ -74,7 +74,7 @@ e_socket_result CSingleServerSocket::init()
 	if (FALSE == check_socket_fn_result_not(SOCKET_ERROR))
 		cleanup_and_return_false;
 
-	_init_state = _e_init_state::was_init;
+	_init_state = tools::e_init_state::was_init;
 
 	return e_socket_result::success;
 }
@@ -128,7 +128,7 @@ e_socket_result CSingleServerSocket::Start(const tag_connection_params& params)
 
 void tools::networking::CSingleServerSocket::listen_method()
 {
-	while (_work_loop_status == _e_work_loop_status::ok)
+	while (_work_loop_status == e_work_loop_status::ok)
 	{
 		SOCKADDR_STORAGE	sock_address;
 		INT					sock_address_len = sizeof(sock_address);
@@ -175,7 +175,7 @@ void tools::networking::CSingleServerSocket::listen_method()
 		// ожидание завершения потока сокета
 		_lock_wait_stream = new std::unique_lock<std::mutex>(_wait_stream_mutex);
 		
-		while (_e_work_loop_status::ok == _stream_end_status)
+		while (e_work_loop_status::ok == _stream_end_status)
 			_cv.wait(*_lock_wait_stream);
 
 		delete _lock_wait_stream;
@@ -190,14 +190,14 @@ void CSingleServerSocket::on_complete_stream_fn()
 
 e_socket_result CSingleServerSocket::Stop()
 {
-	_work_loop_status = _e_work_loop_status::stop;
+	_work_loop_status = e_work_loop_status::stop;
 
 	cleanup();
 
 	if (_listen_thread.joinable())
 		_listen_thread.join();
 
-	_init_state = _e_init_state::not_init;
+	_init_state = tools::e_init_state::not_init;
 
 	return e_socket_result::success;
 }
