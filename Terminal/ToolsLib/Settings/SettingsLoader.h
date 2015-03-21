@@ -200,7 +200,7 @@ private:
 								const CString& group, 
 								const CString name);
 
-	BOOL find_parameter(const CString& param_name);
+	BOOL find_parameter(const CString& param_name, const CString& group_name);
 
 	BOOL read_current_parameter();
 
@@ -224,11 +224,11 @@ public:
 	// чтение указанного параметра
 	BOOL read(const CString& parameter_name);
 
-	CStringW get_string(const CString& parameter_name);
-	INT get_int(const CString& parameter_name);
+	CStringW get_string(const CString& parameter_name, const CString& group_name);
+	INT get_int(const CString& parameter_name, const CString& group_name);
 
-	BOOL		save_parameter(const CString& parameter_name, const CString& str);
-	BOOL		save_parameter(const CString& parameter_name, const INT& val);
+	BOOL		save_parameter(const CString& parameter_name, const CString& group_name, const CString& str);
+	BOOL		save_parameter(const CString& parameter_name, const CString& group_name, const INT& val);
 };
 
 }

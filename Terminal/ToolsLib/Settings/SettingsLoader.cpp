@@ -51,12 +51,13 @@ CSettingsLoader::_tag_parameter CSettingsLoader::create_param(const e_parameter_
 	return param;
 }
 
-BOOL CSettingsLoader::find_parameter( const CString& param_name )
+BOOL CSettingsLoader::find_parameter(const CString& param_name, const CString& group_name)
 {
 	_current_parameter = _v_parameters.begin();
 	for (;_v_parameters.end() != _current_parameter; ++_current_parameter)
 	{
-		if (param_name == _current_parameter->name)
+		if ((param_name == _current_parameter->name)&&
+			(group_name == _current_parameter->group))
 			return TRUE;
 	}
 	return FALSE;
@@ -136,7 +137,7 @@ BOOL CSettingsLoader::create_file_name()
 	return TRUE;
 }
 
-CStringW CSettingsLoader::get_string( const CString& parameter_name )
+CStringW CSettingsLoader::get_string(const CString& parameter_name, const CString& group_name)
 {
 	CCriticalSectionLocker cs_lock(_cs);
 	if (FALSE == find_parameter(parameter_name))
@@ -145,29 +146,29 @@ CStringW CSettingsLoader::get_string( const CString& parameter_name )
 	return *_current_parameter;
 }
 
-INT CSettingsLoader::get_int( const CString& parameter_name )
+INT CSettingsLoader::get_int(const CString& parameter_name, const CString& group_name)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_name))
+	if (FALSE == find_parameter(parameter_name, group_name))
 		return 0;
 	
 	return *_current_parameter;
 }
 
-BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const CString& str)
+BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const CString& group_name, const CString& str)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_name))
+	if (FALSE == find_parameter(parameter_name, group_name))
 		return FALSE;
 
 	_current_parameter->val = str;
 	return write_current_parameter();
 }
 
-BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const INT& val)
+BOOL CSettingsLoader::save_parameter(const CString& parameter_name, const CString& group_name, const INT& val)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_name))
+	if (FALSE == find_parameter(parameter_name, group_name))
 		return FALSE;
 
 	_current_parameter->val = val;

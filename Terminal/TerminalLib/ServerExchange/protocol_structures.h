@@ -188,7 +188,7 @@ struct tag_settings_packet
 	byte				free_idle_time;				// Время простоя				
 	uint16_t			idle_time_cost;				// Стоимость минуты простоя	
 	byte				pause_before_advertising;	// Пауза перед показом рекламы
-	uint32_t			pressurized_water;			// Вода по давлением
+	uint32_t			pressurized_water;			// Вода под давлением
 	uint32_t			water_without_pressure;		// Вода без давления
 	uint32_t			foam;						// Пена	
 	uint32_t			wax;						// Воск	

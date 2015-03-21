@@ -86,14 +86,17 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;..\TerminalLib\ServerExchange;..\TerminalLib\DeviceExchange;..\TerminalLib\LogicStructures;Logic;Settings;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);..\ToolsLib\visual_leak_detector;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TerminalLib.lib;ToolsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -191,13 +194,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logic\ServicesNames.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Settings\CorrespondSettings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerminalApp.h" />
     <ClInclude Include="TerminalAppDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Settings\CorrespondSettings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -212,6 +218,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\TerminalApp.rc2" />
+    <None Include="settings.ini">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TerminalApp.ico" />
