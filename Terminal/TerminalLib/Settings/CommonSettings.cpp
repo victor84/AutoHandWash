@@ -24,7 +24,7 @@ logic_settings::CCommonSettings::~CCommonSettings()
 {
 }
 
-bool logic_settings::CCommonSettings::ReadParamsFromFile()
+bool logic_settings::CCommonSettings::ReadSettings()
 {
 	if (FALSE == _settings_module->read(port_param_name, device_block_name))
 		return false;

@@ -40,7 +40,7 @@ public:
 	CCommonSettings();
 	virtual ~CCommonSettings();
 
-	bool ReadParamsFromFile();
+	bool ReadSettings();
 
 	std::string GetDevicePort() const;
 

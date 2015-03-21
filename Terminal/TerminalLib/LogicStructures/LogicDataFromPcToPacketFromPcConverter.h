@@ -5,7 +5,10 @@
 
 namespace logic_structures
 {
-
+/*
+CLogicDataFromPcToPacketFromPcConverter
+logic packet from pc -> hardware pc packet
+*/
 class CLogicDataFromPcToPacketFromPcConverter : public CBaseStructuresConvertor <
 														typename device_exchange::tag_packet_from_pc,
 														typename std::shared_ptr<tag_base_data_from_pc>,

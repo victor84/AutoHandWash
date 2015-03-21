@@ -16,13 +16,16 @@
 
 namespace logic_structures
 {
-
+/*
+CLogicDataFromDeviceToPacketFromDeviceConverter
+logic packet from device -> hardware device packet
+*/
 class CLogicDataFromDeviceToPacketFromDeviceConverter : public CBaseStructuresConvertor <
-		typename device_exchange::tag_packet_from_device,
-		typename std::shared_ptr<tag_base_data_from_device>,
-		typename device_exchange::e_command_from_device,
-		typename device_exchange::tag_packet_from_device,
-		CLogicDataFromDeviceToPacketFromDeviceConverter>
+														typename device_exchange::tag_packet_from_device,
+														typename std::shared_ptr<tag_base_data_from_device>,
+														typename device_exchange::e_command_from_device,
+														typename device_exchange::tag_packet_from_device,
+														CLogicDataFromDeviceToPacketFromDeviceConverter>
 {
 	virtual void fill_handlers() final;
 

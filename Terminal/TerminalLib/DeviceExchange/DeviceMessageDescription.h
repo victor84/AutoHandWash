@@ -10,12 +10,13 @@
  * 
  */
 
-
+namespace device_exchange
+{
 /*
 CDeveiceMessageShower
 отображает информацию о сообщении
 */
-class CDeveiceMessageDescription
+class CDeviceMessageDescription
 {
 	typedef std::function<bool(const device_exchange::tag_packet_from_device& message)>	_Descriptor_Fn_Type;
 	typedef std::pair<device_exchange::e_command_from_device, _Descriptor_Fn_Type>		_Storage_Elem_Type;
@@ -27,10 +28,10 @@ class CDeveiceMessageDescription
 
 	// хранилище для быстрого доступа к методам-описателям сообщения
 	std::map<device_exchange::e_command_from_device, _Descriptor_Fn_Type> _descriptors_storage;
-	
+
 	void fill_descriptors_storage();
 
-	void add_descriptor(device_exchange::e_command_from_device command, bool (CDeveiceMessageDescription::*fn)(const device_exchange::tag_packet_from_device&));
+	void add_descriptor(device_exchange::e_command_from_device command, bool (CDeviceMessageDescription::*fn)(const device_exchange::tag_packet_from_device&));
 
 	// описать сырые данные
 	bool describe_raw(const device_exchange::tag_packet_from_device& message);
@@ -60,12 +61,10 @@ class CDeveiceMessageDescription
 	bool error(const device_exchange::tag_packet_from_device& message);
 
 public:
-	CDeveiceMessageDescription();
-	virtual ~CDeveiceMessageDescription();
+	CDeviceMessageDescription();
+	virtual ~CDeviceMessageDescription();
 
 	// Описать информацию о сообщении
 	std::wstring describe_message(const device_exchange::tag_packet_from_device& message);
-
-
 };
-
+}

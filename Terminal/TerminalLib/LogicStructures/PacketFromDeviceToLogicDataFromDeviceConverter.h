@@ -16,7 +16,10 @@
 
 namespace logic_structures
 {
-
+/*
+CPacketFromDeviceToLogicDataFromDeviceConverter
+hardware device packet -> logic packet from device
+*/
 class CPacketFromDeviceToLogicDataFromDeviceConverter : public CBaseStructuresConvertor<
 															typename tools::data_wrappers::_tag_data_managed,
 															typename device_exchange::tag_packet_from_device,

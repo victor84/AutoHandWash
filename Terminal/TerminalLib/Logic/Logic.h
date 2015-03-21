@@ -1,6 +1,8 @@
 #pragma once
 #include "TraceError.h"
 #include "tools_structures.h"
+#include "CommonSettings.h"
+#include "CorrespondSettings.h"
 
 /*!
  * \file Logic.h
@@ -25,12 +27,29 @@ class CLogic
 
 	tools::e_init_state _init_state;
 
+	// объект потока
+	std::thread _this_thread;
+
+	// модуль общих натроек
+	logic_settings::CCommonSettings _common_settings;
+
+	// модуль соответствий услуг, кнопок и клапанов
+	logic_settings::CCorrespondSettings _correspond_settings;
+
+	// функция текущего потока
+	void thread_fn();
+
+	// инициализация
+	tools::e_init_state init();
+
 public:
 	CLogic();
 	~CLogic();
 
+	// запуск в работу
 	bool Start();
 
+	// остановка
 	void Stop();
 };
 }

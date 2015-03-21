@@ -6,7 +6,7 @@
 #include "ServerPacketParser.h"
 #include "PacketToRawData.h"
 #include "SingleServerSocket.h"
-#include "DeveiceMessageDescription.h"
+#include "DeviceMessageDescription.h"
 #include "DevicePacketConvertor.h"
 #include "PacketFromDeviceToLogicDataFromDeviceConverter.h"
 
@@ -40,7 +40,7 @@ class CTestLogic
 
 	device_exchange::CDevicePacketConvertor<device_exchange::tag_packet_from_device> _device_packet_from_device_convertor;
 
-	CDeveiceMessageDescription _device_message_descriptor;
+	device_exchange::CDeviceMessageDescription _device_message_descriptor;
 
 	// пакет, принятый с устройства
 	std::shared_ptr<logic_structures::tag_base_data_from_device> _received_device_packet;
