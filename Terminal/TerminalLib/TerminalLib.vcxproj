@@ -176,11 +176,13 @@
     <ClInclude Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h" />
+    <ClInclude Include="LogicStructures\server_structures.h" />
     <ClInclude Include="Logic\Logic.h" />
     <ClInclude Include="Logic\ServicesNames.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
     <ClInclude Include="ServerExchange\protocol_structures.h" />
+    <ClInclude Include="ServerExchange\ServerInteract.h" />
     <ClInclude Include="ServerExchange\ServerPacketParser.h" />
     <ClInclude Include="Settings\CommonSettings.h" />
     <ClInclude Include="Settings\CorrespondSettings.h" />
@@ -196,6 +198,7 @@
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="Logic\Logic.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />
+    <ClCompile Include="ServerExchange\ServerInteract.cpp" />
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp" />
     <ClCompile Include="Settings\CommonSettings.cpp" />
     <ClCompile Include="Settings\CorrespondSettings.cpp" />

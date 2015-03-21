@@ -26,6 +26,8 @@ tools::e_init_state logic::CLogic::init()
 }
 
 logic::CLogic::CLogic()
+	: _device_interact(_packets_to_device, _packets_from_device, _common_settings)
+	, _server_interact(_common_settings, _packets_from_server, _packets_to_server)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -36,7 +38,7 @@ logic::CLogic::~CLogic()
 
 bool logic::CLogic::Start()
 {
-
+	return false;
 }
 
 void logic::CLogic::Stop()

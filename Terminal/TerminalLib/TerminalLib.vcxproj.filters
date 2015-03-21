@@ -111,6 +111,12 @@
     <ClInclude Include="DeviceExchange\DeviceMessageDescription.h">
       <Filter>Заголовочные файлы\DeviceExchange</Filter>
     </ClInclude>
+    <ClInclude Include="ServerExchange\ServerInteract.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\server_structures.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="DeviceExchange\DeviceMessageDescription.cpp">
       <Filter>Файлы исходного кода\DeviceExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\ServerInteract.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
