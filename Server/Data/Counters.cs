@@ -1,12 +1,17 @@
-﻿using LinqToDB.Mapping;
+﻿using LinqToDB;
+using LinqToDB.Data;
+using LinqToDB.Mapping;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Data
 {
     [Table("Counters")]
     public class Counters
     {
-        [PrimaryKey, Identity]
+        [Column]
+        public Guid Id { get; set; }
+        [Column]
         public Guid TerminalId { get; set; }
         [Column]
         public DateTime DateTimeServerEvent { get; set; }
@@ -34,5 +39,23 @@ namespace Server.Data
         public uint Vacuum { get; set; }
         [Column]
         public uint Air { get; set; }
+
+        public static bool Insert(Counters counters)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Insert(counters);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("Counters -> Insert: {0}", ex);
+            }
+            return result;
+        }
     }
 }

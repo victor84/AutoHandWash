@@ -1,14 +1,16 @@
-﻿using LinqToDB.Mapping;
+﻿using LinqToDB;
+using LinqToDB.Data;
+using LinqToDB.Mapping;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Server.Data
 {
     [Table("SettingsTerminals")]
     public class SettingsTerminal
     {
-        [PrimaryKey, Identity]
-        public Guid Id { get; set; }
-        [Column]
+        [PrimaryKey]
         public Guid TerminalId { get; set; }
         [Column]
         public byte State { get; set; }
@@ -36,5 +38,60 @@ namespace Server.Data
         public uint PriceVacuum { get; set; }
         [Column]
         public uint PriceAir { get; set; }
+        [Column]
+        public uint PriceOsmose { get; set; }
+
+        public static SettingsTerminal GetSettingsTerminalById(Guid id)
+        {
+            SettingsTerminal settingsTerminal = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    settingsTerminal = db.GetTable<SettingsTerminal>().Where(x => x.TerminalId == id).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetSettingsTerminalById: {0}", ex);
+            }
+            return settingsTerminal;
+        }
+
+        public static bool Insert(SettingsTerminal settingsTerminal)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Insert(settingsTerminal);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("SettingsTerminal -> Insert: {0}", ex);
+            }
+            return result;
+        }
+
+        public static bool Update(SettingsTerminal settingsTerminal)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Update(settingsTerminal);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("SettingsTerminal -> Update: {0}", ex);
+            }
+            return result;
+        }
     }
 }

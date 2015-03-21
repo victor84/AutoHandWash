@@ -102,6 +102,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\TerminalLog.cs" />
+    <Compile Include="Data\UserGroups.cs" />
+    <Compile Include="Tools.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="Data\Counters.cs" />
     <Compile Include="Data\Group.cs" />
