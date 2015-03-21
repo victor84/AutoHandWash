@@ -31,6 +31,18 @@
     <Filter Include="Файлы исходного кода\LogicStructures">
       <UniqueIdentifier>{93db470d-30fa-469d-8fa0-41381167cd5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\Logic">
+      <UniqueIdentifier>{abc55172-04f7-4c0d-96a6-8f2166c4b12d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Settings">
+      <UniqueIdentifier>{7c1b03f8-6b38-4167-b1b9-07d8ffccbd4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Logic">
+      <UniqueIdentifier>{b6ea0af2-6585-471f-b7fc-80971711356d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Settings">
+      <UniqueIdentifier>{098bf53d-7e5b-4ee6-bf11-a69f2c6cd3a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -78,6 +90,15 @@
     <ClInclude Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
+    <ClInclude Include="Logic\ServicesNames.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\CommonSettings.h">
+      <Filter>Заголовочные файлы\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\CorrespondSettings.h">
+      <Filter>Заголовочные файлы\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -100,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.cpp">
       <Filter>Файлы исходного кода\LogicStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\CommonSettings.cpp">
+      <Filter>Файлы исходного кода\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\CorrespondSettings.cpp">
+      <Filter>Файлы исходного кода\Settings</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

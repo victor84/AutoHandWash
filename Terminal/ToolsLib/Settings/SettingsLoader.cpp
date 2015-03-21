@@ -36,6 +36,9 @@ void CSettingsLoader::add_parameter(const e_parameter_data_type& type,
 									const CString& group, 
 									const CString name)
 {
+	if (TRUE == find_parameter(name, group))
+		return;
+
 	_v_parameters.push_back(create_param(type, group, name));
 }
 
@@ -118,10 +121,10 @@ BOOL CSettingsLoader::read_all()
 	return result;
 }
 
-BOOL CSettingsLoader::read( const CString& parameter_name )
+BOOL CSettingsLoader::read(const CString& parameter_name, const CString& group_name)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_name))
+	if (FALSE == find_parameter(parameter_name, group_name))
 		return FALSE;
 
 	return read_current_parameter();
@@ -140,7 +143,7 @@ BOOL CSettingsLoader::create_file_name()
 CStringW CSettingsLoader::get_string(const CString& parameter_name, const CString& group_name)
 {
 	CCriticalSectionLocker cs_lock(_cs);
-	if (FALSE == find_parameter(parameter_name))
+	if (FALSE == find_parameter(parameter_name, group_name))
 		return L"";
 
 	return *_current_parameter;

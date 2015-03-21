@@ -222,7 +222,7 @@ public:
 	BOOL read_all();
 
 	// чтение указанного параметра
-	BOOL read(const CString& parameter_name);
+	BOOL read(const CString& parameter_name, const CString& group_name);
 
 	CStringW get_string(const CString& parameter_name, const CString& group_name);
 	INT get_int(const CString& parameter_name, const CString& group_name);

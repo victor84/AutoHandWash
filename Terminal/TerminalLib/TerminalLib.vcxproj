@@ -79,7 +79,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange;LogicStructures</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange;LogicStructures;Logic;Settings</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
@@ -174,9 +174,12 @@
     <ClInclude Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.h" />
     <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h" />
+    <ClInclude Include="Logic\ServicesNames.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
     <ClInclude Include="ServerExchange\protocol_structures.h" />
     <ClInclude Include="ServerExchange\ServerPacketParser.h" />
+    <ClInclude Include="Settings\CommonSettings.h" />
+    <ClInclude Include="Settings\CorrespondSettings.h" />
     <ClInclude Include="stdafx\stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -187,6 +190,8 @@
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp" />
+    <ClCompile Include="Settings\CommonSettings.cpp" />
+    <ClCompile Include="Settings\CorrespondSettings.cpp" />
     <ClCompile Include="stdafx\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
