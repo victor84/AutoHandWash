@@ -44,6 +44,13 @@
                 </a>
             </li>
             @EndIf
+            @If.MasterPage.IsAdmin
+            <li id="users">
+                <a href="/users">
+                    Пользователи
+                </a>
+            </li>
+            @EndIf
             @IfNot.MasterPage.IsAuthenticated
             <li id="login">
                 <a href="/login">
