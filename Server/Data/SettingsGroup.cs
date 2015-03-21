@@ -1,4 +1,6 @@
-﻿using LinqToDB.Mapping;
+﻿using LinqToDB;
+using LinqToDB.Data;
+using LinqToDB.Mapping;
 using System;
 
 namespace Server.Data
@@ -6,8 +8,6 @@ namespace Server.Data
     [Table("SettingsGroups")]
     public class SettingsGroup
     {
-        [PrimaryKey, Identity]
-        public Guid Id { get; set; }
         [Column]
         public Guid GroupId { get; set; }
         [Column]

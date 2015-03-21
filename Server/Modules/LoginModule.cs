@@ -30,7 +30,7 @@ namespace Server.Modules
         {
             var username = (string)this.Request.Form.Username;
             var password = (string)this.Request.Form.Password;
-            var user = UserMapper.GetUserByName(username);
+            var user = User.GetUserByName(username);
             if (user == null || user.Password != password)
             {
                 Model.LoginPage = new LoginPageModel();
