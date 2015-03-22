@@ -30,6 +30,16 @@ tools::e_init_state logic::CLogic::init()
 
 void logic::CLogic::on_connected_to_server()
 {
+	send_identification_packet();
+}
+
+void logic::CLogic::on_disconnected_from_derver()
+{
+
+}
+
+void logic::CLogic::send_identification_packet()
+{
 	server_exchange::tag_identification_packet identification_packet;
 
 	std::wstring terminal_name = _common_settings.GetTerminalName();
@@ -45,11 +55,9 @@ void logic::CLogic::on_connected_to_server()
 		std::shared_ptr<logic_structures::tag_base_server_logic_struct>(server_logic_packet);
 
 	_server_interact.PushFrontToSend(packet);
-
-	// packet.reset();
 }
 
-void logic::CLogic::on_disconnected_from_derver()
+void logic::CLogic::send_settings_packet()
 {
 
 }
