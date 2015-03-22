@@ -5,7 +5,7 @@
 #include "SettingsLoader.h"
 #include "SingleServerSocket.h"
 #include "tools.h"
-#include "DeveiceMessageDescription.h"
+#include "DeviceMessageDescription.h"
 #include "DevicePacketConvertor.h"
 #include "AsyncClientSocket.h"
 #include "TestLogic.h"

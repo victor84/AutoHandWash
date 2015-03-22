@@ -15,13 +15,16 @@
 
 namespace logic_structures
 {
-
+/*
+CPacketFromPcToLogicDataFromPcConverter
+hardware pc packet -> logic packet from pc
+*/
 class CPacketFromPcToLogicDataFromPcConverter : public CBaseStructuresConvertor <
-		typename tools::data_wrappers::_tag_data_managed,
-		typename device_exchange::tag_packet_from_pc,
-		typename device_exchange::e_command_from_pc,
-		typename std::shared_ptr<tag_base_data_from_pc >,
-		CPacketFromPcToLogicDataFromPcConverter >
+														typename tools::data_wrappers::_tag_data_managed,
+														typename device_exchange::tag_packet_from_pc,
+														typename device_exchange::e_command_from_pc,
+														typename std::shared_ptr<tag_base_data_from_pc >,
+														CPacketFromPcToLogicDataFromPcConverter >
 {
 	virtual std::shared_ptr<tag_base_data_from_pc > handler_result_to_convert_result(tools::data_wrappers::_tag_data_managed& result) final;
 

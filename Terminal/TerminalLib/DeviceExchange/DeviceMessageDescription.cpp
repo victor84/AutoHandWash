@@ -1,29 +1,28 @@
 #include "stdafx.h"
-#include "DeveiceMessageDescription.h"
+#include "DeviceMessageDescription.h"
 #include "tools.h"
 
-using namespace device_exchange;
 
-void CDeveiceMessageDescription::fill_descriptors_storage()
+void device_exchange::CDeviceMessageDescription::fill_descriptors_storage()
 {
 	_descriptors_storage.clear();
 
-	add_descriptor(e_command_from_device::button_press, &CDeveiceMessageDescription::button_press);
-	add_descriptor(e_command_from_device::bill_acceptor, &CDeveiceMessageDescription::bill_acceptor);
-	add_descriptor(e_command_from_device::hopper_issue_coin, &CDeveiceMessageDescription::hopper_issue_coin);
-	add_descriptor(e_command_from_device::discount_card_issued, &CDeveiceMessageDescription::discount_card_issued);
-	add_descriptor(e_command_from_device::data_from_eeprom, &CDeveiceMessageDescription::data_from_eeprom);
-	add_descriptor(e_command_from_device::buttons_state, &CDeveiceMessageDescription::buttons_state);
-	add_descriptor(e_command_from_device::command_confirmation, &CDeveiceMessageDescription::command_confirmation);
-	add_descriptor(e_command_from_device::error, &CDeveiceMessageDescription::error);
+	add_descriptor(e_command_from_device::button_press, &CDeviceMessageDescription::button_press);
+	add_descriptor(e_command_from_device::bill_acceptor, &CDeviceMessageDescription::bill_acceptor);
+	add_descriptor(e_command_from_device::hopper_issue_coin, &CDeviceMessageDescription::hopper_issue_coin);
+	add_descriptor(e_command_from_device::discount_card_issued, &CDeviceMessageDescription::discount_card_issued);
+	add_descriptor(e_command_from_device::data_from_eeprom, &CDeviceMessageDescription::data_from_eeprom);
+	add_descriptor(e_command_from_device::buttons_state, &CDeviceMessageDescription::buttons_state);
+	add_descriptor(e_command_from_device::command_confirmation, &CDeviceMessageDescription::command_confirmation);
+	add_descriptor(e_command_from_device::error, &CDeviceMessageDescription::error);
 }
 
-void CDeveiceMessageDescription::add_descriptor(device_exchange::e_command_from_device command, bool(CDeveiceMessageDescription::*fn)(const device_exchange::tag_packet_from_device&))
+void device_exchange::CDeviceMessageDescription::add_descriptor(device_exchange::e_command_from_device command, bool(CDeviceMessageDescription::*fn)(const device_exchange::tag_packet_from_device&))
 {
 	_descriptors_storage.insert(_Storage_Elem_Type(command, std::bind(std::mem_fn(fn), this, std::placeholders::_1)));
 }
 
-bool CDeveiceMessageDescription::describe_raw(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::describe_raw(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str.str(_T("\r\n"));
 
@@ -44,7 +43,7 @@ bool CDeveiceMessageDescription::describe_raw(const device_exchange::tag_packet_
 	return true;
 }
 
-bool CDeveiceMessageDescription::button_press(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::button_press(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Нажата кнопка. Данные: ") 
 				<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0))) 
@@ -54,7 +53,7 @@ bool CDeveiceMessageDescription::button_press(const device_exchange::tag_packet_
 	return true;
 }
 
-bool CDeveiceMessageDescription::bill_acceptor(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::bill_acceptor(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Данные от купюроприемника или монетоприемника. Сумма: ") 
 				<< _byteswap_ushort(*((uint16_t*)&message.data0))
@@ -63,21 +62,21 @@ bool CDeveiceMessageDescription::bill_acceptor(const device_exchange::tag_packet
 	return true;
 }
 
-bool CDeveiceMessageDescription::hopper_issue_coin(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::hopper_issue_coin(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Выдана монета хоппером. Осталось выдать: ") << message.data0 << _T("\r\n");
 
 	return true;
 }
 
-bool CDeveiceMessageDescription::discount_card_issued(const device_exchange::tag_packet_from_device&)
+bool device_exchange::CDeviceMessageDescription::discount_card_issued(const device_exchange::tag_packet_from_device&)
 {
 	_str_str << _T("Выдана дисконтная карта.\r\n");
 
 	return true;
 }
 
-bool CDeveiceMessageDescription::data_from_eeprom(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::data_from_eeprom(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Данные из EEPROM. Номер ячейки ") << message.data0 << _T("\r\n")
 				<< _T("Данные: ") 
@@ -90,7 +89,7 @@ bool CDeveiceMessageDescription::data_from_eeprom(const device_exchange::tag_pac
 	return true;
 }
 
-bool CDeveiceMessageDescription::buttons_state(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::buttons_state(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Состояние кнопок.") << _T("\r\n");
 
@@ -109,14 +108,14 @@ bool CDeveiceMessageDescription::buttons_state(const device_exchange::tag_packet
 	return true;
 }
 
-bool CDeveiceMessageDescription::command_confirmation(const device_exchange::tag_packet_from_device&)
+bool device_exchange::CDeviceMessageDescription::command_confirmation(const device_exchange::tag_packet_from_device&)
 {
 	_str_str << _T("Подтверждение команды.\r\n");
 
 	return true;
 }
 
-bool CDeveiceMessageDescription::error(const device_exchange::tag_packet_from_device& message)
+bool device_exchange::CDeviceMessageDescription::error(const device_exchange::tag_packet_from_device& message)
 {
 	_str_str << _T("Ошибка. Код: ")
 		<< tools::binary_to_hex(tools::data_wrappers::_tag_data_const(&message.data0, sizeof(message.data0)))
@@ -125,17 +124,17 @@ bool CDeveiceMessageDescription::error(const device_exchange::tag_packet_from_de
 	return true;
 }
 
-CDeveiceMessageDescription::CDeveiceMessageDescription()
+device_exchange::CDeviceMessageDescription::CDeviceMessageDescription()
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	fill_descriptors_storage();
 }
 
-CDeveiceMessageDescription::~CDeveiceMessageDescription()
+device_exchange::CDeviceMessageDescription::~CDeviceMessageDescription()
 {
 }
 
-std::wstring CDeveiceMessageDescription::describe_message(const device_exchange::tag_packet_from_device& message)
+std::wstring device_exchange::CDeviceMessageDescription::describe_message(const device_exchange::tag_packet_from_device& message)
 {
 	if (false == describe_raw(message))
 		return _str_str.str();

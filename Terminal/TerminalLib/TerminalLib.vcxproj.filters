@@ -100,7 +100,22 @@
       <Filter>Заголовочные файлы\Settings</Filter>
     </ClInclude>
     <ClInclude Include="Logic\Logic.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceExchange\DeviceInteract.h">
+      <Filter>Заголовочные файлы\DeviceExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceExchange\DeviceMessageDescription.h">
+      <Filter>Заголовочные файлы\DeviceExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerExchange\ServerInteract.h">
+      <Filter>Заголовочные файлы\ServerExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicStructures\server_structures.h">
+      <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +147,21 @@
       <Filter>Файлы исходного кода\Settings</Filter>
     </ClCompile>
     <ClCompile Include="Logic\Logic.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
+    <ClCompile Include="DeviceExchange\DeviceInteract.cpp">
+      <Filter>Файлы исходного кода\DeviceExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceExchange\DeviceMessageDescription.cpp">
+      <Filter>Файлы исходного кода\DeviceExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerExchange\ServerInteract.cpp">
+      <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TerminalLib.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
