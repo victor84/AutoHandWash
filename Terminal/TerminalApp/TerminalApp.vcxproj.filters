@@ -60,7 +60,6 @@
     <None Include="res\TerminalApp.rc2">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="settings.ini" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TerminalApp.ico">

@@ -169,6 +169,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lock_deque.h" />
     <ClInclude Include="lock_vector.h" />
     <ClInclude Include="Logging\TraceError.h" />
     <ClInclude Include="Networking\AsyncClientSocket.h" />

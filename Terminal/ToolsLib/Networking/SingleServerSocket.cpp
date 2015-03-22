@@ -4,7 +4,7 @@
 
 using namespace tools::networking;
 
-CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data,
+CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data,
 										 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 										 : _socket_stream(received_data, on_data_received)
 {
@@ -181,6 +181,15 @@ void tools::networking::CSingleServerSocket::listen_method()
 		delete _lock_wait_stream;
 		_lock_wait_stream = nullptr;
 	}
+}
+void CSingleServerSocket::PushBackToSend(tools::data_wrappers::_tag_data_const data)
+{
+	_socket_stream.PushBackToSend(data);
+}
+
+void CSingleServerSocket::PushFrontToSend(tools::data_wrappers::_tag_data_const data)
+{
+	_socket_stream.PushFrontToSend(data);
 }
 
 void CSingleServerSocket::on_complete_stream_fn()

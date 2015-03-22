@@ -108,7 +108,7 @@ bool CTestLogic::send_identification_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_client_socket.Send(raw_data);
+	_client_socket.PushBackToSend(raw_data);
 
 	return true;
 }
@@ -142,7 +142,7 @@ bool CTestLogic::send_settings_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_client_socket.Send(raw_data);
+	_client_socket.PushBackToSend(raw_data);
 
 	return true;
 }
@@ -174,7 +174,7 @@ bool CTestLogic::send_counters_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_client_socket.Send(raw_data);
+	_client_socket.PushBackToSend(raw_data);
 
 	return true;
 }
@@ -204,14 +204,14 @@ bool CTestLogic::send_log_record_packet()
 
 	_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
 
-	_client_socket.Send(raw_data);
+	_client_socket.PushBackToSend(raw_data);
 
 	return true;
 
 }
 
 CTestLogic::CTestLogic()
-	: _client_socket(_received_server_data, std::bind(std::mem_fn(&CTestLogic::on_server_data_received), this, std::placeholders::_1))
+	: _client_socket(_received_server_data, std::bind(std::mem_fn(&CTestLogic::on_server_data_received), this, std::placeholders::_1), nullptr, nullptr)
 	, _device_socket(_received_device_data, std::bind(std::mem_fn(&CTestLogic::on_device_data_received), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();

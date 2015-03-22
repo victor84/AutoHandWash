@@ -5,10 +5,14 @@
 using namespace tools;
 using namespace tools::networking;
 
-CAsyncClientSocket::CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
-									   std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
+CAsyncClientSocket::CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_managed>& received_data,
+									   std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received,
+									   std::function<void(void)> on_connected,
+									   std::function<void(void)> on_disconnected)
 									   : _reconnection_timer(nullptr)
 									   , _socket_stream(received_data, on_data_received)
+									   , _on_connected(on_connected)
+									   , _on_disconnected(on_disconnected)
 									   , _reconnection_method([this](INT)
 																{
 																	if (_e_connection_state::not_connected == _connection_state)
@@ -48,6 +52,9 @@ e_socket_result CAsyncClientSocket::OpenConnection(const tag_connection_params& 
 		return e_socket_result::error;
 	}
 
+	if (_on_connected)
+		_on_connected();
+
 	_connection_state = _e_connection_state::connected;
 	_end_of_stream_status = e_work_loop_status::ok;
 	_socket_stream.Start(_client_socket,
@@ -61,6 +68,9 @@ void CAsyncClientSocket::on_complete_stream_fn()
 {
 	if (e_work_loop_status::error == _end_of_stream_status)
 		inner_close_connection();
+
+	if (_on_disconnected)
+		_on_disconnected();
 
 	_connection_state = _e_connection_state::not_connected;
 }
@@ -193,8 +203,13 @@ void CAsyncClientSocket::pause_reconnection_timer()
 	_reconnection_timer->pause();
 }
 
-void CAsyncClientSocket::Send(data_wrappers::_tag_data_const data)
+void CAsyncClientSocket::PushBackToSend(data_wrappers::_tag_data_const data)
 {
-	_socket_stream.Send(data);
+	_socket_stream.PushBackToSend(data);
+}
+
+void tools::networking::CAsyncClientSocket::PushFrontToSend(data_wrappers::_tag_data_const data)
+{
+	_socket_stream.PushFrontToSend(data);
 }
 

@@ -122,6 +122,9 @@ namespace Server
             string groupName = new string(identificationPacket.group_name);
             string terminalName = new string(identificationPacket.terminal_name);
 
+            groupName = groupName.Remove(groupName.IndexOf('\0'));
+            terminalName = terminalName.Remove(terminalName.IndexOf('\0'));
+
             group = Group.GetGroupByName(groupName);
             if (group == null)
             {

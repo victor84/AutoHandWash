@@ -3,7 +3,6 @@
 #include "server_structures.h"
 #include "tools.h"
 
-
 void server_exchange::CServerInteract::thread_fn()
 {
 	while (tools::e_work_loop_status::ok == _work_loop_status)
@@ -17,7 +16,7 @@ void server_exchange::CServerInteract::thread_fn()
 
 bool server_exchange::CServerInteract::parse_from_server()
 {
-	std::vector<tools::data_wrappers::_tag_data_const> raw_data = _raw_data_from_server.get_with_cleanup();
+	std::vector<tools::data_wrappers::_tag_data_managed> raw_data = _raw_data_from_server.get_with_cleanup();
 
 	for (tools::data_wrappers::_tag_data_const data : raw_data)
 	{
@@ -42,18 +41,24 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 {
 	tag_settings_packet settings_packet;
 	tag_confirmation_packet confirmation_packet;
-	tools::data_wrappers::_tag_data_managed pointer;
+	logic_structures::tag_base_server_logic_struct* pointer = nullptr;
 	std::shared_ptr<logic_structures::tag_base_server_logic_struct> shared_pointer;
 
 	switch (transport_packet.type)
 	{
 		case(e_packet_type::settings) :
 			if (e_convert_result::success == _parser.ParseSettingsPacket(transport_packet, settings_packet))
-				pointer = (logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings>(settings_packet));
+			{
+				logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings> sp(settings_packet);
+				pointer = new logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings>(sp);
+			}
 			break;
 		case (e_packet_type::confirmation) :
 			if (e_convert_result::success == _parser.ParseConfirmationPacket(transport_packet, confirmation_packet))
-				pointer = (logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation>(confirmation_packet));
+			{
+				logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation> cp(confirmation_packet);
+				pointer = new logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation>(cp);
+			}
 			break;
 		default:
 			_tr_error->trace_error(_T("Не удалось распарсить сообщение от сервера"));
@@ -63,13 +68,13 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 			return false;
 	}
 
-	shared_pointer = std::shared_ptr<logic_structures::tag_base_server_logic_struct>(reinterpret_cast<logic_structures::tag_base_server_logic_struct*>(&pointer.p_data));
-
-	if (shared_pointer)
+	if (nullptr != pointer)
 	{
+		shared_pointer = std::shared_ptr<logic_structures::tag_base_server_logic_struct>(pointer);
 		_packets_to_logic.push_back(shared_pointer);
 		return true;
 	}
+
 	return false;
 }
 
@@ -77,46 +82,87 @@ bool server_exchange::CServerInteract::send_to_server()
 {
 	std::vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>> packets = _packets_to_server.get_with_cleanup();
 
-	tools::data_wrappers::_tag_data_managed raw_data;
-
 	for (std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet : packets)
 	{
-		switch (packet->type)
-		{
-			case (e_packet_type::confirmation) :
-				_packet_to_raw_data.CreateConfirmationPacketRawData(*(reinterpret_cast<tag_confirmation_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::counters) :
-				_packet_to_raw_data.CreateCountersPacketRawData(*(reinterpret_cast<tag_counters_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::id) :
-				_packet_to_raw_data.CreateIdentificationPacketRawData(*(reinterpret_cast<tag_identification_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::log) :
-				_packet_to_raw_data.CreateLogRecordPacketRawData(*(reinterpret_cast<tag_log_record_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::settings) :
-				_packet_to_raw_data.CreateSettingsPacketRawData(*(reinterpret_cast<tag_settings_packet*>(packet.get())), raw_data);
-				break;
-			default:
-				_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
-				break;
-		}
-
-		if (nullptr != raw_data.p_data)
-			_client_socket.Send(raw_data);
+		send_packet_to_server(packet);
 	}
 	return true;
 }
 
+bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet, bool to_front)
+{
+	server_exchange::tag_transport_packet transport_packet;
+	server_exchange::tag_identification_packet ip;
+	server_exchange::tag_confirmation_packet confp;
+	server_exchange::tag_counters_packet coup;
+	server_exchange::tag_log_record_packet lrp;
+	server_exchange::tag_settings_packet sp;
+
+	switch (packet->type)
+	{
+		case (e_packet_type::id) :
+			ip = get_server_logic_packet<server_exchange::tag_identification_packet, server_exchange::e_packet_type::id>(packet);
+			_packet_to_raw_data.CreateIdentificationPacketRawData(ip, transport_packet.data);
+			transport_packet.length = sizeof(ip);
+			transport_packet.type = e_packet_type::id;
+			break;
+		case (e_packet_type::confirmation) :
+			confp = get_server_logic_packet<server_exchange::tag_confirmation_packet, server_exchange::e_packet_type::confirmation>(packet);
+			_packet_to_raw_data.CreateConfirmationPacketRawData(confp, transport_packet.data);
+			transport_packet.length = sizeof(confp);
+			transport_packet.type = e_packet_type::confirmation;
+			break;
+		case (e_packet_type::counters) :
+			coup = get_server_logic_packet<server_exchange::tag_counters_packet, server_exchange::e_packet_type::counters>(packet);
+			_packet_to_raw_data.CreateCountersPacketRawData(coup, transport_packet.data);
+			transport_packet.length = sizeof(coup);
+			transport_packet.type = e_packet_type::counters;
+			break;
+		case (e_packet_type::log) :
+			lrp = get_server_logic_packet<server_exchange::tag_log_record_packet, server_exchange::e_packet_type::log>(packet);
+			_packet_to_raw_data.CreateLogRecordPacketRawData(lrp, transport_packet.data);
+			transport_packet.length = sizeof(lrp);
+			transport_packet.type = e_packet_type::log;
+			break;
+		case (e_packet_type::settings) :
+			sp = get_server_logic_packet<server_exchange::tag_settings_packet, server_exchange::e_packet_type::settings>(packet);
+			_packet_to_raw_data.CreateSettingsPacketRawData(sp, transport_packet.data);
+			transport_packet.length = sizeof(sp);
+			transport_packet.type = e_packet_type::settings;
+			break;
+
+		default:
+			_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
+			break;
+	}
+
+	if (nullptr != transport_packet.data.p_data)
+	{
+		tools::data_wrappers::_tag_data_managed raw_data;
+
+		_packet_to_raw_data.CreateRawData(transport_packet, raw_data);
+
+		if (true == to_front)
+			_client_socket.PushFrontToSend(raw_data);
+		else
+			_client_socket.PushBackToSend(raw_data);
+
+		return true;
+	}
+	return false;
+}
+
 server_exchange::CServerInteract::CServerInteract(logic_settings::CCommonSettings& settings_module,
 												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_logic,
-												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server)
-	: _client_socket(_raw_data_from_server, nullptr)
+												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server,
+												  std::function<void(void)> on_connected,
+												  std::function<void(void)> on_disconnected)
+	: _client_socket(_raw_data_from_server, nullptr, on_connected, on_disconnected)
 	, _settings_module(settings_module)
 	, _packets_to_logic(packets_to_logic)
 	, _packets_to_server(packets_to_server)
 {
+	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 server_exchange::CServerInteract::~CServerInteract()
@@ -125,7 +171,7 @@ server_exchange::CServerInteract::~CServerInteract()
 
 bool server_exchange::CServerInteract::Start()
 {
-	if (tools::e_work_loop_status::ok == _work_loop_status)
+	if (tools::e_init_state::was_init == _init_state)
 		return true;
 
 	tools::networking::tag_connection_params connection_params;
@@ -154,4 +200,9 @@ void server_exchange::CServerInteract::Stop()
 	_client_socket.CloseConnection();
 
 	_init_state = tools::e_init_state::not_init;
+}
+
+void server_exchange::CServerInteract::PushFrontToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet)
+{
+	send_packet_to_server(packet, true);
 }

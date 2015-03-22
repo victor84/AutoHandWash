@@ -4,7 +4,7 @@
 using namespace tools::networking;
 using namespace tools::data_wrappers;
 
-CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data,
+CSocketStream::CSocketStream(tools::lock_vector<_tag_data_managed>& received_data,
 							 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 	: _received_data(received_data)
 	, _start_state(tools::e_init_state::not_init)
@@ -12,6 +12,7 @@ CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data,
 	, _on_data_received(on_data_received)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
+	_data_to_send = std::make_shared<tools::lock_deque<data_wrappers::_tag_data_const>>();
 }
 
 CSocketStream::~CSocketStream()
@@ -80,7 +81,7 @@ void CSocketStream::thread_method()
 			_work_loop_status = tools::e_work_loop_status::error;
 			break;
 		}
-		if ((_e_check_socket_result::ready == cs_result) && (false == _data_to_send.empty()))
+		if ((_e_check_socket_result::ready == cs_result) && (false == _data_to_send->empty()))
 		{
 			if (e_socket_result::error == send_data())
 			{
@@ -93,7 +94,8 @@ void CSocketStream::thread_method()
 
 	*_end_status = _work_loop_status;
 	cleanup();
-	_on_complete_fn();
+	if (_on_complete_fn)
+		_on_complete_fn();
 	_thread_running = false;
 }
 
@@ -167,10 +169,10 @@ e_socket_result CSocketStream::receive_data()
 
 e_socket_result CSocketStream::send_data()
 {
-	if (true == _data_to_send.empty())
+	if (true == _data_to_send->empty())
 		return e_socket_result::success;
 
-	std::vector<data_wrappers::_tag_data_const> data_collection = _data_to_send.get_with_cleanup();
+	std::vector<data_wrappers::_tag_data_const> data_collection = _data_to_send->get_with_cleanup();
 
 	for (data_wrappers::_tag_data_const packet : data_collection)
 	{
@@ -196,18 +198,25 @@ e_socket_result CSocketStream::send_data()
 
 void CSocketStream::clear_buffers()
 {
-	if (false == _data_to_send.empty())
+	if (false == _data_to_send->empty())
 	{
-		for (data_wrappers::_tag_data_const data : _data_to_send.get_with_cleanup())
+		for (data_wrappers::_tag_data_const data : _data_to_send->get_with_cleanup())
 		{
 			data.free_data();
 		}
 	}
 }
 
-void CSocketStream::Send(tools::data_wrappers::_tag_data_const data)
+void CSocketStream::PushBackToSend(tools::data_wrappers::_tag_data_const data)
 {
 	data_wrappers::_tag_data_managed man_data(data);
 	man_data.free_after_destruct = false;
-	_data_to_send.push_back(static_cast<data_wrappers::_tag_data_const>(man_data));
+	_data_to_send->push_back(static_cast<data_wrappers::_tag_data_const>(man_data));
+}
+
+void CSocketStream::PushFrontToSend(tools::data_wrappers::_tag_data_const data)
+{
+	data_wrappers::_tag_data_managed man_data(data);
+	man_data.free_after_destruct = false;
+	_data_to_send->push_front(static_cast<data_wrappers::_tag_data_const>(man_data));
 }

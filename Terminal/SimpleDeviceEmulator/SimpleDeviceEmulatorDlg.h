@@ -49,7 +49,7 @@ class CSimpleDeviceEmulatorDlg : public CDialogEx
 
 	tools::networking::CAsyncClientSocket _client_socket;
 
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> _received_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _received_data;
 
 	tools::logging::CTraceError* _tr_error;
 

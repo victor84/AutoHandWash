@@ -62,6 +62,18 @@ class CLogic
 	// инициализация
 	tools::e_init_state init();
 
+	// соединение с сервером
+	void on_connected_to_server();
+
+	// отключение от сервера
+	void on_disconnected_from_derver();
+
+	// отправка идентификационного пакета
+	void send_identification_packet();
+
+	// отправка пакета с настройками
+	void send_settings_packet();
+
 public:
 	CLogic();
 	~CLogic();

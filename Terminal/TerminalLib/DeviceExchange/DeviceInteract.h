@@ -52,7 +52,7 @@ class CDeviceInteract
 
 	// подключение к эмулятору устройства
 	tools::networking::CSingleServerSocket _device_emulator_connection;
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> _device_raw_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _device_raw_data;
 
 	// настройки
 	const logic_settings::CCommonSettings& _settings_module;
@@ -78,9 +78,9 @@ class CDeviceInteract
 	tools::e_init_state init();
 
 public:
-	CDeviceInteract(tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device,
+	CDeviceInteract(const logic_settings::CCommonSettings& settings_module,
 					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_device>>& packets_to_logic,
-					const logic_settings::CCommonSettings& settings_module);
+					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device);
 	virtual ~CDeviceInteract();
 
 	bool Start();

@@ -38,6 +38,7 @@
 // stl
 #include <string>
 #include <vector>
+#include <deque>
 #include <sstream>
 #include <locale>
 #include <thread>
