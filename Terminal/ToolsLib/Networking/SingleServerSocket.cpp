@@ -182,6 +182,15 @@ void tools::networking::CSingleServerSocket::listen_method()
 		_lock_wait_stream = nullptr;
 	}
 }
+void CSingleServerSocket::PushBackToSend(tools::data_wrappers::_tag_data_const data)
+{
+	_socket_stream.PushBackToSend(data);
+}
+
+void CSingleServerSocket::PushFrontToSend(tools::data_wrappers::_tag_data_const data)
+{
+	_socket_stream.PushFrontToSend(data);
+}
 
 void CSingleServerSocket::on_complete_stream_fn()
 {

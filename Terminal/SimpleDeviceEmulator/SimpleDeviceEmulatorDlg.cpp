@@ -82,7 +82,9 @@ CSimpleDeviceEmulatorDlg::CSimpleDeviceEmulatorDlg(CWnd* pParent /*=NULL*/)
 	, m_PacketData(_T(""))
 	, m_Log(_T(""))
 	, _client_socket(_received_data, 
-					std::bind(std::mem_fn(&CSimpleDeviceEmulatorDlg::on_data_received_fn), this, std::placeholders::_1))
+					std::bind(std::mem_fn(&CSimpleDeviceEmulatorDlg::on_data_received_fn), this, std::placeholders::_1),
+					nullptr,
+					nullptr)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
@@ -240,7 +242,7 @@ void CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton()
 
 	_packet_convertor.CreateRawData(_packet_from_device, raw_data);
 	packet_hex = tools::binary_to_hex(raw_data);
-	_client_socket.Send(raw_data);
+	_client_socket.PushBackToSend(raw_data);
 	LOG(_T("Отправлен пакет данных: ") + packet_hex);
 
 	m_PacketData = packet_hex.c_str();

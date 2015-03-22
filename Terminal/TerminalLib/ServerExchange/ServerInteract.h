@@ -56,15 +56,22 @@ class CServerInteract
 
 	bool send_to_server();
 
+	bool send_packet_to_server(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet, bool to_front = false);
+
 public:
 	CServerInteract(logic_settings::CCommonSettings& settings_module,
 					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_logic,
-					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server);
+					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server,
+					std::function<void(void)> on_connected,
+					std::function<void(void)> on_disconnected);
 	virtual ~CServerInteract();
 
 	bool Start();
 
 	void Stop();
+
+	// отправить пакет перед остальными
+	void PushFrontToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet);
 
 };
 }

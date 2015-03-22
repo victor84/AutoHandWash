@@ -67,6 +67,12 @@ class CAsyncClientSocket
 	// метод переподключения
 	Concurrency::call<INT> _reconnection_method;
 
+	// вызывается при установке соединения до приёма данных
+	std::function<void(void)> _on_connected;
+
+	// вызывается при разрыве соединения
+	std::function<void(void)> _on_disconnected;
+
 	// запуск таймера переподключения
 	void start_reconnection_timer();
 
@@ -83,10 +89,16 @@ class CAsyncClientSocket
 
 public:
 	CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
-					   std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
+					   std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received,
+					   std::function<void(void)> on_connected,
+					   std::function<void(void)> on_disconnected);
 	virtual ~CAsyncClientSocket();
 
-	void Send(data_wrappers::_tag_data_const data);
+	// Постановка в очередь данных на отправку
+	void PushBackToSend(data_wrappers::_tag_data_const data);
+
+	// Постановка в начало очереди на отправку
+	void PushFrontToSend(data_wrappers::_tag_data_const data);
 
 	// открыть соединение с указанными параметрами
 	e_socket_result OpenConnection(const tag_connection_params& params);

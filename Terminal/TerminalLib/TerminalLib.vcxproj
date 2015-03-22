@@ -82,6 +82,7 @@
       <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange;LogicStructures;Logic;Settings</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -7,6 +7,7 @@
 #include <mutex>
 #include <condition_variable>
 #include "tools_structures.h"
+#include "lock_deque.h"
 
 
 /*!
@@ -58,7 +59,7 @@ class CSocketStream
 	tools::lock_vector<data_wrappers::_tag_data_const>& _received_data;
 
 	// данные для отправки
-	tools::lock_vector<data_wrappers::_tag_data_const> _data_to_send;
+	std::shared_ptr<tools::lock_deque<data_wrappers::_tag_data_const>> _data_to_send;
 
 	// поток обработки данных
 	std::thread _this_thread;
@@ -112,7 +113,11 @@ public:
 	// остановка
 	e_socket_result Stop();
 
-	void Send(data_wrappers::_tag_data_const data);
+	// Постановка в очередь данных на отправку
+	void PushBackToSend(data_wrappers::_tag_data_const data);
+
+	// Постановка в начало очереди на отправку
+	void PushFrontToSend(data_wrappers::_tag_data_const data);
 
 };
 }

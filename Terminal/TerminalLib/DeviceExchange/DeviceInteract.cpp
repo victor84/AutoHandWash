@@ -43,7 +43,7 @@ void device_exchange::CDeviceInteract::logic_to_device()
 
 		if (device_exchange::e_convert_result::success == _device_packet_creator.CreateRawData(packet, raw_data))
 		{
-			_device_emulator_connection.Send(raw_data);
+			_device_emulator_connection.PushBackToSend(raw_data);
 		}
 	}
 }
@@ -63,9 +63,9 @@ tools::e_init_state device_exchange::CDeviceInteract::init()
 	return _init_state;
 }
 
-device_exchange::CDeviceInteract::CDeviceInteract(tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device,
+device_exchange::CDeviceInteract::CDeviceInteract(const logic_settings::CCommonSettings& settings_module,
 												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_device>>& packets_to_logic,
-												  const logic_settings::CCommonSettings& settings_module)
+												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device)
 												  : _packets_to_device(packets_to_device)
 												  , _packets_to_logic(packets_to_logic)
 												  , _settings_module(settings_module)

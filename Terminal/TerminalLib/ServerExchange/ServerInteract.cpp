@@ -3,7 +3,6 @@
 #include "server_structures.h"
 #include "tools.h"
 
-
 void server_exchange::CServerInteract::thread_fn()
 {
 	while (tools::e_work_loop_status::ok == _work_loop_status)
@@ -83,42 +82,56 @@ bool server_exchange::CServerInteract::send_to_server()
 {
 	std::vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>> packets = _packets_to_server.get_with_cleanup();
 
-	tools::data_wrappers::_tag_data_managed raw_data;
-
 	for (std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet : packets)
 	{
-		switch (packet->type)
-		{
-			case (e_packet_type::confirmation) :
-				_packet_to_raw_data.CreateConfirmationPacketRawData(*(reinterpret_cast<tag_confirmation_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::counters) :
-				_packet_to_raw_data.CreateCountersPacketRawData(*(reinterpret_cast<tag_counters_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::id) :
-				_packet_to_raw_data.CreateIdentificationPacketRawData(*(reinterpret_cast<tag_identification_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::log) :
-				_packet_to_raw_data.CreateLogRecordPacketRawData(*(reinterpret_cast<tag_log_record_packet*>(packet.get())), raw_data);
-				break;
-			case (e_packet_type::settings) :
-				_packet_to_raw_data.CreateSettingsPacketRawData(*(reinterpret_cast<tag_settings_packet*>(packet.get())), raw_data);
-				break;
-			default:
-				_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
-				break;
-		}
-
-		if (nullptr != raw_data.p_data)
-			_client_socket.Send(raw_data);
+		send_packet_to_server(packet);
 	}
 	return true;
 }
 
+bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet, bool to_front)
+{
+	tools::data_wrappers::_tag_data_managed raw_data;
+	switch (packet->type)
+	{
+		case (e_packet_type::confirmation) :
+			_packet_to_raw_data.CreateConfirmationPacketRawData(*(reinterpret_cast<tag_confirmation_packet*>(packet.get())), raw_data);
+			break;
+		case (e_packet_type::counters) :
+			_packet_to_raw_data.CreateCountersPacketRawData(*(reinterpret_cast<tag_counters_packet*>(packet.get())), raw_data);
+			break;
+		case (e_packet_type::id) :
+			_packet_to_raw_data.CreateIdentificationPacketRawData(*(reinterpret_cast<tag_identification_packet*>(packet.get())), raw_data);
+			break;
+		case (e_packet_type::log) :
+			_packet_to_raw_data.CreateLogRecordPacketRawData(*(reinterpret_cast<tag_log_record_packet*>(packet.get())), raw_data);
+			break;
+		case (e_packet_type::settings) :
+			_packet_to_raw_data.CreateSettingsPacketRawData(*(reinterpret_cast<tag_settings_packet*>(packet.get())), raw_data);
+			break;
+		default:
+			_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
+			break;
+	}
+
+	if (nullptr != raw_data.p_data)
+	{
+		if (true == to_front)
+			_client_socket.PushFrontToSend(raw_data);
+		else
+			_client_socket.PushBackToSend(raw_data);
+
+		return true;
+	}
+	return false;
+}
+
 server_exchange::CServerInteract::CServerInteract(logic_settings::CCommonSettings& settings_module,
 												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_logic,
-												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server)
-	: _client_socket(_raw_data_from_server, nullptr)
+												  tools::lock_vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>>& packets_to_server,
+												  std::function<void(void)> on_connected,
+												  std::function<void(void)> on_disconnected)
+	: _client_socket(_raw_data_from_server, nullptr, on_connected, on_disconnected)
 	, _settings_module(settings_module)
 	, _packets_to_logic(packets_to_logic)
 	, _packets_to_server(packets_to_server)
@@ -160,4 +173,9 @@ void server_exchange::CServerInteract::Stop()
 	_client_socket.CloseConnection();
 
 	_init_state = tools::e_init_state::not_init;
+}
+
+void server_exchange::CServerInteract::PushFrontToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet)
+{
+	send_packet_to_server(packet, true);
 }

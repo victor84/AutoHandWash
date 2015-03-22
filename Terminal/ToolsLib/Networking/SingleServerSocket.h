@@ -78,8 +78,11 @@ public:
 						std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
 	virtual ~CSingleServerSocket();
 
+	// Постановка в очередь данных на отправку
+	void PushBackToSend(data_wrappers::_tag_data_const data);
 
-	void Send(data_wrappers::_tag_data_const data);
+	// Постановка в начало очереди на отправку
+	void PushFrontToSend(data_wrappers::_tag_data_const data);
 
 	// открыть соединение с указанными параметрами
 	e_socket_result Start(const tag_connection_params& params);
