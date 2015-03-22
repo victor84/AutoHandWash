@@ -16,10 +16,10 @@ class CTestLogic
 	tools::logging::CTraceError* _tr_error;
 
 	// прин€тые сырые данные с сервера
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> _received_server_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _received_server_data;
 
 	// прин€тые данные с эмул€тора устройства
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> _received_device_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _received_device_data;
 
 	// дл€ отправки данных
 	tools::networking::CAsyncClientSocket _client_socket;

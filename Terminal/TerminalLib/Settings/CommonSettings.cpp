@@ -62,7 +62,7 @@ std::string logic_settings::CCommonSettings::GetServerAddress() const
 
 std::string logic_settings::CCommonSettings::GetServerPort() const
 {
-	return _server_address;
+	return _server_port;
 }
 
 std::wstring logic_settings::CCommonSettings::GetTerminalName() const

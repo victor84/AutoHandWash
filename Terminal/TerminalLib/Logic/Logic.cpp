@@ -6,7 +6,7 @@ void logic::CLogic::thread_fn()
 {
 	while (tools::e_work_loop_status::ok == _work_loop_status)
 	{
-
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 }
 
@@ -38,13 +38,15 @@ void logic::CLogic::on_connected_to_server()
 	terminal_name._Copy_s(identification_packet.terminal_name, sizeof(identification_packet.terminal_name), terminal_name.size());
 	terminal_group._Copy_s(identification_packet.group_name, sizeof(identification_packet.group_name), terminal_group.size());
 
-	logic_structures::tag_server_logic_packet < server_exchange::tag_identification_packet,
-		server_exchange::e_packet_type::id > server_logic_packet(identification_packet);
+	logic_structures::tag_server_logic_packet <server_exchange::tag_identification_packet, server_exchange::e_packet_type::id>* 
+		server_logic_packet = new logic_structures::tag_server_logic_packet < server_exchange::tag_identification_packet, server_exchange::e_packet_type::id > (identification_packet);
 
 	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet = 
-		std::shared_ptr<logic_structures::tag_base_server_logic_struct>(reinterpret_cast<logic_structures::tag_base_server_logic_struct*>(&server_logic_packet));
+		std::shared_ptr<logic_structures::tag_base_server_logic_struct>(server_logic_packet);
 
 	_server_interact.PushFrontToSend(packet);
+
+	// packet.reset();
 }
 
 void logic::CLogic::on_disconnected_from_derver()

@@ -4,7 +4,7 @@
 using namespace tools::networking;
 using namespace tools::data_wrappers;
 
-CSocketStream::CSocketStream(tools::lock_vector<_tag_data_const>& received_data,
+CSocketStream::CSocketStream(tools::lock_vector<_tag_data_managed>& received_data,
 							 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 	: _received_data(received_data)
 	, _start_state(tools::e_init_state::not_init)

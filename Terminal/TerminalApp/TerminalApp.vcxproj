@@ -215,9 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\TerminalApp.rc2" />
-    <None Include="settings.ini">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TerminalApp.ico" />

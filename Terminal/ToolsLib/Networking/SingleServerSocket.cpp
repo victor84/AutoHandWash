@@ -4,7 +4,7 @@
 
 using namespace tools::networking;
 
-CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data,
+CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data,
 										 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 										 : _socket_stream(received_data, on_data_received)
 {

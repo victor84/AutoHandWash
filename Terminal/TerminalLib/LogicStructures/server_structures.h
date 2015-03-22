@@ -24,6 +24,11 @@ struct tag_base_server_logic_struct
 	{
 
 	}
+
+	virtual ~tag_base_server_logic_struct()
+	{
+
+	}
 };
 
 // структура пакета серверных данных для работы в логике
@@ -36,6 +41,11 @@ struct tag_server_logic_packet : tag_base_server_logic_struct
 	tag_server_logic_packet(const _PacketType& packet) 
 		: tag_base_server_logic_struct(_Id)
 		, packet(packet)
+	{
+
+	}
+
+	virtual ~tag_server_logic_packet()
 	{
 
 	}

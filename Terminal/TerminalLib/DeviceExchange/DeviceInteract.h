@@ -52,7 +52,7 @@ class CDeviceInteract
 
 	// подключение к эмулятору устройства
 	tools::networking::CSingleServerSocket _device_emulator_connection;
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> _device_raw_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _device_raw_data;
 
 	// настройки
 	const logic_settings::CCommonSettings& _settings_module;

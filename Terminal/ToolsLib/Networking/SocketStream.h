@@ -56,7 +56,7 @@ class CSocketStream
 	INT _received_bytes_count;
 
 	// принятые данные
-	tools::lock_vector<data_wrappers::_tag_data_const>& _received_data;
+	tools::lock_vector<data_wrappers::_tag_data_managed>& _received_data;
 
 	// данные для отправки
 	std::shared_ptr<tools::lock_deque<data_wrappers::_tag_data_const>> _data_to_send;
@@ -101,7 +101,7 @@ class CSocketStream
 
 public:
 
-	CSocketStream(tools::lock_vector<data_wrappers::_tag_data_const>& received_data,
+	CSocketStream(tools::lock_vector<data_wrappers::_tag_data_managed>& received_data,
 				  std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received);
 	virtual ~CSocketStream();
 

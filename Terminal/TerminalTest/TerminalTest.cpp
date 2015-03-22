@@ -25,10 +25,10 @@ using namespace device_exchange;
 tools::logging::CTraceError* tr_error;
 
 void TestClient(tools::networking::tag_connection_params connection_params,
-				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data);
+				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data);
 
 void TestServer(tools::networking::tag_connection_params connection_params,
-				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data);
+				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data);
 
 void TestServerMessages();
 
@@ -66,7 +66,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 
 
-	tools::lock_vector<tools::data_wrappers::_tag_data_const> received_data;
+	tools::lock_vector<tools::data_wrappers::_tag_data_managed> received_data;
 	tools::networking::tag_connection_params connection_params;
 	connection_params.address = "127.0.0.1";
 	connection_params.port = "26000";
@@ -80,7 +80,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 }
 
 void TestClient(tools::networking::tag_connection_params connection_params,
-				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
+				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data)
 {
 	tools::networking::CAsyncClientSocket client(received_data, nullptr, nullptr, nullptr);
 
@@ -95,7 +95,7 @@ void TestClient(tools::networking::tag_connection_params connection_params,
 }
 
 void TestServer(tools::networking::tag_connection_params connection_params, 
-				tools::lock_vector<tools::data_wrappers::_tag_data_const>& received_data)
+				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data)
 {
 	tools::networking::CSingleServerSocket server(received_data, nullptr);
 
