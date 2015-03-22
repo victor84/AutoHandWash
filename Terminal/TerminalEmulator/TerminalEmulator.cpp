@@ -9,6 +9,7 @@
 #include "DevicePacketConvertor.h"
 #include "AsyncClientSocket.h"
 #include "TestLogic.h"
+#include "Logic.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,7 +30,8 @@ tools::lock_vector<std::wstring> log_messages;
 
 CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
 
-CTestLogic test_logic;
+// CTestLogic test_logic;
+logic::CLogic test_logic;
 
 void Initialize();
 void PrepareExit();
@@ -96,16 +98,16 @@ void Initialize()
 
 	settings_loader->read_all();
 
-	tools::networking::tag_connection_params server_connection_params;
-	server_connection_params.port = "13000";
-	server_connection_params.address = "127.0.0.1";
-	server_connection_params.reconnection_timeout = 10000;
+	//tools::networking::tag_connection_params server_connection_params;
+	//server_connection_params.port = "13000";
+	//server_connection_params.address = "127.0.0.1";
+	//server_connection_params.reconnection_timeout = 10000;
 
-	tools::networking::tag_connection_params device_connection_params;
-	device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port"), _T("device")).GetString());
+	//tools::networking::tag_connection_params device_connection_params;
+	//device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port"), _T("device")).GetString());
 
 
-	test_logic.Start(server_connection_params, device_connection_params);
+	test_logic.Start();
 }
 
 void PrepareExit()

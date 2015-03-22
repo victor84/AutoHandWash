@@ -50,14 +50,14 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 			if (e_convert_result::success == _parser.ParseSettingsPacket(transport_packet, settings_packet))
 			{
 				logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings> sp(settings_packet);
-				pointer = &sp;
+				pointer = reinterpret_cast<logic_structures::tag_base_server_logic_struct*>(&sp);
 			}
 			break;
 		case (e_packet_type::confirmation) :
 			if (e_convert_result::success == _parser.ParseConfirmationPacket(transport_packet, confirmation_packet))
 			{
 				logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation> cp(confirmation_packet);
-				pointer = &cp;
+				pointer = reinterpret_cast<logic_structures::tag_base_server_logic_struct*>(&cp);
 			}
 			break;
 		default:

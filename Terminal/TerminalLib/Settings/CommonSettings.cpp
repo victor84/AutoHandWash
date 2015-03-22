@@ -10,6 +10,11 @@ void logic_settings::CCommonSettings::fill_settings_values()
 									server_block_name, port_param_name);
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
 									server_block_name, address_param_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
+									terminal_block_name, terminal_name_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
+									terminal_block_name, terminal_group_name);
+
 }
 
 logic_settings::CCommonSettings::CCommonSettings()
@@ -39,6 +44,9 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	_server_port = CStringA(_settings_module->get_string(port_param_name, server_block_name)).GetString();
 	_server_address = CStringA(_settings_module->get_string(address_param_name, server_block_name)).GetString();
 
+	_terminal_name = _settings_module->get_string(terminal_name_name, terminal_block_name);
+	_terminal_group = _settings_module->get_string(terminal_group_name, terminal_block_name);
+
 	return true;
 }
 
@@ -55,4 +63,14 @@ std::string logic_settings::CCommonSettings::GetServerAddress() const
 std::string logic_settings::CCommonSettings::GetServerPort() const
 {
 	return _server_address;
+}
+
+std::wstring logic_settings::CCommonSettings::GetTerminalName() const
+{
+	return _terminal_name;
+}
+
+std::wstring logic_settings::CCommonSettings::GetTerminalGroup() const
+{
+	return _terminal_group;
 }
