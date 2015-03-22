@@ -42,18 +42,24 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 {
 	tag_settings_packet settings_packet;
 	tag_confirmation_packet confirmation_packet;
-	tools::data_wrappers::_tag_data_managed pointer;
+	logic_structures::tag_base_server_logic_struct* pointer = nullptr;
 	std::shared_ptr<logic_structures::tag_base_server_logic_struct> shared_pointer;
 
 	switch (transport_packet.type)
 	{
 		case(e_packet_type::settings) :
 			if (e_convert_result::success == _parser.ParseSettingsPacket(transport_packet, settings_packet))
-				pointer = (logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings>(settings_packet));
+			{
+				logic_structures::tag_server_logic_packet<tag_settings_packet, e_packet_type::settings> sp(settings_packet);
+				pointer = &sp;
+			}
 			break;
 		case (e_packet_type::confirmation) :
 			if (e_convert_result::success == _parser.ParseConfirmationPacket(transport_packet, confirmation_packet))
-				pointer = (logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation>(confirmation_packet));
+			{
+				logic_structures::tag_server_logic_packet<tag_confirmation_packet, e_packet_type::confirmation> cp(confirmation_packet);
+				pointer = &cp;
+			}
 			break;
 		default:
 			_tr_error->trace_error(_T("Ќе удалось распарсить сообщение от сервера"));
@@ -63,13 +69,13 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 			return false;
 	}
 
-	shared_pointer = std::shared_ptr<logic_structures::tag_base_server_logic_struct>(reinterpret_cast<logic_structures::tag_base_server_logic_struct*>(&pointer.p_data));
-
-	if (shared_pointer)
+	if (nullptr != pointer)
 	{
+		shared_pointer = std::shared_ptr<logic_structures::tag_base_server_logic_struct>(pointer);
 		_packets_to_logic.push_back(shared_pointer);
 		return true;
 	}
+
 	return false;
 }
 
