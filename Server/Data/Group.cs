@@ -15,6 +15,24 @@ namespace Server.Data
         [Column]
         public string GroupName { get; set; }
 
+        public static List<Group> GetGroups()
+        {
+            List<Group> groups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<Group>();
+                    groups = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Group -> GetGroups: {0}", ex);
+            }
+            return groups;
+        }
+
         public static Group GetGroupByName(string groupName)
         {
             Group group = null;
@@ -27,7 +45,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetGroupByName: {0}", ex);
+                Console.WriteLine("Group -> GetGroupByName: {0}", ex);
             }
             return group;
         }

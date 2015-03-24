@@ -1,15 +1,19 @@
-﻿using LinqToDB.Data;
+﻿using LinqToDB;
+using LinqToDB.Data;
 using LinqToDB.Mapping;
 using Nancy.Security;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Server
+namespace Server.Data
 {
     [Table("Users")]
     public class User : IUserIdentity
     {
+        public static string adminClaim = "admin";
+        public static string userClaim = "user";
+        
         [Column]
         public Guid Id { get; set; }
         [Column]
@@ -45,7 +49,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetUserById: {0}", ex);
+                Console.WriteLine("User -> GetUserById: {0}", ex);
             }
             return user;
         }
@@ -62,9 +66,45 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetUserByName: {0}", ex);
+                Console.WriteLine("User -> GetUserByName: {0}", ex);
             }
             return user;
+        }
+
+        public static List<User> GetUsers()
+        {
+            List<User> users = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<User>().Where(x => x.Claim != adminClaim);
+                    users = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("User -> GetUsers: {0}", ex);
+            }
+            return users;
+        }
+
+        public static bool Insert(User user)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Insert(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("User -> Insert: {0}", ex);
+            }
+            return result;
         }
     }
 }

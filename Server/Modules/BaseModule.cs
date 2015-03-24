@@ -1,4 +1,5 @@
 ﻿using Nancy;
+using Server.Data;
 using Server.Models;
 using System.Dynamic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace Server.Modules
                     if (claim != null)
                     {
                         Model.MasterPage.Claim = claim;
-                        Model.MasterPage.IsAdmin = (claim == "admin") ? true : false;
+                        Model.MasterPage.IsAdmin = (claim == User.adminClaim) ? true : false;
                     }
                 }
                 return null;

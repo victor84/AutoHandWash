@@ -1,8 +1,6 @@
-﻿using Nancy.Extensions;
-using Nancy.Authentication.Forms;
-using Server.Services;
-using System.Linq;
+﻿using Nancy.Authentication.Forms;
 using Server.Models;
+using Server.Data;
 
 namespace Server.Modules
 {

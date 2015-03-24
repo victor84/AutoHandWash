@@ -1,6 +1,7 @@
 ﻿using Nancy;
 using Nancy.Authentication.Forms;
 using Nancy.Security;
+using Server.Data;
 using System;
 
 namespace Server
