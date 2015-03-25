@@ -1,0 +1,38 @@
+﻿@Master['MasterPage']
+@Section['Styles']
+    @Section['AdminStyles']
+@EndSection
+@Section['Scripts']
+    @Section['AdminScripts']
+@EndSection
+@Section['Content']
+<script type="text/javascript">
+    ActivateLI("admin");
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Администрирование
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group">
+            <a href="/admin/users" class="list-group-item">Пользователи</a>
+            <a href="/admin/userGroups" class="list-group-item">Связи пользователей с группами</a>
+            <a href="/admin/settingsGroups" class="list-group-item">Настройки групп</a>
+            <a href="/admin/settingsTerminals" class="list-group-item">Настройки терминалов</a>
+
+            <!--<a href="sidebar.html" class="list-group-item active">Sidebar Page</a>-->
+
+        </div>
+    </div>
+    <div class="col-md-9">
+        @Section['AdminContent']
+    </div>
+</div>
+
+@EndSection
