@@ -38,7 +38,7 @@
             },
             "bAutoWidth": false,
             "aoColumns": [
-                    { "sWidth": "50%" }, 
+                    { "sWidth": "50%" },
                     { "sWidth": "50%" },
             ],
         });
@@ -47,7 +47,8 @@
 </script>
 
 <div class="col-md-9">
-        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="usergroupstable">
+    <h3>Связи пользователей с группами</h3>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="usergroupstable">
         <thead>
             <tr>
                 <th>Пользователь</th>
@@ -55,16 +56,15 @@
             </tr>
         </thead>
         <tbody>
-           <tr class="even gradeC">
-                <td>User1</td>
-                <td>Group1</td>
-            </tr>
+            @Each.AdminPage.UserGroups
             <tr class="gradeA">
-                <td>User2</td>
-                <td>Group2</td>
+                <td>@Current.UserName</td>
+                <td>@Current.GroupName</td>
             </tr>
+            @EndEach
         </tbody>
     </table>
+    <a class="btn btn-default" href="/admin/userGroups/create" role="button">Добавить связь</a>
 </div>
 
 @EndSection

@@ -17,20 +17,37 @@ namespace Server.Data
 
         public static List<UserGroups> GetUserGroups()
         {
-            List<UserGroups> users = null;
+            List<UserGroups> userGroups = null;
             try
             {
                 using (var db = new DataConnection())
                 {
                     var query = db.GetTable<UserGroups>();
-                    users = query.ToList();
+                    userGroups = query.ToList();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("UserGroups -> GetUserGroups: {0}", ex);
             }
-            return users;
+            return userGroups;
+        }
+
+        public static UserGroups GetUserGroup(UserGroups userGroup)
+        {
+            UserGroups userGroups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    userGroups = db.GetTable<UserGroups>().Where(x => x.Equals(userGroup)).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserGroups -> GetUserGroups: {0}", ex);
+            }
+            return userGroups;
         }
 
         public static bool Insert(UserGroups userGroups)

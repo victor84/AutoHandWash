@@ -1,0 +1,39 @@
+﻿@Master['AdminPage']
+
+@Section['AdminStyles']
+<link href="/Content/createUserGroups.css" rel="stylesheet">
+@EndSection
+
+@Section['AdminScripts']
+@EndSection
+
+@Section['AdminContent']
+<div class="col-md-8">
+    <h3>Добавление пользователя для группы</h3>
+    <form role="form" method="post" action="/admin/userGroups/create">
+        <div class="control-group form-group">
+            <div class="controls">
+                <label>Имя пользователя:</label>
+                <select name="userName" class="form-control">
+                    @Each.AdminPage.Users
+                        <option>@Current.UserName</option>
+                    @EndEach
+                </select>
+            </div>
+        </div>
+        <div class="control-group form-group">
+            <div class="controls">
+                <label>Имя группы:</label>
+                <select name="groupName" class="form-control">
+                    @Each.AdminPage.Groups
+                        <option>@Current.GroupName</option>
+                    @EndEach
+                </select>
+            </div>
+        </div>
+        <div id="success"></div>
+        <button type="submit" class="btn btn-primary btnproperties">Добавить</button>
+        <a class="btn btn-default btnproperties" href="/admin/userGroups" role="button">Отмена</a>
+    </form>
+</div>
+@EndSection
