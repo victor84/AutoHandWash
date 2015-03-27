@@ -67,7 +67,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 	Initialize();
 
-	std::wcout << _T("Escape для выхода...") << std::endl;
+	std::wcout << _T("End для выхода...") << std::endl;
 
 	while (true)
 	{
@@ -75,7 +75,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 		::Sleep(1000);
 
-		if (0 != ::GetAsyncKeyState(VK_ESCAPE))
+		if (0 != ::GetAsyncKeyState(VK_END))
 		{
 			std::wcout << _T("Подготовка к выходу...") << std::endl;
 			break;
