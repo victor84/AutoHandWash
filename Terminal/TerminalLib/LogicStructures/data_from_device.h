@@ -118,7 +118,7 @@ struct tag_discount_card_issued : tag_base_data_from_device
 	}
 };
 
-// выдана дисконтна€ карта
+// данные €чейки eeprom
 struct tag_data_from_eeprom : tag_base_data_from_device
 {
 	byte cell_number;	// номер €чейки

@@ -5,6 +5,7 @@
 #include "CorrespondSettings.h"
 #include "DeviceInteract.h"
 #include "ServerInteract.h"
+#include "state.h"
 
 /*!
  * \file Logic.h
@@ -21,7 +22,7 @@ namespace logic
 CLogic
 логика работы терминала
 */
-class CLogic
+class CLogic : CLogicAbstract
 {
 	tools::logging::CTraceError* _tr_error;
 
@@ -36,7 +37,7 @@ class CLogic
 	logic_settings::CCommonSettings _common_settings;
 
 	// модуль соответствий услуг, кнопок и клапанов
-	logic_settings::CCorrespondSettings _correspond_settings;
+	// logic_settings::CCorrespondSettings _correspond_settings;
 
 	// пакеты для устройства
 	tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>> _packets_to_device;
@@ -56,6 +57,15 @@ class CLogic
 	// модуль обмена данных с сервером
 	server_exchange::CServerInteract _server_interact;
 
+	// состояния
+	std::map<e_state, std::shared_ptr<IState>> _states;
+
+	// текущее состояние
+	std::shared_ptr<IState> _current_state;
+
+	// заполнить состояния
+	void fill_states();
+
 	// функция текущего потока
 	void thread_fn();
 
@@ -74,6 +84,10 @@ class CLogic
 	// отправка пакета с настройками
 	void send_settings_packet();
 
+	virtual std::shared_ptr<IState> get_state(e_state state) final;
+
+	virtual void set_state(e_state state) final;
+
 public:
 	CLogic();
 	~CLogic();
@@ -83,6 +97,13 @@ public:
 
 	// остановка
 	void Stop();
+
+
+
+
+
+
+
 };
 }
 

@@ -1,6 +1,21 @@
 #include "stdafx.h"
 #include "Logic.h"
+#include "AdvertisingIdleState.h"
+#include "RefillCacheState.h"
+#include "ExecutingServiceState.h"
 
+
+void logic::CLogic::fill_states()
+{
+	_states.clear();
+
+	_states.insert(std::make_pair(e_state::advertising_idle, std::make_shared<CAdvertisingIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::refill_cache, std::make_shared<CRefillCacheState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+
+
+
+}
 
 void logic::CLogic::thread_fn()
 {
@@ -18,8 +33,8 @@ tools::e_init_state logic::CLogic::init()
 	if (false == _common_settings.ReadSettings())
 		return tools::e_init_state::not_init;
 
-	if (false == _correspond_settings.ReadSettings())
-		return tools::e_init_state::not_init;
+	/*if (false == _correspond_settings.ReadSettings())
+		return tools::e_init_state::not_init;*/
 
 	_device_interact.Start();
 	_server_interact.Start();
@@ -97,4 +112,14 @@ void logic::CLogic::Stop()
 		_this_thread.join();
 
 	_init_state = tools::e_init_state::not_init;
+}
+
+void logic::CLogic::set_state(e_state state)
+{
+	_current_state = get_state(state);
+}
+
+std::shared_ptr<logic::IState> logic::CLogic::get_state(e_state state)
+{
+	return _states[state];
 }

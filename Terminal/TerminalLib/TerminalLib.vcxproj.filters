@@ -117,6 +117,18 @@
     <ClInclude Include="LogicStructures\server_structures.h">
       <Filter>Заголовочные файлы\LogicStructures</Filter>
     </ClInclude>
+    <ClInclude Include="Logic\state.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\AdvertisingIdleState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="RefillCacheState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecutingServiceState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -157,6 +169,15 @@
     </ClCompile>
     <ClCompile Include="ServerExchange\ServerInteract.cpp">
       <Filter>Файлы исходного кода\ServerExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\AdvertisingIdleState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="RefillCacheState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecutingServiceState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
