@@ -1,16 +1,13 @@
 #pragma once
 #include "state.h"
-#include "TraceError.h"
 
 namespace logic
 {
-class CAdvertisingIdleState : public IState
+class CExecutingServiceState : public IState
 {
-	tools::logging::CTraceError* _tr_error;
-
 public:
-	CAdvertisingIdleState(CLogicAbstract& logic);
-	virtual ~CAdvertisingIdleState();
+	CExecutingServiceState(CLogicAbstract& logic);
+	virtual ~CExecutingServiceState();
 
 	virtual void refilled_cache(uint16_t cache) final;
 

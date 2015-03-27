@@ -37,7 +37,7 @@ class CLogic : CLogicAbstract
 	logic_settings::CCommonSettings _common_settings;
 
 	// модуль соответствий услуг, кнопок и клапанов
-	logic_settings::CCorrespondSettings _correspond_settings;
+	// logic_settings::CCorrespondSettings _correspond_settings;
 
 	// пакеты для устройства
 	tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>> _packets_to_device;

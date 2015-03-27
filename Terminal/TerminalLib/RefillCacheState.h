@@ -1,5 +1,6 @@
 #pragma once
 #include "state.h"
+#include "TraceError.h"
 
 namespace logic
 {
@@ -7,15 +8,19 @@ class CRefillCacheState : public IState
 {
 	int16_t _cache;
 
+	tools::logging::CTraceError* _tr_error;
+
+	std::wstringstream _str_str;
+
 public:
-	CRefillCacheState();
+	CRefillCacheState(CLogicAbstract& logic);
 	virtual ~CRefillCacheState();
 
 	virtual void refilled_cache(uint16_t cache) override;
 
 	virtual void service_button_press(e_service_name sevice_name) override;
 
-	virtual void press_button_press() override;
+	virtual void stop_button_press() override;
 
 	virtual void time_out() override;
 

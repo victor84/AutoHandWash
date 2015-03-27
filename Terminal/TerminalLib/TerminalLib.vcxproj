@@ -170,6 +170,7 @@
     <ClInclude Include="DeviceExchange\DeviceInteract.h" />
     <ClInclude Include="DeviceExchange\DevicePacketConvertor.h" />
     <ClInclude Include="DeviceExchange\device_protocol.h" />
+    <ClInclude Include="ExecutingServiceState.h" />
     <ClInclude Include="LogicStructures\BaseStructuresConvertor.h" />
     <ClInclude Include="LogicStructures\data_from_device.h" />
     <ClInclude Include="LogicStructures\data_from_pc.h" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="DeviceExchange\DeviceMessageDescription.cpp" />
     <ClCompile Include="DeviceExchange\DeviceInteract.cpp" />
+    <ClCompile Include="ExecutingServiceState.cpp" />
     <ClCompile Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.cpp" />
     <ClCompile Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.cpp" />

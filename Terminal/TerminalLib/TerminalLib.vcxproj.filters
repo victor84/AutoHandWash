@@ -126,6 +126,9 @@
     <ClInclude Include="RefillCacheState.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="ExecutingServiceState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -171,6 +174,9 @@
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
     <ClCompile Include="RefillCacheState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecutingServiceState.cpp">
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
   </ItemGroup>

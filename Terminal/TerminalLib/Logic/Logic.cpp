@@ -2,6 +2,7 @@
 #include "Logic.h"
 #include "AdvertisingIdleState.h"
 #include "RefillCacheState.h"
+#include "ExecutingServiceState.h"
 
 
 void logic::CLogic::fill_states()
@@ -10,6 +11,7 @@ void logic::CLogic::fill_states()
 
 	_states.insert(std::make_pair(e_state::advertising_idle, std::make_shared<CAdvertisingIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::refill_cache, std::make_shared<CRefillCacheState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 
 
 
@@ -31,8 +33,8 @@ tools::e_init_state logic::CLogic::init()
 	if (false == _common_settings.ReadSettings())
 		return tools::e_init_state::not_init;
 
-	if (false == _correspond_settings.ReadSettings())
-		return tools::e_init_state::not_init;
+	/*if (false == _correspond_settings.ReadSettings())
+		return tools::e_init_state::not_init;*/
 
 	_device_interact.Start();
 	_server_interact.Start();

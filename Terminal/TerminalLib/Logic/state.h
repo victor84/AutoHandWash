@@ -25,9 +25,27 @@ enum class e_state
 	settings_work,		// работа с настройками
 };
 
+class CLogicAbstract;
+
 // абстрактный класс состо€ни€
 class IState
 {
+protected:
+	CLogicAbstract& _logic;
+
+
+	template<typename _StateType>
+	_StateType* get_implemented_state(e_state state)
+	{
+		return dynamic_cast<_StateType*>(_logic.get_state(state).get());
+	}
+
+	IState(CLogicAbstract& logic)
+		: _logic(logic)
+	{
+
+	}
+
 public:
 
 	// пополнен счЄт
@@ -37,7 +55,7 @@ public:
 	virtual void service_button_press(e_service_name sevice_name) = 0;
 
 	// нажата кнопка —топ
-	virtual void press_button_press() = 0;
+	virtual void stop_button_press() = 0;
 
 	// врем€ вышло
 	virtual void time_out() = 0;
@@ -60,6 +78,9 @@ public:
 
 	// получить указанное состо€ние
 	virtual std::shared_ptr<IState> get_state(e_state state) = 0;
+
+	// открыть клапан
+	virtual void open_valve(byte number) = 0;
 
 };
 
