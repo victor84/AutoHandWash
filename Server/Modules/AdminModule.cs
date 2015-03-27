@@ -2,6 +2,7 @@
 using Nancy.Security;
 using Server.Data;
 using Server.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,10 @@ namespace Server.Modules
             this.RequiresAuthentication();
             this.RequiresClaims(new string[] { User.adminClaim });
             Get["/"] = Index;
+            Get["/users"] = ViewUsers;
+            Get["/users/create"] = ViewCreateUser;
+            Post["/users/create"] = CreateUser;
+            Get["/users/delete/{userName}"] = DeleteUser;
             Get["/userGroups"] = ViewUserGroups;
             Get["/userGroups/create"] = ViewCreateUserGroups;
             Post["/userGroups/create"] = CreateUserGroups;
@@ -23,6 +28,17 @@ namespace Server.Modules
         private dynamic Index(dynamic parameters)
         {
             return View["AdminIndex", Model];
+        }
+
+        private dynamic ViewUsers(dynamic parameters)
+        {
+            var users = User.GetUsers();
+            if (users != null)
+            {
+                Model.AdminPage = new AdminPageModel();
+                Model.AdminPage.Users = users;
+            }
+            return View["Users", Model];
         }
 
         private dynamic ViewUserGroups(dynamic parameters)
@@ -60,6 +76,11 @@ namespace Server.Modules
             return View["UserGroups", Model];
         }
 
+        private dynamic ViewCreateUser(dynamic parameters)
+        {
+            return View["CreateUser", Model];
+        }
+
         private dynamic ViewCreateUserGroups(dynamic parameters)
         {
             var users = User.GetUsers();
@@ -71,6 +92,42 @@ namespace Server.Modules
                 Model.AdminPage.Groups = groups;
             }
             return View["CreateUserGroups", Model];
+        }
+
+        private dynamic CreateUser(dynamic parameters)
+        {
+            var userName = (string)this.Request.Form.Username;
+            var password = (string)this.Request.Form.Password;
+            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
+            {
+                var user = User.GetUserByName(userName);
+                if (user == null)
+                {
+                    User newUser = new User()
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = userName,
+                        Password = password,
+                        Claim = User.userClaim,
+                    };
+                    bool result = User.Insert(newUser);
+                }
+            }
+            return Response.AsRedirect("~/admin/users");
+        }
+
+        private dynamic DeleteUser(dynamic parameters)
+        {
+            var userName = (string)parameters.userName;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var user = User.GetUserByName(userName);
+                if (user != null)
+                {
+                    bool result = User.Delete(user);
+                }
+            }
+            return Response.AsRedirect("~/admin/users");
         }
 
         private dynamic CreateUserGroups(dynamic parameters)

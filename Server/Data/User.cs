@@ -106,5 +106,23 @@ namespace Server.Data
             }
             return result;
         }
+
+        public static bool Delete(User user)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Delete(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("User -> Delete: {0}", ex);
+            }
+            return result;
+        }
     }
 }

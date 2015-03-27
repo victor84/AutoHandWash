@@ -1,0 +1,30 @@
+﻿@Master['AdminPage']
+
+@Section['AdminStyles']
+@EndSection
+
+@Section['AdminScripts']
+@EndSection
+
+@Section['AdminContent']
+<div class="col-md-8">
+    <h3>Добавление пользователя</h3>
+    <form role="form" method="post" action="/admin/users/create">
+        <div class="control-group form-group">
+            <div class="controls">
+                <label>Имя пользователя:</label>
+                <input type="text" name="Username" class="form-control" required autofocus>
+            </div>
+        </div>
+        <div class="control-group form-group">
+            <div class="controls">
+                <label>Пароль:</label>
+                <input type="password" name="Password" class="form-control">
+            </div>
+        </div>
+        <div id="success"></div>
+        <button type="submit" class="btn btn-primary btnproperties">Добавить</button>
+        <a class="btn btn-default btnproperties" href="/admin/users" role="button">Отмена</a>
+    </form>
+</div>
+@EndSection
