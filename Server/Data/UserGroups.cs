@@ -67,5 +67,23 @@ namespace Server.Data
             }
             return result;
         }
+
+        public static bool Delete(UserGroups userGroups)
+        {
+            bool result = true;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    db.Delete(userGroups);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Console.WriteLine("UserGroups -> Delete: {0}", ex);
+            }
+            return result;
+        }
     }
 }

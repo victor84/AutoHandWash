@@ -23,6 +23,7 @@ namespace Server.Modules
             Get["/userGroups"] = ViewUserGroups;
             Get["/userGroups/create"] = ViewCreateUserGroups;
             Post["/userGroups/create"] = CreateUserGroups;
+            Get["/userGroups/delete/{userName}/{groupName}"] = DeleteUserGroups;
         }
 
         private dynamic Index(dynamic parameters)
@@ -146,6 +147,30 @@ namespace Server.Modules
                 var userGroup = UserGroups.GetUserGroup(newUserGroups);
                 if (userGroup == null)
                     UserGroups.Insert(newUserGroups);
+            }
+            return Response.AsRedirect("~/admin/userGroups");
+        }
+
+        private dynamic DeleteUserGroups(dynamic parameters)
+        {
+            var userName = (string)parameters.userName;
+            var groupName = (string)parameters.groupName;
+            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(groupName))
+            {
+                var user = User.GetUserByName(userName);
+                var group = Group.GetGroupByName(groupName);
+
+                if (user != null && group != null)
+                {
+                    UserGroups userGroups = new UserGroups()
+                    {
+                        UserId = user.Id,
+                        GroupId = group.Id
+                    };
+                    var userGroup = UserGroups.GetUserGroup(userGroups);
+                    if (userGroup != null)
+                        UserGroups.Delete(userGroups);
+                }
             }
             return Response.AsRedirect("~/admin/userGroups");
         }

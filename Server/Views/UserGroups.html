@@ -38,8 +38,9 @@
             },
             "bAutoWidth": false,
             "aoColumns": [
-                    { "sWidth": "50%" },
-                    { "sWidth": "50%" },
+                    { "sWidth": "33%" },
+                    { "sWidth": "33%" },
+                    { "sWidth": "33%" },
             ],
         });
     });
@@ -53,6 +54,7 @@
             <tr>
                 <th>Пользователь</th>
                 <th>Группа</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +62,12 @@
             <tr class="gradeA">
                 <td>@Current.UserName</td>
                 <td>@Current.GroupName</td>
+                <td class="text-center">
+                    <a href="/admin/userGroups/delete/@Current.UserName/@Current.GroupName" role="button" class="btn btn-success btn-xs">
+                        <i class="fa fa-times fa-fw"></i>
+                        Удалить
+                    </a>
+                </td>
             </tr>
             @EndEach
         </tbody>
