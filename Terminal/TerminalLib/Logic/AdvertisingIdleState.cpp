@@ -41,3 +41,13 @@ void logic::CAdvertisingIdleState::out_of_money()
 {
 
 }
+
+void logic::CAdvertisingIdleState::device_confirm()
+{
+
+}
+
+void logic::CAdvertisingIdleState::eeprom_data(uint32_t value)
+{
+
+}

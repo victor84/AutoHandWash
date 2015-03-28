@@ -123,10 +123,13 @@
     <ClInclude Include="Logic\AdvertisingIdleState.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
-    <ClInclude Include="RefillCacheState.h">
+    <ClInclude Include="Logic\SettingsWorkState.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
-    <ClInclude Include="ExecutingServiceState.h">
+    <ClInclude Include="Logic\ExecutingServiceState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\RefillCacheState.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,10 +176,13 @@
     <ClCompile Include="Logic\AdvertisingIdleState.cpp">
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="RefillCacheState.cpp">
+    <ClCompile Include="Logic\SettingsWorkState.cpp">
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="ExecutingServiceState.cpp">
+    <ClCompile Include="Logic\ExecutingServiceState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\RefillCacheState.cpp">
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
   </ItemGroup>

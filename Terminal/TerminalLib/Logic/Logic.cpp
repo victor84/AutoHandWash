@@ -161,6 +161,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 				_current_state->service_button_press(service);
 			break;
 
+
+
 	}
 
 }

@@ -47,3 +47,13 @@ void logic::CRefillCacheState::out_of_money()
 {
 
 }
+
+void logic::CRefillCacheState::device_confirm()
+{
+
+}
+
+void logic::CRefillCacheState::eeprom_data(uint32_t value)
+{
+
+}

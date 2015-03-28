@@ -6,8 +6,13 @@ namespace logic
 {
 class CExecutingServiceState : public IState
 {
+	tools::logging::CTraceError* _tr_error;
+
 	// модуль соответствий услуг, кнопок и клапанов
 	 logic_settings::CCorrespondSettings _correspond_settings;
+
+	 // текущая выполняемая услуга
+	 e_service_name _current_service;
 
 public:
 	CExecutingServiceState(CLogicAbstract& logic);
@@ -22,6 +27,10 @@ public:
 	virtual void time_out() final;
 
 	virtual void out_of_money() final;
+
+	virtual void device_confirm() override;
+
+	virtual void eeprom_data(uint32_t value) override;
 
 };
 }

@@ -62,6 +62,13 @@ public:
 
 	// закончились деньги
 	virtual void out_of_money() = 0;
+
+	// подтверждение устройством
+	virtual void device_confirm() = 0;
+
+	// данные от eeprom
+	virtual void eeprom_data(uint32_t value) = 0;
+
 };
 
 

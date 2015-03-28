@@ -31,5 +31,9 @@ public:
 		return _cache;
 	}
 
+	virtual void device_confirm() override;
+
+	virtual void eeprom_data(uint32_t value) override;
+
 };
 }

@@ -170,7 +170,6 @@
     <ClInclude Include="DeviceExchange\DeviceInteract.h" />
     <ClInclude Include="DeviceExchange\DevicePacketConvertor.h" />
     <ClInclude Include="DeviceExchange\device_protocol.h" />
-    <ClInclude Include="ExecutingServiceState.h" />
     <ClInclude Include="LogicStructures\BaseStructuresConvertor.h" />
     <ClInclude Include="LogicStructures\data_from_device.h" />
     <ClInclude Include="LogicStructures\data_from_pc.h" />
@@ -180,10 +179,12 @@
     <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h" />
     <ClInclude Include="LogicStructures\server_structures.h" />
     <ClInclude Include="Logic\AdvertisingIdleState.h" />
+    <ClInclude Include="Logic\ExecutingServiceState.h" />
     <ClInclude Include="Logic\Logic.h" />
+    <ClInclude Include="Logic\RefillCacheState.h" />
     <ClInclude Include="Logic\ServicesNames.h" />
+    <ClInclude Include="Logic\SettingsWorkState.h" />
     <ClInclude Include="Logic\state.h" />
-    <ClInclude Include="RefillCacheState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ServerExchange\PacketToRawData.h" />
     <ClInclude Include="ServerExchange\protocol_structures.h" />
@@ -197,14 +198,15 @@
   <ItemGroup>
     <ClCompile Include="DeviceExchange\DeviceMessageDescription.cpp" />
     <ClCompile Include="DeviceExchange\DeviceInteract.cpp" />
-    <ClCompile Include="ExecutingServiceState.cpp" />
     <ClCompile Include="LogicStructures\LogicDataFromDeviceToPacketFromDeviceConverter.cpp" />
     <ClCompile Include="LogicStructures\LogicDataFromPcToPacketFromPcConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="Logic\AdvertisingIdleState.cpp" />
+    <ClCompile Include="Logic\ExecutingServiceState.cpp" />
     <ClCompile Include="Logic\Logic.cpp" />
-    <ClCompile Include="RefillCacheState.cpp" />
+    <ClCompile Include="Logic\RefillCacheState.cpp" />
+    <ClCompile Include="Logic\SettingsWorkState.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />
     <ClCompile Include="ServerExchange\ServerInteract.cpp" />
     <ClCompile Include="ServerExchange\ServerPacketParser.cpp" />
