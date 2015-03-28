@@ -24,6 +24,9 @@ namespace Server.Modules
             Get["/userGroups/create"] = ViewCreateUserGroups;
             Post["/userGroups/create"] = CreateUserGroups;
             Get["/userGroups/delete/{userName}/{groupName}"] = DeleteUserGroups;
+            Get["/groups"] = ViewGroups;
+            Get["/groups/setting/{groupName}"] = ViewSettingGroup;
+            Post["/groups/setting"] = SettingGroup;
         }
 
         private dynamic Index(dynamic parameters)
@@ -173,6 +176,42 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/admin/userGroups");
+        }
+
+        private dynamic ViewGroups(dynamic parameters)
+        {
+            var groups = Group.GetGroups();
+            if (groups != null)
+            {
+                Model.AdminPage = new AdminPageModel();
+                Model.AdminPage.Groups = groups;
+            }
+            return View["Groups", Model];
+        }
+
+        private dynamic ViewSettingGroup(dynamic parameters)
+        {
+            var groupName = (string)parameters.groupName;
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                Model.AdminPage = new AdminPageModel();
+                Model.AdminPage.GroupName = groupName;
+            }
+            return View["SettingGroup", Model];
+        }
+
+        private dynamic SettingGroup(dynamic parameters)
+        {
+            var userName = (string)this.Request.Form.userName;
+            var groupName = (string)this.Request.Form.groupName;
+            
+            //var groupName = (string)parameters.groupName;
+            //if (!string.IsNullOrEmpty(groupName))
+            //{
+            //    Model.AdminPage = new AdminPageModel();
+            //    Model.AdminPage.GroupName = groupName;
+            //}
+            return View["SettingGroup", Model];
         }
     }
 }
