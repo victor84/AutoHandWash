@@ -91,6 +91,7 @@
     <Lib>
       <AdditionalDependencies>ToolsLib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -180,6 +181,7 @@
     <ClInclude Include="LogicStructures\server_structures.h" />
     <ClInclude Include="Logic\AdvertisingIdleState.h" />
     <ClInclude Include="Logic\ExecutingServiceState.h" />
+    <ClInclude Include="Logic\FreeEdleState.h" />
     <ClInclude Include="Logic\Logic.h" />
     <ClInclude Include="Logic\RefillCacheState.h" />
     <ClInclude Include="Logic\ServicesNames.h" />
@@ -204,6 +206,7 @@
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="Logic\AdvertisingIdleState.cpp" />
     <ClCompile Include="Logic\ExecutingServiceState.cpp" />
+    <ClCompile Include="Logic\FreeEdleState.cpp" />
     <ClCompile Include="Logic\Logic.cpp" />
     <ClCompile Include="Logic\RefillCacheState.cpp" />
     <ClCompile Include="Logic\SettingsWorkState.cpp" />

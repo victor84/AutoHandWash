@@ -89,7 +89,7 @@ void CSocketStream::thread_method()
 				break;
 			}
 		}
-		Concurrency::wait(500);
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	*_end_status = _work_loop_status;

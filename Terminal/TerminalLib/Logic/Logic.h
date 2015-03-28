@@ -118,7 +118,9 @@ public:
 
 	virtual void write_eeprom(byte cell_number, uint32_t value) final;
 
-	virtual void time_and_money(int16_t time, int16_t money) override;
+	virtual void time_and_money(int16_t time, int16_t money) final;
+
+	virtual void close_valve(byte number) override;
 
 };
 }

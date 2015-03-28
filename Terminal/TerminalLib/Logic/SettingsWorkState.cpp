@@ -19,7 +19,7 @@ void logic::CSettingsWorkState::refilled_cache(uint16_t cache)
 
 }
 
-void logic::CSettingsWorkState::service_button_press(e_service_name sevice_name)
+void logic::CSettingsWorkState::service_button_press(e_service_name service_name)
 {
 
 }
@@ -41,7 +41,7 @@ void logic::CSettingsWorkState::out_of_money()
 
 void logic::CSettingsWorkState::device_confirm()
 {
-	uint32_t offset = 0;
+	byte offset = 0;
 	++_write_cell_number;
 
 	if (_write_cell_number <= 0x07)
@@ -78,7 +78,7 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 	}
 	else if ((cell_number >= 0x11) && (cell_number <= 0x18))
 	{
-		*(_p_settings + (cell_number - 4)) = value;
+		*(_p_settings + (cell_number - 0x09)) = value;
 
 		++cell_number;
 
@@ -87,13 +87,14 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 	}
 	else if ((cell_number >= 0x21) && (cell_number <= 0x28))
 	{
-		*(_p_settings + (cell_number - 4 - 3)) = value;
+		*(_p_settings + (cell_number - 0x09 - 0x08)) = value;
 
 		++cell_number;
 
 		if (cell_number > 0x28)
 		{
 			_logic.set_state(e_state::advertising_idle);
+			return;
 		}
 	}
 	else

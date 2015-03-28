@@ -10,7 +10,7 @@ void server_exchange::CServerInteract::thread_fn()
 		parse_from_server();
 		send_to_server();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
 

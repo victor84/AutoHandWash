@@ -4,20 +4,23 @@
 
 namespace logic
 {
-class CSettingsWorkState : public IState
+class CFreeEdleState : public IState
 {
 	tools::logging::CTraceError* _tr_error;
 
 	tag_device_settings _settings;
-	uint32_t* _p_settings;
 
-	std::wstringstream _str_str;
+	Concurrency::timer<int32_t>* _timer;
 
-	byte _write_cell_number;
+	Concurrency::call<int32_t> _on_timer_call;
+
+	// גûחûגאועסÿ עאילונמל
+	void on_timer(int32_t);
+
 
 public:
-	CSettingsWorkState(CLogicAbstract& logic);
-	virtual ~CSettingsWorkState();
+	CFreeEdleState(CLogicAbstract& logic);
+	virtual ~CFreeEdleState();
 
 	virtual void refilled_cache(uint16_t cache) final;
 
@@ -31,15 +34,6 @@ public:
 
 	virtual void device_confirm() final;
 
-	void data_from_eeprom(byte cell_number, uint32_t value);
-
-	void read_settings();
-
-	tag_device_settings get_settings() const;
-
-	void set_settings(tag_device_settings settings);
-
-	void write_settings();
 };
 }
 

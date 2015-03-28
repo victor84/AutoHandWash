@@ -53,7 +53,7 @@ public:
 	virtual void refilled_cache(uint16_t cache) = 0;
 
 	// нажата кнопка услуги
-	virtual void service_button_press(e_service_name sevice_name) = 0;
+	virtual void service_button_press(e_service_name service_name) = 0;
 
 	// нажата кнопка Стоп
 	virtual void stop_button_press() = 0;
@@ -87,6 +87,9 @@ public:
 	// открыть клапан
 	virtual void open_valve(byte number) = 0;
 
+	// закрыть клапан
+	virtual void close_valve(byte number) = 0;
+
 	// читать ячейку eeprom
 	virtual void read_eeprom(byte cell_number) = 0;
 
@@ -95,7 +98,7 @@ public:
 
 	// уведомление об оставшихся на счёте деньгах и времени услуги
 	// время в секундах, деньги в копейках
-	virtual void time_and_money(int16_t time, int16_t money);
+	virtual void time_and_money(int16_t time, int16_t money) = 0;
 
 
 };

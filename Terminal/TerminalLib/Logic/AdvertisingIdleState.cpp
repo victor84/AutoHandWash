@@ -22,7 +22,7 @@ void logic::CAdvertisingIdleState::refilled_cache(uint16_t cache)
 	_logic.set_state(e_state::refill_cache);
 }
 
-void logic::CAdvertisingIdleState::service_button_press(e_service_name sevice_name)
+void logic::CAdvertisingIdleState::service_button_press(e_service_name service_name)
 {
 
 }

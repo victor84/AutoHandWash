@@ -8,7 +8,8 @@
 #include "device_protocol.h"
 #include "DevicePacketConvertor.h"
 
-#define WM_ON_CUSTOM_UPDATE_CONTROLS WM_USER + 50
+#define WM_ON_CUSTOM_UPDATE_CONTROLS	WM_USER + 50
+#define WM_ON_AUTO_SEND_DATA			WM_USER + 51
 
 // диалоговое окно CSimpleDeviceEmulatorDlg
 class CSimpleDeviceEmulatorDlg : public CDialogEx
@@ -74,6 +75,10 @@ class CSimpleDeviceEmulatorDlg : public CDialogEx
 	void show_packets_types();
 
 	LRESULT OnCustomUpdate(WPARAM update, LPARAM);
+
+	LRESULT OnAutoSend(WPARAM, LPARAM);
+
+	bool send_answer(std::wstring packet_hex);
 
 // Создание
 public:

@@ -21,7 +21,7 @@ public:
 
 	virtual void refilled_cache(uint16_t cache) override;
 
-	virtual void service_button_press(e_service_name sevice_name) override;
+	virtual void service_button_press(e_service_name service_name) override;
 
 	virtual void stop_button_press() override;
 

@@ -68,6 +68,162 @@ LRESULT CSimpleDeviceEmulatorDlg::OnCustomUpdate(WPARAM update, LPARAM)
 	return 1;
 }
 
+LRESULT CSimpleDeviceEmulatorDlg::OnAutoSend(WPARAM, LPARAM)
+{
+	OnBnClickedSendDataButton();
+
+	return 1;
+}
+
+bool CSimpleDeviceEmulatorDlg::send_answer(std::wstring packet_hex)
+{
+	if (_T("0aa0000000000000a0a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a0000000000000aa0");
+		return true;
+	}
+
+	if (_T("0aa0010000000000a1a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a0100000000000ba0");
+		return true;
+	}
+
+	if (_T("0aa0020000000000a2a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a02000000000008a0");
+		return true;
+	}
+
+	if (_T("0aa0030000000000a3a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a03000000000009a0");
+		return true;
+	}
+
+	if (_T("0aa0040000000000a4a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a0401000000000fa0");
+		return true;
+	}
+
+	if (_T("0aa0050000000000a5a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a050a0000000005a0");
+		return true;
+	}
+
+	if (_T("0aa0060000000000a6a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a0601000000000da0");
+		return true;
+	}
+
+	if (_T("0aa0070000000000a7a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a0701000000000ca0");
+		return true;
+	}
+
+	if (_T("0aa0110000000000b1a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a11320000000029a0");
+		return true;
+	}
+
+	if (_T("0aa0120000000000b2a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1232000000002aa0");
+		return true;
+	}
+
+	if (_T("0aa0130000000000b3a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1332000000002ba0");
+		return true;
+	}
+
+	if (_T("0aa0140000000000b4a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1432000000002da0");
+		return true;
+	}
+
+	if (_T("0aa0150000000000b5a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1532000000002da0");
+		return true;
+	}
+
+	if (_T("0aa0160000000000b6a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1632000000002da0");
+		return true;
+	}
+
+	if (_T("0aa0170000000000b7a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1732000000002da0");
+		return true;
+	}
+
+	if (_T("0aa0180000000000b8a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a1832000000002da0");
+		return true;
+	}
+
+	if (_T("0aa021000000000081a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a21320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa022000000000082a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a22320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa023000000000083a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a23320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa024000000000084a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a24320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa025000000000085a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a25320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa026000000000086a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a26320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa027000000000087a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a27320000000019a0");
+		return true;
+	}
+
+	if (_T("0aa028000000000088a0") == packet_hex)
+	{
+		m_PacketData = _T("0a0a28320000000019a0");
+		return true;
+	}
+
+	return false;
+}
+
 CSimpleDeviceEmulatorDlg::_tag_packet_type CSimpleDeviceEmulatorDlg::get_selected_packet_type(INT sel_num)
 {
 	_tag_packet_type result = _packets_types[sel_num];
@@ -97,6 +253,12 @@ void CSimpleDeviceEmulatorDlg::on_data_received_fn(tools::data_wrappers::_tag_da
 	std::wstring hex_string = tools::binary_to_hex(data);
 
 	LOG(_T("Приняты данные: ") + hex_string);
+
+	if (true == send_answer(hex_string))
+	{
+		UPDATE_UI(FALSE);
+		this->PostMessage(WM_ON_AUTO_SEND_DATA, 0, 0);
+	}
 }
 
 void CSimpleDeviceEmulatorDlg::DoDataExchange(CDataExchange* pDX)
@@ -117,6 +279,7 @@ BEGIN_MESSAGE_MAP(CSimpleDeviceEmulatorDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_PACKET_TYPE_COMBO, &CSimpleDeviceEmulatorDlg::OnCbnSelchangePacketTypeCombo)
 	ON_BN_CLICKED(IDC_SEND_DATA_BUTTON, &CSimpleDeviceEmulatorDlg::OnBnClickedSendDataButton)
 	ON_MESSAGE(WM_ON_CUSTOM_UPDATE_CONTROLS, &CSimpleDeviceEmulatorDlg::OnCustomUpdate)
+	ON_MESSAGE(WM_ON_AUTO_SEND_DATA, &CSimpleDeviceEmulatorDlg::OnAutoSend)
 END_MESSAGE_MAP()
 
 

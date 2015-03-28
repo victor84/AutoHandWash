@@ -24,17 +24,17 @@ void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 
 	_tr_error->trace_message(_str_str.str());
 
-	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_logic.get_state(e_state::settings_work).get());
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	_device_settings = sws->get_settings();
-	_device_settings.current_cache += _cache;
+	_device_settings.current_cache = _cache;
 	sws->set_settings(_device_settings);
 }
 
-void logic::CRefillCacheState::service_button_press(e_service_name sevice_name)
+void logic::CRefillCacheState::service_button_press(e_service_name service_name)
 {
 	CExecutingServiceState* state = get_implemented_state<CExecutingServiceState>(e_state::executing_service);
 
-	state->service_button_press(sevice_name);
+	state->service_button_press(service_name);
 
 	_logic.set_state(e_state::executing_service);
 }

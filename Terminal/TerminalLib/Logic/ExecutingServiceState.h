@@ -20,15 +20,24 @@ class CExecutingServiceState : public IState
 	 // оставшееся время услуги в секундах
 	 int16_t _service_time_left;
 
+	 // время работы текущей услуги
+	 int16_t _current_service_time;
+
 	 // оставшиеся деньги (в копейках)
 	 int16_t _balance_of_money;
 
-	 // стоимость текущей услуги
+	 // стоимость текущей услуги (в копейках)
 	 int16_t _current_service_cost;
 
 	 Concurrency::timer<int32_t>* _timer;
 
 	 Concurrency::call<int32_t> _on_timer_call;
+
+	 // флаг, что нужно запустить отложенную услугу
+	 // bool _has_deferred_service;
+
+	 // отложенная услуга
+	 e_service_name _deferred_service;
 
 	 // вызывается таймером
 	 void on_timer(int32_t);
@@ -39,13 +48,19 @@ class CExecutingServiceState : public IState
 	 // вычисление остатка денег в соответствии с оставшимся временем
 	 void calc_money_balance_by_time_left();
 
+	 // увеличить значение общего времени работы текущей услуги
+	 void increase_current_service_time();
+
+	 // остановка выполнения услуги
+	 void stop_service();
+
 public:
 	CExecutingServiceState(CLogicAbstract& logic);
 	virtual ~CExecutingServiceState();
 
 	virtual void refilled_cache(uint16_t cache) final;
 
-	virtual void service_button_press(e_service_name sevice_name) final;
+	virtual void service_button_press(e_service_name service_name);
 
 	virtual void stop_button_press() final;
 
