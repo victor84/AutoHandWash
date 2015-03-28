@@ -37,7 +37,7 @@ class CLogic : CLogicAbstract
 	logic_settings::CCommonSettings _common_settings;
 
 	// модуль соответствий услуг, кнопок и клапанов
-	// logic_settings::CCorrespondSettings _correspond_settings;
+	logic_settings::CCorrespondSettings _correspond_settings;
 
 	// пакеты для устройства
 	tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>> _packets_to_device;
@@ -88,6 +88,18 @@ class CLogic : CLogicAbstract
 
 	virtual void set_state(e_state state) final;
 
+	// чтение и обработка сообщений от устройства
+	void process_messages_from_device();
+
+	// парсинг сообщения от устройства
+	void process_device_message(std::shared_ptr<logic_structures::tag_base_data_from_device> message);
+
+	template<typename _MessageType>
+	_MessageType* get_device_message_pointer(std::shared_ptr<logic_structures::tag_base_data_from_device> message)
+	{
+		return dynamic_cast<_MessageType*>(message.get());
+	}
+
 public:
 	CLogic();
 	~CLogic();
@@ -97,6 +109,8 @@ public:
 
 	// остановка
 	void Stop();
+
+	virtual void open_valve(byte number) override;
 
 
 

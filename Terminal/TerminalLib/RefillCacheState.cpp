@@ -4,6 +4,7 @@
 
 logic::CRefillCacheState::CRefillCacheState(CLogicAbstract& logic)
 	: IState(logic)
+	, _cache(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }

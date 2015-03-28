@@ -21,6 +21,11 @@ struct tag_base_data_from_device
 {
 	const device_exchange::e_command_from_device command_id;	// id команды
 
+	virtual ~tag_base_data_from_device()
+	{
+
+	}
+
 protected:
 	tag_base_data_from_device(device_exchange::e_command_from_device cid) : command_id(cid)
 	{
@@ -32,6 +37,11 @@ protected:
 struct tag_dev_empty : tag_base_data_from_device
 {
 	tag_dev_empty() : tag_base_data_from_device(device_exchange::e_command_from_device::empty)
+	{
+
+	}
+
+	virtual ~tag_dev_empty()
 	{
 
 	}
@@ -56,6 +66,11 @@ struct tag_button_press : tag_base_data_from_device
 		
 	}
 
+	virtual ~tag_button_press()
+	{
+
+	}
+
 	operator tools::data_wrappers::_tag_data_managed()
 	{
 		tools::data_wrappers::_tag_data_managed result;
@@ -71,6 +86,11 @@ struct tag_bill_acceptor : tag_base_data_from_device
 
 	tag_bill_acceptor() : tag_base_data_from_device(device_exchange::e_command_from_device::bill_acceptor)
 		, count(0)
+	{
+
+	}
+
+	virtual ~tag_bill_acceptor()
 	{
 
 	}
@@ -94,6 +114,11 @@ struct tag_hopper_issue_coin : tag_base_data_from_device
 
 	}
 
+	virtual ~tag_hopper_issue_coin()
+	{
+
+	}
+
 	operator tools::data_wrappers::_tag_data_managed()
 	{
 		tools::data_wrappers::_tag_data_managed result;
@@ -106,6 +131,11 @@ struct tag_hopper_issue_coin : tag_base_data_from_device
 struct tag_discount_card_issued : tag_base_data_from_device
 {
 	tag_discount_card_issued() : tag_base_data_from_device(device_exchange::e_command_from_device::discount_card_issued)
+	{
+
+	}
+
+	virtual ~tag_discount_card_issued()
 	{
 
 	}
@@ -127,6 +157,11 @@ struct tag_data_from_eeprom : tag_base_data_from_device
 	tag_data_from_eeprom() : tag_base_data_from_device(device_exchange::e_command_from_device::data_from_eeprom)
 		, cell_number(0)
 		, value(0)
+	{
+
+	}
+
+	virtual ~tag_data_from_eeprom()
 	{
 
 	}
@@ -166,6 +201,11 @@ struct tag_buttons_state : tag_base_data_from_device
 
 	}
 
+	virtual ~tag_buttons_state()
+	{
+
+	}
+
 	operator tools::data_wrappers::_tag_data_managed()
 	{
 		tools::data_wrappers::_tag_data_managed result;
@@ -181,6 +221,11 @@ struct tag_command_confirmation : tag_base_data_from_device
 
 	tag_command_confirmation() : tag_base_data_from_device(device_exchange::e_command_from_device::command_confirmation)
 		, command(device_exchange::e_command_from_pc::empty)
+	{
+
+	}
+
+	virtual ~tag_command_confirmation()
 	{
 
 	}
@@ -209,6 +254,11 @@ struct tag_error : tag_base_data_from_device
 
 	tag_error() : tag_base_data_from_device(device_exchange::e_command_from_device::error)
 		, code(e_device_error_code::error)
+	{
+
+	}
+
+	virtual ~tag_error()
 	{
 
 	}

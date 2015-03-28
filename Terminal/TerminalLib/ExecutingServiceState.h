@@ -1,10 +1,14 @@
 #pragma once
 #include "state.h"
+#include "CorrespondSettings.h"
 
 namespace logic
 {
 class CExecutingServiceState : public IState
 {
+	// модуль соответствий услуг, кнопок и клапанов
+	 logic_settings::CCorrespondSettings _correspond_settings;
+
 public:
 	CExecutingServiceState(CLogicAbstract& logic);
 	virtual ~CExecutingServiceState();

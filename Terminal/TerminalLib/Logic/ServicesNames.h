@@ -22,6 +22,7 @@ namespace logic
 		against_midges,			// От мошек
 		vacuum_cleaner,			// Пылесос	
 		air,					// Воздух
-		osmosis					// Осмос
+		osmosis,				// Осмос
+		stop					// Стоп
 	};
 }

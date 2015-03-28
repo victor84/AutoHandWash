@@ -34,6 +34,7 @@ class CCorrespondSettings
 	const wchar_t* service_vacuum_cleaner = _T("vacuum_cleaner");
 	const wchar_t* service_air = _T("air");
 	const wchar_t* service_osmosis = _T("osmosis");
+	const wchar_t* service_stop = _T("stop");
 
 	tools::logging::CTraceError* _tr_error;
 	tools::settings::CSettingsLoader* _settings_module;
@@ -46,6 +47,9 @@ class CCorrespondSettings
 
 	// соответствие сервис-номер кнопки
 	std::map<logic::e_service_name, byte> _service_button_number;
+
+	// соответствие номер кнопки-сервис
+	std::map<byte, logic::e_service_name> _button_number_service;
 
 	// соответствие сервис-номер клапана
 	std::map<logic::e_service_name, byte> _service_valve_number;
@@ -66,6 +70,8 @@ class CCorrespondSettings
 	bool fill_service_service_name();
 
 	bool fill_services_buttons();
+
+	bool fill_buttons_services();
 
 	bool fill_services_valves();
 
@@ -89,6 +95,11 @@ public:
 
 	// получить номер клапана по номеру кнопки
 	byte GetValveNumber(byte button_number);
+
+	// получить сервис по номеру кнопки
+	logic::e_service_name GetServiceByButtonNumber(byte button_number);
+
+
 
 };
 }

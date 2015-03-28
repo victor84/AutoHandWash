@@ -3,7 +3,7 @@
 #include "AdvertisingIdleState.h"
 #include "RefillCacheState.h"
 #include "ExecutingServiceState.h"
-
+#include "data_from_device.h"
 
 void logic::CLogic::fill_states()
 {
@@ -13,14 +13,16 @@ void logic::CLogic::fill_states()
 	_states.insert(std::make_pair(e_state::refill_cache, std::make_shared<CRefillCacheState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 
-
-
 }
 
 void logic::CLogic::thread_fn()
 {
+	_current_state = get_state(e_state::advertising_idle);
+
 	while (tools::e_work_loop_status::ok == _work_loop_status)
 	{
+		process_messages_from_device();
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 }
@@ -33,11 +35,13 @@ tools::e_init_state logic::CLogic::init()
 	if (false == _common_settings.ReadSettings())
 		return tools::e_init_state::not_init;
 
-	/*if (false == _correspond_settings.ReadSettings())
-		return tools::e_init_state::not_init;*/
+	if (false == _correspond_settings.ReadSettings())
+		return tools::e_init_state::not_init;
 
 	_device_interact.Start();
 	_server_interact.Start();
+
+	_this_thread = std::thread(&CLogic::thread_fn, this);
 
 	_init_state = tools::e_init_state::was_init;
 	return _init_state;
@@ -84,6 +88,7 @@ logic::CLogic::CLogic()
 						std::bind(std::mem_fn(&CLogic::on_disconnected_from_derver), this))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
+	fill_states();
 }
 
 logic::CLogic::~CLogic()
@@ -114,9 +119,50 @@ void logic::CLogic::Stop()
 	_init_state = tools::e_init_state::not_init;
 }
 
+void logic::CLogic::open_valve(byte number)
+{
+	std::shared_ptr<logic_structures::tag_open_valve> ov_message = std::make_shared<logic_structures::tag_open_valve>() ;
+
+	ov_message->number = number;
+
+	_packets_to_device.push_back(ov_message);
+}
+
 void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
+}
+
+void logic::CLogic::process_messages_from_device()
+{
+	std::vector<std::shared_ptr<logic_structures::tag_base_data_from_device>> messages = 
+		_packets_from_device.get_with_cleanup();
+
+	for (std::shared_ptr<logic_structures::tag_base_data_from_device> message : messages)
+	{
+		process_device_message(message);
+	}
+}
+
+void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag_base_data_from_device> message)
+{
+	switch (message->command_id)
+	{
+		case(device_exchange::e_command_from_device::bill_acceptor) :
+			_current_state->refilled_cache(get_device_message_pointer<logic_structures::tag_bill_acceptor>(message)->count);
+			break;
+
+		case(device_exchange::e_command_from_device::button_press) :
+			byte button_number = get_device_message_pointer<logic_structures::tag_button_press>(message)->button_number;
+			e_service_name service = _correspond_settings.GetServiceByButtonNumber(button_number);
+			if (e_service_name::stop == service)
+				_current_state->stop_button_press();
+			else
+				_current_state->service_button_press(service);
+			break;
+
+	}
+
 }
 
 std::shared_ptr<logic::IState> logic::CLogic::get_state(e_state state)
