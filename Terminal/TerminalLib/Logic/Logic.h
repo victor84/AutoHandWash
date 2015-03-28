@@ -26,6 +26,8 @@ class CLogic : CLogicAbstract
 {
 	tools::logging::CTraceError* _tr_error;
 
+	std::wstringstream _str_str;
+
 	tools::e_work_loop_status _work_loop_status;
 
 	tools::e_init_state _init_state;
@@ -115,6 +117,8 @@ public:
 	virtual void read_eeprom(byte cell_number) final;
 
 	virtual void write_eeprom(byte cell_number, uint32_t value) final;
+
+	virtual void time_and_money(int16_t time, int16_t money) override;
 
 };
 }

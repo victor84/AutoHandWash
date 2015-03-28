@@ -14,6 +14,31 @@ class CExecutingServiceState : public IState
 	 // текущая выполняемая услуга
 	 e_service_name _current_service;
 
+	 // настройки устройства
+	 tag_device_settings _device_settings;
+
+	 // оставшееся время услуги в секундах
+	 int16_t _service_time_left;
+
+	 // оставшиеся деньги (в копейках)
+	 int16_t _balance_of_money;
+
+	 // стоимость текущей услуги
+	 int16_t _current_service_cost;
+
+	 Concurrency::timer<int32_t>* _timer;
+
+	 Concurrency::call<int32_t> _on_timer_call;
+
+	 // вызывается таймером
+	 void on_timer(int32_t);
+
+	 // вычисление остатка денег и времени
+	 void calc_time_and_money();
+
+	 // вычисление остатка денег в соответствии с оставшимся временем
+	 void calc_money_balance_by_time_left();
+
 public:
 	CExecutingServiceState(CLogicAbstract& logic);
 	virtual ~CExecutingServiceState();

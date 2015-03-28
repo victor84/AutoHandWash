@@ -93,6 +93,11 @@ public:
 	// писать ячейку eeprom
 	virtual void write_eeprom(byte cell_number, uint32_t value) = 0;
 
+	// уведомление об оставшихся на счёте деньгах и времени услуги
+	// время в секундах, деньги в копейках
+	virtual void time_and_money(int16_t time, int16_t money);
+
+
 };
 
 #pragma pack(push, 4)
@@ -100,7 +105,7 @@ public:
 struct tag_device_settings
 {
 	uint32_t	total_cache;				// Общий вход
-	uint32_t	current_cache;				// Текущий баланс
+	int32_t		current_cache;				// Текущий баланс
 	uint32_t	bill_acceptor_impulse;		// Импульс купюроприёмника		
 	uint32_t	coin_acceptor_impulse;		// Импульс монетоприёмника		
 	uint32_t	free_idle_time;				// Время простоя				

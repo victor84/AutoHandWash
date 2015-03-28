@@ -12,6 +12,9 @@ class CRefillCacheState : public IState
 
 	std::wstringstream _str_str;
 
+	// настройки устройства
+	tag_device_settings _device_settings;
+
 public:
 	CRefillCacheState(CLogicAbstract& logic);
 	virtual ~CRefillCacheState();

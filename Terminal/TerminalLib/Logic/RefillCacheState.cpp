@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RefillCacheState.h"
 #include "ExecutingServiceState.h"
+#include "SettingsWorkState.h"
 
 logic::CRefillCacheState::CRefillCacheState(CLogicAbstract& logic)
 	: IState(logic)
@@ -22,6 +23,11 @@ void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ") << _cache;
 
 	_tr_error->trace_message(_str_str.str());
+
+	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_logic.get_state(e_state::settings_work).get());
+	_device_settings = sws->get_settings();
+	_device_settings.current_cache += _cache;
+	sws->set_settings(_device_settings);
 }
 
 void logic::CRefillCacheState::service_button_press(e_service_name sevice_name)

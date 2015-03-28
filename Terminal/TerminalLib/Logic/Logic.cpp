@@ -151,6 +151,16 @@ void logic::CLogic::write_eeprom(byte cell_number, uint32_t value)
 	_packets_to_device.push_back(we_message);
 }
 
+void logic::CLogic::time_and_money(int16_t time, int16_t money)
+{
+	_str_str.str(std::wstring());
+
+	_str_str << _T("Осталось времени: ") << time << _T(" сек.") << _T("\r\n") <<
+		_T("Осталось денег на счёте: ") << static_cast<float>(money / 100) << std::endl;
+
+	_tr_error->trace_message(_str_str.str());
+}
+
 void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
