@@ -4,9 +4,17 @@
 @EndSection
 
 @Section['AdminScripts']
+<script src="/Scripts/SettingGroup.js"></script>
 @EndSection
 
 @Section['AdminContent']
+
+@If.AdminPage.SettingsGroup.HasPresent
+<script type="text/javascript">
+    EnablePresentSettings();
+</script>
+@EndIf
+
 <div class="col-md-6">
     <h3>@Model.AdminPage.GroupName
     </h3>
@@ -16,11 +24,13 @@
             Настройки
         </div>
         <div class="panel-body">
-            <form role="form" method="post" action="/admin/groups/setting">
+            <form id="groupSetting" role="form" method="post" action="/admin/groups/setting">
+                <input type="text" name="GroupName" class="hidden" value="@Model.AdminPage.GroupName">
+                
                 <div class="control-group form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="HasPresent" value="1" data-toggle="collapse" data-target="#presentSetting">
+                            <input id="HasPresent" type="checkbox" name="HasPresent" data-toggle="collapse" data-target="#presentSetting">
                             Приз
                         </label>
                     </div>
@@ -29,19 +39,19 @@
                     <div class="control-group form-group">
                         <div class="controls">
                             <label>Процент:</label>
-                            <input type="text" name="PercentForPresent" class="form-control" value="">
+                            <input type="number" min="0" max="100" name="PercentForPresent" class="form-control" value="@Model.AdminPage.SettingsGroup.PercentForPresent">
                         </div>
                     </div>
                     <div class="control-group form-group">
                         <div class="controls">
                             <label>Нижняя граница для генерации случайной суммы:</label>
-                            <input type="text" name="LowerBoundForRandomSum" class="form-control" value="">
+                            <input type="number" min="0" max="1000000" name="LowerBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.LowerBoundForRandomSum">
                         </div>
                     </div>
                     <div class="control-group form-group">
                         <div class="controls">
                             <label>Верхняя граница для генерации случайной суммы:</label>
-                            <input type="text" name="UpperBoundForRandomSum" class="form-control" value="">
+                            <input type="number" min="@Model.AdminPage.SettingsGroup.LowerBoundForRandomSum" max="10000000" name="UpperBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.UpperBoundForRandomSum">
                         </div>
                     </div>
 

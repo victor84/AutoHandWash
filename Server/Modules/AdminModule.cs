@@ -196,22 +196,52 @@ namespace Server.Modules
             {
                 Model.AdminPage = new AdminPageModel();
                 Model.AdminPage.GroupName = groupName;
+                var group = Group.GetGroupByName(groupName);
+                if (group != null)
+                {
+                    var settingsGroup = SettingsGroup.GetSettingsGroupById(group.Id);
+                    if (settingsGroup != null)
+                    {
+                        Model.AdminPage.SettingsGroup = settingsGroup;
+                    }
+                }
             }
             return View["SettingGroup", Model];
         }
 
         private dynamic SettingGroup(dynamic parameters)
         {
-            var userName = (string)this.Request.Form.userName;
-            var groupName = (string)this.Request.Form.groupName;
+            var groupName = (string)this.Request.Form.GroupName;
+            var hasPresent = (bool)this.Request.Form.HasPresent;
+            var percentForPresent = (byte)this.Request.Form.PercentForPresent;
+            var lowerBoundForRandomSum = (uint)this.Request.Form.LowerBoundForRandomSum;
+            var upperBoundForRandomSum = (uint)this.Request.Form.UpperBoundForRandomSum;
             
-            //var groupName = (string)parameters.groupName;
-            //if (!string.IsNullOrEmpty(groupName))
-            //{
-            //    Model.AdminPage = new AdminPageModel();
-            //    Model.AdminPage.GroupName = groupName;
-            //}
-            return View["SettingGroup", Model];
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                var group = Group.GetGroupByName(groupName);
+                if (group != null)
+                {
+                    var newSettingsGroup = new SettingsGroup() 
+                    {
+                        GroupId = group.Id,
+                        HasPresent = hasPresent,
+                        LowerBoundForRandomSum = lowerBoundForRandomSum,
+                        UpperBoundForRandomSum = upperBoundForRandomSum,
+                        PercentForPresent = percentForPresent
+                    };
+                    var settingsGroup = SettingsGroup.GetSettingsGroupById(group.Id);
+                    if (settingsGroup == null)
+                    {
+                        SettingsGroup.Insert(newSettingsGroup);
+                    }
+                    else
+                    {
+                        SettingsGroup.Update(newSettingsGroup);
+                    }
+                }
+            }
+            return Response.AsRedirect("~/admin/groups");
         }
     }
 }
