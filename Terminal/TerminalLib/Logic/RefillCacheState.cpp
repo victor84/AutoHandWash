@@ -53,7 +53,3 @@ void logic::CRefillCacheState::device_confirm()
 
 }
 
-void logic::CRefillCacheState::eeprom_data(uint32_t value)
-{
-
-}

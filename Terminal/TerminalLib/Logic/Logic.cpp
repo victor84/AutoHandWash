@@ -4,6 +4,7 @@
 #include "RefillCacheState.h"
 #include "ExecutingServiceState.h"
 #include "data_from_device.h"
+#include "SettingsWorkState.h"
 
 void logic::CLogic::fill_states()
 {
@@ -12,12 +13,15 @@ void logic::CLogic::fill_states()
 	_states.insert(std::make_pair(e_state::advertising_idle, std::make_shared<CAdvertisingIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::refill_cache, std::make_shared<CRefillCacheState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::settings_work, std::make_shared<CSettingsWorkState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 
 }
 
 void logic::CLogic::thread_fn()
 {
-	_current_state = get_state(e_state::advertising_idle);
+	_current_state = get_state(e_state::settings_work);
+	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_current_state.get());
+	sws->read_settings();
 
 	while (tools::e_work_loop_status::ok == _work_loop_status)
 	{
@@ -128,6 +132,25 @@ void logic::CLogic::open_valve(byte number)
 	_packets_to_device.push_back(ov_message);
 }
 
+void logic::CLogic::read_eeprom(byte cell_number)
+{
+	std::shared_ptr<logic_structures::tag_read_eeprom> re_message = std::make_shared<logic_structures::tag_read_eeprom>();
+
+	re_message->cell_number = cell_number;
+
+	_packets_to_device.push_back(re_message);
+}
+
+void logic::CLogic::write_eeprom(byte cell_number, uint32_t value)
+{
+	std::shared_ptr<logic_structures::tag_write_eeprom> we_message = std::make_shared<logic_structures::tag_write_eeprom>();
+
+	we_message->cell_number = cell_number;
+	we_message->value = value;
+
+	_packets_to_device.push_back(we_message);
+}
+
 void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
@@ -146,6 +169,9 @@ void logic::CLogic::process_messages_from_device()
 
 void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag_base_data_from_device> message)
 {
+	byte button_number = 0;
+	e_service_name service = e_service_name::stop;
+
 	switch (message->command_id)
 	{
 		case(device_exchange::e_command_from_device::bill_acceptor) :
@@ -153,15 +179,19 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			break;
 
 		case(device_exchange::e_command_from_device::button_press) :
-			byte button_number = get_device_message_pointer<logic_structures::tag_button_press>(message)->button_number;
-			e_service_name service = _correspond_settings.GetServiceByButtonNumber(button_number);
+			button_number = get_device_message_pointer<logic_structures::tag_button_press>(message)->button_number;
+			service = _correspond_settings.GetServiceByButtonNumber(button_number);
 			if (e_service_name::stop == service)
 				_current_state->stop_button_press();
 			else
 				_current_state->service_button_press(service);
 			break;
 
-
+		case(device_exchange::e_command_from_device::data_from_eeprom) :
+			logic_structures::tag_data_from_eeprom* dfe = get_device_message_pointer<logic_structures::tag_data_from_eeprom>(message);
+			CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(get_state(e_state::settings_work).get());
+			sws->data_from_eeprom(dfe->cell_number, dfe->value);
+			break;
 
 	}
 

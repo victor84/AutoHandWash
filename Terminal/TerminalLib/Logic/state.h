@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "ServicesNames.h"
+#include "protocol_structures.h"
 
 /*!
  * \file state.h
@@ -66,9 +67,6 @@ public:
 	// подтверждение устройством
 	virtual void device_confirm() = 0;
 
-	// данные от eeprom
-	virtual void eeprom_data(uint32_t value) = 0;
-
 };
 
 
@@ -89,9 +87,53 @@ public:
 	// открыть клапан
 	virtual void open_valve(byte number) = 0;
 
+	// читать ячейку eeprom
+	virtual void read_eeprom(byte cell_number) = 0;
+
+	// писать ячейку eeprom
+	virtual void write_eeprom(byte cell_number, uint32_t value) = 0;
+
 };
 
+#pragma pack(push, 4)
+// настройки, хранящиеся на устройстве
+struct tag_device_settings
+{
+	uint32_t	total_cache;				// Общий вход
+	uint32_t	current_cache;				// Текущий баланс
+	uint32_t	bill_acceptor_impulse;		// Импульс купюроприёмника		
+	uint32_t	coin_acceptor_impulse;		// Импульс монетоприёмника		
+	uint32_t	free_idle_time;				// Время простоя				
+	uint32_t	idle_time_cost;				// Стоимость минуты простоя	
+	uint32_t	pause_before_advertising;	// Пауза перед показом рекламы
+	uint32_t	state;						// Состояние (работает, простой, сломана)
+	uint32_t	cost_pressurized_water;		// Стоимость вода под давлением
+	uint32_t	cost_water_without_pressure;// Стоимость вода без давления
+	uint32_t	cost_foam;					// Стоимость пена	
+	uint32_t	cost_wax;					// Стоимость воск	
+	uint32_t	cost_against_midges;		// Стоимость от мошек
+	uint32_t	cost_vacuum_cleaner;		// Стоимость пылесос	
+	uint32_t	cost_air;					// Стоимость воздух
+	uint32_t	cost_osmosis;				// Стоимость осмос
+	uint32_t	time_pressurized_water;		// Время работы вода под давлением
+	uint32_t	time_water_without_pressure;// Время работы вода без давления
+	uint32_t	time_foam;					// Время работы пена	
+	uint32_t	time_wax;					// Время работы воск	
+	uint32_t	time_against_midges;		// Время работы от мошек
+	uint32_t	time_vacuum_cleaner;		// Время работы пылесос	
+	uint32_t	time_air;					// Время работы воздух
+	uint32_t	time_osmosis;				// Время работы осмос
 
+	tag_device_settings()
+	{
+		clear();
+	}
 
+	void clear()
+	{
+		ZeroMemory(this, sizeof(tag_device_settings));
+	}
+};
+#pragma pack(pop)
 
 }

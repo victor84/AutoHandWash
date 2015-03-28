@@ -49,7 +49,4 @@ void logic::CExecutingServiceState::device_confirm()
 
 }
 
-void logic::CExecutingServiceState::eeprom_data(uint32_t value)
-{
 
-}

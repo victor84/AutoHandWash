@@ -23,9 +23,6 @@ public:
 	virtual void out_of_money() final;
 
 	virtual void device_confirm() override;
-
-	virtual void eeprom_data(uint32_t value) override;
-
 };
 }
 

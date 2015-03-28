@@ -25,4 +25,8 @@ namespace logic
 		osmosis,				// Осмос
 		stop					// Стоп
 	};
+
+
+
+
 }

@@ -42,6 +42,7 @@
 #include <locale>
 #include <thread>
 #include <map>
+#include <iomanip>
 
 // strings
 #include <tchar.h>

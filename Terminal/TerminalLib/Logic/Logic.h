@@ -110,13 +110,11 @@ public:
 	// остановка
 	void Stop();
 
-	virtual void open_valve(byte number) override;
+	virtual void open_valve(byte number) final;
 
+	virtual void read_eeprom(byte cell_number) final;
 
-
-
-
-
+	virtual void write_eeprom(byte cell_number, uint32_t value) final;
 
 };
 }
