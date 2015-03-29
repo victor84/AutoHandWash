@@ -126,7 +126,7 @@ public:
 struct tag_device_settings
 {
 	uint32_t	total_cache;				// Общий вход
-	int32_t		current_cache;				// Текущий баланс
+	int32_t		current_cache;				// Текущий баланс (в копейках)
 	uint32_t	bill_acceptor_impulse;		// Импульс купюроприёмника		
 	uint32_t	coin_acceptor_impulse;		// Импульс монетоприёмника		
 	uint32_t	free_idle_time;				// Время простоя				

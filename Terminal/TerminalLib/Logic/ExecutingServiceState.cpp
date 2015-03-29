@@ -11,7 +11,7 @@ void logic::CExecutingServiceState::on_timer(int32_t)
 	increase_current_service_time();
 	calc_money_balance_by_time_left();
 
-	_device_settings.current_cache = _balance_of_money / 100;
+	_device_settings.current_cache = _balance_of_money;
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	sws->set_settings(_device_settings);
 
@@ -58,16 +58,16 @@ void logic::CExecutingServiceState::calc_time_and_money()
 			break;
 	}
 	
-	_service_time_left = static_cast<int16_t>(static_cast<double>(_balance_of_money) /
+	_service_time_left = static_cast<int16_t>(static_cast<double>(_balance_of_money / 100.0) /
 											  static_cast<double>(_current_service_cost) * 60.0);
-	_balance_of_money *= 100;
+	_balance_of_money;
 	_current_service_cost *= 100;
 }
 
 void logic::CExecutingServiceState::calc_money_balance_by_time_left()
 {
 	_balance_of_money = static_cast<int16_t>((_service_time_left / 60.0) * (_current_service_cost));
-	_device_settings.current_cache = _balance_of_money / 100;
+	_device_settings.current_cache = _balance_of_money;
 }
 
 void logic::CExecutingServiceState::increase_current_service_time()

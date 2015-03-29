@@ -18,11 +18,12 @@ void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	_device_settings = sws->get_settings();
 
-	_device_settings.current_cache += static_cast<int16_t>(cache);
+	_device_settings.current_cache += static_cast<int16_t>(cache * 100);
 
 	_str_str.str(std::wstring());
 
-	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ") << _device_settings.current_cache;
+	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ")
+		<< static_cast<float>(_device_settings.current_cache / 100.0);
 
 	_tr_error->trace_message(_str_str.str());
 
