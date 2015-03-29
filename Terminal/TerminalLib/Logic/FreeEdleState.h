@@ -17,6 +17,11 @@ class CFreeEdleState : public IState
 	// вызывается таймером
 	void on_timer(int32_t);
 
+	// остановить таймер
+	void stop_timer();
+
+	// перейти в состояние платного простоя
+	void go_to_paid_idle_state();
 
 public:
 	CFreeEdleState(CLogicAbstract& logic);

@@ -4,7 +4,7 @@
 #include "SettingsWorkState.h"
 
 logic::CRefillCacheState::CRefillCacheState(CLogicAbstract& logic)
-	: IState(logic)
+	: IState(logic, e_state::refill_cache)
 	, _cache(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();

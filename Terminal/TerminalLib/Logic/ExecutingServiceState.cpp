@@ -11,15 +11,9 @@ void logic::CExecutingServiceState::on_timer(int32_t)
 	increase_current_service_time();
 	calc_money_balance_by_time_left();
 
-	if ((0 == _service_time_left) || (0 == _balance_of_money))
+	if ((0 >= _service_time_left) || (0 >= _balance_of_money))
 	{
-		_timer->pause();
-
-		CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
-		sws->set_settings(_device_settings);
-		sws->write_settings();
-
-		_logic.set_state(e_state::settings_work);
+		out_of_money();
 	}
 
 	_logic.time_and_money(_service_time_left, _balance_of_money);
@@ -67,7 +61,7 @@ void logic::CExecutingServiceState::calc_time_and_money()
 
 void logic::CExecutingServiceState::calc_money_balance_by_time_left()
 {
-	_balance_of_money = (_service_time_left / 60.0) * (_current_service_cost);
+	_balance_of_money = static_cast<int16_t>((_service_time_left / 60.0) * (_current_service_cost));
 	_device_settings.current_cache = _balance_of_money / 100;
 }
 
@@ -130,7 +124,7 @@ void logic::CExecutingServiceState::stop_service()
 }
 
 logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
-	: IState(logic)
+	: IState(logic, e_state::executing_service)
 	, _current_service(e_service_name::stop)
 	, _current_service_cost(0)
 	, _current_service_time(0)
@@ -194,7 +188,13 @@ void logic::CExecutingServiceState::time_out()
 
 void logic::CExecutingServiceState::out_of_money()
 {
+	stop_service();
 
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	sws->set_settings(_device_settings);
+	sws->write_settings();
+
+	_logic.set_state(e_state::settings_work);
 }
 
 void logic::CExecutingServiceState::device_confirm()

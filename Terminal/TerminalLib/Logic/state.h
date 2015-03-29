@@ -32,22 +32,39 @@ class CLogicAbstract;
 class IState
 {
 protected:
+	// логика
 	CLogicAbstract& _logic;
 
+	// это состояние
+	const e_state& _this_state;
 
+	// получить указатель на наследник
 	template<typename _StateType>
 	_StateType* get_implemented_state(e_state state)
 	{
-		return dynamic_cast<_StateType*>(_logic.get_state(state).get());
+		_StateType* result = dynamic_cast<_StateType*>(_logic.get_state(state).get());
+
+		if ((_this_state != state) || (result->get_this_state() != state))
+		{
+			throw std::exception("(_this_state != state) || (_StateType::get_this_state() != state)");
+		}
+
+		return result;
 	}
 
-	IState(CLogicAbstract& logic)
+	IState(CLogicAbstract& logic, const e_state& state)
 		: _logic(logic)
+		, _this_state(state)
 	{
 
 	}
 
 public:
+
+	e_state get_this_state() const
+	{
+		return _this_state;
+	}
 
 	// пополнен счёт
 	virtual void refilled_cache(uint16_t cache) = 0;

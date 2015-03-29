@@ -183,6 +183,7 @@
     <ClInclude Include="Logic\ExecutingServiceState.h" />
     <ClInclude Include="Logic\FreeEdleState.h" />
     <ClInclude Include="Logic\Logic.h" />
+    <ClInclude Include="Logic\PaidIdleState.h" />
     <ClInclude Include="Logic\RefillCacheState.h" />
     <ClInclude Include="Logic\ServicesNames.h" />
     <ClInclude Include="Logic\SettingsWorkState.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="Logic\ExecutingServiceState.cpp" />
     <ClCompile Include="Logic\FreeEdleState.cpp" />
     <ClCompile Include="Logic\Logic.cpp" />
+    <ClCompile Include="Logic\PaidIdleState.cpp" />
     <ClCompile Include="Logic\RefillCacheState.cpp" />
     <ClCompile Include="Logic\SettingsWorkState.cpp" />
     <ClCompile Include="ServerExchange\PacketToRawData.cpp" />

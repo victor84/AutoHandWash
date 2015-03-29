@@ -4,7 +4,7 @@
 
 
 logic::CAdvertisingIdleState::CAdvertisingIdleState(CLogicAbstract& logic)
-	: IState(logic)
+	: IState(logic, e_state::advertising_idle)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }

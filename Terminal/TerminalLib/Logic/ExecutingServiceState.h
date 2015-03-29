@@ -29,12 +29,11 @@ class CExecutingServiceState : public IState
 	 // стоимость текущей услуги (в копейках)
 	 int16_t _current_service_cost;
 
+	 // таймер, срабатывающий каждую секунду для уведомления логики
 	 Concurrency::timer<int32_t>* _timer;
 
+	 // вызывается таймером
 	 Concurrency::call<int32_t> _on_timer_call;
-
-	 // флаг, что нужно запустить отложенную услугу
-	 // bool _has_deferred_service;
 
 	 // отложенная услуга
 	 e_service_name _deferred_service;

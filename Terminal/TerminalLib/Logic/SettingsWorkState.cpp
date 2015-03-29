@@ -3,7 +3,7 @@
 
 
 logic::CSettingsWorkState::CSettingsWorkState(CLogicAbstract& logic)
-	: IState(logic)
+	: IState(logic, e_state::settings_work)
 	, _p_settings(reinterpret_cast<uint32_t*>(&_settings))
 	, _write_cell_number(0x00)
 {
