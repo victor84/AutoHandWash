@@ -1,5 +1,6 @@
 ﻿using Server.Data;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Models
 {
@@ -25,6 +26,15 @@ namespace Server.Models
         public string TerminalName { get; set; }
         public SettingsGroup SettingsGroup { get; set; }
         public SettingsTerminal SettingsTerminal { get; set; }
+
+        public bool HasUsers
+        {
+            get
+            {
+                return Users.Any();
+            }
+        }
+
         public AdminPageModel()
         {
             Users = new List<User>();

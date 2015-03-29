@@ -39,10 +39,10 @@ namespace Server.Modules
 
         private dynamic ViewUsers(dynamic parameters)
         {
+            Model.AdminPage = new AdminPageModel();
             var users = User.GetUsers();
             if (users != null)
             {
-                Model.AdminPage = new AdminPageModel();
                 Model.AdminPage.Users = users;
             }
             return View["Users", Model];
