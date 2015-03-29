@@ -30,6 +30,8 @@ namespace Server.Modules
             Get["/terminals"] = ViewTerminals;
             Get["/terminals/settings/{groupName}/{terminalName}"] = ViewSettingsTerminals;
             Post["/terminals/settings"] = ChangeSettingsTerminal;
+
+            Get["/error/{type}"] = ViewError;
         }
 
         private dynamic Index(dynamic parameters)
@@ -106,7 +108,7 @@ namespace Server.Modules
             var userName = (string)this.Request.Form.Username;
             var password = (string)this.Request.Form.Password;
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
-            {
+            {   
                 var user = User.GetUserByName(userName);
                 if (user == null)
                 {
@@ -118,6 +120,14 @@ namespace Server.Modules
                         Claim = User.userClaim,
                     };
                     bool result = User.Insert(newUser);
+                    if (!result)
+                    {
+                        return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.CreateUser);
+                    }
+                }
+                else
+                {
+                    return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.UserNameExist);
                 }
             }
             return Response.AsRedirect("~/admin/users");
@@ -364,6 +374,15 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/admin/terminals");
+        }
+
+        private dynamic ViewError(dynamic parameters)
+        {
+            var type = (byte)parameters.type;
+            Model.AdminPage = new AdminPageModel();
+            Model.AdminPage.AdminError = new AdminError();
+            Model.AdminPage.AdminError.Type = (AdminErrors)type;
+            return View["AdminError", Model];
         }
     }
 }
