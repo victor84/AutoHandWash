@@ -6,8 +6,6 @@ namespace logic
 {
 class CRefillCacheState : public IState
 {
-	int16_t _cache;
-
 	tools::logging::CTraceError* _tr_error;
 
 	std::wstringstream _str_str;

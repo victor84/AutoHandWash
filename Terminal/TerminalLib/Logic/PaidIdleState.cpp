@@ -2,6 +2,7 @@
 #include "PaidIdleState.h"
 #include "SettingsWorkState.h"
 #include "ExecutingServiceState.h"
+#include "RefillCacheState.h"
 
 
 void logic::CPaidIdleState::on_timer(int32_t)
@@ -73,7 +74,11 @@ logic::CPaidIdleState::~CPaidIdleState()
 
 void logic::CPaidIdleState::refilled_cache(uint16_t cache)
 {
-	
+	stop_timer();
+
+	CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
+	rcs->refilled_cache(cache);
+	_logic.set_state(e_state::refill_cache);
 }
 
 void logic::CPaidIdleState::service_button_press(e_service_name service_name)

@@ -35,6 +35,9 @@ class CExecutingServiceState : public IState
 	 // отложенная услуга
 	 e_service_name _deferred_service;
 
+	 // отложенное пополнение счёта
+	 uint16_t _deferred_cache;
+
 	 // вызывается таймером
 	 void on_timer(int32_t);
 

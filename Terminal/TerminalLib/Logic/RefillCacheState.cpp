@@ -5,7 +5,6 @@
 
 logic::CRefillCacheState::CRefillCacheState(CLogicAbstract& logic)
 	: IState(logic, e_state::refill_cache)
-	, _cache(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -16,17 +15,17 @@ logic::CRefillCacheState::~CRefillCacheState()
 
 void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 {
-	_cache += static_cast<int16_t>(cache);
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	_device_settings = sws->get_settings();
+
+	_device_settings.current_cache += static_cast<int16_t>(cache);
 
 	_str_str.str(std::wstring());
 
-	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ") << _cache;
+	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ") << _device_settings.current_cache;
 
 	_tr_error->trace_message(_str_str.str());
 
-	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
-	_device_settings = sws->get_settings();
-	_device_settings.current_cache = _cache;
 	_device_settings.total_cache += cache;
 	sws->set_settings(_device_settings);
 }
@@ -52,7 +51,7 @@ void logic::CRefillCacheState::time_out()
 
 void logic::CRefillCacheState::out_of_money()
 {
-	_cache = 0;
+
 }
 
 void logic::CRefillCacheState::device_confirm()

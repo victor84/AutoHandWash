@@ -8,7 +8,6 @@
 void logic::CExecutingServiceState::on_timer(int32_t)
 {
 	--_service_time_left;
-	// ++_current_service_time;
 	increase_current_service_time();
 	calc_money_balance_by_time_left();
 
@@ -139,6 +138,7 @@ logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
 	, _balance_of_money(0)
 	, _service_time_left(0)
 	, _timer(nullptr)
+	, _deferred_cache(0)
 	, _deferred_service(e_service_name::stop)
 	, _on_timer_call(std::bind(std::mem_fn(&CExecutingServiceState::on_timer), this, std::placeholders::_1))
 {
@@ -153,7 +153,8 @@ logic::CExecutingServiceState::~CExecutingServiceState()
 
 void logic::CExecutingServiceState::refilled_cache(uint16_t cache)
 {
-
+	stop_service();
+	_deferred_cache = cache;
 }
 
 void logic::CExecutingServiceState::service_button_press(e_service_name service_name)
@@ -230,6 +231,14 @@ void logic::CExecutingServiceState::device_confirm()
 			CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
 			rcs->out_of_money();
 			_logic.set_state(e_state::settings_work);
+		}
+
+		if (0 != _deferred_cache)
+		{
+			CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
+			rcs->refilled_cache(_deferred_cache);
+			_deferred_cache = 0;
+			_logic.set_state(e_state::refill_cache);
 		}
 	}
 }
