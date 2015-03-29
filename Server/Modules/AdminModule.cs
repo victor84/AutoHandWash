@@ -25,8 +25,11 @@ namespace Server.Modules
             Post["/userGroups/create"] = CreateUserGroups;
             Get["/userGroups/delete/{userName}/{groupName}"] = DeleteUserGroups;
             Get["/groups"] = ViewGroups;
-            Get["/groups/setting/{groupName}"] = ViewSettingGroup;
-            Post["/groups/setting"] = SettingGroup;
+            Get["/groups/settings/{groupName}"] = ViewSettingsGroup;
+            Post["/groups/settings"] = ChangeSettingsGroup;
+            Get["/terminals"] = ViewTerminals;
+            Get["/terminals/settings/{groupName}/{terminalName}"] = ViewSettingsTerminals;
+            Post["/terminals/settings"] = ChangeSettingsTerminal;
         }
 
         private dynamic Index(dynamic parameters)
@@ -189,7 +192,7 @@ namespace Server.Modules
             return View["Groups", Model];
         }
 
-        private dynamic ViewSettingGroup(dynamic parameters)
+        private dynamic ViewSettingsGroup(dynamic parameters)
         {
             var groupName = (string)parameters.groupName;
             if (!string.IsNullOrEmpty(groupName))
@@ -206,10 +209,10 @@ namespace Server.Modules
                     }
                 }
             }
-            return View["SettingGroup", Model];
+            return View["SettingsGroup", Model];
         }
 
-        private dynamic SettingGroup(dynamic parameters)
+        private dynamic ChangeSettingsGroup(dynamic parameters)
         {
             var groupName = (string)this.Request.Form.GroupName;
             var hasPresent = (bool)this.Request.Form.HasPresent;
@@ -242,6 +245,125 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/admin/groups");
+        }
+
+        private dynamic ViewTerminals(dynamic parameters)
+        {
+            List<GroupTerminalNamePair> listGroupTerminals = new List<GroupTerminalNamePair>();
+            var terminals = Terminal.GetTerminals();
+            var groups = Group.GetGroups();
+            if (terminals != null && groups != null)
+            {
+                foreach (var terminal in terminals)
+                {
+                    string groupName = string.Empty;
+                    var group = groups.Where(x => x.Id == terminal.GroupId).FirstOrDefault();
+                    if (group != null)
+                    {
+                        groupName = group.GroupName;
+                    }
+                    GroupTerminalNamePair pair = new GroupTerminalNamePair()
+                    {
+                        GroupName = groupName,
+                        TerminalName = terminal.TerminalName
+                    };
+                    listGroupTerminals.Add(pair);
+                }
+            }
+            Model.AdminPage = new AdminPageModel();
+            Model.AdminPage.GroupTerminals = listGroupTerminals;
+            return View["AdminTerminals", Model];
+        }
+
+        private dynamic ViewSettingsTerminals(dynamic parameters)
+        {
+            var groupName = (string)parameters.groupName;
+            var terminalName = (string)parameters.terminalName;
+            if (!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(terminalName))
+            {
+                Model.AdminPage = new AdminPageModel();
+                Model.AdminPage.GroupName = groupName;
+                Model.AdminPage.TerminalName = terminalName;
+                var group = Group.GetGroupByName(groupName);
+                var terminals = Terminal.GetTerminalsByName(terminalName);
+                if (group != null && terminals != null)
+                {
+                    var terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
+                    if (terminal != null)
+                    {
+                        var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                        if (settingsTerminal != null)
+                        {
+                            Model.AdminPage.SettingsTerminal = settingsTerminal;
+                        }
+                    }
+                }
+            }
+            return View["SettingsTerminal", Model];
+        }
+
+        private dynamic ChangeSettingsTerminal(dynamic parameters)
+        {
+            var groupName = (string)this.Request.Form.GroupName;
+            var terminalName = (string)this.Request.Form.TerminalName;
+            var state = (byte)this.Request.Form.State;
+            var impulseBillAcceptor = (uint)this.Request.Form.ImpulseBillAcceptor;
+            var impulseCoinAcceptor = (uint)this.Request.Form.ImpulseCoinAcceptor;
+            var timeInactivity = (uint)this.Request.Form.TimeInactivity;
+            var priceMinuteInactivity = (uint)this.Request.Form.PriceMinuteInactivity;
+            var pauseBeforeShowingAds = (uint)this.Request.Form.PauseBeforeShowingAds;
+            var pricePressurizedWater = (uint)this.Request.Form.PricePressurizedWater;
+            var priceNoPressurizedWater = (uint)this.Request.Form.PriceNoPressurizedWater;
+            var priceFoam = (uint)this.Request.Form.PriceFoam;
+            var priceWax = (uint)this.Request.Form.PriceWax;
+            var priceAgainstOfMidges = (uint)this.Request.Form.PriceAgainstOfMidges;
+            var priceVacuum = (uint)this.Request.Form.PriceVacuum;
+            var priceAir = (uint)this.Request.Form.PriceAir;
+            var priceOsmose = (uint)this.Request.Form.PriceOsmose;
+
+            if (!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(terminalName))
+            {
+                var group = Group.GetGroupByName(groupName);
+                if (group != null)
+                {
+                    var terminals = Terminal.GetTerminalsByName(terminalName);
+                    if (terminals != null)
+                    {
+                        var terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
+                        if (terminal != null)
+                        {
+                            var newSettingsTerminal = new SettingsTerminal()
+                            {
+                                TerminalId = terminal.Id,
+                                State = state,
+                                ImpulseBillAcceptor = impulseBillAcceptor,
+                                ImpulseCoinAcceptor = impulseCoinAcceptor,
+                                PauseBeforeShowingAds = pauseBeforeShowingAds,
+                                PriceAgainstOfMidges = priceAgainstOfMidges,
+                                PriceAir = priceAir,
+                                PriceFoam = priceFoam,
+                                PriceMinuteInactivity = priceMinuteInactivity,
+                                PriceNoPressurizedWater = priceNoPressurizedWater,
+                                PriceOsmose = priceOsmose,
+                                PricePressurizedWater = pricePressurizedWater,
+                                PriceVacuum = priceVacuum,
+                                PriceWax = priceWax,
+                                TimeInactivity = timeInactivity
+                            };
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            if (settingsTerminal == null)
+                            {
+                                SettingsTerminal.Insert(newSettingsTerminal);
+                            }
+                            else
+                            {
+                                SettingsTerminal.Update(newSettingsTerminal);
+                            }
+                        }
+                    }
+                }
+            }
+            return Response.AsRedirect("~/admin/terminals");
         }
     }
 }

@@ -17,6 +17,24 @@ namespace Server.Data
         [Column]
         public Guid GroupId { get; set; }
 
+        public static List<Terminal> GetTerminals()
+        {
+            List<Terminal> terminals = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<Terminal>();
+                    terminals = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Terminal -> GetTerminals: {0}", ex);
+            }
+            return terminals;
+        }
+
         public static IEnumerable<Terminal> GetTerminalsByName(string terminalName)
         {
             IEnumerable<Terminal> terminals = null;

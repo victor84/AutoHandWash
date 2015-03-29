@@ -1,0 +1,75 @@
+﻿@Master['AdminPage']
+
+@Section['AdminStyles']
+<link rel="stylesheet" type="text/css" href="/Content/DataTables-1.10.4/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="/Content/DataTables-1.10.4/css/jquery.dataTables.min.css">
+@EndSection
+
+@Section['AdminScripts']
+<script type="text/javascript" charset="utf-8" language="javascript" src="/Scripts/DataTables-1.10.4/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8" language="javascript" src="/Scripts/DataTables-1.10.4/jquery.dataTables.min.js"></script>
+@EndSection
+
+@Section['AdminContent']
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $('#terminalstable').dataTable({
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ записей",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable:": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "Первая",
+                    "previous": "Предыдущая",
+                    "next": "Следующая",
+                    "last": "Последняя"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                }
+            },
+            "bAutoWidth": false,
+            "aoColumns": [
+                    { "sWidth": "33%" },
+                    { "sWidth": "33%" },
+                    { "sWidth": "33%" },
+            ],
+        });
+    });
+</script>
+
+<div class="col-md-9">
+    <h3>Терминалы</h3>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="terminalstable">
+        <thead>
+            <tr>
+                <th>Группа</th>
+                <th>Терминал</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @Each.AdminPage.GroupTerminals
+            <tr class="gradeA">
+                <td>@Current.GroupName</td>
+                <td>@Current.TerminalName</td>
+                <td class="text-center">
+                    <a href="/admin/terminals/settings/@Current.GroupName/@Current.TerminalName" role="button" class="btn btn-success btn-xs">
+                        <i class="fa fa-gear fa-fw"></i>
+                        Настройки
+                    </a>
+                </td>
+            </tr>
+            @EndEach
+        </tbody>
+    </table>
+</div>
+@EndSection

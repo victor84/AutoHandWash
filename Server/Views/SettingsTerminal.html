@@ -1,0 +1,132 @@
+﻿@Master['AdminPage']
+
+@Section['AdminStyles']
+@EndSection
+
+@Section['AdminScripts']
+<script src="/Scripts/SettingsTerminal.js"></script>
+@EndSection
+
+@Section['AdminContent']
+<script type="text/javascript">
+    ChangeStatus(@Model.AdminPage.SettingsTerminal.State);
+</script>
+
+
+<div class="col-md-8">
+    <h3>
+        @Model.AdminPage.GroupName
+        <small>
+        @Model.AdminPage.TerminalName
+        </small>
+    </h3>
+    <div class="panel panel-green">
+        <div class="panel-heading">
+            <i class="fa fa-gear fa-fw"></i>
+            Настройки
+        </div>
+        <div class="panel-body">
+            <form id="terminalSettings" role="form" method="post" action="/admin/terminals/settings">
+                
+                <input type="text" name="GroupName" class="hidden" value="@Model.AdminPage.GroupName">
+                <input type="text" name="TerminalName" class="hidden" value="@Model.AdminPage.TerminalName">
+                
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Статус:</label>
+                        <br />
+                        <label class="radio-inline"><input type="radio" name="State" value="0">Работает</label>
+                        <label class="radio-inline"><input type="radio" name="State" value="1">Простаивает</label>
+                        <label class="radio-inline"><input type="radio" name="State" value="2">Сломан</label>
+                        <label class="radio-inline"><input type="radio" name="State" value="3">Заблокирован</label>
+                    </div>
+                </div>
+
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Импульс купюроприемника:</label>
+                        <input type="number" min="0" name="ImpulseBillAcceptor" class="form-control" value="@Model.AdminPage.SettingsTerminal.ImpulseBillAcceptor">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Импульс монетоприемника:</label>
+                        <input type="number" min="0" name="ImpulseCoinAcceptor" class="form-control" value="@Model.AdminPage.SettingsTerminal.ImpulseCoinAcceptor">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Время простоя:</label>
+                        <input type="number" min="0" name="TimeInactivity" class="form-control" value="@Model.AdminPage.SettingsTerminal.TimeInactivity">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Cтоимость 1 минуты простоя:</label>
+                        <input type="number" min="0" name="PriceMinuteInactivity" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceMinuteInactivity">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Пауза перед показом рекламы:</label>
+                        <input type="number" min="0" name="PauseBeforeShowingAds" class="form-control" value="@Model.AdminPage.SettingsTerminal.PauseBeforeShowingAds">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена воды под давлением:</label>
+                        <input type="number" min="0" name="PricePressurizedWater" class="form-control" value="@Model.AdminPage.SettingsTerminal.PricePressurizedWater">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена воды без давления:</label>
+                        <input type="number" min="0" name="PriceNoPressurizedWater" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceNoPressurizedWater">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена пены:</label>
+                        <input type="number" min="0" name="PriceFoam" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceFoam">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена воска:</label>
+                        <input type="number" min="0" name="PriceWax" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceWax">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена средства от мошек:</label>
+                        <input type="number" min="0" name="PriceAgainstOfMidges" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceAgainstOfMidges">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена пылесоса:</label>
+                        <input type="number" min="0" name="PriceVacuum" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceVacuum">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена осмоса:</label>
+                        <input type="number" min="0" name="PriceOsmose" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceOsmose">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Цена воздуха:</label>
+                        <input type="number" min="0" name="PriceAir" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceAir">
+                    </div>
+                </div>
+
+
+                <div id="success"></div>
+                <button type="submit" class="btn btn-primary btnproperties">Применить</button>
+                <a class="btn btn-default btnproperties" href="/admin/terminals" role="button">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+@EndSection

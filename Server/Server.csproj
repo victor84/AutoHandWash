@@ -576,7 +576,10 @@
     <Content Include="Scripts\npm.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\SettingGroup.js">
+    <Content Include="Scripts\SettingsGroup.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\SettingsTerminal.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\TestSignalR.js">
@@ -606,10 +609,13 @@
     <Content Include="Views\Groups.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\SettingGroup.html">
+    <Content Include="Views\SettingsGroup.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\SettingsTerminals.html">
+    <Content Include="Views\AdminTerminals.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\SettingsTerminal.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\TestSignalR.html">

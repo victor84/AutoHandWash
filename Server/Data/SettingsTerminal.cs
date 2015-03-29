@@ -53,7 +53,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetSettingsTerminalById: {0}", ex);
+                Console.WriteLine("SettingsTerminal -> GetSettingsTerminalById: {0}", ex);
             }
             return settingsTerminal;
         }
