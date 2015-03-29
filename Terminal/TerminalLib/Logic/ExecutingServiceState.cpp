@@ -2,12 +2,13 @@
 #include "ExecutingServiceState.h"
 #include "SettingsWorkState.h"
 #include "FreeEdleState.h"
+#include "RefillCacheState.h"
 
 
 void logic::CExecutingServiceState::on_timer(int32_t)
 {
 	--_service_time_left;
-	++_current_service_time;
+	// ++_current_service_time;
 	increase_current_service_time();
 	calc_money_balance_by_time_left();
 
@@ -72,34 +73,31 @@ void logic::CExecutingServiceState::calc_money_balance_by_time_left()
 
 void logic::CExecutingServiceState::increase_current_service_time()
 {
-	if (0 == _current_service_time)
-		return;
-
 	switch (_current_service)
 	{
 		case logic::e_service_name::pressurized_water:
-			_device_settings.time_pressurized_water += _current_service_time;
+			++_device_settings.time_pressurized_water;
 			break;
 		case logic::e_service_name::water_without_pressure:
-			_device_settings.time_water_without_pressure += _current_service_time;
+			++_device_settings.time_water_without_pressure;
 			break;
 		case logic::e_service_name::foam:
-			_device_settings.time_foam += _current_service_time;
+			++_device_settings.time_foam;
 			break;
 		case logic::e_service_name::wax:
-			_device_settings.time_wax += _current_service_time;
+			++_device_settings.time_wax;
 			break;
 		case logic::e_service_name::against_midges:
-			_device_settings.time_against_midges += _current_service_time;
+			++_device_settings.time_against_midges;
 			break;
 		case logic::e_service_name::vacuum_cleaner:
-			_device_settings.time_vacuum_cleaner += _current_service_time;
+			++_device_settings.time_vacuum_cleaner;
 			break;
 		case logic::e_service_name::air:
-			_device_settings.time_air += _current_service_time;
+			++_device_settings.time_air;
 			break;
 		case logic::e_service_name::osmosis:
-			_device_settings.time_osmosis += _current_service_time;
+			++_device_settings.time_osmosis;
 			break;
 		default:
 			_tr_error->trace_error(_T("Включена неизвестная услуга"));
@@ -112,12 +110,7 @@ void logic::CExecutingServiceState::stop_service()
 	if (e_service_name::stop == _current_service)
 		return;
 
-	if (nullptr != _timer)
-	{
-		_timer->stop();
-		delete _timer;
-		_timer = nullptr;
-	}
+	stop_timer();
 
 	byte valve_number = _correspond_settings.GetValveNumber(_current_service);
 	_logic.close_valve(valve_number);
@@ -129,11 +122,20 @@ void logic::CExecutingServiceState::stop_service()
 	_current_service = e_service_name::stop;
 }
 
+void logic::CExecutingServiceState::stop_timer()
+{
+	if (nullptr != _timer)
+	{
+		_timer->stop();
+		delete _timer;
+		_timer = nullptr;
+	}
+}
+
 logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
 	: IState(logic, e_state::executing_service)
 	, _current_service(e_service_name::stop)
 	, _current_service_cost(0)
-	, _current_service_time(0)
 	, _balance_of_money(0)
 	, _service_time_left(0)
 	, _timer(nullptr)
@@ -146,6 +148,7 @@ logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
 
 logic::CExecutingServiceState::~CExecutingServiceState()
 {
+	stop_service();
 }
 
 void logic::CExecutingServiceState::refilled_cache(uint16_t cache)
@@ -195,12 +198,6 @@ void logic::CExecutingServiceState::time_out()
 void logic::CExecutingServiceState::out_of_money()
 {
 	stop_service();
-
-	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
-	sws->set_settings(_device_settings);
-	sws->write_settings();
-
-	_logic.set_state(e_state::settings_work);
 }
 
 void logic::CExecutingServiceState::device_confirm()
@@ -222,6 +219,17 @@ void logic::CExecutingServiceState::device_confirm()
 		if (e_service_name::stop != _deferred_service)
 		{
 			service_button_press(_deferred_service);
+		}
+
+		if ((_service_time_left <= 0) || (_balance_of_money <= 0))
+		{
+			CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+			sws->set_settings(_device_settings);
+			sws->write_settings();
+
+			CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
+			rcs->out_of_money();
+			_logic.set_state(e_state::settings_work);
 		}
 	}
 }

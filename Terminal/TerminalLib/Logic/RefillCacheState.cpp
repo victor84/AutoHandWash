@@ -52,7 +52,7 @@ void logic::CRefillCacheState::time_out()
 
 void logic::CRefillCacheState::out_of_money()
 {
-
+	_cache = 0;
 }
 
 void logic::CRefillCacheState::device_confirm()

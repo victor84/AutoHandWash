@@ -221,6 +221,12 @@ bool CSimpleDeviceEmulatorDlg::send_answer(std::wstring packet_hex)
 		return true;
 	}
 
+	if (_T("0ab0") == packet_hex.substr(0, 4))
+	{
+		m_PacketData = _T("0a0e0000000000000ea0");
+		return true;
+	}
+
 	return false;
 }
 

@@ -35,10 +35,12 @@ logic::CFreeEdleState::CFreeEdleState(CLogicAbstract& logic)
 	,_timer(nullptr)
 	, _on_timer_call(std::bind(std::mem_fn(&CFreeEdleState::on_timer), this, std::placeholders::_1))
 {
+	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 logic::CFreeEdleState::~CFreeEdleState()
 {
+	stop_timer();
 }
 
 void logic::CFreeEdleState::refilled_cache(uint16_t cache)
@@ -69,6 +71,8 @@ void logic::CFreeEdleState::stop_button_press()
 		uint32_t period = _settings.free_idle_time * 60 * 1000;
 		_timer = new Concurrency::timer<int32_t>(period, 0, &_on_timer_call, false);
 		_timer->start();
+
+		_tr_error->trace_message(_T("Начало бесплатного простоя"));
 	}
 	else
 	{

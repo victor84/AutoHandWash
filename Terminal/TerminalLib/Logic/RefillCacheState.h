@@ -29,11 +29,6 @@ public:
 
 	virtual void out_of_money() override;
 
-	int16_t get_cache() const
-	{
-		return _cache;
-	}
-
 	virtual void device_confirm() override;
 
 };

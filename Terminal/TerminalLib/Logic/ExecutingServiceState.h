@@ -20,9 +20,6 @@ class CExecutingServiceState : public IState
 	 // оставшееся время услуги в секундах
 	 int16_t _service_time_left;
 
-	 // время работы текущей услуги
-	 int16_t _current_service_time;
-
 	 // оставшиеся деньги (в копейках)
 	 int16_t _balance_of_money;
 
@@ -52,6 +49,9 @@ class CExecutingServiceState : public IState
 
 	 // остановка выполнения услуги
 	 void stop_service();
+
+	 // остановить таймер
+	 void stop_timer();
 
 public:
 	CExecutingServiceState(CLogicAbstract& logic);

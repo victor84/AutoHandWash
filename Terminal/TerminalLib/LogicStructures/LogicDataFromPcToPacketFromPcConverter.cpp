@@ -102,7 +102,7 @@ tag_packet_from_pc logic_structures::CLogicDataFromPcToPacketFromPcConverter::co
 
 	result.command = p->command_id;
 	result.data0 = p->cell_number;
-	*(uint32_t*)result.data1 = p->value;
+	*((uint32_t*)&result.data1) = p->value;
 
 	return result;
 }

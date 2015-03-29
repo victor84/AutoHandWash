@@ -61,12 +61,14 @@ logic::CPaidIdleState::CPaidIdleState(CLogicAbstract& logic)
 	, _time_left(0)
 	, _balance_of_money(0)
 	, _current_cost(0)
+	, _timer(nullptr)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 logic::CPaidIdleState::~CPaidIdleState()
 {
+	stop_timer();
 }
 
 void logic::CPaidIdleState::refilled_cache(uint16_t cache)
@@ -102,6 +104,8 @@ void logic::CPaidIdleState::time_out()
 	}
 
 	_timer->start();
+
+	_tr_error->trace_message(_T("Начало платного простоя"));
 }
 
 void logic::CPaidIdleState::out_of_money()

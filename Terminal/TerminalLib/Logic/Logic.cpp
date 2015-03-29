@@ -125,6 +125,8 @@ void logic::CLogic::Stop()
 		_this_thread.join();
 
 	_init_state = tools::e_init_state::not_init;
+
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 void logic::CLogic::open_valve(byte number)
