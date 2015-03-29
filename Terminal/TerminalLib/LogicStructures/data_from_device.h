@@ -177,6 +177,7 @@ struct tag_data_from_eeprom : tag_base_data_from_device
 // состяние кнопок
 struct tag_buttons_state : tag_base_data_from_device
 {
+	bool button0;	// кнопка 0
 	bool button1;	// кнопка 1
 	bool button2;	// кнопка 2
 	bool button3;	// кнопка 3
@@ -185,9 +186,10 @@ struct tag_buttons_state : tag_base_data_from_device
 	bool button6;	// кнопка 6
 	bool button7;	// кнопка 7
 	bool button8;	// кнопка 8
-	bool button9;	// кнопка 9
+
 
 	tag_buttons_state() : tag_base_data_from_device(device_exchange::e_command_from_device::buttons_state)
+		,button0(false)
 		,button1(false)
 		,button2(false)
 		,button3(false)
@@ -196,7 +198,6 @@ struct tag_buttons_state : tag_base_data_from_device
 		,button6(false)
 		,button7(false)
 		,button8(false)
-		,button9(false)
 	{
 
 	}

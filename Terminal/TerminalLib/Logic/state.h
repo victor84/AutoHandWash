@@ -36,7 +36,7 @@ protected:
 	CLogicAbstract& _logic;
 
 	// это состояние
-	const e_state& _this_state;
+	const e_state _this_state;
 
 	// получить указатель на наследник
 	template<typename _StateType>
@@ -44,8 +44,9 @@ protected:
 	{
 		_StateType* result = dynamic_cast<_StateType*>(_logic.get_state(state).get());
 
-		if ((_this_state != state) || (result->get_this_state() != state))
+		if (result->get_this_state() != state)
 		{
+			__debugbreak();
 			throw std::exception("(_this_state != state) || (_StateType::get_this_state() != state)");
 		}
 

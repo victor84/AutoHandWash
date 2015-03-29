@@ -43,7 +43,7 @@ namespace logic_structures
 		}
 	};
 
-	// открыть клапан (ОТСЧЁТ С 1)
+	// открыть клапан (ОТСЧЁТ С 0)
 	struct tag_open_valve : tag_base_data_from_pc
 	{
 		byte number;	// номер открываемого клапана
@@ -62,7 +62,7 @@ namespace logic_structures
 		}
 	};
 
-	// закрыть клапан (ОТСЧЁТ С 1)
+	// закрыть клапан (ОТСЧЁТ С 0)
 	struct tag_close_valve : tag_base_data_from_pc
 	{
 		byte number;	// номер закрываемого клапана

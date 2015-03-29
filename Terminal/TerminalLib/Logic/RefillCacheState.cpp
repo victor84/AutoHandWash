@@ -27,6 +27,7 @@ void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	_device_settings = sws->get_settings();
 	_device_settings.current_cache = _cache;
+	_device_settings.total_cache += cache;
 	sws->set_settings(_device_settings);
 }
 

@@ -6,6 +6,7 @@
 #include "data_from_device.h"
 #include "SettingsWorkState.h"
 #include "FreeEdleState.h"
+#include "PaidIdleState.h"
 
 void logic::CLogic::fill_states()
 {
@@ -16,6 +17,7 @@ void logic::CLogic::fill_states()
 	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::settings_work, std::make_shared<CSettingsWorkState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::free_idle, std::make_shared<CFreeEdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::paid_idle, std::make_shared<CPaidIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 
 }
 

@@ -104,6 +104,9 @@ tag_packet_from_device CLogicDataFromDeviceToPacketFromDeviceConverter::convert_
 	result.command = p->command_id;
 	uint16_t state = 0;
 
+	state |= static_cast<byte>(p->button0);
+	state <<= 1;
+
 	state |= static_cast<byte>(p->button1);
 	state <<= 1;
 
@@ -126,9 +129,6 @@ tag_packet_from_device CLogicDataFromDeviceToPacketFromDeviceConverter::convert_
 	state <<= 1;
 
 	state |= static_cast<byte>(p->button8);
-	state <<= 1;
-
-	state |= static_cast<byte>(p->button9);
 	state <<= 1;
 
 	*((uint16_t*)&result.data0) = state;

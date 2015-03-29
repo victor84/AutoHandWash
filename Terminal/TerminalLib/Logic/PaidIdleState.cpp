@@ -9,6 +9,9 @@ void logic::CPaidIdleState::on_timer(int32_t)
 	--_time_left;
 	calc_money_balance_by_time_left();
 
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	sws->set_settings(_device_settings);
+
 	if ((0 == _time_left) || (0 == _balance_of_money))
 	{
 		stop_timer();
@@ -28,18 +31,18 @@ void logic::CPaidIdleState::on_timer(int32_t)
 void logic::CPaidIdleState::calc_time_and_money()
 {
 	_balance_of_money = static_cast<int16_t>(_device_settings.current_cache);
-
 	_current_cost = static_cast<int16_t>(_device_settings.idle_time_cost);
 
-	_time_left = static_cast<int16_t>(_balance_of_money / _current_cost * 60);
+	_time_left = static_cast<int16_t>(static_cast<double>(_balance_of_money) / 
+									  static_cast<double>(_current_cost) * 60.0);
 	_balance_of_money *= 100;
 	_current_cost *= 100;
 }
 
 void logic::CPaidIdleState::calc_money_balance_by_time_left()
 {
-	_balance_of_money = (_time_left / 60.0) * (_current_cost);
-	_device_settings.current_cache = _balance_of_money / 100;
+	_balance_of_money = static_cast<int16_t>((_time_left / 60.0) * (_current_cost));
+	_device_settings.current_cache = static_cast<int16_t>(_balance_of_money / 100.0);
 }
 
 void logic::CPaidIdleState::stop_timer()
@@ -73,7 +76,12 @@ void logic::CPaidIdleState::refilled_cache(uint16_t cache)
 
 void logic::CPaidIdleState::service_button_press(e_service_name service_name)
 {
-	
+	stop_timer();
+
+	CExecutingServiceState* ess = get_implemented_state<CExecutingServiceState>(e_state::executing_service);
+
+	_logic.set_state(e_state::executing_service);
+	ess->service_button_press(service_name);
 }
 
 void logic::CPaidIdleState::stop_button_press()

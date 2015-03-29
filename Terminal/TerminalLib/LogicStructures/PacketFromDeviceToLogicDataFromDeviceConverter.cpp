@@ -86,15 +86,15 @@ tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLog
 
 	uint16_t state = (*(uint16_t*)&packet.data0);
 
-	result.button1 = (0 != (state & 0x01));
-	result.button2 = (0 != ((state >> 1) & 0x01));
-	result.button3 = (0 != ((state >> 2) & 0x01));
-	result.button4 = (0 != ((state >> 3) & 0x01));
-	result.button5 = (0 != ((state >> 4) & 0x01));
-	result.button6 = (0 != ((state >> 5) & 0x01));
-	result.button7 = (0 != ((state >> 6) & 0x01));
-	result.button8 = (0 != ((state >> 7) & 0x01));
-	result.button9 = (0 != ((state >> 8) & 0x01));
+	result.button0 = (0 != (state & 0x01));
+	result.button1 = (0 != ((state >> 1) & 0x01));
+	result.button2 = (0 != ((state >> 2) & 0x01));
+	result.button3 = (0 != ((state >> 3) & 0x01));
+	result.button4 = (0 != ((state >> 4) & 0x01));
+	result.button5 = (0 != ((state >> 5) & 0x01));
+	result.button6 = (0 != ((state >> 6) & 0x01));
+	result.button7 = (0 != ((state >> 7) & 0x01));
+	result.button8 = (0 != ((state >> 8) & 0x01));
 
 	return result;
 }
