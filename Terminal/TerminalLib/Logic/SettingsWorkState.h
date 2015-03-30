@@ -9,11 +9,13 @@ class CSettingsWorkState : public IState
 	tools::logging::CTraceError* _tr_error;
 
 	tag_device_settings _settings;
+	tag_device_settings _settings_from_device;
 	uint32_t* _p_settings;
 
 	std::wstringstream _str_str;
 
 	byte _write_cell_number;
+	byte _write_setting_number;
 
 public:
 	CSettingsWorkState(CLogicAbstract& logic);
@@ -37,7 +39,7 @@ public:
 
 	tag_device_settings get_settings() const;
 
-	void set_settings(tag_device_settings settings);
+	void set_settings(const tag_device_settings& settings);
 
 	void write_settings();
 };

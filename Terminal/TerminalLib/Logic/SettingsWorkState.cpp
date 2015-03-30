@@ -6,6 +6,7 @@ logic::CSettingsWorkState::CSettingsWorkState(CLogicAbstract& logic)
 	: IState(logic, e_state::settings_work)
 	, _p_settings(reinterpret_cast<uint32_t*>(&_settings))
 	, _write_cell_number(0x00)
+	, _write_setting_number(0x00)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -41,28 +42,34 @@ void logic::CSettingsWorkState::out_of_money()
 
 void logic::CSettingsWorkState::device_confirm()
 {
-	byte offset = 0;
-	++_write_cell_number;
+	uint32_t* p_ds = reinterpret_cast<uint32_t*>(&_settings_from_device);
+	bool continue_loop = true;
 
-	if (_write_cell_number <= 0x07)
+	while (true == continue_loop)
 	{
+		if ((_write_setting_number >= (sizeof(tag_device_settings) / sizeof(uint32_t))) ||
+			(_write_cell_number > 0x28))
+		{
+			// запись закончена
+			_logic.set_state(e_state::advertising_idle);
+			return;
+		}
 
-	}
-	else if ((_write_cell_number > 0x07) && (_write_cell_number <= 0x18))
-	{
-		offset += 4;
-	}
-	else if ((_write_cell_number > 0x18) && (_write_cell_number <= 0x28))
-	{
-		offset += 4 + 3;
-	}
-	else
-	{
-		// запись закончена
-		_logic.set_state(e_state::advertising_idle);
-	}
+		if ((*(_p_settings + _write_setting_number)) != (*(p_ds + _write_setting_number)))
+		{
+			_logic.write_eeprom(_write_cell_number, *(_p_settings + _write_setting_number));
+			continue_loop = false;
+		}
 
-	_logic.write_eeprom(_write_cell_number + offset, *_p_settings);
+		if (0x07 == _write_cell_number)
+			_write_cell_number = 0x10;
+
+		if (0x18 == _write_cell_number)
+			_write_cell_number = 0x20;
+
+		++_write_cell_number;
+		++_write_setting_number;
+	}
 }
 
 void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t value)
@@ -93,6 +100,7 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 
 		if (cell_number > 0x28)
 		{
+			_settings_from_device = _settings;
 			_logic.set_state(e_state::advertising_idle);
 			return;
 		}
@@ -121,7 +129,7 @@ logic::tag_device_settings logic::CSettingsWorkState::get_settings() const
 	return _settings;
 }
 
-void logic::CSettingsWorkState::set_settings(tag_device_settings settings)
+void logic::CSettingsWorkState::set_settings(const tag_device_settings& settings)
 {
 	_settings = settings;
 }
@@ -129,6 +137,7 @@ void logic::CSettingsWorkState::set_settings(tag_device_settings settings)
 void logic::CSettingsWorkState::write_settings()
 {
 	_write_cell_number = 0x00;
+	_write_setting_number = 0x00;
 
 	_logic.write_eeprom(_write_cell_number, *_p_settings);
 }
