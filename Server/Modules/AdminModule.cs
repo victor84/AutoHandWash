@@ -142,6 +142,10 @@ namespace Server.Modules
                 if (user != null)
                 {
                     bool result = User.Delete(user);
+                    if (!result)
+                    {
+                        return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.DeleteUser);
+                    }
                 }
             }
             return Response.AsRedirect("~/admin/users");
@@ -162,7 +166,17 @@ namespace Server.Modules
                 };
                 var userGroup = UserGroups.GetUserGroup(newUserGroups);
                 if (userGroup == null)
-                    UserGroups.Insert(newUserGroups);
+                {
+                    bool result = UserGroups.Insert(newUserGroups);
+                    if (!result)
+                    {
+                        return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.CreateUserGroup);
+                    }
+                }
+                else
+                {
+                    return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.UserGroupExist);
+                }
             }
             return Response.AsRedirect("~/admin/userGroups");
         }
@@ -185,7 +199,13 @@ namespace Server.Modules
                     };
                     var userGroup = UserGroups.GetUserGroup(userGroups);
                     if (userGroup != null)
-                        UserGroups.Delete(userGroups);
+                    {
+                        bool result = UserGroups.Delete(userGroups);
+                        if (!result)
+                        {
+                            return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.DeleteUserGroup);
+                        }
+                    }
                 }
             }
             return Response.AsRedirect("~/admin/userGroups");
@@ -246,11 +266,19 @@ namespace Server.Modules
                     var settingsGroup = SettingsGroup.GetSettingsGroupById(group.Id);
                     if (settingsGroup == null)
                     {
-                        SettingsGroup.Insert(newSettingsGroup);
+                        bool result = SettingsGroup.Insert(newSettingsGroup);
+                        if (!result)
+                        {
+                            return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.CreateSettingsGroup);
+                        }
                     }
                     else
                     {
-                        SettingsGroup.Update(newSettingsGroup);
+                        bool result = SettingsGroup.Update(newSettingsGroup);
+                        if (!result)
+                        {
+                            return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.UpdateSettingsGroup);
+                        }
                     }
                 }
             }
@@ -305,11 +333,12 @@ namespace Server.Modules
                         if (settingsTerminal != null)
                         {
                             Model.AdminPage.SettingsTerminal = settingsTerminal;
+                            return View["SettingsTerminal", Model];
                         }
                     }
                 }
             }
-            return View["SettingsTerminal", Model];
+            return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.ReadSettingsTerminals);
         }
 
         private dynamic ChangeSettingsTerminal(dynamic parameters)
