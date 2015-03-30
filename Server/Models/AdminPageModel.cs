@@ -6,8 +6,15 @@ namespace Server.Models
 {
     public enum AdminErrors
     {
-        UserNameExist = 0,
-        CreateUser = 1,
+        UserNameExist,
+        CreateUser,
+        DeleteUser,
+        UserGroupExist,
+        CreateUserGroup,
+        DeleteUserGroup,
+        CreateSettingsGroup,
+        UpdateSettingsGroup,
+        ReadSettingsTerminals
     };
     
     public class AdminError
@@ -25,6 +32,27 @@ namespace Server.Models
                         break;
                     case AdminErrors.CreateUser:
                         result = "Не удалось создать пользователя";
+                        break;
+                    case AdminErrors.DeleteUser:
+                        result = "Не удалось удалить пользователя";
+                        break;
+                    case AdminErrors.UserGroupExist:
+                        result = "Подобная связь пользователя с группой уже существует";
+                        break;
+                    case AdminErrors.CreateUserGroup:
+                        result = "Не удалось добавить связь пользователя с группой";
+                        break;
+                    case AdminErrors.DeleteUserGroup:
+                        result = "Не удалось удалить связь пользователя с группой";
+                        break;
+                    case AdminErrors.CreateSettingsGroup:
+                        result = "Не удалось добавить настройки группы";
+                        break;
+                    case AdminErrors.UpdateSettingsGroup:
+                        result = "Не удалось обновить настройки группы";
+                        break;
+                    case AdminErrors.ReadSettingsTerminals:
+                        result = "Не удалось прочитать настройки терминала";
                         break;
                     default:
                         break;
@@ -62,6 +90,13 @@ namespace Server.Models
             get
             {
                 return Users.Any();
+            }
+        }
+        public bool HasGroups
+        {
+            get
+            {
+                return Groups.Any();
             }
         }
 
