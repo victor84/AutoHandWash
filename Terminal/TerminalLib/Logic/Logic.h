@@ -102,6 +102,8 @@ class CLogic : CLogicAbstract
 		return dynamic_cast<_MessageType*>(message.get());
 	}
 
+
+
 public:
 	CLogic();
 	~CLogic();

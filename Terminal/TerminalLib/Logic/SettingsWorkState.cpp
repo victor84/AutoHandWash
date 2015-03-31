@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SettingsWorkState.h"
+#include "AdvertisingIdleState.h"
 
 
 logic::CSettingsWorkState::CSettingsWorkState(CLogicAbstract& logic)
@@ -50,8 +51,11 @@ void logic::CSettingsWorkState::device_confirm()
 		if ((_write_setting_number >= (sizeof(tag_device_settings) / sizeof(uint32_t))) ||
 			(_write_cell_number > 0x28))
 		{
+			_settings_from_device = _settings;
 			// запись закончена
 			_logic.set_state(e_state::advertising_idle);
+			CAdvertisingIdleState* as = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);
+			as->time_out();
 			return;
 		}
 
@@ -102,6 +106,8 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 		{
 			_settings_from_device = _settings;
 			_logic.set_state(e_state::advertising_idle);
+			CAdvertisingIdleState* as = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);
+			as->time_out();
 			return;
 		}
 	}

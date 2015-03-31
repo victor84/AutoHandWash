@@ -131,7 +131,7 @@ void logic::CExecutingServiceState::stop_timer()
 	}
 }
 
-logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
+logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic, logic_settings::CCorrespondSettings& correspond_settings)
 	: IState(logic, e_state::executing_service)
 	, _current_service(e_service_name::stop)
 	, _current_service_cost(0)
@@ -140,10 +140,10 @@ logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic)
 	, _timer(nullptr)
 	, _deferred_cache(0)
 	, _deferred_service(e_service_name::stop)
+	, _correspond_settings(correspond_settings)
 	, _on_timer_call(std::bind(std::mem_fn(&CExecutingServiceState::on_timer), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
-	_correspond_settings.ReadSettings();
 }
 
 logic::CExecutingServiceState::~CExecutingServiceState()

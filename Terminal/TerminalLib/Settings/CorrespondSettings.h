@@ -24,6 +24,7 @@ class CCorrespondSettings
 	const wchar_t* services_names_block_name = _T("services_names");
 	const wchar_t* services_buttons_name = _T("services_buttons");
 	const wchar_t* services_valves_name = _T("services_valves");
+	const wchar_t* service_cost = _T("cost");
 
 	// константы названий сервисов в настройках
 	const wchar_t* service_pressurized_water = _T("pressurized_water");
@@ -57,6 +58,9 @@ class CCorrespondSettings
 	// соответствие номер кнопки - номер клапана
 	std::map<byte, byte> _button_number_valve_number;
 
+	// соответствие сервис - стоимость
+	std::map<logic::e_service_name, uint16_t> _service_cost;
+
 	// признак отсутствия ошибки во время чтения настроек
 	bool _read_settings_success;
 
@@ -77,6 +81,8 @@ class CCorrespondSettings
 
 	bool fill_button_number_valve_number();
 
+	bool fill_services_cost();
+
 public:
 	CCorrespondSettings();
 	virtual ~CCorrespondSettings();
@@ -85,21 +91,22 @@ public:
 	bool ReadSettings();
 
 	// получить название сервиса
-	std::wstring GetServiceName(logic::e_service_name service);
+	std::wstring GetServiceName(const logic::e_service_name& service);
 
 	// получить номер кнопки
-	byte GetButtonNumber(logic::e_service_name service);
+	byte GetButtonNumber(const logic::e_service_name& service);
 
 	// получить номер клапана
-	byte GetValveNumber(logic::e_service_name service);
+	byte GetValveNumber(const logic::e_service_name& service);
 
 	// получить номер клапана по номеру кнопки
-	byte GetValveNumber(byte button_number);
+	byte GetValveNumber(const byte& button_number);
 
 	// получить сервис по номеру кнопки
-	logic::e_service_name GetServiceByButtonNumber(byte button_number);
+	logic::e_service_name GetServiceByButtonNumber(const byte& button_number);
 
-
+	// получить стоимость услуги
+	uint16_t GetServiceCost(const logic::e_service_name& service);
 
 };
 }

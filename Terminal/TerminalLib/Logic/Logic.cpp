@@ -12,9 +12,9 @@ void logic::CLogic::fill_states()
 {
 	_states.clear();
 
-	_states.insert(std::make_pair(e_state::advertising_idle, std::make_shared<CAdvertisingIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::advertising_idle, std::make_shared<CAdvertisingIdleState>(*(dynamic_cast<CLogicAbstract*>(this)), _correspond_settings)));
 	_states.insert(std::make_pair(e_state::refill_cache, std::make_shared<CRefillCacheState>(*(dynamic_cast<CLogicAbstract*>(this)))));
-	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::executing_service, std::make_shared<CExecutingServiceState>(*(dynamic_cast<CLogicAbstract*>(this)), _correspond_settings)));
 	_states.insert(std::make_pair(e_state::settings_work, std::make_shared<CSettingsWorkState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::free_idle, std::make_shared<CFreeEdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::paid_idle, std::make_shared<CPaidIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));

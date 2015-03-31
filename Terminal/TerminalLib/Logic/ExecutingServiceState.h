@@ -9,7 +9,7 @@ class CExecutingServiceState : public IState
 	tools::logging::CTraceError* _tr_error;
 
 	// модуль соответствий услуг, кнопок и клапанов
-	 logic_settings::CCorrespondSettings _correspond_settings;
+	 logic_settings::CCorrespondSettings& _correspond_settings;
 
 	 // текущая выполняемая услуга
 	 e_service_name _current_service;
@@ -57,7 +57,7 @@ class CExecutingServiceState : public IState
 	 void stop_timer();
 
 public:
-	CExecutingServiceState(CLogicAbstract& logic);
+	CExecutingServiceState(CLogicAbstract& logic, logic_settings::CCorrespondSettings& correspond_settings);
 	virtual ~CExecutingServiceState();
 
 	virtual void refilled_cache(uint16_t cache) final;

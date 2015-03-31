@@ -159,6 +159,35 @@ struct tag_device_settings
 	{
 		ZeroMemory(this, sizeof(tag_device_settings));
 	}
+
+	bool operator==(const tag_device_settings& settings)
+	{
+		return ((total_cache == settings.total_cache) &&
+		(current_cache == settings.current_cache) &&
+		(bill_acceptor_impulse == settings.bill_acceptor_impulse) &&
+		(coin_acceptor_impulse == settings.coin_acceptor_impulse) &&
+		(free_idle_time == settings.free_idle_time) &&
+		(idle_time_cost == settings.idle_time_cost) &&
+		(pause_before_advertising == settings.pause_before_advertising) &&
+		(state == settings.state) &&
+		(cost_pressurized_water == settings.cost_pressurized_water) &&
+		(cost_water_without_pressure == settings.cost_water_without_pressure) &&
+		(cost_foam == settings.cost_foam) &&
+		(cost_wax == settings.cost_wax) &&
+		(cost_against_midges == settings.cost_against_midges) &&
+		(cost_vacuum_cleaner == settings.cost_vacuum_cleaner) &&
+		(cost_air == settings.cost_air) &&
+		(cost_osmosis == settings.cost_osmosis) &&
+		(time_pressurized_water == settings.time_pressurized_water) &&
+		(time_water_without_pressure == settings.time_water_without_pressure) &&
+		(time_foam == settings.time_foam) &&
+		(time_wax == settings.time_wax) &&
+		(time_against_midges == settings.time_against_midges) &&
+		(time_vacuum_cleaner == settings.time_vacuum_cleaner) &&
+		(time_air == settings.time_air) &&
+		(time_osmosis == settings.time_osmosis));
+	}
+
 };
 #pragma pack(pop)
 

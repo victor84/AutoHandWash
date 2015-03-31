@@ -1,6 +1,7 @@
 #pragma once
 #include "state.h"
 #include "TraceError.h"
+#include "CorrespondSettings.h"
 
 namespace logic
 {
@@ -8,8 +9,14 @@ class CAdvertisingIdleState : public IState
 {
 	tools::logging::CTraceError* _tr_error;
 
+	// модуль соответствий услуг, кнопок и клапанов
+	logic_settings::CCorrespondSettings& _correspond_settings;
+
+	// прочитать и записать настройки по-умолчанию стоимости услуг
+	bool read_services_cost(tag_device_settings& settings);
+
 public:
-	CAdvertisingIdleState(CLogicAbstract& logic);
+	CAdvertisingIdleState(CLogicAbstract& logic, logic_settings::CCorrespondSettings& correspond_settings);
 	virtual ~CAdvertisingIdleState();
 
 	virtual void refilled_cache(uint16_t cache) final;

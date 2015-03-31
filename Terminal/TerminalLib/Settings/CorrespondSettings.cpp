@@ -53,6 +53,9 @@ void logic_settings::CCorrespondSettings::fill_parameters_for_read()
 			_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
 											services_valves_name,
 											_service_settings_name[service]);
+			_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+											service_cost,
+											_service_settings_name[service]);
 		}
 	}
 }
@@ -155,6 +158,28 @@ bool logic_settings::CCorrespondSettings::fill_button_number_valve_number()
 	return true;
 }
 
+bool logic_settings::CCorrespondSettings::fill_services_cost()
+{
+	_service_cost.clear();
+
+	typedef std::pair<logic::e_service_name, uint16_t> _ElemType;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		e_service_name service = static_cast<e_service_name>(i);
+		uint16_t cost = static_cast<byte>(_settings_module->get_int(_service_settings_name[service], service_cost));
+
+		if (_service_cost[service] != 0)
+		{
+			_tr_error->trace_error(_T("Ошибка в блоке сервис-цена"));
+			return false;
+		}
+
+		_service_cost[service] = cost;
+	}
+	return true;
+}
+
 logic_settings::CCorrespondSettings::CCorrespondSettings()
 	: _read_settings_success(false)
 {
@@ -191,12 +216,15 @@ bool logic_settings::CCorrespondSettings::ReadSettings()
 	if (false == fill_button_number_valve_number())
 		return false;
 
+	if (false == fill_services_cost())
+		return false;
+
 	_read_settings_success = true;
 
 	return true;
 }
 
-std::wstring logic_settings::CCorrespondSettings::GetServiceName(logic::e_service_name service)
+std::wstring logic_settings::CCorrespondSettings::GetServiceName(const logic::e_service_name& service)
 {
 	if (false == is_reading_successed())
 		return std::wstring();
@@ -204,7 +232,7 @@ std::wstring logic_settings::CCorrespondSettings::GetServiceName(logic::e_servic
 	return _service_service_name[service];
 }
 
-byte logic_settings::CCorrespondSettings::GetButtonNumber(logic::e_service_name service)
+byte logic_settings::CCorrespondSettings::GetButtonNumber(const logic::e_service_name& service)
 {
 	if (false == is_reading_successed())
 		return 0;
@@ -212,7 +240,7 @@ byte logic_settings::CCorrespondSettings::GetButtonNumber(logic::e_service_name 
 	return _service_button_number[service];
 }
 
-byte logic_settings::CCorrespondSettings::GetValveNumber(logic::e_service_name service)
+byte logic_settings::CCorrespondSettings::GetValveNumber(const logic::e_service_name& service)
 {
 	if (false == is_reading_successed())
 		return 0;
@@ -220,12 +248,17 @@ byte logic_settings::CCorrespondSettings::GetValveNumber(logic::e_service_name s
 	return _service_valve_number[service];
 }
 
-logic::e_service_name logic_settings::CCorrespondSettings::GetServiceByButtonNumber(byte button_number)
+logic::e_service_name logic_settings::CCorrespondSettings::GetServiceByButtonNumber(const byte& button_number)
 {
 	return _button_number_service[button_number];
 }
 
-byte logic_settings::CCorrespondSettings::GetValveNumber(byte button_number)
+uint16_t logic_settings::CCorrespondSettings::GetServiceCost(const logic::e_service_name& service)
+{
+	return _service_cost[service];
+}
+
+byte logic_settings::CCorrespondSettings::GetValveNumber(const byte& button_number)
 {
 	if (false == is_reading_successed())
 		return 0;
