@@ -1,11 +1,8 @@
 // stdafx.h: включаемый файл дл€ стандартных системных включаемых файлов
-// или включаемых файлов дл€ конкретного проекта, которые часто используютс€, но
-// не часто измен€ютс€
-//
+// или включаемых файлов дл€ конкретного проекта, которые часто используютс€,
+// но не часто измен€ютс€
 
 #pragma once
-
-#include "targetver.h"
 
 #include <stdio.h>
 #include <tchar.h>
@@ -27,25 +24,22 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 #include <afxmt.h>
 
-#include <iostream>
 
-
-
-// TODO: ”становите здесь ссылки на дополнительные заголовки, требующиес€ дл€ программы
 // stl
 #include <string>
 #include <vector>
 #include <sstream>
 #include <locale>
-#include <thread>
+// #include <thread>
 #include <map>
+#include <memory>
 
 // strings
 #include <tchar.h>
 
 // windows
-#include <ppl.h>
-#include <agents.h>
+// #include <ppl.h>
+// #include <agents.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -54,9 +48,3 @@
 
 // std
 #include <stdlib.h>
-
-#ifdef DEBUG
-// подключаем детектор утечек пам€ти
-#include "vld.h"
-#pragma comment(lib, "vld.lib")
-#endif

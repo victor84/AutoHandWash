@@ -83,6 +83,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <ShowIncludes>false</ShowIncludes>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,7 +127,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;$(ProjectDir);ServerExchange;stdafx;DeviceExchange;LogicStructures;Logic;Settings</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

@@ -1,4 +1,5 @@
 #pragma once
+#include "CriticalSectionLocker.h"
 
 namespace tools
 {
@@ -6,7 +7,7 @@ template<typename _Type>
 class lock_vector
 {
 	std::vector<_Type> _vector;
-	Concurrency::critical_section _cs;
+	CCriticalSection _cs;
 
 public:
 	lock_vector()
@@ -21,14 +22,14 @@ public:
 
 	void push_back(_Type elem)
 	{
-		Concurrency::critical_section::scoped_lock sl(_cs);
+		threading::CCriticalSectionLocker sl(_cs);
 
 		_vector.push_back(elem);
 	}
 
 	std::vector<_Type> get_with_cleanup()
 	{
-		Concurrency::critical_section::scoped_lock sl(_cs);
+		threading::CCriticalSectionLocker sl(_cs);
 
 		std::vector<_Type> result(_vector.begin(), _vector.end());
 
@@ -39,7 +40,7 @@ public:
 
 	bool empty()
 	{
-		Concurrency::critical_section::scoped_lock sl(_cs);
+		threading::CCriticalSectionLocker sl(_cs);
 
 		return _vector.empty();
 	}

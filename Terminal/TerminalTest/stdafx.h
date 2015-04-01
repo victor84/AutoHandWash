@@ -25,6 +25,7 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>                     // поддержка MFC для типовых элементов управления Windows
 #endif // _AFX_NO_AFXCMN_SUPPORT
+#include <afxmt.h>
 
 #include <iostream>
 

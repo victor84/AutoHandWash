@@ -122,14 +122,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;..\TerminalLib\ServerExchange;..\TerminalLib\DeviceExchange;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;..\TerminalLib\ServerExchange;..\TerminalLib\DeviceExchange;..\TerminalLib\LogicStructures;..\TerminalLib\Settings;..\TerminalLib\Logic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
