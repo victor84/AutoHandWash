@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Server.Hubs;
 
 namespace Server
 {
@@ -18,11 +19,13 @@ namespace Server
         private NetworkStream stream;
         private PacketParser parser;
         private PacketToRawData packetToRawData;
-        public ClientHandler(TcpClient client)
+        private HubTerminals hubTerminals;
+        public ClientHandler(TcpClient client, IHubClient hubClient)
         {
             this.client = client;
             this.parser = new PacketParser();
             packetToRawData = new PacketToRawData();
+            hubTerminals = new HubTerminals(hubClient);
         }
 
         public void Run()
@@ -192,6 +195,8 @@ namespace Server
             if (!Counters.Insert(counters))
                 return e_processing_result.failed;
 
+            hubTerminals.Send("Craig", "12345");
+
             return e_processing_result.success;
         }
 
@@ -256,6 +261,8 @@ namespace Server
 
             if (!TerminalLog.Insert(terminalLog))
                 return e_processing_result.failed;
+
+            hubTerminals.Send("Craig", "12345");
 
             return e_processing_result.success;
         }

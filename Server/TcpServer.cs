@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.Hubs;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace Server
         private volatile bool running;
         private Task task;
 
-        public TcpServer(int port)
+        public TcpServer(int port, IHubClient hubClient)
         {
-            task = new Task(() => Main(port));
+            task = new Task(() => Main(port, hubClient));
         }
 
         public void Start()
@@ -27,7 +28,7 @@ namespace Server
             running = false;
         }
 
-        private void Main(int port)
+        private void Main(int port, IHubClient hubClient)
         {
             TcpListener server = null;
             try
@@ -38,7 +39,7 @@ namespace Server
                 while (running)
                 {
                     TcpClient client = server.AcceptTcpClient();
-                    ClientHandler handler = new ClientHandler(client);
+                    ClientHandler handler = new ClientHandler(client, hubClient);
                     handler.Run();
                 }
             }

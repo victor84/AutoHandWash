@@ -119,6 +119,9 @@
   <ItemGroup>
     <Compile Include="Data\TerminalLog.cs" />
     <Compile Include="Data\UserGroups.cs" />
+    <Compile Include="Hubs\HubClient.cs" />
+    <Compile Include="Hubs\HubTerminals.cs" />
+    <Compile Include="Hubs\IHubClient.cs" />
     <Compile Include="Models\AdminPageModel.cs" />
     <Compile Include="Modules\AdminModule.cs" />
     <Compile Include="Tools.cs" />
