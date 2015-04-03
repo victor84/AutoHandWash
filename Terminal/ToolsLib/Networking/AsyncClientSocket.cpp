@@ -13,6 +13,7 @@ CAsyncClientSocket::CAsyncClientSocket(tools::lock_vector<data_wrappers::_tag_da
 									   , _socket_stream(received_data, on_data_received)
 									   , _on_connected(on_connected)
 									   , _on_disconnected(on_disconnected)
+									   , _addr_results(nullptr)
 									   , _reconnection_method([this](INT)
 																{
 																	if (_e_connection_state::not_connected == _connection_state)

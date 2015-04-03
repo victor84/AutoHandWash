@@ -18,4 +18,10 @@ public:
 	// остановка
 	void Stop();
 
+	// установка указателя на функцию, вызываемую при изменении времени и денег
+	void SetOnTimeAndMoneyFn(void* pointer);
+
+	// установка указателя на функцию, вызываемую при изменении услуги
+	void SetOnServiceChangedFn(void* pointer);
+
 };

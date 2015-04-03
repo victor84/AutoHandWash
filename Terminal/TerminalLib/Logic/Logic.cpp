@@ -147,6 +147,16 @@ void logic::CLogic::close_valve(byte number)
 	_packets_to_device.push_back(cv_message);
 }
 
+void logic::CLogic::SetOnTimeAndMoneyFn(std::function<void(int16_t, int16_t) > fn)
+{
+	_on_change_time_and_money_fn = fn;
+}
+
+void logic::CLogic::SetOnServiceChangedFn(std::function<void(e_service_name, std::wstring) > fn)
+{
+	_on_service_changed_fn = fn;
+}
+
 void logic::CLogic::read_eeprom(byte cell_number)
 {
 	std::shared_ptr<logic_structures::tag_read_eeprom> re_message = std::make_shared<logic_structures::tag_read_eeprom>();
@@ -174,11 +184,15 @@ void logic::CLogic::time_and_money(int16_t time, int16_t money)
 		_T("ќсталось денег на счЄте: ") << static_cast<float>(money / 100.0) << std::endl;
 
 	_tr_error->trace_message(_str_str.str());
+
+	if (_on_change_time_and_money_fn)
+		_on_change_time_and_money_fn(time, money);
 }
 
 void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
+
 }
 
 void logic::CLogic::process_messages_from_device()
@@ -208,6 +222,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 		case(device_exchange::e_command_from_device::button_press) :
 			button_number = get_device_message_pointer<logic_structures::tag_button_press>(message)->button_number;
 			service = _correspond_settings.GetServiceByButtonNumber(button_number);
+			if (_on_service_changed_fn)
+				_on_service_changed_fn(service, _correspond_settings.GetServiceName(service));
 			if (e_service_name::stop == service)
 				_current_state->stop_button_press();
 			else

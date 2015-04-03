@@ -6,6 +6,7 @@
 #include "DeviceInteract.h"
 #include "ServerInteract.h"
 #include "state.h"
+#include "ILogic.h"
 
 /*!
  * \file Logic.h
@@ -22,7 +23,7 @@ namespace logic
 CLogic
 логика работы терминала
 */
-class CLogic : CLogicAbstract
+class CLogic : CLogicAbstract, public ILogic
 {
 	tools::logging::CTraceError* _tr_error;
 
@@ -65,6 +66,12 @@ class CLogic : CLogicAbstract
 	// текущее состояние
 	std::shared_ptr<IState> _current_state;
 
+	// вызывается при изменении денег и времени
+	std::function<void(int16_t, int16_t)> _on_change_time_and_money_fn;
+
+	// вызывается при изменении состояния
+	std::function<void(e_service_name, std::wstring)> _on_service_changed_fn;
+
 	// заполнить состояния
 	void fill_states();
 
@@ -102,17 +109,15 @@ class CLogic : CLogicAbstract
 		return dynamic_cast<_MessageType*>(message.get());
 	}
 
-
-
 public:
 	CLogic();
 	~CLogic();
 
 	// запуск в работу
-	bool Start();
+	virtual bool Start() final;
 
 	// остановка
-	void Stop();
+	virtual void Stop() final;
 
 	virtual void open_valve(byte number) final;
 
@@ -122,7 +127,11 @@ public:
 
 	virtual void time_and_money(int16_t time, int16_t money) final;
 
-	virtual void close_valve(byte number) override;
+	virtual void close_valve(byte number) final;
+
+	virtual void SetOnTimeAndMoneyFn(std::function<void(int16_t, int16_t) > fn) final;
+
+	virtual void SetOnServiceChangedFn(std::function<void(e_service_name, std::wstring) > fn) final;
 
 };
 }

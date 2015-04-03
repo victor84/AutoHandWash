@@ -183,6 +183,7 @@
     <ClInclude Include="Logic\AdvertisingIdleState.h" />
     <ClInclude Include="Logic\ExecutingServiceState.h" />
     <ClInclude Include="Logic\FreeEdleState.h" />
+    <ClInclude Include="Logic\ILogic.h" />
     <ClInclude Include="Logic\Logic.h" />
     <ClInclude Include="Logic\PaidIdleState.h" />
     <ClInclude Include="Logic\RefillCacheState.h" />

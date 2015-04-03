@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "ILogic.h"
 #include "ServicesNames.h"
 #include "protocol_structures.h"
 
@@ -14,7 +15,6 @@
 
 namespace logic
 {
-
 // состояние работы логики
 enum class e_state
 {
@@ -25,6 +25,7 @@ enum class e_state
 	paid_idle,			// платный простой
 	settings_work,		// работа с настройками
 };
+
 
 class CLogicAbstract;
 
@@ -117,8 +118,6 @@ public:
 	// уведомление об оставшихся на счёте деньгах и времени услуги
 	// время в секундах, деньги в копейках
 	virtual void time_and_money(int16_t time, int16_t money) = 0;
-
-
 };
 
 #pragma pack(push, 4)

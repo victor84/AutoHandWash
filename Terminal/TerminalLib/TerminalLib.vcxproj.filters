@@ -138,6 +138,9 @@
     <ClInclude Include="Logic\PaidIdleState.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="Logic\ILogic.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
