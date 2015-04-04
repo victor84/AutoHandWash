@@ -1,0 +1,66 @@
+﻿<Page x:Class="TerminalApp.ServicesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d"
+      d:DesignHeight="469" d:DesignWidth="542"
+	  Title="ServicesPage" >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="397*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="9*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="0">
+                <TextBlock x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <TextBlock x:Name="Service2TextBlock" TextWrapping="Wrap" Text="Услуга №2 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="2">
+                <TextBlock x:Name="Service3TextBlock" TextWrapping="Wrap" Text="Услуга №3 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="3">
+                <TextBlock x:Name="Service4TextBlock" TextWrapping="Wrap" Text="Услуга №4 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="4">
+                <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="Услуга №5 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="5">
+                <TextBlock x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="6">
+                <TextBlock x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7 Цена:NNN руб."/>
+            </Viewbox>
+            <Viewbox Grid.Row="7">
+                <TextBlock x:Name="Service8TextBlock" TextWrapping="Wrap" Text="Услуга №8 Цена:NNN руб."/>
+            </Viewbox>
+        </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="1">
+                <TextBlock Text="СТОП"/>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Page>
