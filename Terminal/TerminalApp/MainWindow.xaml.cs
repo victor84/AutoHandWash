@@ -35,7 +35,8 @@ namespace TerminalApp
             _logic.SetDelegates(OnTimeAndMoneyChanged, 
                                 OnServiceChanged, 
                                 OnStateChanged,
-                                OnCacheRefilled);
+                                OnCacheRefilled,
+                                OnServicesInfoReaded);
             _logic.Start();
         }
 
@@ -55,6 +56,11 @@ namespace TerminalApp
         }
 
         private void OnCacheRefilled(UInt16 cache)
+        {
+
+        }
+
+        private void OnServicesInfoReaded(IEnumerable<LogicWrapper.tag_service_info> collection)
         {
 
         }

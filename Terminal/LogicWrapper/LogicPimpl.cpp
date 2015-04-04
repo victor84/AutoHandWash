@@ -7,6 +7,7 @@ typedef void(__stdcall *OnChangeTimeAndMoneyPtr)(int16_t, int16_t);
 typedef void(__stdcall *OnServiceChangedPtr)(logic::e_service_name, const wchar_t*);
 typedef void(__stdcall *OnStateChangedPtr)(logic::e_state);
 typedef void(__stdcall *OnCacheRefilledPtr)(uint16_t);
+typedef void(__stdcall *OnServiceInfoReadedPtr)(std::vector<logic::tag_service_info>);
 
 class CLogicPimpl::CLogicIntern
 {
@@ -19,30 +20,7 @@ class CLogicPimpl::CLogicIntern
 	OnServiceChangedPtr _on_service_changed_ptr;
 	OnStateChangedPtr _on_state_changed_ptr;
 	OnCacheRefilledPtr _on_cache_refilled_ptr;
-
-	void OnChangeTimeAndMoney(int16_t time, int16_t money)
-	{
-		if (nullptr != _on_change_time_and_money_ptr)
-			_on_change_time_and_money_ptr(time, money);
-	}
-
-	void OnServiceChanged(logic::e_service_name service_id, std::wstring service_name)
-	{
-		if (nullptr != _on_service_changed_ptr)
-			_on_service_changed_ptr(service_id, service_name.c_str());
-	}
-
-	void OnStateChanged(logic::e_state state)
-	{
-		if (nullptr != _on_state_changed_ptr)
-			_on_state_changed_ptr(state);
-	}
-
-	void OnCacheRefilled(uint16_t cache)
-	{
-		if (nullptr != _on_cache_refilled_ptr)
-			_on_cache_refilled_ptr(cache);
-	}
+	OnServiceInfoReadedPtr _on_service_info_readed_ptr;
 
 public:
 	CLogicIntern()
@@ -56,24 +34,35 @@ public:
 		_tr_error = tools::logging::CTraceError::get_instance();
 		_settings_loader = tools::settings::CSettingsLoader::get_instance();
 
-		_logic->SetOnTimeAndMoneyFn(std::bind(std::mem_fn(&CLogicIntern::OnChangeTimeAndMoney),
-			this,
-			std::placeholders::_1,
-			std::placeholders::_2));
+		_logic->SetOnTimeAndMoneyFn([this](int16_t time, int16_t money)
+		{
+			if (nullptr != _on_change_time_and_money_ptr)
+				_on_change_time_and_money_ptr(time, money);
+		});
 
-		_logic->SetOnServiceChangedFn(std::bind(std::mem_fn(&CLogicIntern::OnServiceChanged),
-			this,
-			std::placeholders::_1,
-			std::placeholders::_2));
+		_logic->SetOnServiceChangedFn([this](logic::e_service_name service_id, std::wstring service_name)
+		{
+			if (nullptr != _on_service_changed_ptr)
+				_on_service_changed_ptr(service_id, service_name.c_str());
+		});
 
-		_logic->SetOnStateChangedFn(std::bind(std::mem_fn(&CLogicIntern::OnStateChanged),
-			this,
-			std::placeholders::_1));
+		_logic->SetOnStateChangedFn([this](logic::e_state state)
+		{
+			if (nullptr != _on_state_changed_ptr)
+				_on_state_changed_ptr(state);
+		});
 
-		_logic->SetOnCacheRefilledFn(std::bind(std::mem_fn(&CLogicIntern::OnCacheRefilled),
-			this,
-			std::placeholders::_1));
+		_logic->SetOnCacheRefilledFn([this](uint16_t cache)
+		{
+			if (nullptr != _on_cache_refilled_ptr)
+				_on_cache_refilled_ptr(cache);
+		});
 		
+		_logic->SetOnServiceInfoReadedFn([this](std::vector<logic::tag_service_info> collection)
+		{
+			if (nullptr != _on_service_info_readed_ptr)
+				_on_service_info_readed_ptr(collection);
+		});
 	}
 
 	~CLogicIntern()
@@ -114,6 +103,10 @@ public:
 		_on_cache_refilled_ptr = static_cast<OnCacheRefilledPtr>(ptr);
 	}
 
+	void SetOnServiceInfoReaded(void* ptr)
+	{
+		_on_service_info_readed_ptr = static_cast<OnServiceInfoReadedPtr>(ptr);
+	}
 };
 
 CLogicPimpl::CLogicPimpl()
@@ -153,5 +146,10 @@ void CLogicPimpl::SetOnStateChangedFn(void* pointer)
 void CLogicPimpl::SetOnCacheRefilledFn(void* pointer)
 {
 	_impl->SetOnCacheRefilled(pointer);
+}
+
+void CLogicPimpl::SetOnServiceInfoReadedFn(void* pointer)
+{
+	_impl->SetOnServiceInfoReaded(pointer);
 }
 

@@ -36,4 +36,13 @@ enum class e_state
 	paid_idle,			// платный простой
 	settings_work,		// работа с настройками
 };
+
+// информация об услуге
+struct tag_service_info
+{
+	std::wstring	service_name;	// название услуги
+	uint16_t		cost;			// стоимость услуги
+	byte			button_number;	// номер кнопки
+};
+
 }

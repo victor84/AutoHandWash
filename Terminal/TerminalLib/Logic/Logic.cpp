@@ -47,6 +47,9 @@ tools::e_init_state logic::CLogic::init()
 	if (false == _correspond_settings.ReadSettings())
 		return tools::e_init_state::not_init;
 
+	if (_on_service_info_readed)
+		send_services_info();
+
 	_device_interact.Start();
 	_server_interact.Start();
 
@@ -55,6 +58,32 @@ tools::e_init_state logic::CLogic::init()
 
 	_init_state = tools::e_init_state::was_init;
 	return _init_state;
+}
+
+void logic::CLogic::send_services_info()
+{
+	std::vector<tag_service_info> result;
+
+	for (byte i = 0; i < 9; ++i)
+	{
+		e_service_name sn = static_cast<e_service_name>(i);
+
+		if (e_service_name::stop != sn)
+		{
+			tag_service_info si;
+
+			si.button_number = _correspond_settings.GetButtonNumber(sn);
+			si.service_name = _correspond_settings.GetServiceName(sn);
+			si.cost = _correspond_settings.GetServiceCost(sn);
+
+			result.push_back(si);
+		}
+	}
+
+	if (false == result.empty())
+	{
+		_on_service_info_readed(result);
+	}
 }
 
 void logic::CLogic::on_connected_to_server()
@@ -103,6 +132,11 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_service_info>) > fn)
+{
+	_on_service_info_readed = fn;
 }
 
 void logic::CLogic::SetOnCacheRefilledFn(std::function<void(uint16_t) > fn)
@@ -233,7 +267,7 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			_current_state->refilled_cache(get_device_message_pointer<logic_structures::tag_bill_acceptor>(message)->count);
 			sws = dynamic_cast<CSettingsWorkState*>(get_state(e_state::settings_work).get());
 			if (_on_cache_refilled)
-				_on_cache_refilled(sws->get_settings().total_cache);
+				_on_cache_refilled(static_cast<uint16_t>(sws->get_settings().total_cache));
 			break;
 
 		case(device_exchange::e_command_from_device::button_press) :

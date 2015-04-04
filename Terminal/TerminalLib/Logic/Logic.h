@@ -78,6 +78,9 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при пополнении счёта
 	std::function<void(uint16_t)> _on_cache_refilled;
 
+	// вызывается после прочтения настроек услуг
+	std::function<void(std::vector<tag_service_info>)> _on_service_info_readed;
+
 	// заполнить состояния
 	void fill_states();
 
@@ -86,6 +89,9 @@ class CLogic : CLogicAbstract, public ILogic
 
 	// инициализация
 	tools::e_init_state init();
+
+	// отправка получателю информации об услугах
+	void send_services_info();
 
 	// соединение с сервером
 	void on_connected_to_server();
@@ -139,9 +145,14 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void SetOnCacheRefilledFn(std::function<void(uint16_t) > fn) final;
 
+	virtual void SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_service_info>) > fn) final;
+
 public:
 	CLogic();
 	~CLogic();
+
+
+
 };
 }
 

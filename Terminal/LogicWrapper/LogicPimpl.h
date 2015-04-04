@@ -30,4 +30,6 @@ public:
 	// установка указателя на функцию, вызываемую при пополнении счёта
 	void SetOnCacheRefilledFn(void* pointer);
 
+	// установка указателя на функцию, вызываемую при чтении информации об услугах
+	void SetOnServiceInfoReadedFn(void* pointer);
 };

@@ -34,6 +34,13 @@ namespace LogicWrapper
 		settings_work,		// работа с настройками
 	};
 
+	public ref struct tag_service_info
+	{
+		String^	service_name;	// название услуги
+		UInt16	cost;			// стоимость услуги
+		Byte	button_number;	// номер кнопки
+	};
+
 	// делегат, вызываемый при изменении времени и денег
 	public delegate void OnTimeAndMoneyChangedDelegate(UInt16 time, UInt16 money);
 
@@ -46,12 +53,17 @@ namespace LogicWrapper
 	// делегат, вызываемый при пополнении счёта
 	public delegate void OnCacheRefilledDelegate(UInt16 cache);
 
+	// делегат, вызываемый при чтении информации об услугах
+	public delegate void OnServiceInfoReadedDelegate(System::Collections::Generic::IEnumerable<tag_service_info^>^ collection);
+
 	// Логика
 	public ref class Logic
 	{
 		delegate void OnServiceChangedDelegateInner(logic::e_service_name service_id, const wchar_t* service_name);
 
 		delegate void OnStateChangedDelegateInner(logic::e_state state);
+
+		delegate void OnServiceInfoReadedDelegateInner(std::vector<logic::tag_service_info> collection);
 
 		CLogicPimpl* _logic;
 		
@@ -65,14 +77,20 @@ namespace LogicWrapper
 
 		OnCacheRefilledDelegate^ _on_cache_refilled;
 
+		OnServiceInfoReadedDelegate^ _on_service_info_readed;
+		OnServiceInfoReadedDelegateInner^ _on_service_info_readed_inner;
+
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
 		GCHandle _stc_handle;
 		GCHandle _cr_handle;
+		GCHandle _sir_handle;
 
 		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
 		void OnStateChangedInner(logic::e_state state);
+
+		void OnServiceInfoReadedInner(std::vector<logic::tag_service_info> collection);
 
 		void TransmitDelegates();
 
@@ -84,7 +102,8 @@ namespace LogicWrapper
 		void SetDelegates(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed,
 						  OnServiceChangedDelegate^ on_service_changed,
 						  OnStateChangedDelegate^ on_state_changed,
-						  OnCacheRefilledDelegate^ on_cache_refilled);
+						  OnCacheRefilledDelegate^ on_cache_refilled,
+						  OnServiceInfoReadedDelegate^ on_service_info_readed);
 
 		bool Start();
 
