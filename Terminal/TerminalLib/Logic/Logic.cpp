@@ -75,6 +75,7 @@ void logic::CLogic::send_services_info()
 			si.button_number = _correspond_settings.GetButtonNumber(sn);
 			si.service_name = _correspond_settings.GetServiceName(sn);
 			si.cost = _correspond_settings.GetServiceCost(sn);
+			si.id = sn;
 
 			result.push_back(si);
 		}

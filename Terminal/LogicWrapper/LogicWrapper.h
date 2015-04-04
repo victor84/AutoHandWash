@@ -36,9 +36,10 @@ namespace LogicWrapper
 
 	public ref struct tag_service_info
 	{
-		String^	service_name;	// название услуги
-		UInt16	cost;			// стоимость услуги
-		Byte	button_number;	// номер кнопки
+		String^			service_name;	// название услуги
+		UInt16			cost;			// стоимость услуги
+		Byte			button_number;	// номер кнопки
+		e_service_id	id;				// идентификатор услуги
 	};
 
 	// делегат, вызываемый при изменении времени и денег
@@ -92,18 +93,21 @@ namespace LogicWrapper
 
 		void OnServiceInfoReadedInner(std::vector<logic::tag_service_info> collection);
 
-		void TransmitDelegates();
 
 	public:
 		Logic();
 
 		~Logic();
 
-		void SetDelegates(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed,
-						  OnServiceChangedDelegate^ on_service_changed,
-						  OnStateChangedDelegate^ on_state_changed,
-						  OnCacheRefilledDelegate^ on_cache_refilled,
-						  OnServiceInfoReadedDelegate^ on_service_info_readed);
+		void SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed);
+
+		void SetDelegate(OnServiceChangedDelegate^ on_service_changed);
+
+		void SetDelegate(OnStateChangedDelegate^ on_state_changed);
+
+		void SetDelegate(OnCacheRefilledDelegate^ on_cache_refilled);
+
+		void SetDelegate(OnServiceInfoReadedDelegate^ on_service_info_readed);
 
 		bool Start();
 

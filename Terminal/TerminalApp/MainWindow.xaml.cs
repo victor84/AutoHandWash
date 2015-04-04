@@ -32,35 +32,22 @@ namespace TerminalApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _logic.SetDelegates(OnTimeAndMoneyChanged, 
-                                OnServiceChanged, 
-                                OnStateChanged,
-                                OnCacheRefilled,
-                                OnServicesInfoReaded);
+            ServicesPage servicePage = (ServicesPage)ServicePageFrame.Content;
+
+            _logic.SetDelegate(servicePage.OnTimeAndMoneyChanged);
+            _logic.SetDelegate(servicePage.OnServiceChanged);
+
+            LogicWrapper.OnStateChangedDelegate stateChangedDelegate = new LogicWrapper.OnStateChangedDelegate(OnStateChanged);
+            stateChangedDelegate += servicePage.OnStateChanged;
+            _logic.SetDelegate(stateChangedDelegate);
+
+            _logic.SetDelegate(servicePage.OnCacheRefilled);
+            _logic.SetDelegate(servicePage.OnServicesInfoReaded);
+
             _logic.Start();
         }
 
-        private void OnTimeAndMoneyChanged(UInt16 time, UInt16 money)
-        {
-
-        }
-
-        private void OnServiceChanged(LogicWrapper.e_service_id service_id, String service_name)
-        {
-
-        }
-
         private void OnStateChanged(LogicWrapper.e_state_id state_id)
-        {
-
-        }
-
-        private void OnCacheRefilled(UInt16 cache)
-        {
-
-        }
-
-        private void OnServicesInfoReaded(IEnumerable<LogicWrapper.tag_service_info> collection)
         {
 
         }
@@ -70,6 +57,5 @@ namespace TerminalApp
             _logic.Stop();
             _logic.Dispose();
         }
-
     }
 }

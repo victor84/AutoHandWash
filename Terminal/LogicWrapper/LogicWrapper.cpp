@@ -40,35 +40,12 @@ void LogicWrapper::Logic::OnServiceInfoReadedInner(std::vector<logic::tag_servic
 		man_elem->button_number = elem.button_number;
 		man_elem->cost = elem.cost;
 		man_elem->service_name = gcnew String(elem.service_name.c_str());
+		man_elem->id = static_cast<e_service_id>(elem.id);
 
 		result->Add(man_elem);
 	}
 
 	_on_service_info_readed(result);
-}
-
-void LogicWrapper::Logic::TransmitDelegates()
-{
-	if (false == _tmc_handle.IsAllocated)
-		_tmc_handle = GCHandle::Alloc(_on_time_and_money_changed);
-
-	if (false == _sc_handle.IsAllocated)
-		_sc_handle = GCHandle::Alloc(_on_service_changed_inner);
-
-	if (false == _stc_handle.IsAllocated)
-		_stc_handle = GCHandle::Alloc(_on_state_changed_inner);
-
-	if (false == _cr_handle.IsAllocated)
-		_cr_handle = GCHandle::Alloc(_on_cache_refilled);
-
-	if (false == _sir_handle.IsAllocated)
-		_sir_handle = GCHandle::Alloc(_on_service_info_readed_inner);
-
-	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
-	_logic->SetOnServiceChangedFn(Marshal::GetFunctionPointerForDelegate(_on_service_changed_inner).ToPointer());
-	_logic->SetOnStateChangedFn(Marshal::GetFunctionPointerForDelegate(_on_state_changed_inner).ToPointer());
-	_logic->SetOnCacheRefilledFn(Marshal::GetFunctionPointerForDelegate(_on_cache_refilled).ToPointer());
-	_logic->SetOnServiceInfoReadedFn(Marshal::GetFunctionPointerForDelegate(_on_service_info_readed_inner).ToPointer());
 }
 
 LogicWrapper::Logic::Logic()
@@ -89,19 +66,54 @@ LogicWrapper::Logic::~Logic()
 	delete _logic;
 }
 
-void LogicWrapper::Logic::SetDelegates(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed, 
-									   OnServiceChangedDelegate^ on_service_changed,
-									   OnStateChangedDelegate^ on_state_changed,
-									   OnCacheRefilledDelegate^ on_cache_refilled,
-									   OnServiceInfoReadedDelegate^ on_service_info_readed)
+void LogicWrapper::Logic::SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed)
 {
 	_on_time_and_money_changed = on_time_and_money_changed;
-	_on_service_changed = on_service_changed;
-	_on_state_changed = on_state_changed;
-	_on_cache_refilled = on_cache_refilled;
+
+	if (false == _tmc_handle.IsAllocated)
+		_tmc_handle = GCHandle::Alloc(_on_time_and_money_changed);
+
+	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnServiceInfoReadedDelegate^ on_service_info_readed)
+{
 	_on_service_info_readed = on_service_info_readed;
 
-	TransmitDelegates();
+	if (false == _sir_handle.IsAllocated)
+		_sir_handle = GCHandle::Alloc(_on_service_info_readed_inner);
+
+	_logic->SetOnServiceInfoReadedFn(Marshal::GetFunctionPointerForDelegate(_on_service_info_readed_inner).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnCacheRefilledDelegate^ on_cache_refilled)
+{
+	_on_cache_refilled = on_cache_refilled;
+
+	if (false == _cr_handle.IsAllocated)
+		_cr_handle = GCHandle::Alloc(_on_cache_refilled);
+
+	_logic->SetOnCacheRefilledFn(Marshal::GetFunctionPointerForDelegate(_on_cache_refilled).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnStateChangedDelegate^ on_state_changed)
+{
+	_on_state_changed = on_state_changed;
+
+	if (false == _stc_handle.IsAllocated)
+		_stc_handle = GCHandle::Alloc(_on_state_changed_inner);
+
+	_logic->SetOnStateChangedFn(Marshal::GetFunctionPointerForDelegate(_on_state_changed_inner).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnServiceChangedDelegate^ on_service_changed)
+{
+	_on_service_changed = on_service_changed;
+
+	if (false == _sc_handle.IsAllocated)
+		_sc_handle = GCHandle::Alloc(_on_service_changed_inner);
+
+	_logic->SetOnServiceChangedFn(Marshal::GetFunctionPointerForDelegate(_on_service_changed_inner).ToPointer());
 }
 
 bool LogicWrapper::Logic::Start()

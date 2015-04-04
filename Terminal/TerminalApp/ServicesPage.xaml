@@ -52,6 +52,25 @@
                 <TextBlock x:Name="Service8TextBlock" TextWrapping="Wrap" Text="Услуга №8 Цена:NNN руб."/>
             </Viewbox>
         </Grid>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48*"/>
+                <RowDefinition Height="48*"/>
+                <RowDefinition Height="48*"/>
+                <RowDefinition Height="48*"/>
+                <RowDefinition Height="230*"/>
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="0">
+                <TextBlock x:Name="CacheSizeTextBlock" Text="Внесено средств: 100 руб." />
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <TextBlock x:Name="RestOfMoneyTextBlock" Text="Осталось средств: 52.16 руб." />
+            </Viewbox>
+            <Viewbox Grid.Row="2">
+                <TextBlock x:Name="RestOfTimeTextBlock" Text="Осталось времени: 26 сек." />
+            </Viewbox>
+
+        </Grid>
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

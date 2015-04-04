@@ -43,6 +43,7 @@ struct tag_service_info
 	std::wstring	service_name;	// название услуги
 	uint16_t		cost;			// стоимость услуги
 	byte			button_number;	// номер кнопки
+	e_service_name	id;				// идентификатор услуги
 };
 
 }
