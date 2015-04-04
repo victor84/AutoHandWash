@@ -10,8 +10,8 @@ class CRefillCacheState : public IState
 
 	std::wstringstream _str_str;
 
-	// настройки устройства
-	tag_device_settings _device_settings;
+	// вызывается при пополнении счёта
+	std::function<void(uint16_t)> _on_cache_refilled;
 
 public:
 	CRefillCacheState(CLogicAbstract& logic);
@@ -28,6 +28,8 @@ public:
 	virtual void out_of_money() override;
 
 	virtual void device_confirm() override;
+
+	void set_on_cache_refilled_fn(std::function<void(uint16_t) > fn);
 
 };
 }

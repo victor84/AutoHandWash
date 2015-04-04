@@ -75,9 +75,6 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при изменении состояния
 	std::function<void(e_state)> _on_state_changed_fn;
 
-	// вызывается при пополнении счёта
-	std::function<void(uint16_t)> _on_cache_refilled;
-
 	// вызывается после прочтения настроек услуг
 	std::function<void(std::vector<tag_service_info>)> _on_service_info_readed;
 
@@ -121,6 +118,21 @@ class CLogic : CLogicAbstract, public ILogic
 		return dynamic_cast<_MessageType*>(message.get());
 	}
 
+	// получить указатель на наследник
+	template<typename _StateType>
+	_StateType* get_implemented_state(e_state state)
+	{
+		_StateType* result = dynamic_cast<_StateType*>(get_state(state).get());
+
+		if (result->get_this_state() != state)
+		{
+			__debugbreak();
+			throw std::exception("(_this_state != state) || (_StateType::get_this_state() != state)");
+		}
+
+		return result;
+	}
+
 	virtual void open_valve(byte number) final;
 
 	virtual void read_eeprom(byte cell_number) final;
@@ -150,9 +162,6 @@ class CLogic : CLogicAbstract, public ILogic
 public:
 	CLogic();
 	~CLogic();
-
-
-
 };
 }
 

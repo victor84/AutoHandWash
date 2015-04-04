@@ -16,19 +16,22 @@ logic::CRefillCacheState::~CRefillCacheState()
 void logic::CRefillCacheState::refilled_cache(uint16_t cache)
 {
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
-	_device_settings = sws->get_settings();
+	tag_device_settings device_settings = sws->get_settings();
 
-	_device_settings.current_cache += static_cast<int16_t>(cache * 100);
+	device_settings.current_cache += static_cast<int16_t>(cache * 100);
 
 	_str_str.str(std::wstring());
 
 	_str_str << _T("Баланс пополнен на ") << cache << _T(" и составляет ")
-		<< static_cast<float>(_device_settings.current_cache / 100.0);
+		<< static_cast<float>(device_settings.current_cache / 100.0);
 
 	_tr_error->trace_message(_str_str.str());
 
-	_device_settings.total_cache += cache;
-	sws->set_settings(_device_settings);
+	device_settings.total_cache += cache;
+	sws->set_settings(device_settings);
+
+	if (_on_cache_refilled)
+		_on_cache_refilled(cache);
 }
 
 void logic::CRefillCacheState::service_button_press(e_service_name service_name)
@@ -52,7 +55,15 @@ void logic::CRefillCacheState::time_out()
 
 void logic::CRefillCacheState::out_of_money()
 {
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	tag_device_settings device_settings = sws->get_settings();
 
+	device_settings.current_cache = 0;
+
+	sws->set_settings(device_settings);
+
+	if (_on_cache_refilled)
+		_on_cache_refilled(0);
 }
 
 void logic::CRefillCacheState::device_confirm()
@@ -60,3 +71,7 @@ void logic::CRefillCacheState::device_confirm()
 
 }
 
+void logic::CRefillCacheState::set_on_cache_refilled_fn(std::function<void(uint16_t) > fn)
+{
+	_on_cache_refilled = fn;
+}

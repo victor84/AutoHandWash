@@ -18,7 +18,6 @@ void logic::CLogic::fill_states()
 	_states.insert(std::make_pair(e_state::settings_work, std::make_shared<CSettingsWorkState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::free_idle, std::make_shared<CFreeEdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::paid_idle, std::make_shared<CPaidIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
-
 }
 
 void logic::CLogic::thread_fn()
@@ -142,7 +141,9 @@ void logic::CLogic::SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_
 
 void logic::CLogic::SetOnCacheRefilledFn(std::function<void(uint16_t) > fn)
 {
-	_on_cache_refilled = fn;
+	CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
+
+	rcs->set_on_cache_refilled_fn(fn);
 }
 
 bool logic::CLogic::Start()
@@ -266,9 +267,7 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	{
 		case(device_exchange::e_command_from_device::bill_acceptor) :
 			_current_state->refilled_cache(get_device_message_pointer<logic_structures::tag_bill_acceptor>(message)->count);
-			sws = dynamic_cast<CSettingsWorkState*>(get_state(e_state::settings_work).get());
-			if (_on_cache_refilled)
-				_on_cache_refilled(static_cast<uint16_t>(sws->get_settings().total_cache));
+			sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 			break;
 
 		case(device_exchange::e_command_from_device::button_press) :
@@ -284,7 +283,7 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 
 		case(device_exchange::e_command_from_device::data_from_eeprom) :
 			dfe = get_device_message_pointer<logic_structures::tag_data_from_eeprom>(message);
-			sws = dynamic_cast<CSettingsWorkState*>(get_state(e_state::settings_work).get());
+			sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 			sws->data_from_eeprom(dfe->cell_number, dfe->value);
 			break;
 
