@@ -33,6 +33,24 @@ namespace Server.Data
             return groups;
         }
 
+        public static List<Group> GetGroups(IEnumerable<Guid> ids)
+        {
+            List<Group> groups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<Group>().Where(x => ids.Contains(x.Id));
+                    groups = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Group -> GetGroups: {0}", ex);
+            }
+            return groups;
+        }
+
         public static Group GetGroupByName(string groupName)
         {
             Group group = null;

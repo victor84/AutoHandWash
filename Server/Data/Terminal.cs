@@ -35,6 +35,24 @@ namespace Server.Data
             return terminals;
         }
 
+        public static List<Terminal> GetTerminalsByGroup(IEnumerable<Guid> ids)
+        {
+            List<Terminal> terminals = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<Terminal>().Where(x => ids.Contains(x.GroupId));
+                    terminals = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Terminal -> GetTerminalsByGroup: {0}", ex);
+            }
+            return terminals;
+        }
+
         public static IEnumerable<Terminal> GetTerminalsByName(string terminalName)
         {
             IEnumerable<Terminal> terminals = null;

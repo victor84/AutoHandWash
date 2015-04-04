@@ -38,8 +38,11 @@
 /Server/ParsingTest/bin/Debug
 /Server/ParsingTest/obj/Debug
 /Parsing/obj/Debug
+/Parsing/obj/Release
 /ParsingTest/bin/Debug
+/ParsingTest/bin/Release
 /ParsingTest/obj/Debug
+/ParsingTest/obj/Release
 /Terminal/TerminalLib/Debug
 /Terminal/TerminalTest/Debug
 /Terminal/TerminalApp/Debug

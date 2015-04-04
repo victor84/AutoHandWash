@@ -2,6 +2,7 @@
 using LinqToDB.Data;
 using LinqToDB.Mapping;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Server.Data
@@ -56,6 +57,48 @@ namespace Server.Data
                 Console.WriteLine("Counters -> Insert: {0}", ex);
             }
             return result;
+        }
+
+        //public static List<Counters> GetCountersByTerminal(IEnumerable<Guid> ids)
+        //{
+        //    List<Counters> counters = null;
+        //    try
+        //    {
+        //        using (var db = new DataConnection())
+        //        {
+        //            var query = db.GetTable<Counters>().
+        //                Where(x => ids.Contains(x.TerminalId)).
+        //                GroupBy(x => x.TerminalId).
+        //                Select(x => x.OrderByDescending(y => y.DateTimeServerEvent).First());
+                    
+        //            counters = query.ToList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Counters -> GetCounters: {0}", ex);
+        //    }
+        //    return counters;
+        //}
+
+        public static Counters GetCountersByTerminal(Guid id)
+        {
+            Counters counters = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    counters = db.GetTable<Counters>().
+                                Where(x => x.TerminalId == id).
+                                OrderByDescending(i => i.DateTimeServerEvent).
+                                FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Counters -> GetCounters: {0}", ex);
+            }
+            return counters;
         }
     }
 }
