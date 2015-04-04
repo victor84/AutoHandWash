@@ -161,6 +161,8 @@ server_exchange::CServerInteract::CServerInteract(logic_settings::CCommonSetting
 	, _settings_module(settings_module)
 	, _packets_to_logic(packets_to_logic)
 	, _packets_to_server(packets_to_server)
+	, _work_loop_status(tools::e_work_loop_status::stop)
+	, _init_state(tools::e_init_state::not_init)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -184,6 +186,7 @@ bool server_exchange::CServerInteract::Start()
 		_tr_error->trace_error(_T("Не удалось с первой попытки подключиться к серверу."));
 	}
 
+	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CServerInteract::thread_fn, this);
 
 	_init_state = tools::e_init_state::was_init;

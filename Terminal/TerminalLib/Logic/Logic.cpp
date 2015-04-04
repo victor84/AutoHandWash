@@ -23,6 +23,7 @@ void logic::CLogic::fill_states()
 
 void logic::CLogic::thread_fn()
 {
+	set_state(e_state::settings_work);
 	_current_state = get_state(e_state::settings_work);
 	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_current_state.get());
 	sws->read_settings();
@@ -49,6 +50,7 @@ tools::e_init_state logic::CLogic::init()
 	_device_interact.Start();
 	_server_interact.Start();
 
+	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
 
 	_init_state = tools::e_init_state::was_init;
@@ -101,6 +103,11 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::SetOnCacheRefilledFn(std::function<void(uint16_t) > fn)
+{
+	_on_cache_refilled = fn;
 }
 
 bool logic::CLogic::Start()
@@ -157,6 +164,11 @@ void logic::CLogic::SetOnServiceChangedFn(std::function<void(e_service_name, std
 	_on_service_changed_fn = fn;
 }
 
+void logic::CLogic::SetOnStateChangedFn(std::function<void(e_state)> fn)
+{
+	_on_state_changed_fn = fn;
+}
+
 void logic::CLogic::read_eeprom(byte cell_number)
 {
 	std::shared_ptr<logic_structures::tag_read_eeprom> re_message = std::make_shared<logic_structures::tag_read_eeprom>();
@@ -193,6 +205,8 @@ void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
 
+	if (_on_state_changed_fn)
+		_on_state_changed_fn(state);
 }
 
 void logic::CLogic::process_messages_from_device()
@@ -217,6 +231,9 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	{
 		case(device_exchange::e_command_from_device::bill_acceptor) :
 			_current_state->refilled_cache(get_device_message_pointer<logic_structures::tag_bill_acceptor>(message)->count);
+			sws = dynamic_cast<CSettingsWorkState*>(get_state(e_state::settings_work).get());
+			if (_on_cache_refilled)
+				_on_cache_refilled(sws->get_settings().total_cache);
 			break;
 
 		case(device_exchange::e_command_from_device::button_press) :

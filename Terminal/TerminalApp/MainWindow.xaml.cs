@@ -32,7 +32,11 @@ namespace TerminalApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _logic.SetDelegates(OnTimeAndMoneyChanged, OnServiceChanged);
+            _logic.SetDelegates(OnTimeAndMoneyChanged, 
+                                OnServiceChanged, 
+                                OnStateChanged,
+                                OnCacheRefilled);
+            _logic.Start();
         }
 
         private void OnTimeAndMoneyChanged(UInt16 time, UInt16 money)
@@ -45,15 +49,20 @@ namespace TerminalApp
 
         }
 
+        private void OnStateChanged(LogicWrapper.e_state_id state_id)
+        {
+
+        }
+
+        private void OnCacheRefilled(UInt16 cache)
+        {
+
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             _logic.Stop();
             _logic.Dispose();
-        }
-
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            _logic.Start();
         }
 
     }

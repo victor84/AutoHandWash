@@ -7,9 +7,10 @@ using namespace tools::data_wrappers;
 CSocketStream::CSocketStream(tools::lock_vector<_tag_data_managed>& received_data,
 							 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 	: _received_data(received_data)
-	, _start_state(tools::e_init_state::not_init)
+	, _init_state(tools::e_init_state::not_init)
 	, _thread_running(false)
 	, _on_data_received(on_data_received)
+	, _work_loop_status(tools::e_work_loop_status::stop)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	_data_to_send = std::make_shared<tools::lock_deque<data_wrappers::_tag_data_const>>();
@@ -23,7 +24,7 @@ e_socket_result CSocketStream::Start(const SOCKET& socket_to_process,
 									 tools::e_work_loop_status* end_status,
 									 std::function<void()> on_complete_fn)
 {
-	if (tools::e_init_state::was_init == _start_state)
+	if (tools::e_init_state::was_init == _init_state)
 		return e_socket_result::was_connected;
 
 	if (true == _thread_running)
@@ -35,7 +36,7 @@ e_socket_result CSocketStream::Start(const SOCKET& socket_to_process,
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_thread_running = true;
 	_this_thread = std::thread(&CSocketStream::thread_method, this);
-	_start_state = tools::e_init_state::was_init;
+	_init_state = tools::e_init_state::was_init;
 	return e_socket_result::success;
 }
 
@@ -43,7 +44,7 @@ e_socket_result CSocketStream::Stop()
 {
 	clear_buffers();
 
-	if (tools::e_init_state::not_init == _start_state)
+	if (tools::e_init_state::not_init == _init_state)
 		return e_socket_result::was_disconnected;
 
 	_work_loop_status = tools::e_work_loop_status::stop;
@@ -106,7 +107,7 @@ void CSocketStream::cleanup()
 	::closesocket(_socket);
 	_socket = INVALID_SOCKET;
 
-	_start_state = tools::e_init_state::not_init;
+	_init_state = tools::e_init_state::not_init;
 }
 
 CSocketStream::_e_check_socket_result CSocketStream::check_socket(const _e_check_socket_type& cst)

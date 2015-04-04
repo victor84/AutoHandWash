@@ -7,6 +7,9 @@ using namespace tools::networking;
 CSingleServerSocket::CSingleServerSocket(tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data,
 										 std::function<void(tools::data_wrappers::_tag_data_managed)> on_data_received)
 										 : _socket_stream(received_data, on_data_received)
+										 , _addr_results(nullptr)
+										 , _work_loop_status(tools::e_work_loop_status::stop)
+										 , _init_state(tools::e_init_state::not_init)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	ZeroMemory(&_addr_hints, sizeof(_addr_hints));
@@ -121,6 +124,7 @@ e_socket_result CSingleServerSocket::Start(const tag_connection_params& params)
 	_connection_params = params;
 	init();
 
+	_work_loop_status = e_work_loop_status::ok;
 	_listen_thread = std::thread(&CSingleServerSocket::listen_method, this);
 
 	return e_socket_result::success;

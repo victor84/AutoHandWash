@@ -24,4 +24,10 @@ public:
 	// установка указателя на функцию, вызываемую при изменении услуги
 	void SetOnServiceChangedFn(void* pointer);
 
+	// установка указателя на функцию, вызываемую при изменении состояния
+	void SetOnStateChangedFn(void* pointer);
+
+	// установка указателя на функцию, вызываемую при пополнении счёта
+	void SetOnCacheRefilledFn(void* pointer);
+
 };

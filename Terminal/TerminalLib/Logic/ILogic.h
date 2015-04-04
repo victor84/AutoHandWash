@@ -7,25 +7,36 @@
 namespace logic
 {
 
+// интерфейс логики для использования внешними компонентами
+struct ILogic
+{
+	// запуск в работу
+	virtual bool Start() = 0;
 
+	// остановка
+	virtual void Stop() = 0;
 
-	// интерфейс логики для использования внешними компонентами
-	struct ILogic
+	// назначение функтора, который вызывается при
+	// изменении времени и денег
+	virtual void SetOnTimeAndMoneyFn(std::function<void(int16_t, int16_t)> fn) = 0;
+
+	// назначение функтора, вызываемого при
+	// изменении услуги
+	virtual void SetOnServiceChangedFn(std::function<void(e_service_name, std::wstring)> fn) = 0;
+
+	// назначение функтора, вызываемого при
+	// изменении состояния логики
+	virtual void SetOnStateChangedFn(std::function<void(e_state)> fn) = 0;
+
+	// назначение функтора, вызываемого при
+	// пополнении счёта
+	virtual void SetOnCacheRefilledFn(std::function<void(uint16_t)> fn) = 0;
+
+	virtual ~ILogic()
 	{
-		// запуск в работу
-		virtual bool Start() = 0;
 
-		// остановка
-		virtual void Stop() = 0;
-
-		// назначение функтора, который вызывается при
-		// изменении времени и денег
-		virtual void SetOnTimeAndMoneyFn(std::function<void(int16_t, int16_t)> fn) = 0;
-
-		// назначение функтора, вызываемого при
-		// изменении состояния
-		virtual void SetOnServiceChangedFn(std::function<void(e_service_name, std::wstring)> fn) = 0;
-	};
+	}
+};
 
 
 }

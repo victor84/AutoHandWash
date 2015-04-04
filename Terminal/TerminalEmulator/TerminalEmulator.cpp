@@ -31,7 +31,7 @@ tools::lock_vector<std::wstring> log_messages;
 CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
 
 // CTestLogic test_logic;
-logic::CLogic test_logic;
+std::unique_ptr<logic::ILogic> test_logic(new logic::CLogic());
 
 void Initialize();
 void PrepareExit();
@@ -107,12 +107,12 @@ void Initialize()
 	//device_connection_params.port = tools::wstring_to_string(settings_loader->get_string(_T("port"), _T("device")).GetString());
 
 
-	test_logic.Start();
+	test_logic->Start();
 }
 
 void PrepareExit()
 {
-	test_logic.Stop();
+	test_logic->Stop();
 
 	delete settings_loader;
 	delete tr_error;

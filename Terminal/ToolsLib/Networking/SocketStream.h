@@ -70,7 +70,7 @@ class CSocketStream
 	// сюда пишем статус окончания работы
 	e_work_loop_status* _end_status;
 
-	tools::e_init_state _start_state;
+	tools::e_init_state _init_state;
 
 	// вызывается по завершении потока
 	std::function<void()> _on_complete_fn;

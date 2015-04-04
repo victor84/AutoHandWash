@@ -57,6 +57,7 @@ tools::e_init_state device_exchange::CDeviceInteract::init()
 	if (tools::networking::e_socket_result::error == _device_emulator_connection.Start(connection_params))
 		return tools::e_init_state::not_init;
 
+	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CDeviceInteract::thread_fn, this);
 	_init_state = tools::e_init_state::was_init;
 
@@ -70,6 +71,8 @@ device_exchange::CDeviceInteract::CDeviceInteract(const logic_settings::CCommonS
 												  , _packets_to_logic(packets_to_logic)
 												  , _settings_module(settings_module)
 												  , _device_emulator_connection(_device_raw_data, nullptr)
+												  , _work_loop_status(tools::e_work_loop_status::stop)
+												  , _init_state(tools::e_init_state::not_init)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }

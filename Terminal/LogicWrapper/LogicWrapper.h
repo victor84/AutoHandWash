@@ -3,6 +3,7 @@
 #pragma once
 
 #include "LogicPimpl.h"
+#include "ServicesNames.h"
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
@@ -10,7 +11,7 @@ using namespace System::Runtime::InteropServices;
 namespace LogicWrapper
 {
 	// Идентификатор услуги
-	public enum e_service_id
+	public enum class e_service_id
 	{
 		pressurized_water,		// Вода под давлением
 		water_without_pressure,	// Вода без давления
@@ -23,76 +24,71 @@ namespace LogicWrapper
 		stop					// Стоп
 	};
 
+	public enum class e_state_id
+	{
+		advertising_idle,	// рекламный простой
+		refill_cache,		// денежный баланс пополнен
+		executing_service,	// выполнение службы (услуги)
+		free_idle,			// бесплатный простой
+		paid_idle,			// платный простой
+		settings_work,		// работа с настройками
+	};
+
 	// делегат, вызываемый при изменении времени и денег
 	public delegate void OnTimeAndMoneyChangedDelegate(UInt16 time, UInt16 money);
 
 	// делегат, вызываемый при изменении услуги
-	public delegate void OnServiceChanged(e_service_id service_id, String^ service_name);
+	public delegate void OnServiceChangedDelegate(e_service_id service_id, String^ service_name);
+
+	// делегат, вызываемый при изменении состояния логики
+	public delegate void OnStateChangedDelegate(e_state_id state_id);
+
+	// делегат, вызываемый при пополнении счёта
+	public delegate void OnCacheRefilledDelegate(UInt16 cache);
 
 	// Логика
 	public ref class Logic
 	{
+		delegate void OnServiceChangedDelegateInner(logic::e_service_name service_id, const wchar_t* service_name);
+
+		delegate void OnStateChangedDelegateInner(logic::e_state state);
 
 		CLogicPimpl* _logic;
+		
 		OnTimeAndMoneyChangedDelegate^ _on_time_and_money_changed;
-		OnServiceChanged^ _on_service_changed;
+		
+		OnServiceChangedDelegate^ _on_service_changed;
+		OnServiceChangedDelegateInner^ _on_service_changed_inner;
+
+		OnStateChangedDelegate^ _on_state_changed;
+		OnStateChangedDelegateInner^ _on_state_changed_inner;
+
+		OnCacheRefilledDelegate^ _on_cache_refilled;
 
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
+		GCHandle _stc_handle;
+		GCHandle _cr_handle;
 
-		void OnServiceChangedInner(Int32 service_id, const wchar_t* service_name)
-		{
-			if (nullptr == _on_service_changed)
-				return;
+		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
-			e_service_id sid = static_cast<e_service_id>(service_id);
-			String^ sn = gcnew String(service_name);
-			
-			_on_service_changed(sid, sn);
-		}
+		void OnStateChangedInner(logic::e_state state);
 
-		void TransmitDelegates()
-		{
-			if (false == _tmc_handle.IsAllocated)
-				_tmc_handle = GCHandle::Alloc(_on_time_and_money_changed);
-
-			if (false == _sc_handle.IsAllocated)
-				_sc_handle = GCHandle::Alloc(_on_service_changed);
-
-			_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
-			_logic->SetOnServiceChangedFn(Marshal::GetFunctionPointerForDelegate(_on_service_changed).ToPointer());
-
-		}
+		void TransmitDelegates();
 
 	public:
-		Logic()
-		{
-			_logic = new CLogicPimpl();
-		}
+		Logic();
 
-		~Logic()
-		{
-			delete _logic;
-		}
+		~Logic();
 
 		void SetDelegates(OnTimeAndMoneyChangedDelegate^ on_time_and_money_changed,
-						  OnServiceChanged^ on_service_changed)
-		{
-			_on_time_and_money_changed = on_time_and_money_changed;
-			_on_service_changed = on_service_changed;
+						  OnServiceChangedDelegate^ on_service_changed,
+						  OnStateChangedDelegate^ on_state_changed,
+						  OnCacheRefilledDelegate^ on_cache_refilled);
 
-			TransmitDelegates();
-		}
+		bool Start();
 
-		bool Start()
-		{
-			return _logic->Start();
-		}
-
-		void Stop()
-		{
-			_logic->Stop();
-		}
+		void Stop();
 
 	};
 }

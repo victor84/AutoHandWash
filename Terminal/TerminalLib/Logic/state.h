@@ -15,16 +15,7 @@
 
 namespace logic
 {
-// состояние работы логики
-enum class e_state
-{
-	advertising_idle,	// рекламный простой
-	refill_cache,		// денежный баланс пополнен
-	executing_service,	// выполнение службы (услуги)
-	free_idle,			// бесплатный простой
-	paid_idle,			// платный простой
-	settings_work,		// работа с настройками
-};
+
 
 
 class CLogicAbstract;

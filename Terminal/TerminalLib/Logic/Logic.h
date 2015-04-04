@@ -72,6 +72,12 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при изменении состояния
 	std::function<void(e_service_name, std::wstring)> _on_service_changed_fn;
 
+	// вызывается при изменении состояния
+	std::function<void(e_state)> _on_state_changed_fn;
+
+	// вызывается при пополнении счёта
+	std::function<void(uint16_t)> _on_cache_refilled;
+
 	// заполнить состояния
 	void fill_states();
 
@@ -109,16 +115,6 @@ class CLogic : CLogicAbstract, public ILogic
 		return dynamic_cast<_MessageType*>(message.get());
 	}
 
-public:
-	CLogic();
-	~CLogic();
-
-	// запуск в работу
-	virtual bool Start() final;
-
-	// остановка
-	virtual void Stop() final;
-
 	virtual void open_valve(byte number) final;
 
 	virtual void read_eeprom(byte cell_number) final;
@@ -129,10 +125,23 @@ public:
 
 	virtual void close_valve(byte number) final;
 
+	// запуск в работу
+	virtual bool Start() final;
+
+	// остановка
+	virtual void Stop() final;
+
 	virtual void SetOnTimeAndMoneyFn(std::function<void(int16_t, int16_t) > fn) final;
 
 	virtual void SetOnServiceChangedFn(std::function<void(e_service_name, std::wstring) > fn) final;
 
+	virtual void SetOnStateChangedFn(std::function<void(e_state)> fn) final;
+
+	virtual void SetOnCacheRefilledFn(std::function<void(uint16_t) > fn) final;
+
+public:
+	CLogic();
+	~CLogic();
 };
 }
 
