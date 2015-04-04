@@ -33,6 +33,42 @@ namespace Server.Data
             return userGroups;
         }
 
+        public static List<Guid> GetGroupsByUser(Guid userId)
+        {
+            List<Guid> userGroups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<UserGroups>().Where(x => x.UserId == userId).Select(x => x.GroupId);
+                    userGroups = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserGroups -> GetGroupsByUser: {0}", ex);
+            }
+            return userGroups;
+        }
+
+        public static List<Guid> GetGroups()
+        {
+            List<Guid> userGroups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<UserGroups>().Select(x => x.GroupId);
+                    userGroups = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserGroups -> GetGroups: {0}", ex);
+            }
+            return userGroups;
+        }
+
         public static UserGroups GetUserGroup(UserGroups userGroup)
         {
             UserGroups userGroups = null;
