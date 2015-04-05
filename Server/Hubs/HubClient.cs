@@ -6,11 +6,12 @@ namespace Server.Hubs
 {
     public class HubClient : IHubClient
     {
+        private string hubName = "mainHub";
         private object lockInvoke;
         private HubConnection Connection { get; set; }
         private IHubProxy Proxy { get; set; }
         
-        public HubClient(string url, string hubName)
+        public HubClient(string url)
         {
             lockInvoke = new object();
             Connection = new HubConnection(url);

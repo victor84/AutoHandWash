@@ -1,21 +1,23 @@
-﻿function RealTimeTerminals() {
-    // Declare a proxy to reference the hub.
-    var chat = $.connection.testHub;
+﻿function RefreshCounters() {
 
-    // Create a function that the hub can call to broadcast messages.
-    chat.client.addMessage = function (name, message) {
-        // Html encode display name and message.
-        var encodedName = $('<div />').text(name).html();
-        var encodedMsg = $('<div />').text(message).html();
-        // Add the message to the page.
-        $('#discussion').append('<li><strong>' + encodedName
-            + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
+    var mainHub = $.connection.mainHub;
+
+    mainHub.client.refreshCounters = function (terminalName, counters) {
+        var content = "<tr id = " + "'" + counters.TerminalId + "'" + ">";
+        content += '<td>' + terminalName + '</td>';
+        content += '<td>' + counters.CommonInput + '</td>';
+        content += '<td>' + counters.Balance + '</td>';
+        content += '<td>' + counters.PressurizedWater + '</td>';
+        content += '<td>' + counters.NoPressurizedWater + '</td>';
+        content += '<td>' + counters.Foam + '</td>';
+        content += '<td>' + counters.Wax + '</td>';
+        content += '<td>' + counters.AgainstOfMidges + '</td>';
+        content += '<td>' + counters.Vacuum + '</td>';
+        content += '<td>' + counters.Osmose + '</td>';
+        content += '<td>' + counters.Air + '</td>';
+        content += "</tr>";
+        $("#" + counters.TerminalId).replaceWith(content);
     };
 
-    // Start the connection.
     $.connection.hub.start().done();
-}
-
-function CreateGroups(dictionaryTerminalCounters) {
-    alert(dictionaryTerminalCounters);
 }

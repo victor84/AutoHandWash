@@ -5,7 +5,6 @@ namespace Server
     public class AppSettings
     {
         public string BaseUri { get; set; }
-        public string HubName { get; set; }
         public int Port { get; set; }
 
         public static AppSettings Read()
@@ -14,7 +13,6 @@ namespace Server
             try
             {
                 string baseUri = ConfigurationManager.AppSettings["BaseUri"];
-                string hubName = ConfigurationManager.AppSettings["HubName"];
                 string portString = ConfigurationManager.AppSettings["Port"];
                 int port = int.Parse(portString);
                 if (!(port >= 1 && port <= 65535))
@@ -22,7 +20,6 @@ namespace Server
                 appSettings = new AppSettings() 
                 { 
                     BaseUri = baseUri,
-                    HubName = hubName,
                     Port = port
                 };
             }

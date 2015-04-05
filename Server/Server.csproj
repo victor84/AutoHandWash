@@ -122,6 +122,7 @@
     <Compile Include="Hubs\HubClient.cs" />
     <Compile Include="Hubs\HubTerminals.cs" />
     <Compile Include="Hubs\IHubClient.cs" />
+    <Compile Include="Hubs\MainHub.cs" />
     <Compile Include="Models\AdminPageModel.cs" />
     <Compile Include="Models\MainPageModel.cs" />
     <Compile Include="Modules\AdminModule.cs" />
@@ -132,7 +133,6 @@
     <Compile Include="Data\SettingsGroup.cs" />
     <Compile Include="Data\SettingsTerminal.cs" />
     <Compile Include="Data\Terminal.cs" />
-    <Compile Include="Hubs\TestHub.cs" />
     <Compile Include="Models\LoginPageModel.cs" />
     <Compile Include="Models\MasterPageModel.cs" />
     <Compile Include="Modules\BaseModule.cs" />
@@ -589,9 +589,6 @@
     <Content Include="Scripts\Terminals.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\TestSignalR.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\AdminError.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -632,9 +629,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\SettingsTerminal.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\TestSignalR.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Terminals.html">

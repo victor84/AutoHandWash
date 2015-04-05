@@ -12,14 +12,8 @@ namespace Server.Modules
         public MainModule()
         {
             this.RequiresAuthentication();
-            Get["/groups"] = TestSignalR;
             Get["/terminals"] = Terminals;
             Get["/error/{type}"] = ViewError;
-        }
-
-        private dynamic TestSignalR(dynamic parameters)
-        {
-            return View["TestSignalR", Model];
         }
 
         private dynamic Terminals(dynamic parameters)

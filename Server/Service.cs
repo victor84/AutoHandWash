@@ -14,7 +14,7 @@ namespace Server
         public Service(AppSettings appSettings)
         {
             this.appSettings = appSettings;
-            hubClient = new HubClient(appSettings.BaseUri, appSettings.HubName);
+            hubClient = new HubClient(appSettings.BaseUri);
             tcpServer = new TcpServer(appSettings.Port, hubClient);
         }
 

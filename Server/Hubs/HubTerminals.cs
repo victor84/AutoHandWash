@@ -1,4 +1,5 @@
-﻿namespace Server.Hubs
+﻿using Server.Data;
+namespace Server.Hubs
 {
     public class HubTerminals
     {
@@ -9,9 +10,9 @@
             _hubClient = hubClient;
         }
 
-        public void Send(string name, string message)
+        public void RefreshCounters(string terminalName, Counters counters)
         {
-            _hubClient.Invoke("Send", name, message);
+            _hubClient.Invoke("RefreshCounters", terminalName, counters);
         }
     }
 }

@@ -195,7 +195,7 @@ namespace Server
             if (!Counters.Insert(counters))
                 return e_processing_result.failed;
 
-            hubTerminals.Send("Craig", "12345");
+            hubTerminals.RefreshCounters(terminal.TerminalName, counters);
 
             return e_processing_result.success;
         }
@@ -261,8 +261,6 @@ namespace Server
 
             if (!TerminalLog.Insert(terminalLog))
                 return e_processing_result.failed;
-
-            hubTerminals.Send("Craig", "12345");
 
             return e_processing_result.success;
         }
