@@ -16,7 +16,7 @@ logic::CSettingsWorkState::~CSettingsWorkState()
 {
 }
 
-void logic::CSettingsWorkState::refilled_cache(uint16_t cache)
+void logic::CSettingsWorkState::refilled_cache()
 {
 
 }
@@ -104,6 +104,7 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 
 		if (cell_number > 0x28)
 		{
+			// чтение закончено
 			_settings_from_device = _settings;
 			_logic.set_state(e_state::advertising_idle);
 			CAdvertisingIdleState* as = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);

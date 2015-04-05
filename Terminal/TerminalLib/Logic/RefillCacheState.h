@@ -17,7 +17,7 @@ public:
 	CRefillCacheState(CLogicAbstract& logic);
 	virtual ~CRefillCacheState();
 
-	virtual void refilled_cache(uint16_t cache) override;
+	virtual void refilled_cache() override;
 
 	virtual void service_button_press(e_service_name service_name) override;
 

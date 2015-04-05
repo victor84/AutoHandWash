@@ -14,10 +14,27 @@ void logic_settings::CCommonSettings::fill_settings_values()
 									terminal_block_name, terminal_name_name);
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
 									terminal_block_name, terminal_group_name);
-
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, bill_acceptor_impulse_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, coin_acceptor_impulse_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, free_idle_time_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, idle_time_cost_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, pause_before_advertising_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, state_name);
 }
 
 logic_settings::CCommonSettings::CCommonSettings()
+	: _bill_acceptor_impulse(0)
+	, _coin_acceptor_impulse(0)
+	, _free_idle_time(0)
+	, _idle_time_cost(0)
+	, _pause_before_advertising(0)
+	, _state(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	_settings_module = tools::settings::CSettingsLoader::get_instance();
@@ -53,6 +70,13 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	_terminal_name = _settings_module->get_string(terminal_name_name, terminal_block_name);
 	_terminal_group = _settings_module->get_string(terminal_group_name, terminal_block_name);
 
+	_bill_acceptor_impulse = _settings_module->get_int(terminal_group_name, bill_acceptor_impulse_name);
+	_coin_acceptor_impulse = _settings_module->get_int(terminal_group_name, coin_acceptor_impulse_name);
+	_free_idle_time = _settings_module->get_int(terminal_group_name, free_idle_time_name);
+	_idle_time_cost = _settings_module->get_int(terminal_group_name, idle_time_cost_name);
+	_pause_before_advertising = _settings_module->get_int(terminal_group_name, pause_before_advertising_name);
+	_state = _settings_module->get_int(terminal_group_name, state_name);
+
 	return true;
 }
 
@@ -79,4 +103,34 @@ std::wstring logic_settings::CCommonSettings::GetTerminalName() const
 std::wstring logic_settings::CCommonSettings::GetTerminalGroup() const
 {
 	return _terminal_group;
+}
+
+uint32_t logic_settings::CCommonSettings::GetBillAcceptorImpulse() const
+{
+	return _bill_acceptor_impulse;
+}
+
+uint32_t logic_settings::CCommonSettings::GetCoinAcceptorImpulse() const
+{
+	return _coin_acceptor_impulse;
+}
+
+uint32_t logic_settings::CCommonSettings::GetFreeIdleTime() const
+{
+	return _free_idle_time;
+}
+
+uint32_t logic_settings::CCommonSettings::GetIdleTimeCost() const
+{
+	return _idle_time_cost;
+}
+
+uint32_t logic_settings::CCommonSettings::GetPauseBeforeAdvertising() const
+{
+	return _pause_before_advertising;
+}
+
+uint32_t logic_settings::CCommonSettings::GetState() const
+{
+	return _state;
 }

@@ -54,7 +54,6 @@ tag_packet_from_device CLogicDataFromDeviceToPacketFromDeviceConverter::convert_
 	tag_bill_acceptor* p = reinterpret_cast<tag_bill_acceptor*>(packet.get());
 
 	result.command = p->command_id;
-	*((uint16_t*)&result.data0) = p->count;
 
 	return result;
 }

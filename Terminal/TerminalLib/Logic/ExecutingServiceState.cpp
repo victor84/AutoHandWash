@@ -151,10 +151,10 @@ logic::CExecutingServiceState::~CExecutingServiceState()
 	stop_service();
 }
 
-void logic::CExecutingServiceState::refilled_cache(uint16_t cache)
+void logic::CExecutingServiceState::refilled_cache()
 {
 	stop_service();
-	_deferred_cache = cache;
+	_deferred_cache = static_cast<uint16_t>(_device_settings.bill_acceptor_impulse);
 }
 
 void logic::CExecutingServiceState::service_button_press(e_service_name service_name)
@@ -236,7 +236,7 @@ void logic::CExecutingServiceState::device_confirm()
 		if (0 != _deferred_cache)
 		{
 			CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
-			rcs->refilled_cache(_deferred_cache);
+			rcs->refilled_cache();
 			_deferred_cache = 0;
 			_logic.set_state(e_state::refill_cache);
 		}

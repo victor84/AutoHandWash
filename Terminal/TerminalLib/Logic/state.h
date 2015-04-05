@@ -60,7 +60,7 @@ public:
 	}
 
 	// пополнен счёт
-	virtual void refilled_cache(uint16_t cache) = 0;
+	virtual void refilled_cache() = 0;
 
 	// нажата кнопка услуги
 	virtual void service_button_press(e_service_name service_name) = 0;

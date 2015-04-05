@@ -25,12 +25,6 @@ class CDeviceInteract
 {
 	tools::logging::CTraceError* _tr_error;
 
-	// (device) пакеты от устройства для логики
-	// tools::lock_vector<tag_packet_from_device> _packets_from_device;
-
-	// (device) пакеты от логики для устройства
-	// tools::lock_vector<tag_packet_from_pc> _packets_from_logic;
-
 	// (logic) пакеты для устройства от логики
 	tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& _packets_to_device;
 

@@ -13,10 +13,12 @@ logic::CRefillCacheState::~CRefillCacheState()
 {
 }
 
-void logic::CRefillCacheState::refilled_cache(uint16_t cache)
+void logic::CRefillCacheState::refilled_cache()
 {
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	tag_device_settings device_settings = sws->get_settings();
+
+	uint16_t cache = device_settings.bill_acceptor_impulse;
 
 	device_settings.current_cache += static_cast<int16_t>(cache * 100);
 

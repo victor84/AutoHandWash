@@ -27,7 +27,7 @@ public:
 	CFreeEdleState(CLogicAbstract& logic);
 	virtual ~CFreeEdleState();
 
-	virtual void refilled_cache(uint16_t cache) final;
+	virtual void refilled_cache() final;
 
 	virtual void service_button_press(e_service_name service_name);
 

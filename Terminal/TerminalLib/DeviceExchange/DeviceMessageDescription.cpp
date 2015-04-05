@@ -55,9 +55,7 @@ bool device_exchange::CDeviceMessageDescription::button_press(const device_excha
 
 bool device_exchange::CDeviceMessageDescription::bill_acceptor(const device_exchange::tag_packet_from_device& message)
 {
-	_str_str << _T("Данные от купюроприемника или монетоприемника. Сумма: ") 
-				<< _byteswap_ushort(*((uint16_t*)&message.data0))
-				<< _T("\r\n");
+	_str_str << _T("Импульс от купюроприемника или монетоприемника.\r\n");
 
 	return true;
 }

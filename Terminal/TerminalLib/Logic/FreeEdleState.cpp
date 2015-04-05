@@ -44,12 +44,12 @@ logic::CFreeEdleState::~CFreeEdleState()
 	stop_timer();
 }
 
-void logic::CFreeEdleState::refilled_cache(uint16_t cache)
+void logic::CFreeEdleState::refilled_cache()
 {
 	stop_timer();
 
 	CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
-	rcs->refilled_cache(cache);
+	rcs->refilled_cache(/*cache*/);
 	_logic.set_state(e_state::refill_cache);
 }
 

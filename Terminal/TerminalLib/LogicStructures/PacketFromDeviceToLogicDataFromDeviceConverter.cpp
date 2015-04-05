@@ -48,11 +48,9 @@ tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLog
 
 tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLogicDataFromDeviceConverter::convert_bill_acceptor(const device_exchange::tag_packet_from_device& packet)
 {
-	tag_bill_acceptor result;
+	UNREFERENCED_PARAMETER(packet);
 
-	result.count = (*(uint16_t*)&packet.data0);
-
-	return result;
+	return tag_bill_acceptor();
 }
 
 tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLogicDataFromDeviceConverter::convert_hopper_issue_coin(const device_exchange::tag_packet_from_device& packet)

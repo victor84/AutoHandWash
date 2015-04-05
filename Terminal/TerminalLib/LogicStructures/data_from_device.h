@@ -82,10 +82,7 @@ struct tag_button_press : tag_base_data_from_device
 // данные от купюроприёмника или монетоприёмника
 struct tag_bill_acceptor : tag_base_data_from_device
 {
-	uint16_t count;	// сумма
-
 	tag_bill_acceptor() : tag_base_data_from_device(device_exchange::e_command_from_device::bill_acceptor)
-		, count(0)
 	{
 
 	}

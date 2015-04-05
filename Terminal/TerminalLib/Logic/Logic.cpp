@@ -266,7 +266,7 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	switch (message->command_id)
 	{
 		case(device_exchange::e_command_from_device::bill_acceptor) :
-			_current_state->refilled_cache(get_device_message_pointer<logic_structures::tag_bill_acceptor>(message)->count);
+			_current_state->refilled_cache();
 			sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 			break;
 
