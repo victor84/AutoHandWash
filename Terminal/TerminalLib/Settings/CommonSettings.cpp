@@ -70,12 +70,12 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	_terminal_name = _settings_module->get_string(terminal_name_name, terminal_block_name);
 	_terminal_group = _settings_module->get_string(terminal_group_name, terminal_block_name);
 
-	_bill_acceptor_impulse = _settings_module->get_int(terminal_group_name, bill_acceptor_impulse_name);
-	_coin_acceptor_impulse = _settings_module->get_int(terminal_group_name, coin_acceptor_impulse_name);
-	_free_idle_time = _settings_module->get_int(terminal_group_name, free_idle_time_name);
-	_idle_time_cost = _settings_module->get_int(terminal_group_name, idle_time_cost_name);
-	_pause_before_advertising = _settings_module->get_int(terminal_group_name, pause_before_advertising_name);
-	_state = _settings_module->get_int(terminal_group_name, state_name);
+	_bill_acceptor_impulse = _settings_module->get_int(bill_acceptor_impulse_name, terminal_block_name);
+	_coin_acceptor_impulse = _settings_module->get_int(coin_acceptor_impulse_name, terminal_block_name);
+	_free_idle_time = _settings_module->get_int(free_idle_time_name, terminal_block_name);
+	_idle_time_cost = _settings_module->get_int(idle_time_cost_name, terminal_block_name);
+	_pause_before_advertising = _settings_module->get_int(pause_before_advertising_name, terminal_block_name);
+	_state = _settings_module->get_int(state_name, terminal_block_name);
 
 	return true;
 }
