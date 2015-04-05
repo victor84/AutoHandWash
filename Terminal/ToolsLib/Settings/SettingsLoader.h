@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx/stdafx.h"
+#include "stdafx\stdafx.h"
 #include "TraceError.h"
 #include "..\SimpleLexicalCast.h"
 

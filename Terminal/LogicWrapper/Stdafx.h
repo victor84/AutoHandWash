@@ -30,7 +30,6 @@
 #include <vector>
 #include <sstream>
 #include <locale>
-// #include <thread>
 #include <map>
 #include <memory>
 
@@ -38,8 +37,6 @@
 #include <tchar.h>
 
 // windows
-// #include <ppl.h>
-// #include <agents.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
