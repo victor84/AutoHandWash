@@ -18,7 +18,7 @@ void logic::CRefillCacheState::refilled_cache()
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	tag_device_settings device_settings = sws->get_settings();
 
-	uint16_t cache = device_settings.bill_acceptor_impulse;
+	uint16_t cache = static_cast<uint16_t>(device_settings.bill_acceptor_impulse);
 
 	device_settings.current_cache += static_cast<int16_t>(cache * 100);
 
@@ -33,7 +33,7 @@ void logic::CRefillCacheState::refilled_cache()
 	sws->set_settings(device_settings);
 
 	if (_on_cache_refilled)
-		_on_cache_refilled(cache);
+		_on_cache_refilled(static_cast<uint16_t>(device_settings.current_cache));
 }
 
 void logic::CRefillCacheState::service_button_press(e_service_name service_name)

@@ -101,7 +101,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                CacheSizeTextBlock.Text = String.Format("Внесено средств: {0} руб.", cache);
+                RestOfMoneyTextBlock.Text = String.Format("Осталось средств: {0} руб.", ((Double)(cache / 100.0)).ToString("F"));
             });
         }
 

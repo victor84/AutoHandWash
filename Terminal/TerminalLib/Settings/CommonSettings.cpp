@@ -63,6 +63,24 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	if (FALSE == _settings_module->read(terminal_group_name, terminal_block_name))
 		return false;
 
+	if (FALSE == _settings_module->read(bill_acceptor_impulse_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(coin_acceptor_impulse_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(free_idle_time_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(idle_time_cost_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(pause_before_advertising_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(state_name, terminal_block_name))
+		return false;
+
 	_device_port = CStringA(_settings_module->get_string(port_param_name, device_block_name)).GetString();
 	_server_port = CStringA(_settings_module->get_string(port_param_name, server_block_name)).GetString();
 	_server_address = CStringA(_settings_module->get_string(address_param_name, server_block_name)).GetString();

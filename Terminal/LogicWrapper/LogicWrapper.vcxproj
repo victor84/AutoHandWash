@@ -61,6 +61,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>TerminalLib.lib;ToolsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

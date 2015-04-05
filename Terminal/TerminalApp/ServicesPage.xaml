@@ -57,18 +57,15 @@
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
             <Viewbox Grid.Row="0">
-                <TextBlock x:Name="CacheSizeTextBlock" Text="Внесено средств: 0 руб." />
-            </Viewbox>
-            <Viewbox Grid.Row="1">
                 <TextBlock x:Name="RestOfMoneyTextBlock" Text="Осталось средств: 00.00 руб." />
             </Viewbox>
-            <Viewbox Grid.Row="2">
+            <Viewbox Grid.Row="1">
                 <TextBlock x:Name="RestOfTimeTextBlock" Text="Осталось времени: 0 сек." />
             </Viewbox>
-            <Viewbox Grid.Row="3">
+            <Viewbox Grid.Row="2">
                 <TextBlock x:Name="CurrentServiceNameTextBlock" Text="Текущая услуга" />
             </Viewbox>
-            <Viewbox Grid.Row="4">
+            <Viewbox Grid.Row="3">
                 <TextBlock x:Name="HintTextBlock" Text="Подсказка" />
             </Viewbox>            
 
