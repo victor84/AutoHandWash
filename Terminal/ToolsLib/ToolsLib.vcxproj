@@ -183,6 +183,8 @@
     <ClInclude Include="SerialPort\SerialEx.h" />
     <ClInclude Include="SerialPort\SerialMFC.h" />
     <ClInclude Include="SerialPort\SerialWnd.h" />
+    <ClInclude Include="SerialPort\SerialWrapper.h" />
+    <ClInclude Include="SerialUtils.h" />
     <ClInclude Include="Settings\SettingsLoader.h" />
     <ClInclude Include="SimpleLexicalCast.h" />
     <ClInclude Include="stdafx\stdafx.h" />
@@ -199,6 +201,7 @@
     <ClCompile Include="SerialPort\Serial.cpp" />
     <ClCompile Include="SerialPort\SerialEx.cpp" />
     <ClCompile Include="SerialPort\SerialWnd.cpp" />
+    <ClCompile Include="SerialPort\SerialWrapper.cpp" />
     <ClCompile Include="Settings\SettingsLoader.cpp" />
     <ClCompile Include="SimpleLexicalCast.cpp" />
     <ClCompile Include="stdafx\stdafx.cpp">

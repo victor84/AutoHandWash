@@ -85,7 +85,7 @@ class CSocketStream
 	// очистка сокета
 	void cleanup();
 
-	// очистить буферы даннфх
+	// очистить буферы данных
 	void clear_buffers();
 
 	// проверка сокета 

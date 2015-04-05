@@ -105,6 +105,12 @@
     <ClInclude Include="lock_deque.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="SerialPort\SerialWrapper.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialUtils.h">
+      <Filter>Заголовочные файлы\SerialPort</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleLexicalCast.cpp">
@@ -142,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Networking\SocketStream.cpp">
       <Filter>Файлы исходного кода\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort\SerialWrapper.cpp">
+      <Filter>Файлы исходного кода\SerialPort</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

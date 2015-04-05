@@ -9,6 +9,8 @@
 #include "DevicePacketConvertor.h"
 #include "SingleServerSocket.h"
 #include "AsyncClientSocket.h"
+#include "SerialUtils.h"
+#include "SerialWrapper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,6 +30,9 @@ void TestClient(tools::networking::tag_connection_params connection_params,
 				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data);
 
 void TestServer(tools::networking::tag_connection_params connection_params,
+				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data);
+
+void TestCom(tools::serial_port::tag_connection_params connection_params,
 				tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data);
 
 void TestServerMessages();
@@ -71,8 +76,12 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	connection_params.address = "127.0.0.1";
 	connection_params.port = "26000";
 
+	tools::serial_port::tag_connection_params com_params;
+	com_params.port_name = _T("COM3");
+
+	TestCom(com_params, received_data);
 	// TestServer(connection_params, received_data);
-	TestClient(connection_params, received_data);
+	// TestClient(connection_params, received_data);
 
 	delete tr_error;
 
@@ -107,6 +116,20 @@ void TestServer(tools::networking::tag_connection_params connection_params,
 	server.Stop();
 
 	tr_error->trace_error(_T("Сервер остановлен"));
+
+	::system("pause");
+}
+
+void TestCom(tools::serial_port::tag_connection_params connection_params, tools::lock_vector<tools::data_wrappers::_tag_data_managed>& received_data)
+{
+	tools::serial_port::CSerialWrapper serial_port(received_data, nullptr);
+
+	serial_port.Start(connection_params);
+
+	::system("pause");
+
+	serial_port.Stop();
+	tr_error->trace_message(_T("COM-порт остановлен"));
 
 	::system("pause");
 }
