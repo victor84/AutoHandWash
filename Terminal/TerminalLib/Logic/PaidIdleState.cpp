@@ -13,7 +13,7 @@ void logic::CPaidIdleState::on_timer(int32_t)
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	sws->set_settings(_device_settings);
 
-	if ((0 == _time_left) || (0 == _balance_of_money))
+	if ((0 >= _time_left) || (0 >= _balance_of_money))
 	{
 		stop_timer();
 
@@ -34,15 +34,15 @@ void logic::CPaidIdleState::calc_time_and_money()
 	_balance_of_money = static_cast<int16_t>(_device_settings.current_cache);
 	_current_cost = static_cast<int16_t>(_device_settings.idle_time_cost);
 
+
 	_time_left = static_cast<int16_t>(static_cast<double>(_balance_of_money) / 
-									  static_cast<double>(_current_cost) * 60.0);
+									  static_cast<double>(_current_cost * 100) * 60.0);
 	_balance_of_money;
-	_current_cost *= 100;
 }
 
 void logic::CPaidIdleState::calc_money_balance_by_time_left()
 {
-	_balance_of_money = static_cast<int16_t>((_time_left / 60.0) * (_current_cost));
+	_balance_of_money = static_cast<int16_t>((_time_left / 60.0) * _current_cost * 100);
 	_device_settings.current_cache = static_cast<int16_t>(_balance_of_money);
 }
 

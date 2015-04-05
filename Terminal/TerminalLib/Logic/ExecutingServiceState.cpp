@@ -106,12 +106,13 @@ void logic::CExecutingServiceState::increase_current_service_time()
 
 void logic::CExecutingServiceState::stop_service()
 {
-	if (e_service_name::stop == _current_service)
-		return;
-
 	stop_timer();
 
 	byte valve_number = _correspond_settings.GetValveNumber(_current_service);
+
+	if (0 == valve_number)
+		valve_number = 0xff;
+
 	_logic.close_valve(valve_number);
 
 	calc_money_balance_by_time_left();
@@ -198,6 +199,9 @@ void logic::CExecutingServiceState::time_out()
 
 void logic::CExecutingServiceState::out_of_money()
 {
+	_service_time_left = 0;
+	_balance_of_money = 0;
+
 	stop_service();
 }
 

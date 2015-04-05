@@ -13,6 +13,7 @@
 #include "CommonSettings.h"
 #include "DevicePacketConvertor.h"
 #include "DeviceMessageDescription.h"
+#include "SerialWrapper.h"
 
 namespace device_exchange
 {
@@ -44,8 +45,8 @@ class CDeviceInteract
 	// (logic)_packets_to_device -> (device)_packets_from_logic
 	logic_structures::CLogicDataFromPcToPacketFromPcConverter _packets_to_device_to_packets_from_logic;
 
-	// подключение к эмулятору устройства
-	tools::networking::CSingleServerSocket _device_emulator_connection;
+	// подключение к устройству
+	tools::serial_port::CSerialWrapper _device_connection;
 	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _device_raw_data;
 
 	// настройки

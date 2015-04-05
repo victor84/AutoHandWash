@@ -24,8 +24,11 @@ class CCommonSettings
 	const wchar_t* server_block_name	= _T("server");
 	const wchar_t* terminal_block_name	= _T("terminal");
 
-	const wchar_t* address_param_name	= _T("address");
+	const wchar_t* port_name_param_name	= _T("port_name");
 	const wchar_t* port_param_name		= _T("port");
+	const wchar_t* speed_param_name		= _T("speed");
+
+	const wchar_t* address_param_name	= _T("address");
 	const wchar_t* terminal_name_name	= _T("name");
 	const wchar_t* terminal_group_name	= _T("group");
 
@@ -39,7 +42,8 @@ class CCommonSettings
 	tools::logging::CTraceError* _tr_error;
 	tools::settings::CSettingsLoader* _settings_module;
 
-	std::string _device_port;
+	std::wstring _device_port_name;
+	uint32_t _device_speed;
 
 	std::string _server_port;
 	std::string _server_address;
@@ -62,7 +66,9 @@ public:
 
 	bool ReadSettings();
 
-	std::string GetDevicePort() const;
+	std::wstring GetDevicePortName() const;
+
+	uint32_t GetDeviceSpeed() const;
 
 	std::string GetServerAddress() const;
 

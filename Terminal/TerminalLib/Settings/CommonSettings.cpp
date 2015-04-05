@@ -5,7 +5,9 @@
 void logic_settings::CCommonSettings::fill_settings_values()
 {
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
-									device_block_name, port_param_name);
+									device_block_name, port_name_param_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
+									device_block_name, speed_param_name);
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
 									server_block_name, port_param_name);
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_string,
@@ -29,7 +31,8 @@ void logic_settings::CCommonSettings::fill_settings_values()
 }
 
 logic_settings::CCommonSettings::CCommonSettings()
-	: _bill_acceptor_impulse(0)
+	: _device_speed(0)
+	, _bill_acceptor_impulse(0)
 	, _coin_acceptor_impulse(0)
 	, _free_idle_time(0)
 	, _idle_time_cost(0)
@@ -48,7 +51,10 @@ logic_settings::CCommonSettings::~CCommonSettings()
 
 bool logic_settings::CCommonSettings::ReadSettings()
 {
-	if (FALSE == _settings_module->read(port_param_name, device_block_name))
+	if (FALSE == _settings_module->read(port_name_param_name, device_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(speed_param_name, device_block_name))
 		return false;
 
 	if (FALSE == _settings_module->read(port_param_name, server_block_name))
@@ -81,7 +87,8 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	if (FALSE == _settings_module->read(state_name, terminal_block_name))
 		return false;
 
-	_device_port = CStringA(_settings_module->get_string(port_param_name, device_block_name)).GetString();
+	_device_port_name = _settings_module->get_string(port_name_param_name, device_block_name);
+	_device_speed = _settings_module->get_int(speed_param_name, device_block_name);
 	_server_port = CStringA(_settings_module->get_string(port_param_name, server_block_name)).GetString();
 	_server_address = CStringA(_settings_module->get_string(address_param_name, server_block_name)).GetString();
 
@@ -98,9 +105,14 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	return true;
 }
 
-std::string logic_settings::CCommonSettings::GetDevicePort() const
+std::wstring logic_settings::CCommonSettings::GetDevicePortName() const
 {
-	return _device_port;
+	return _device_port_name;
+}
+
+uint32_t logic_settings::CCommonSettings::GetDeviceSpeed() const
+{
+	return _device_speed;
 }
 
 std::string logic_settings::CCommonSettings::GetServerAddress() const
