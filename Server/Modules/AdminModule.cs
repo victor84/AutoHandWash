@@ -374,6 +374,7 @@ namespace Server.Modules
                             var newSettingsTerminal = new SettingsTerminal()
                             {
                                 TerminalId = terminal.Id,
+                                DataSent = false,
                                 State = state,
                                 ImpulseBillAcceptor = impulseBillAcceptor,
                                 ImpulseCoinAcceptor = impulseCoinAcceptor,
@@ -390,11 +391,7 @@ namespace Server.Modules
                                 TimeInactivity = timeInactivity
                             };
                             var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
-                            if (settingsTerminal == null)
-                            {
-                                SettingsTerminal.Insert(newSettingsTerminal);
-                            }
-                            else
+                            if (settingsTerminal != null)
                             {
                                 SettingsTerminal.Update(newSettingsTerminal);
                             }

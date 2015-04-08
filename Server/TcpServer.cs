@@ -39,8 +39,8 @@ namespace Server
                 while (running)
                 {
                     TcpClient client = server.AcceptTcpClient();
-                    ClientHandler handler = new ClientHandler(client, hubClient);
-                    handler.Run();
+                    TerminalHandler hubTerminals = new TerminalHandler(client, hubClient);
+                    hubTerminals.Run();
                 }
             }
             catch (Exception e)

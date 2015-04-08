@@ -3,7 +3,6 @@ using LinqToDB.Data;
 using LinqToDB.Mapping;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Server.Data
 {
@@ -12,6 +11,8 @@ namespace Server.Data
     {
         [PrimaryKey]
         public Guid TerminalId { get; set; }
+        [Column]
+        public bool DataSent { get; set; }
         [Column]
         public byte State { get; set; }
         [Column]

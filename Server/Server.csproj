@@ -120,14 +120,13 @@
     <Compile Include="Data\TerminalLog.cs" />
     <Compile Include="Data\UserGroups.cs" />
     <Compile Include="Hubs\HubClient.cs" />
-    <Compile Include="Hubs\HubTerminals.cs" />
+    <Compile Include="TerminalHandler.cs" />
     <Compile Include="Hubs\IHubClient.cs" />
     <Compile Include="Hubs\MainHub.cs" />
     <Compile Include="Models\AdminPageModel.cs" />
     <Compile Include="Models\MainPageModel.cs" />
     <Compile Include="Modules\AdminModule.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="ClientHandler.cs" />
     <Compile Include="Data\Counters.cs" />
     <Compile Include="Data\Group.cs" />
     <Compile Include="Data\SettingsGroup.cs" />

@@ -4,13 +4,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 using Server.Hubs;
 
 namespace Server
 {
-    public class ClientHandler
+    public class TerminalHandler
     {
         private const int size = 0x10000;
         private Group group;
@@ -19,13 +19,14 @@ namespace Server
         private NetworkStream stream;
         private PacketParser parser;
         private PacketToRawData packetToRawData;
-        private HubTerminals hubTerminals;
-        public ClientHandler(TcpClient client, IHubClient hubClient)
+        private IHubClient _hubClient;
+        private e_packet_type lastPacket = e_packet_type.unknown;
+        public TerminalHandler(TcpClient client, IHubClient hubClient)
         {
             this.client = client;
             this.parser = new PacketParser();
             packetToRawData = new PacketToRawData();
-            hubTerminals = new HubTerminals(hubClient);
+            _hubClient = hubClient;
         }
 
         public void Run()
@@ -78,7 +79,7 @@ namespace Server
                                         case e_packet_type.unknown:
                                             break;
                                     }
-                                    Confirmation(packet.type, processing_result);
+                                    HandleResult(packet, processing_result);
                                 }
                             }
                         }
@@ -107,6 +108,35 @@ namespace Server
 
             transport_packet.type = e_packet_type.confirmation;
             packetToRawData.CreateConfirmationPacketRawData(confirmation_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
+        private void WriteSettings(SettingsTerminal settingsTerminal)
+        {
+            tag_settings_packet settings_packet;
+            settings_packet.state = (e_terminal_state)settingsTerminal.State;
+            settings_packet.bill_acceptor_impulse = (byte)settingsTerminal.ImpulseBillAcceptor;
+            settings_packet.coin_acceptor_impulse = (byte)settingsTerminal.ImpulseCoinAcceptor;
+            settings_packet.free_idle_time = (byte)settingsTerminal.TimeInactivity;
+            settings_packet.idle_time_cost = (byte)settingsTerminal.PriceMinuteInactivity;
+            settings_packet.osmosis = settingsTerminal.PriceOsmose;
+            settings_packet.pause_before_advertising = (byte)settingsTerminal.PauseBeforeShowingAds;
+            settings_packet.pressurized_water = settingsTerminal.PricePressurizedWater;
+            settings_packet.water_without_pressure = settingsTerminal.PriceNoPressurizedWater;
+            settings_packet.foam = settingsTerminal.PriceFoam;
+            settings_packet.wax = settingsTerminal.PriceWax;
+            settings_packet.against_midges = settingsTerminal.PriceAgainstOfMidges;
+            settings_packet.vacuum_cleaner = settingsTerminal.PriceVacuum;
+            settings_packet.air = settingsTerminal.PriceAir;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.settings;
+            packetToRawData.CreateSettingsPacketRawData(settings_packet, out transport_packet.data);
             transport_packet.set_missing_values();
 
             byte[] bytes;
@@ -195,7 +225,7 @@ namespace Server
             if (!Counters.Insert(counters))
                 return e_processing_result.failed;
 
-            hubTerminals.RefreshCounters(terminal.TerminalName, counters);
+            RefreshCounters(terminal.TerminalName, counters);
 
             return e_processing_result.success;
         }
@@ -210,6 +240,7 @@ namespace Server
             SettingsTerminal newSettingsTerminal = new SettingsTerminal()
             {
                 TerminalId = terminal.Id,
+                DataSent = true,
                 ImpulseBillAcceptor = settings_packet.bill_acceptor_impulse,
                 ImpulseCoinAcceptor = settings_packet.coin_acceptor_impulse,
                 PauseBeforeShowingAds = settings_packet.pause_before_advertising,
@@ -227,18 +258,11 @@ namespace Server
             };
 
             var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
-            bool result;
-            if (settingsTerminal != null)
+            if (settingsTerminal == null)
             {
-                result = SettingsTerminal.Update(newSettingsTerminal);
+                if (!SettingsTerminal.Insert(newSettingsTerminal))
+                    return e_processing_result.failed;
             }
-            else
-            {
-                result = SettingsTerminal.Insert(newSettingsTerminal);
-            }
-
-            if (!result)
-                return e_processing_result.failed;
 
             return e_processing_result.success;
         }
@@ -250,8 +274,8 @@ namespace Server
             if (e_convert_result.success != parser.ParseLogRecordPacket(packet, out log_record_packet))
                 return e_processing_result.failed;
 
-            TerminalLog terminalLog = new TerminalLog() 
-            { 
+            TerminalLog terminalLog = new TerminalLog()
+            {
                 Id = Guid.NewGuid(),
                 TerminalId = terminal.Id,
                 DateTimeTerminal = Tools.UnixTimeStampToDateTime(log_record_packet.date_time),
@@ -271,10 +295,54 @@ namespace Server
 
             if (e_convert_result.success != parser.ParseConfirmationPacket(packet, out confirmation_packet))
                 return e_processing_result.failed;
-
-            // TODO: обработка пакета с настройками от терминала
-
+            
             return e_processing_result.success;
+        }
+
+        private void RefreshCounters(string terminalName, Counters counters)
+        {
+            _hubClient.Invoke("RefreshCounters", terminalName, counters);
+        }
+
+        private void HandleResult(tag_transport_packet packet, e_processing_result processing_result)
+        {
+            if (packet.type != e_packet_type.confirmation)
+            {
+                Confirmation(packet.type, processing_result);
+
+                if (packet.type == e_packet_type.id &&
+                    processing_result == e_processing_result.success)
+                {
+                    var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                    WriteSettings(settingsTerminal);
+                    lastPacket = e_packet_type.settings;
+                }
+            }
+            else
+            {
+                if (processing_result == e_processing_result.success)
+                {
+                    switch (lastPacket)
+                    {
+                        case e_packet_type.settings:
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            settingsTerminal.DataSent = true;
+                            SettingsTerminal.Update(settingsTerminal);
+                            break;
+                    }
+                    lastPacket = e_packet_type.unknown;
+                }
+                else
+                {
+                    switch (lastPacket)
+                    {
+                        case e_packet_type.settings:
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            WriteSettings(settingsTerminal);
+                            break;
+                    }
+                }
+            }
         }
     }
 }
