@@ -109,6 +109,7 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 			_logic.set_state(e_state::advertising_idle);
 			CAdvertisingIdleState* as = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);
 			as->time_out();
+			_logic.on_settings_readed();
 			return;
 		}
 	}

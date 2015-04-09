@@ -133,6 +133,16 @@ class CLogic : CLogicAbstract, public ILogic
 		return result;
 	}
 
+	// создание пакета для отправки серверу
+	template<typename _SourcePacketType, server_exchange::e_packet_type _Id>
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> create_server_packet(_SourcePacketType packet)
+	{
+		logic_structures::tag_server_logic_packet <_SourcePacketType, _Id>*
+			server_logic_packet = new logic_structures::tag_server_logic_packet <_SourcePacketType, _Id>(packet);
+
+		return std::shared_ptr<logic_structures::tag_base_server_logic_struct>(server_logic_packet);
+	}
+
 	virtual void open_valve(byte number) final;
 
 	virtual void read_eeprom(byte cell_number) final;
@@ -142,6 +152,8 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void time_and_money(int16_t time, int16_t money) final;
 
 	virtual void close_valve(byte number) final;
+
+	virtual void on_settings_readed() final;
 
 	// запуск в работу
 	virtual bool Start() final;
@@ -162,6 +174,9 @@ class CLogic : CLogicAbstract, public ILogic
 public:
 	CLogic();
 	~CLogic();
+
+
+
 };
 }
 

@@ -314,8 +314,11 @@ namespace Server
                     processing_result == e_processing_result.success)
                 {
                     var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
-                    WriteSettings(settingsTerminal);
-                    lastPacket = e_packet_type.settings;
+                    if (null != settingsTerminal)
+                    {
+                        WriteSettings(settingsTerminal);
+                        lastPacket = e_packet_type.settings;
+                    }
                 }
             }
             else

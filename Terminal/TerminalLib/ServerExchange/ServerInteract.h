@@ -79,9 +79,13 @@ public:
 
 	void Stop();
 
-	// отправить пакет перед остальными
+	bool IsStarted();
+
+	// Отправить пакет перед остальными
 	void PushFrontToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet);
 
+	// Поставить в очередь на отправку
+	void PushBackToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet);
 };
 }
 

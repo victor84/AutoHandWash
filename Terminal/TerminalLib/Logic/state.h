@@ -109,6 +109,9 @@ public:
 	// уведомление об оставшихся на счёте деньгах и времени услуги
 	// время в секундах, деньги в копейках
 	virtual void time_and_money(int16_t time, int16_t money) = 0;
+
+	// вызывать при окончании чтения настроек
+	virtual void on_settings_readed() = 0;
 };
 
 #pragma pack(push, 4)

@@ -81,5 +81,7 @@ public:
 	bool Start();
 
 	void Stop();
+
+	bool IsStarted();
 };
 }

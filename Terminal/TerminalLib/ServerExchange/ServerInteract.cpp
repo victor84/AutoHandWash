@@ -205,7 +205,17 @@ void server_exchange::CServerInteract::Stop()
 	_init_state = tools::e_init_state::not_init;
 }
 
+bool server_exchange::CServerInteract::IsStarted()
+{
+	return ((tools::e_init_state::was_init == _init_state) && (tools::e_work_loop_status::ok == _work_loop_status));
+}
+
 void server_exchange::CServerInteract::PushFrontToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet)
 {
 	send_packet_to_server(packet, true);
+}
+
+void server_exchange::CServerInteract::PushBackToSend(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet)
+{
+	_packets_to_server.push_back(packet);
 }

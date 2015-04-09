@@ -104,7 +104,7 @@ void logic::CExecutingServiceState::increase_current_service_time()
 	}
 }
 
-void logic::CExecutingServiceState::stop_service()
+void logic::CExecutingServiceState::stop_service(bool destruct /*= false*/)
 {
 	stop_timer();
 
@@ -117,7 +117,8 @@ void logic::CExecutingServiceState::stop_service()
 
 	calc_money_balance_by_time_left();
 
-	_logic.time_and_money(_service_time_left, _balance_of_money);
+	if (false == destruct)
+		_logic.time_and_money(_service_time_left, _balance_of_money);
 
 	_current_service = e_service_name::stop;
 }
@@ -149,7 +150,7 @@ logic::CExecutingServiceState::CExecutingServiceState(CLogicAbstract& logic, log
 
 logic::CExecutingServiceState::~CExecutingServiceState()
 {
-	stop_service();
+	stop_service(true);
 }
 
 void logic::CExecutingServiceState::refilled_cache()

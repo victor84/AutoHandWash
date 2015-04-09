@@ -51,7 +51,7 @@ class CExecutingServiceState : public IState
 	 void increase_current_service_time();
 
 	 // остановка выполнения услуги
-	 void stop_service();
+	 void stop_service(bool destruct = false);
 
 	 // остановить таймер
 	 void stop_timer();

@@ -103,3 +103,8 @@ void device_exchange::CDeviceInteract::Stop()
 
 	_init_state = tools::e_init_state::not_init;
 }
+
+bool device_exchange::CDeviceInteract::IsStarted()
+{
+	return ((tools::e_init_state::was_init == _init_state) && (tools::e_work_loop_status::ok == _work_loop_status));
+}

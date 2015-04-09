@@ -50,7 +50,7 @@ tools::e_init_state logic::CLogic::init()
 		send_services_info();
 
 	_device_interact.Start();
-	_server_interact.Start();
+	// _server_interact.Start();
 
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
@@ -88,6 +88,7 @@ void logic::CLogic::send_services_info()
 
 void logic::CLogic::on_connected_to_server()
 {
+	send_settings_packet();
 	send_identification_packet();
 }
 
@@ -106,18 +107,42 @@ void logic::CLogic::send_identification_packet()
 	terminal_name._Copy_s(identification_packet.terminal_name, sizeof(identification_packet.terminal_name), terminal_name.size());
 	terminal_group._Copy_s(identification_packet.group_name, sizeof(identification_packet.group_name), terminal_group.size());
 
-	logic_structures::tag_server_logic_packet <server_exchange::tag_identification_packet, server_exchange::e_packet_type::id>* 
-		server_logic_packet = new logic_structures::tag_server_logic_packet < server_exchange::tag_identification_packet, server_exchange::e_packet_type::id > (identification_packet);
-
 	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet = 
-		std::shared_ptr<logic_structures::tag_base_server_logic_struct>(server_logic_packet);
+		create_server_packet<server_exchange::tag_identification_packet, server_exchange::e_packet_type::id>(identification_packet);
 
 	_server_interact.PushFrontToSend(packet);
 }
 
 void logic::CLogic::send_settings_packet()
 {
+	server_exchange::tag_settings_packet settings_packet;
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 
+	logic::tag_device_settings device_settings = sws->get_settings();
+
+	settings_packet.state = ((0 == device_settings.state) ? 
+							 server_exchange::e_terminal_state::broken : 
+							 server_exchange::e_terminal_state::work);
+
+	settings_packet.bill_acceptor_impulse = static_cast<byte>(device_settings.bill_acceptor_impulse);
+	settings_packet.coin_acceptor_impulse = static_cast<byte>(device_settings.coin_acceptor_impulse);
+	settings_packet.free_idle_time = static_cast<byte>(device_settings.free_idle_time);
+	settings_packet.idle_time_cost = static_cast<uint16_t>(device_settings.idle_time_cost);
+	settings_packet.pause_before_advertising = static_cast<byte>(device_settings.pause_before_advertising);
+
+	settings_packet.pressurized_water = device_settings.cost_pressurized_water;
+	settings_packet.water_without_pressure = device_settings.cost_water_without_pressure;
+	settings_packet.foam = device_settings.cost_foam;
+	settings_packet.wax = device_settings.cost_wax;
+	settings_packet.against_midges = device_settings.cost_against_midges;
+	settings_packet.vacuum_cleaner = device_settings.cost_vacuum_cleaner;
+	settings_packet.air = device_settings.cost_air;
+	settings_packet.osmosis = device_settings.cost_osmosis;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_settings_packet, server_exchange::e_packet_type::settings>(settings_packet);
+
+	_server_interact.PushFrontToSend(packet);
 }
 
 logic::CLogic::CLogic()
@@ -132,6 +157,12 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::on_settings_readed()
+{
+	if (false == _server_interact.IsStarted())
+		_server_interact.Start();
 }
 
 void logic::CLogic::SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_service_info>) > fn)
@@ -291,7 +322,6 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			_current_state->device_confirm();
 			break;
 	}
-
 }
 
 std::shared_ptr<logic::IState> logic::CLogic::get_state(e_state state)
