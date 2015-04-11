@@ -20,6 +20,7 @@ void logic::CExecutingServiceState::on_timer(int32_t)
 		out_of_money();
 	}
 
+	_logic.on_counters_changed();
 	_logic.time_and_money(_service_time_left, _balance_of_money);
 }
 

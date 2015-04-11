@@ -112,6 +112,9 @@ public:
 
 	// вызывать при окончании чтения настроек
 	virtual void on_settings_readed() = 0;
+
+	// вызывать при изменении настроек
+	virtual void on_counters_changed() = 0;
 };
 
 #pragma pack(push, 4)

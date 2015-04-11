@@ -52,14 +52,14 @@ class CServerInteract
 
 	bool parse_from_server();
 
-	bool parse_transport_packet(const tag_transport_packet transport_packet);
+	bool parse_transport_packet(const tag_transport_packet& transport_packet);
 
 	bool send_to_server();
 
 	bool send_packet_to_server(std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet, bool to_front = false);
 
 	template<typename _StructType, server_exchange::e_packet_type id>
-	_StructType get_server_logic_packet(const std::shared_ptr<logic_structures::tag_base_server_logic_struct> base_packet)
+	_StructType get_server_logic_packet(const std::shared_ptr<logic_structures::tag_base_server_logic_struct>& base_packet)
 	{
 		const logic_structures::tag_server_logic_packet<_StructType, id>* p_lp = 
 			dynamic_cast<const logic_structures::tag_server_logic_packet<_StructType, id>*>(base_packet.get());

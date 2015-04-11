@@ -108,5 +108,8 @@ public:
 	// получить стоимость услуги
 	uint16_t GetServiceCost(const logic::e_service_name& service);
 
+	// установить и записать стоимость услуги
+	bool SetServiceCost(const logic::e_service_name& service, const uint16_t& cost);
+
 };
 }

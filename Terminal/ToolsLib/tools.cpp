@@ -219,7 +219,7 @@ std::string tools::wstring_to_string( const std::wstring& str )
 
 
 
-std::wstring tools::binary_to_hex(const data_wrappers::_tag_data_const bin_data)
+std::wstring tools::binary_to_hex(const data_wrappers::_tag_data_const& bin_data)
 {
 	std::wstringstream str_str;
 	str_str << std::hex << std::setfill(_T('0'));

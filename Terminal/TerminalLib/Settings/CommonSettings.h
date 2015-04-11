@@ -79,16 +79,22 @@ public:
 	std::wstring GetTerminalGroup() const;
 
 	uint32_t GetBillAcceptorImpulse() const;
+	bool SetBillAcceptorImpulse(const uint32_t& val);
 
 	uint32_t GetCoinAcceptorImpulse() const;
+	bool SetCoinAcceptorImpulse(const uint32_t& val);
 
 	uint32_t GetFreeIdleTime() const;
+	bool SetFreeIdleTime(const uint32_t& val);
 
 	uint32_t GetIdleTimeCost() const;
+	bool SetIdleTimeCost(const uint32_t& val);
 
 	uint32_t GetPauseBeforeAdvertising() const;
+	bool SetPauseBeforeAdvertising(const uint32_t& val);
 
 	uint32_t GetState() const;
+	bool SetState(const uint32_t& val);
 };
 
 }

@@ -209,7 +209,7 @@ namespace Server
                 TerminalId = terminal.Id,
                 AgainstOfMidges = countersPacket.against_midges,
                 Air = countersPacket.air,
-                Balance = countersPacket.total_cache,
+                Balance = countersPacket.current_cache,
                 CommonInput = countersPacket.total_cache,
                 DateTimeServerEvent = DateTime.Now,
                 DateTimeTerminalEvent = Tools.UnixTimeStampToDateTime(countersPacket.date_time),

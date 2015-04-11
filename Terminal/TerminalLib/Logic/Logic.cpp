@@ -31,6 +31,8 @@ void logic::CLogic::thread_fn()
 	{
 		process_messages_from_device();
 
+		process_messages_from_server();
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
@@ -50,7 +52,6 @@ tools::e_init_state logic::CLogic::init()
 		send_services_info();
 
 	_device_interact.Start();
-	// _server_interact.Start();
 
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
@@ -145,11 +146,54 @@ void logic::CLogic::send_settings_packet()
 	_server_interact.PushFrontToSend(packet);
 }
 
+void logic::CLogic::send_counters_packet()
+{
+	server_exchange::tag_counters_packet counters_packet;
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+
+	logic::tag_device_settings device_settings = sws->get_settings();
+
+	counters_packet.state =  ((0 == device_settings.state) ? 
+							 server_exchange::e_terminal_state::broken : 
+							 server_exchange::e_terminal_state::work);
+
+	counters_packet.date_time = std::time(0);
+	counters_packet.total_cache = device_settings.total_cache;
+	counters_packet.current_cache = device_settings.current_cache;
+	counters_packet.pressurized_water = device_settings.time_pressurized_water;
+	counters_packet.water_without_pressure = device_settings.time_water_without_pressure;
+	counters_packet.foam = device_settings.time_foam;
+	counters_packet.wax = device_settings.time_wax;
+	counters_packet.against_midges = device_settings.time_against_midges;
+	counters_packet.vacuum_cleaner = device_settings.time_vacuum_cleaner;
+	counters_packet.air = device_settings.time_air;
+	counters_packet.osmosis = device_settings.time_osmosis;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_counters_packet, server_exchange::e_packet_type::counters>(counters_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
+void logic::CLogic::send_confirmation_packet(server_exchange::e_packet_type packet_type, server_exchange::e_processing_result result)
+{
+	server_exchange::tag_confirmation_packet confirmation_packet;
+
+	confirmation_packet.result = result;
+	confirmation_packet.packet_type = packet_type;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_confirmation_packet, server_exchange::e_packet_type::confirmation>(confirmation_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
 logic::CLogic::CLogic()
 	: _device_interact(_common_settings, _packets_from_device, _packets_to_device)
 	, _server_interact(_common_settings, _packets_from_server, _packets_to_server, 
 						std::bind(std::mem_fn(&CLogic::on_connected_to_server), this), 
 						std::bind(std::mem_fn(&CLogic::on_disconnected_from_derver), this))
+	, _need_update_device_settings(false)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	fill_states();
@@ -157,6 +201,11 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::on_counters_changed()
+{
+	send_counters_packet();
 }
 
 void logic::CLogic::on_settings_readed()
@@ -201,6 +250,160 @@ void logic::CLogic::Stop()
 	_init_state = tools::e_init_state::not_init;
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void logic::CLogic::process_messages_from_server()
+{
+	std::vector<std::shared_ptr<logic_structures::tag_base_server_logic_struct>> messages =
+		_packets_from_server.get_with_cleanup();
+
+	for (std::shared_ptr<logic_structures::tag_base_server_logic_struct> message : messages)
+	{
+		server_exchange::e_processing_result processing_result = server_exchange::e_processing_result::failed;
+
+		if (true == process_server_message(message, processing_result))
+			send_confirmation_packet(message->type, processing_result);
+	}
+}
+
+bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag_base_server_logic_struct> message, server_exchange::e_processing_result& processing_result)
+{
+	if (server_exchange::e_packet_type::settings == message->type)
+	{
+		_settings_from_server = get_server_message<server_exchange::tag_settings_packet, server_exchange::e_packet_type::settings>(message);
+		_need_update_device_settings = true;
+		processing_result = server_exchange::e_processing_result::success;
+
+		if (e_state::advertising_idle == _current_state->get_this_state())
+		{
+			update_device_settings_from_server();
+		}
+
+		return true;
+	}
+	else if (server_exchange::e_packet_type::confirmation == message->type)
+	{
+		processing_result = server_exchange::e_processing_result::success;
+		return false;
+	}
+	else
+	{
+		processing_result = server_exchange::e_processing_result::success;
+		return false;
+	}
+}
+
+void logic::CLogic::update_device_settings_from_server()
+{
+	if (false == _need_update_device_settings)
+		return;
+	
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	logic::tag_device_settings work_settings = sws->get_settings();
+	bool changed = false;
+
+	if (work_settings.bill_acceptor_impulse != _settings_from_server.bill_acceptor_impulse)
+	{
+		work_settings.bill_acceptor_impulse = _settings_from_server.bill_acceptor_impulse;
+		_common_settings.SetBillAcceptorImpulse(_settings_from_server.bill_acceptor_impulse);
+		changed = true;
+	}
+	if (work_settings.coin_acceptor_impulse != _settings_from_server.coin_acceptor_impulse)
+	{
+		work_settings.coin_acceptor_impulse = _settings_from_server.coin_acceptor_impulse;
+		_common_settings.SetCoinAcceptorImpulse(_settings_from_server.coin_acceptor_impulse);
+		changed = true;
+	}
+	if (work_settings.free_idle_time != _settings_from_server.free_idle_time)
+	{
+		work_settings.free_idle_time = _settings_from_server.free_idle_time;
+		_common_settings.SetFreeIdleTime(_settings_from_server.free_idle_time);
+		changed = true;
+	}
+	if (work_settings.idle_time_cost != _settings_from_server.idle_time_cost)
+	{
+		work_settings.idle_time_cost = _settings_from_server.idle_time_cost;
+		_common_settings.SetIdleTimeCost(_settings_from_server.idle_time_cost);
+		changed = true;
+	}
+	if (work_settings.pause_before_advertising != _settings_from_server.pause_before_advertising)
+	{
+		work_settings.pause_before_advertising = _settings_from_server.pause_before_advertising;
+		_common_settings.SetPauseBeforeAdvertising(_settings_from_server.pause_before_advertising);
+		changed = true;
+	}
+	if (work_settings.state != ((server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1u : 0u))
+	{
+		work_settings.state = (server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1 : 0;
+		_common_settings.SetState((server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1 : 0);
+		changed = true;
+	}
+
+	if (work_settings.cost_against_midges != _settings_from_server.against_midges)
+	{
+		work_settings.cost_against_midges = _settings_from_server.against_midges;
+		_correspond_settings.SetServiceCost(e_service_name::against_midges, static_cast<uint16_t>(_settings_from_server.against_midges));
+		changed = true;
+	}
+	if (work_settings.cost_air != _settings_from_server.air)
+	{
+		work_settings.cost_air = _settings_from_server.air;
+		_correspond_settings.SetServiceCost(e_service_name::air, static_cast<uint16_t>(_settings_from_server.air));
+		changed = true;
+	}
+	if (work_settings.cost_foam != _settings_from_server.foam)
+	{
+		work_settings.cost_foam = _settings_from_server.foam;
+		_correspond_settings.SetServiceCost(e_service_name::foam, static_cast<uint16_t>(_settings_from_server.foam));
+		changed = true;
+	}
+	if (work_settings.cost_osmosis != _settings_from_server.osmosis)
+	{
+		work_settings.cost_osmosis = _settings_from_server.osmosis;
+		_correspond_settings.SetServiceCost(e_service_name::osmosis, static_cast<uint16_t>(_settings_from_server.osmosis));
+		changed = true;
+	}
+	if (work_settings.cost_pressurized_water != _settings_from_server.pressurized_water)
+	{
+		work_settings.cost_pressurized_water = _settings_from_server.pressurized_water;
+		_correspond_settings.SetServiceCost(e_service_name::pressurized_water, static_cast<uint16_t>(_settings_from_server.pressurized_water));
+		changed = true;
+	}
+	if (work_settings.cost_vacuum_cleaner != _settings_from_server.vacuum_cleaner)
+	{
+		work_settings.cost_vacuum_cleaner = _settings_from_server.vacuum_cleaner;
+		_correspond_settings.SetServiceCost(e_service_name::vacuum_cleaner, static_cast<uint16_t>(_settings_from_server.vacuum_cleaner));
+		changed = true;
+	}
+	if (work_settings.cost_water_without_pressure != _settings_from_server.water_without_pressure)
+	{
+		work_settings.cost_water_without_pressure = _settings_from_server.water_without_pressure;
+		_correspond_settings.SetServiceCost(e_service_name::water_without_pressure, static_cast<uint16_t>(_settings_from_server.water_without_pressure));
+		changed = true;
+	}
+	if (work_settings.cost_wax != _settings_from_server.wax)
+	{
+		work_settings.cost_wax = _settings_from_server.wax;
+		_correspond_settings.SetServiceCost(e_service_name::wax, static_cast<uint16_t>(_settings_from_server.wax));
+		changed = true;
+	}
+
+	if (true == changed)
+	{
+		sws->set_settings(work_settings);
+		sws->write_settings();
+		set_state(e_state::settings_work);
+
+		_common_settings.ReadSettings();
+		_correspond_settings.ReadSettings();
+
+		if (_on_service_info_readed)
+			send_services_info();
+	}
+
+	_need_update_device_settings = false;
+
+#undef UPDATE_COST
 }
 
 void logic::CLogic::open_valve(byte number)
@@ -271,6 +474,13 @@ void logic::CLogic::time_and_money(int16_t time, int16_t money)
 void logic::CLogic::set_state(e_state state)
 {
 	_current_state = get_state(state);
+
+	// если переходим в режим рекламного простоя и 
+	// есть настройки с сервера, то обновляем настройки устройства
+	if (e_state::advertising_idle == _current_state->get_this_state())
+	{
+		update_device_settings_from_server();
+	}
 
 	if (_on_state_changed_fn)
 		_on_state_changed_fn(state);

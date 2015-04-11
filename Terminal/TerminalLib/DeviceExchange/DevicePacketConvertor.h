@@ -37,7 +37,7 @@ public:
 		if (data.data_size != sizeof(tag_packet_from_device))
 			return e_convert_result::invalid_data;
 
-		packet = *(tag_packet_from_device*)data.p_data;
+		packet = *(reinterpret_cast<const tag_packet_from_device*>(data.p_data));
 
 		if (packet.crc != CalcCheckSum(packet))
 			return e_convert_result::invalid_data;
@@ -52,7 +52,7 @@ public:
 		if (data.data_size != sizeof(tag_packet_from_device))
 			return e_convert_result::invalid_data;
 
-		packet = *(tag_packet_from_device*)data.p_data;
+		packet = *(reinterpret_cast<const tag_packet_from_device*>(data.p_data));
 
 		packet.begin = begin_byte;
 		packet.end = end_byte;

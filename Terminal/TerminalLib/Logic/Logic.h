@@ -66,6 +66,12 @@ class CLogic : CLogicAbstract, public ILogic
 	// текущее состояние
 	std::shared_ptr<IState> _current_state;
 
+	// настройки устройства, полученные с сервера и которые нужно записать в устройство
+	server_exchange::tag_settings_packet _settings_from_server;
+
+	// флаг, что получены настройки с сервера и их нужно обновить
+	bool _need_update_device_settings;
+
 	// вызывается при изменении денег и времени
 	std::function<void(int16_t, int16_t)> _on_change_time_and_money_fn;
 
@@ -102,8 +108,16 @@ class CLogic : CLogicAbstract, public ILogic
 	// отправка пакета с настройками
 	void send_settings_packet();
 
+	// отправка пакета со счётчиками
+	void send_counters_packet();
+
+	// отпрака пакета с подтверждением
+	void send_confirmation_packet(server_exchange::e_packet_type packet_type, server_exchange::e_processing_result result);
+
+	// получить состояние
 	virtual std::shared_ptr<IState> get_state(e_state state) final;
 
+	// установить состояние
 	virtual void set_state(e_state state) final;
 
 	// чтение и обработка сообщений от устройства
@@ -143,6 +157,22 @@ class CLogic : CLogicAbstract, public ILogic
 		return std::shared_ptr<logic_structures::tag_base_server_logic_struct>(server_logic_packet);
 	}
 
+	void process_messages_from_server();
+
+	bool process_server_message(std::shared_ptr<logic_structures::tag_base_server_logic_struct> message, server_exchange::e_processing_result& processing_result);
+
+	template<typename _MessageType, server_exchange::e_packet_type _Id>
+	_MessageType get_server_message(std::shared_ptr<logic_structures::tag_base_server_logic_struct> message)
+	{
+		logic_structures::tag_server_logic_packet < _MessageType, _Id > * p_message =
+			dynamic_cast<logic_structures::tag_server_logic_packet < _MessageType, _Id >*>(message.get());
+
+		return p_message->packet;
+	}
+
+	// обновить настройки устройства настройками с сервера
+	void update_device_settings_from_server();
+
 	virtual void open_valve(byte number) final;
 
 	virtual void read_eeprom(byte cell_number) final;
@@ -154,6 +184,8 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void close_valve(byte number) final;
 
 	virtual void on_settings_readed() final;
+
+	virtual void on_counters_changed() final;
 
 	// запуск в работу
 	virtual bool Start() final;
@@ -174,9 +206,6 @@ class CLogic : CLogicAbstract, public ILogic
 public:
 	CLogic();
 	~CLogic();
-
-
-
 };
 }
 

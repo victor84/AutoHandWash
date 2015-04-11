@@ -258,6 +258,11 @@ uint16_t logic_settings::CCorrespondSettings::GetServiceCost(const logic::e_serv
 	return _service_cost[service];
 }
 
+bool logic_settings::CCorrespondSettings::SetServiceCost(const logic::e_service_name& service, const uint16_t& cost)
+{
+	return (TRUE == _settings_module->save_parameter(_service_settings_name[service], service_cost, cost));
+}
+
 byte logic_settings::CCorrespondSettings::GetValveNumber(const byte& button_number)
 {
 	if (false == is_reading_successed())

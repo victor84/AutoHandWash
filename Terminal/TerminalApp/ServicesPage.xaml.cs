@@ -107,6 +107,14 @@ namespace TerminalApp
 
         public void OnServicesInfoReaded(IEnumerable<LogicWrapper.tag_service_info> collection)
         {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                UpdateServicesNames(collection);
+            });
+        }
+
+        private void UpdateServicesNames(IEnumerable<LogicWrapper.tag_service_info> collection)
+        {
             _services_info = collection;
 
             FillServicesInfo();
@@ -114,7 +122,7 @@ namespace TerminalApp
             int maxStrLength = 0;
             String maxString = null;
 
-            for (byte i = 0; i < 8; ++i )
+            for (byte i = 0; i < 8; ++i)
             {
                 String str = GetServiceInfo(i);
                 int length = str.Length;

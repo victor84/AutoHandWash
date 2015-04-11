@@ -26,6 +26,7 @@ void logic::CPaidIdleState::on_timer(int32_t)
 		ess->out_of_money();
 	}
 
+	_logic.on_counters_changed();
 	_logic.time_and_money(_time_left, _balance_of_money);
 }
 
