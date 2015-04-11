@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using Server.Hubs;
+using Server.Pipes;
 using System;
 
 namespace Server
@@ -8,6 +9,7 @@ namespace Server
     {
         private IDisposable webApp;
         private TcpServer tcpServer;
+        private PipeServer pipeServer;
         private HubClient hubClient;
         private AppSettings appSettings;
         
@@ -16,19 +18,20 @@ namespace Server
             this.appSettings = appSettings;
             hubClient = new HubClient(appSettings.BaseUri);
             tcpServer = new TcpServer(appSettings.Port, hubClient);
+            pipeServer = new PipeServer(tcpServer.PipeMessageReceived);
         }
 
         public void Start()
         {
             webApp = WebApp.Start<Startup>(appSettings.BaseUri);
-            hubClient.Start();
             tcpServer.Start();
+            pipeServer.Start();
         }
 
         public void Stop()
         {
+            pipeServer.Stop();
             tcpServer.Stop();
-            hubClient.Stop();
             webApp.Dispose();
         }
     }

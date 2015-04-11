@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
 using Server.Hubs;
+using System.IO;
 
 namespace Server
 {
@@ -84,6 +85,10 @@ namespace Server
                             }
                         }
                         Thread.Sleep(1000);
+                    }
+                    catch (IOException)
+                    {
+                        break;
                     }
                     catch (Exception e)
                     {

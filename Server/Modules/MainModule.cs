@@ -2,7 +2,6 @@
 using Nancy.Security;
 using Server.Data;
 using Server.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace Server.Modules
@@ -22,50 +21,51 @@ namespace Server.Modules
             var user = User.GetUserByName(userName);
             if (user != null)
             {
-                List<Guid> idGroups = null;
+                List<Group> groups = null;
                 if (user.Claim == User.adminClaim)
                 {
-                    idGroups = UserGroups.GetGroups();
+                    groups = Group.GetGroups();
                 }
                 else
                 {
-                    idGroups = UserGroups.GetGroupsByUser(user.Id);
-                }
-                if (idGroups != null && idGroups.Any())
-                {
-                    var groups = Group.GetGroups(idGroups);
-                    if (groups != null && groups.Any())
+                    var idGroups = UserGroups.GetGroupsByUser(user.Id);
+                    if (idGroups != null)
                     {
-                        var terminals = Terminal.GetTerminalsByGroup(idGroups);
-                        if (terminals != null && terminals.Any())
+                        groups = Group.GetGroups(idGroups);
+                    }
+                }
+                if (groups != null && groups.Any())
+                {
+                    var idGroups = groups.Select(x => x.Id);
+                    var terminals = Terminal.GetTerminalsByGroup(idGroups);
+                    if (terminals != null && terminals.Any())
+                    {
+                        Dictionary<Group, List<TerminalCounters>> dictionaryTerminalCounters = new Dictionary<Group, List<TerminalCounters>>();
+                        foreach (var group in groups)
                         {
-                            Dictionary<Group, List<TerminalCounters>> dictionaryTerminalCounters = new Dictionary<Group, List<TerminalCounters>>();
-                            foreach (var group in groups)
+                            var terminalsOfGroup = terminals.Where(x => x.GroupId == group.Id);
+                            List<TerminalCounters> listTerminalCounters = new List<TerminalCounters>();
+                            foreach (var terminal in terminalsOfGroup)
                             {
-                                var terminalsOfGroup = terminals.Where(x => x.GroupId == group.Id);
-                                List<TerminalCounters> listTerminalCounters = new List<TerminalCounters>();
-                                foreach (var terminal in terminalsOfGroup)
+                                var counters = Counters.GetCountersByTerminal(terminal.Id);
+                                if (counters != null)
                                 {
                                     TerminalCounters terminalCounters = new TerminalCounters();
                                     terminalCounters.TerminalName = terminal.TerminalName;
-                                    var counters = Counters.GetCountersByTerminal(terminal.Id);
-                                    if (counters != null)
-                                    {
-                                        terminalCounters.Counters = counters;
-                                    }
+                                    terminalCounters.Counters = counters;
                                     listTerminalCounters.Add(terminalCounters);
                                 }
-                                dictionaryTerminalCounters.Add(group, listTerminalCounters);
-                                Model.MainPage = new MainPageModel();
-                                Model.MainPage.DictionaryTerminalCounters = dictionaryTerminalCounters;
-                                return View["Terminals", Model];
                             }
+                            dictionaryTerminalCounters.Add(group, listTerminalCounters);
                         }
+                        Model.MainPage = new MainPageModel();
+                        Model.MainPage.DictionaryTerminalCounters = dictionaryTerminalCounters;
+                        return View["Terminals", Model];
                     }
                 }
                 else
                 {
-                    return Response.AsRedirect("~/error/" + (byte)MainErrors.NotTerminals);
+                    return Response.AsRedirect("~/error/" + (byte)MainErrors.NotGroups);
                 }
             }
             return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorTerminals);

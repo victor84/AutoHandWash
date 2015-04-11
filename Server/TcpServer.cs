@@ -1,4 +1,7 @@
-﻿using Server.Hubs;
+﻿using Parsing;
+using Server.Data;
+using Server.Hubs;
+using Server.Pipes;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -46,6 +49,17 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("TcpServer -> Main: {0}", e);
+            }
+        }
+
+        public void PipeMessageReceived(PipeMessage pipeMessage)
+        {
+            e_packet_type packetType = pipeMessage.PacketType;
+            switch (packetType)
+            { 
+                case e_packet_type.settings:
+                    SettingsTerminal settingsTerminal = (SettingsTerminal)pipeMessage.Message;
+                    break;
             }
         }
     }

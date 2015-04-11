@@ -18,22 +18,20 @@ namespace Server.Hubs
             Proxy = Connection.CreateHubProxy(hubName);
         }
 
-        public void Start()
-        {
-            Connection.Start().Wait();
-        }
-
-        public void Stop()
-        {
-            //Connection.Stop();
-        }
-
         public Task Invoke(string method, params Object[] args)
         {
             Task task = null;
             lock (lockInvoke)
             {
-                task = Proxy.Invoke(method, args);
+                try 
+                {
+                    Connection.Start().Wait();
+                    task = Proxy.Invoke(method, args);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("HubClient -> Invoke: {0}", e);
+                }
             }
             return task;
         }
@@ -43,6 +41,7 @@ namespace Server.Hubs
             Task<T> task = null;
             lock (lockInvoke)
             {
+                Connection.Start().Wait();
                 task = Proxy.Invoke<T>(method, args);
             }
             return task;

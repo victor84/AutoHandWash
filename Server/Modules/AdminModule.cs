@@ -1,7 +1,9 @@
 ﻿using Nancy;
 using Nancy.Security;
+using Parsing;
 using Server.Data;
 using Server.Models;
+using Server.Pipes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -394,6 +396,8 @@ namespace Server.Modules
                             if (settingsTerminal != null)
                             {
                                 SettingsTerminal.Update(newSettingsTerminal);
+                                PipeClient pipeClient = new PipeClient();
+                                pipeClient.Write(new PipeMessage(e_packet_type.settings, newSettingsTerminal));
                             }
                         }
                     }

@@ -118,9 +118,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pipes\PipeMessage.cs" />
     <Compile Include="Data\TerminalLog.cs" />
     <Compile Include="Data\UserGroups.cs" />
     <Compile Include="Hubs\HubClient.cs" />
+    <Compile Include="Pipes\PipeClient.cs" />
+    <Compile Include="Pipes\PipeServer.cs" />
+    <Compile Include="Pipes\PipeSettings.cs" />
     <Compile Include="TerminalHandler.cs" />
     <Compile Include="Hubs\IHubClient.cs" />
     <Compile Include="Hubs\MainHub.cs" />

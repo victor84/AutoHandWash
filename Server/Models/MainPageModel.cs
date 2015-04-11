@@ -4,7 +4,7 @@ namespace Server.Models
 {
     public enum MainErrors
     {
-        NotTerminals,
+        NotGroups,
         ErrorTerminals,
     };
 
@@ -18,8 +18,8 @@ namespace Server.Models
                 string result = string.Empty;
                 switch (Type)
                 {
-                    case MainErrors.NotTerminals:
-                        result = "Нет терминалов, привязанных к пользователю";
+                    case MainErrors.NotGroups:
+                        result = "Нет групп, привязанных к пользователю";
                         break;
                     case MainErrors.ErrorTerminals:
                         result = "Не удалось прочитать счетчики терминалов";
