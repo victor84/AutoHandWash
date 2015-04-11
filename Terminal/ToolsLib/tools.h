@@ -44,7 +44,7 @@ namespace tools
 	std::string wstring_to_string(const std::wstring& str);
 
 	// вывод бинарных данных в формате hex
-	std::wstring binary_to_hex(const data_wrappers::_tag_data_const bin_data);
+	std::wstring binary_to_hex(const data_wrappers::_tag_data_const& bin_data);
 
 	// hex строка в бинарные данные
 	data_wrappers::_tag_data_managed hex_to_binary(const std::wstring& hex_string);

@@ -37,7 +37,7 @@ bool server_exchange::CServerInteract::parse_from_server()
 	return true;
 }
 
-bool server_exchange::CServerInteract::parse_transport_packet(const tag_transport_packet transport_packet)
+bool server_exchange::CServerInteract::parse_transport_packet(const tag_transport_packet& transport_packet)
 {
 	tag_settings_packet settings_packet;
 	tag_confirmation_packet confirmation_packet;

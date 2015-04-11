@@ -32,6 +32,8 @@ void logic::CRefillCacheState::refilled_cache()
 	device_settings.total_cache += cache;
 	sws->set_settings(device_settings);
 
+	_logic.on_counters_changed();
+
 	if (_on_cache_refilled)
 		_on_cache_refilled(static_cast<uint16_t>(device_settings.current_cache));
 }

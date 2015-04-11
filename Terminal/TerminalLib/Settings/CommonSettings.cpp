@@ -140,9 +140,19 @@ uint32_t logic_settings::CCommonSettings::GetBillAcceptorImpulse() const
 	return _bill_acceptor_impulse;
 }
 
+bool logic_settings::CCommonSettings::SetBillAcceptorImpulse(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(bill_acceptor_impulse_name, terminal_block_name, val));
+}
+
 uint32_t logic_settings::CCommonSettings::GetCoinAcceptorImpulse() const
 {
 	return _coin_acceptor_impulse;
+}
+
+bool logic_settings::CCommonSettings::SetCoinAcceptorImpulse(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(coin_acceptor_impulse_name, terminal_block_name, val));
 }
 
 uint32_t logic_settings::CCommonSettings::GetFreeIdleTime() const
@@ -150,9 +160,19 @@ uint32_t logic_settings::CCommonSettings::GetFreeIdleTime() const
 	return _free_idle_time;
 }
 
+bool logic_settings::CCommonSettings::SetFreeIdleTime(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(free_idle_time_name, terminal_block_name, val));
+}
+
 uint32_t logic_settings::CCommonSettings::GetIdleTimeCost() const
 {
 	return _idle_time_cost;
+}
+
+bool logic_settings::CCommonSettings::SetIdleTimeCost(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(idle_time_cost_name, terminal_block_name, val));
 }
 
 uint32_t logic_settings::CCommonSettings::GetPauseBeforeAdvertising() const
@@ -160,7 +180,17 @@ uint32_t logic_settings::CCommonSettings::GetPauseBeforeAdvertising() const
 	return _pause_before_advertising;
 }
 
+bool logic_settings::CCommonSettings::SetPauseBeforeAdvertising(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(pause_before_advertising_name, terminal_block_name, val));
+}
+
 uint32_t logic_settings::CCommonSettings::GetState() const
 {
 	return _state;
+}
+
+bool logic_settings::CCommonSettings::SetState(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(state_name, terminal_block_name, val));
 }
