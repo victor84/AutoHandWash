@@ -286,6 +286,21 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 		processing_result = server_exchange::e_processing_result::success;
 		return false;
 	}
+	else if (server_exchange::e_packet_type::refill_cache == message->type)
+	{
+		CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+		logic::tag_device_settings device_settings = sws->get_settings();
+
+		server_exchange::tag_refill_cache_packet refill_cache_packet = get_server_message<server_exchange::tag_refill_cache_packet, server_exchange::e_packet_type::refill_cache>(message);
+
+		uint16_t impulses_count = static_cast<uint16_t>(static_cast<uint32_t>(refill_cache_packet.cache) / device_settings.bill_acceptor_impulse);
+		
+		while (0 < impulses_count--)
+		{
+			_current_state->refilled_cache();
+		}
+		return true;
+	}
 	else
 	{
 		processing_result = server_exchange::e_processing_result::success;
