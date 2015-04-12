@@ -3,6 +3,7 @@ using Server.Data;
 using Server.Hubs;
 using Server.Pipes;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -11,12 +12,16 @@ namespace Server
 {
     public class TcpServer
     {
+        private object lockList;
         private string ipString = "127.0.0.1";
         private volatile bool running;
         private Task task;
+        private List<TerminalHandler> listTerminals; 
 
         public TcpServer(int port, IHubClient hubClient)
         {
+            lockList = new object();
+            listTerminals = new List<TerminalHandler>();
             task = new Task(() => Main(port, hubClient));
         }
 
@@ -42,14 +47,37 @@ namespace Server
                 while (running)
                 {
                     TcpClient client = server.AcceptTcpClient();
-                    TerminalHandler hubTerminals = new TerminalHandler(client, hubClient);
-                    hubTerminals.Run();
+                    TerminalHandler terminal = new TerminalHandler(client, hubClient);
+                    terminal.OnCloseConnection += new EventHandler(RemoveTerminal);
+                    terminal.Run();
+                    AddTerminal(terminal);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("TcpServer -> Main: {0}", e);
             }
+        }
+
+        private void AddTerminal(TerminalHandler terminalHandler)
+        {
+            lock (lockList)
+            {
+                listTerminals.Add(terminalHandler);
+            }
+        }
+
+        private void RemoveTerminal(TerminalHandler terminalHandler)
+        {
+            lock (lockList)
+            {
+                listTerminals.RemoveAll(x => x.Id == terminalHandler.Id);
+            }
+        }
+
+        private void RemoveTerminal(object sender, EventArgs e)
+        {
+            RemoveTerminal((TerminalHandler)sender);
         }
 
         public void PipeMessageReceived(PipeMessage pipeMessage)

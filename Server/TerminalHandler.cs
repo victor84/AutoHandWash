@@ -21,13 +21,20 @@ namespace Server
         private PacketParser parser;
         private PacketToRawData packetToRawData;
         private IHubClient _hubClient;
-        private e_packet_type lastPacket = e_packet_type.unknown;
+        private e_packet_type lastPacket;
+
+        public Guid Id;
+        public event EventHandler OnCloseConnection;
+        
         public TerminalHandler(TcpClient client, IHubClient hubClient)
         {
+            this.Id = Guid.NewGuid();
+
+            this.lastPacket = e_packet_type.unknown;
             this.client = client;
             this.parser = new PacketParser();
-            packetToRawData = new PacketToRawData();
-            _hubClient = hubClient;
+            this.packetToRawData = new PacketToRawData();
+            this._hubClient = hubClient;
         }
 
         public void Run()
@@ -101,6 +108,14 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("ClientHandler -> Handle: {0}", e);
+            }
+            finally
+            {
+                EventHandler handler = OnCloseConnection;
+                if (handler != null)
+                {
+                    handler(this, new EventArgs());
+                }
             }
         }
 
