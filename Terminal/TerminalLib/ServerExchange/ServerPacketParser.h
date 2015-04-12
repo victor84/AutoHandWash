@@ -68,6 +68,13 @@ public:
 		return ParseCommonPacket(data, result_packet);
 	}
 
+	// парсинг пакета пополнения баланса
+	e_convert_result ParseRefillCachePacket(IN const tag_transport_packet& data,
+											OUT tag_refill_cache_packet& result_packet)
+	{
+		return ParseCommonPacket(data, result_packet);
+	}
+
 };
 
 }
