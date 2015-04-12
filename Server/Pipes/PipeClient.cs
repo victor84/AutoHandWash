@@ -13,7 +13,7 @@ namespace Server.Pipes
             pipeClient = new NamedPipeClientStream(PipeSettings.PipeName);
         }
 
-        public void Write(PipeMessage pipeMessage)
+        public void Write(ServerPacket serverPacket)
         {
             try 
             { 
@@ -21,7 +21,7 @@ namespace Server.Pipes
                 BinaryFormatter bf = new BinaryFormatter();
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    bf.Serialize(ms, pipeMessage);
+                    bf.Serialize(ms, serverPacket);
                     byte[] buffer = ms.ToArray();
                     pipeClient.Write(buffer, 0, buffer.Length);
                 }

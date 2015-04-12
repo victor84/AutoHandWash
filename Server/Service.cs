@@ -18,7 +18,7 @@ namespace Server
             this.appSettings = appSettings;
             hubClient = new HubClient(appSettings.BaseUri);
             tcpServer = new TcpServer(appSettings.Port, hubClient);
-            pipeServer = new PipeServer(tcpServer.PipeMessageReceived);
+            pipeServer = new PipeServer(tcpServer.ServerPacketReceived);
         }
 
         public void Start()

@@ -25,7 +25,10 @@ namespace Server.Hubs
             {
                 try 
                 {
-                    Connection.Start().Wait();
+                    if (Connection.State == ConnectionState.Disconnected)
+                    {
+                        Connection.Start().Wait();
+                    }
                     task = Proxy.Invoke(method, args);
                 }
                 catch (Exception e)
@@ -41,8 +44,18 @@ namespace Server.Hubs
             Task<T> task = null;
             lock (lockInvoke)
             {
-                Connection.Start().Wait();
-                task = Proxy.Invoke<T>(method, args);
+                try 
+                {
+                    if (Connection.State == ConnectionState.Disconnected)
+                    {
+                        Connection.Start().Wait();
+                    }
+                    task = Proxy.Invoke<T>(method, args);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("HubClient -> Invoke<T>: {0}", e);
+                }
             }
             return task;
         }

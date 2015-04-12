@@ -397,7 +397,7 @@ namespace Server.Modules
                             {
                                 SettingsTerminal.Update(newSettingsTerminal);
                                 PipeClient pipeClient = new PipeClient();
-                                pipeClient.Write(new PipeMessage(e_packet_type.settings, newSettingsTerminal));
+                                pipeClient.Write(new ServerPacket(e_packet_type.settings, newSettingsTerminal));
                             }
                         }
                     }

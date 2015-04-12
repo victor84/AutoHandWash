@@ -12,8 +12,8 @@ namespace Server.Pipes
         private NamedPipeServerStream pipeServer;
         private volatile bool running;
         private Task task;
-        private Action<PipeMessage> method;
-        public PipeServer(Action<PipeMessage> method)
+        private Action<ServerPacket> method;
+        public PipeServer(Action<ServerPacket> method)
         {
             this.pipeServer = new NamedPipeServerStream(PipeSettings.PipeName);
             this.method = method;
@@ -44,7 +44,7 @@ namespace Server.Pipes
                     {
                         BinaryFormatter formatter = new BinaryFormatter();
                         MemoryStream ms = new MemoryStream(buffer);
-                        PipeMessage messageReceived = (PipeMessage)formatter.Deserialize(ms);
+                        ServerPacket messageReceived = (ServerPacket)formatter.Deserialize(ms);
                         method(messageReceived);
                     }
                     pipeServer.Disconnect();

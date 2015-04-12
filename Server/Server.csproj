@@ -118,7 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pipes\PipeMessage.cs" />
+    <Compile Include="ServerPacket.cs" />
     <Compile Include="Data\TerminalLog.cs" />
     <Compile Include="Data\UserGroups.cs" />
     <Compile Include="Hubs\HubClient.cs" />

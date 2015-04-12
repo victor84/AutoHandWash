@@ -3,6 +3,7 @@ using Server.Data;
 using Server.Hubs;
 using Server.Pipes;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -48,7 +49,7 @@ namespace Server
                 {
                     TcpClient client = server.AcceptTcpClient();
                     TerminalHandler terminal = new TerminalHandler(client, hubClient);
-                    terminal.OnCloseConnection += new EventHandler(RemoveTerminal);
+                    terminal.CloseConnection += new EventHandler(OnRemoveTerminal);
                     terminal.Run();
                     AddTerminal(terminal);
                 }
@@ -67,6 +68,16 @@ namespace Server
             }
         }
 
+        private TerminalHandler GetTerminal(Guid terminalId)
+        {
+            TerminalHandler terminalHandler = null;
+            lock (lockList)
+            {
+                terminalHandler = listTerminals.Where(x => x.Terminal != null && x.Terminal.Id == terminalId).FirstOrDefault();
+            }
+            return terminalHandler;
+        }
+
         private void RemoveTerminal(TerminalHandler terminalHandler)
         {
             lock (lockList)
@@ -75,18 +86,23 @@ namespace Server
             }
         }
 
-        private void RemoveTerminal(object sender, EventArgs e)
+        private void OnRemoveTerminal(object sender, EventArgs e)
         {
             RemoveTerminal((TerminalHandler)sender);
         }
 
-        public void PipeMessageReceived(PipeMessage pipeMessage)
+        public void ServerPacketReceived(ServerPacket serverPacket)
         {
-            e_packet_type packetType = pipeMessage.PacketType;
+            e_packet_type packetType = serverPacket.PacketType;
             switch (packetType)
             { 
                 case e_packet_type.settings:
-                    SettingsTerminal settingsTerminal = (SettingsTerminal)pipeMessage.Message;
+                    SettingsTerminal settingsTerminal = (SettingsTerminal)serverPacket.Data;
+                    var terminal = GetTerminal(settingsTerminal.TerminalId);
+                    if (terminal != null)
+                    {
+                        // TODO добавление серверного сообщения в очередь на отправку
+                    }
                     break;
             }
         }

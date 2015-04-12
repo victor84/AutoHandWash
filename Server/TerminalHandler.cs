@@ -15,7 +15,6 @@ namespace Server
     {
         private const int size = 0x10000;
         private Group group;
-        private Terminal terminal;
         private TcpClient client;
         private NetworkStream stream;
         private PacketParser parser;
@@ -23,9 +22,10 @@ namespace Server
         private IHubClient _hubClient;
         private e_packet_type lastPacket;
 
-        public Guid Id;
-        public event EventHandler OnCloseConnection;
-        
+        public Guid Id { get; set; }
+        public Terminal Terminal { get; set; }
+        public event EventHandler CloseConnection;
+
         public TerminalHandler(TcpClient client, IHubClient hubClient)
         {
             this.Id = Guid.NewGuid();
@@ -53,44 +53,49 @@ namespace Server
                     {
                         byte[] receiveBuffer = new byte[size];
                         Int32 readCount = 0;
-                        while ((readCount = stream.Read(receiveBuffer, 0, receiveBuffer.Length)) != 0)
+                        while (stream.DataAvailable)
                         {
-                            Byte[] data = receiveBuffer.SubArray(0, (UInt32)readCount);
-                            IEnumerable<tag_transport_packet> transport_packets;
-                            var result = parser.ParseTransportPacket(data, out transport_packets);
-                            if (result != e_convert_result.success)
+                            readCount = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                            if (readCount > 0)
                             {
-                                Confirmation(e_packet_type.unknown, e_processing_result.failed);
-                            }
-                            else
-                            {
-                                foreach (var packet in transport_packets)
+                                Byte[] data = receiveBuffer.SubArray(0, (UInt32)readCount);
+                                IEnumerable<tag_transport_packet> transport_packets;
+                                var result = parser.ParseTransportPacket(data, out transport_packets);
+                                if (result != e_convert_result.success)
                                 {
-                                    e_processing_result processing_result = e_processing_result.failed;
-                                    switch (packet.type)
+                                    Confirmation(e_packet_type.unknown, e_processing_result.failed);
+                                }
+                                else
+                                {
+                                    foreach (var packet in transport_packets)
                                     {
-                                        case e_packet_type.counters:
-                                            processing_result = HandleCounters(packet);
-                                            break;
-                                        case e_packet_type.id:
-                                            processing_result = HandleId(packet);
-                                            break;
-                                        case e_packet_type.settings:
-                                            processing_result = HandleSettings(packet);
-                                            break;
-                                        case e_packet_type.log:
-                                            processing_result = HandleLogRecordPacket(packet);
-                                            break;
-                                        case e_packet_type.confirmation:
-                                            processing_result = HandleConfirmationPacket(packet);
-                                            break;
-                                        case e_packet_type.unknown:
-                                            break;
+                                        e_processing_result processing_result = e_processing_result.failed;
+                                        switch (packet.type)
+                                        {
+                                            case e_packet_type.counters:
+                                                processing_result = HandleCounters(packet);
+                                                break;
+                                            case e_packet_type.id:
+                                                processing_result = HandleId(packet);
+                                                break;
+                                            case e_packet_type.settings:
+                                                processing_result = HandleSettings(packet);
+                                                break;
+                                            case e_packet_type.log:
+                                                processing_result = HandleLogRecordPacket(packet);
+                                                break;
+                                            case e_packet_type.confirmation:
+                                                processing_result = HandleConfirmationPacket(packet);
+                                                break;
+                                            case e_packet_type.unknown:
+                                                break;
+                                        }
+                                        HandleResult(packet, processing_result);
                                     }
-                                    HandleResult(packet, processing_result);
                                 }
                             }
                         }
+                        // TODO Отправить пакет от сервера терминалу
                         Thread.Sleep(1000);
                     }
                     catch (IOException)
@@ -111,7 +116,7 @@ namespace Server
             }
             finally
             {
-                EventHandler handler = OnCloseConnection;
+                EventHandler handler = CloseConnection;
                 if (handler != null)
                 {
                     handler(this, new EventArgs());
@@ -206,11 +211,11 @@ namespace Server
                 if (!Terminal.Insert(newTerminal))
                     return e_processing_result.failed;
 
-                terminal = newTerminal;
+                Terminal = newTerminal;
             }
             else
             {
-                terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
+                Terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
             }
 
             return e_processing_result.success;
@@ -226,7 +231,7 @@ namespace Server
             Counters counters = new Counters()
             {
                 Id = Guid.NewGuid(),
-                TerminalId = terminal.Id,
+                TerminalId = Terminal.Id,
                 AgainstOfMidges = countersPacket.against_midges,
                 Air = countersPacket.air,
                 Balance = countersPacket.current_cache,
@@ -245,7 +250,7 @@ namespace Server
             if (!Counters.Insert(counters))
                 return e_processing_result.failed;
 
-            RefreshCounters(terminal.TerminalName, counters);
+            RefreshCounters(Terminal.TerminalName, counters);
 
             return e_processing_result.success;
         }
@@ -259,7 +264,7 @@ namespace Server
 
             SettingsTerminal newSettingsTerminal = new SettingsTerminal()
             {
-                TerminalId = terminal.Id,
+                TerminalId = Terminal.Id,
                 DataSent = true,
                 ImpulseBillAcceptor = settings_packet.bill_acceptor_impulse,
                 ImpulseCoinAcceptor = settings_packet.coin_acceptor_impulse,
@@ -277,7 +282,7 @@ namespace Server
                 TimeInactivity = settings_packet.free_idle_time
             };
 
-            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(Terminal.Id);
             if (settingsTerminal == null)
             {
                 if (!SettingsTerminal.Insert(newSettingsTerminal))
@@ -297,7 +302,7 @@ namespace Server
             TerminalLog terminalLog = new TerminalLog()
             {
                 Id = Guid.NewGuid(),
-                TerminalId = terminal.Id,
+                TerminalId = Terminal.Id,
                 DateTimeTerminal = Tools.UnixTimeStampToDateTime(log_record_packet.date_time),
                 MessageType = (byte)log_record_packet.type,
                 Message = new string(log_record_packet.text)
@@ -315,7 +320,7 @@ namespace Server
 
             if (e_convert_result.success != parser.ParseConfirmationPacket(packet, out confirmation_packet))
                 return e_processing_result.failed;
-            
+
             return e_processing_result.success;
         }
 
@@ -333,7 +338,7 @@ namespace Server
                 if (packet.type == e_packet_type.id &&
                     processing_result == e_processing_result.success)
                 {
-                    var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                    var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(Terminal.Id);
                     if (null != settingsTerminal)
                     {
                         WriteSettings(settingsTerminal);
@@ -348,7 +353,7 @@ namespace Server
                     switch (lastPacket)
                     {
                         case e_packet_type.settings:
-                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(Terminal.Id);
                             settingsTerminal.DataSent = true;
                             SettingsTerminal.Update(settingsTerminal);
                             break;
@@ -360,7 +365,7 @@ namespace Server
                     switch (lastPacket)
                     {
                         case e_packet_type.settings:
-                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(Terminal.Id);
                             WriteSettings(settingsTerminal);
                             break;
                     }
