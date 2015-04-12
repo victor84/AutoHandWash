@@ -102,6 +102,14 @@ namespace Parsing
             return e_convert_result.success;
         }
 
+        // создание данных для отправки из пакета приза
+        public e_convert_result CreatePrizePacketRawData(tag_prize_packet packet, out Byte[] result_data)
+        {
+            result_data = BitConverter.GetBytes(packet.prize_size);
+
+            return e_convert_result.success;
+        }
+
         // создание данных для отправки из пакета настроек
         public e_convert_result CreateLogRecordPacketRawData(tag_log_record_packet packet, out Byte[] result_data)
         {
