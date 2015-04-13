@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Server.Hubs;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace Server
 {
@@ -21,6 +22,7 @@ namespace Server
         private PacketToRawData packetToRawData;
         private IHubClient _hubClient;
         private e_packet_type lastPacket;
+        private ConcurrentQueue<ServerPacket> queueServerPacket = new ConcurrentQueue<ServerPacket>();
 
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
@@ -48,6 +50,33 @@ namespace Server
             this._hubClient = hubClient;
         }
 
+        public void EnqueueServerPacket(ServerPacket serverPacket)
+        {
+            queueServerPacket.Enqueue(serverPacket);
+        }
+
+        private ServerPacket DequeueServerPacket()
+        {
+            ServerPacket serverPacket;
+            bool success = queueServerPacket.TryDequeue(out serverPacket);
+            if (!success)
+            {
+                return null;
+            }
+            return serverPacket;
+        }
+
+        private void WriteServerPacket(ServerPacket serverPacket)
+        {
+            var packetType = serverPacket.PacketType;
+            switch(packetType)
+            {
+                case e_packet_type.settings:
+                    WriteSettings((SettingsTerminal)serverPacket.Data);
+                    break;
+            }
+        }
+
         public void Run()
         {
             Task.Factory.StartNew(() => Handle());
@@ -64,7 +93,7 @@ namespace Server
                     {
                         byte[] receiveBuffer = new byte[size];
                         Int32 readCount = 0;
-                        while (stream.DataAvailable)
+                        if (stream.DataAvailable)
                         {
                             readCount = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                             if (readCount > 0)
@@ -106,7 +135,14 @@ namespace Server
                                 }
                             }
                         }
-                        // TODO Отправить пакет от сервера терминалу
+                        else
+                        {
+                            var serverPacket = DequeueServerPacket();
+                            if (serverPacket != null)
+                            {
+                                WriteServerPacket(serverPacket);
+                            }   
+                        }
                         Thread.Sleep(1000);
                     }
                     catch (IOException)

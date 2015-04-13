@@ -1,7 +1,4 @@
-﻿using Parsing;
-using Server.Data;
-using Server.Hubs;
-using Server.Pipes;
+﻿using Server.Hubs;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -93,17 +90,10 @@ namespace Server
 
         public void ServerPacketReceived(ServerPacket serverPacket)
         {
-            e_packet_type packetType = serverPacket.PacketType;
-            switch (packetType)
-            { 
-                case e_packet_type.settings:
-                    SettingsTerminal settingsTerminal = (SettingsTerminal)serverPacket.Data;
-                    var terminal = GetTerminal(settingsTerminal.TerminalId);
-                    if (terminal != null)
-                    {
-                        // TODO добавление серверного сообщения в очередь на отправку
-                    }
-                    break;
+            var terminal = GetTerminal(serverPacket.TerminalId);
+            if (terminal != null)
+            {
+                terminal.EnqueueServerPacket(serverPacket);
             }
         }
     }
