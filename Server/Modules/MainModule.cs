@@ -2,6 +2,7 @@
 using Nancy.Security;
 using Server.Data;
 using Server.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace Server.Modules
@@ -12,6 +13,7 @@ namespace Server.Modules
         {
             this.RequiresAuthentication();
             Get["/terminals"] = Terminals;
+            Get["/terminals/fillbalance/{terminalId}"] = ViewFillBalance;
             Get["/error/{type}"] = ViewError;
         }
 
@@ -69,6 +71,29 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorTerminals);
+        }
+
+        private dynamic ViewFillBalance(dynamic parameters)
+        {
+            var terminalIdString = (string)parameters.terminalId;
+            if (!string.IsNullOrEmpty(terminalIdString))
+            { 
+                Guid terminalId;
+                bool success = Guid.TryParse(terminalIdString, out terminalId);
+                if (success)
+                {
+                    var terminal = Terminal.GetTerminalById(terminalId);
+                    if (terminal != null)
+                    {
+                        var group = Group.GetGroupById(terminal.GroupId);
+                        if (group != null)
+                        { 
+                            //TODO
+                        }
+                    }
+                }
+            }
+            return View["FillBalance", Model];
         }
 
         private dynamic ViewError(dynamic parameters)

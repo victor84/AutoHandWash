@@ -70,6 +70,23 @@ namespace Server.Data
             return terminals;
         }
 
+        public static Terminal GetTerminalById(Guid id)
+        {
+            Terminal terminal = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    terminal = db.GetTable<Terminal>().Where(x => x.Id == id).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetTerminalById: {0}", ex);
+            }
+            return terminal;
+        }
+
         public static bool Insert(Terminal terminal)
         {
             bool result = true;

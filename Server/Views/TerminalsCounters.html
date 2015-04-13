@@ -11,5 +11,11 @@
         <td>@Current.Counters.Vacuum</td>
         <td>@Current.Counters.Osmose</td>
         <td>@Current.Counters.Air</td>
+        <td class="col-md-2 text-center">
+            <a href="terminals/fillbalance/@Current.Counters.TerminalId" role="button" class="btn btn-success btn-xs">
+                <i class="fa fa-rub"></i>
+                Пополнить счет
+            </a>
+        </td>
     </tr>
 @EndEach

@@ -68,6 +68,23 @@ namespace Server.Data
             return group;
         }
 
+        public static Group GetGroupById(Guid id)
+        {
+            Group group = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    group = db.GetTable<Group>().Where(x => x.Id == id).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Group -> GetGroupById: {0}", ex);
+            }
+            return group;
+        }
+
         public static bool Insert(Group group)
         {
             bool result = true;
