@@ -26,6 +26,17 @@ namespace Server
         public Terminal Terminal { get; set; }
         public event EventHandler CloseConnection;
 
+        private bool SocketConnected()
+        {
+            Socket s = client.Client;
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (s.Available == 0);
+            if (part1 && part2)
+                return false;
+            else
+                return true;
+        }
+
         public TerminalHandler(TcpClient client, IHubClient hubClient)
         {
             this.Id = Guid.NewGuid();
@@ -47,7 +58,7 @@ namespace Server
             try
             {
                 stream = client.GetStream();
-                while (true)
+                while (SocketConnected())
                 {
                     try
                     {
