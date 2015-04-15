@@ -1,5 +1,6 @@
 ﻿@Master['MasterPage']
 @Section['Styles']
+<link href="/Content/panelgreen.css" rel="stylesheet">
 @EndSection
 @Section['Scripts']
 @EndSection
@@ -7,4 +8,38 @@
 <script type="text/javascript">
     ActivateLI("terminals");
 </script>
+
+<div class="col-md-6">
+    <h3>
+        @Model.FillBalancePage.Group.GroupName
+        <small>
+        @Model.FillBalancePage.Terminal.TerminalName
+        </small>
+    </h3>
+    <div class="panel panel-green">
+        <div class="panel-heading">
+            <i class="fa fa-rub"></i>
+            Пополнение счета
+        </div>
+        <div class="panel-body">
+            <form id="fillbalance" role="form" method="post" action="/terminals/fillbalance/">
+                
+                <input type="text" name="TerminalId" class="hidden" value="@Model.FillBalancePage.Terminal.Id">
+                
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Сумма:</label>
+                        <input type="number" min="10" max="1000" name="Cache" class="form-control">
+                    </div>
+                </div>
+
+
+                <div id="success"></div>
+                <button type="submit" class="btn btn-primary btnproperties">Применить</button>
+                <a class="btn btn-default btnproperties" href="/terminals" role="button">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+
 @EndSection

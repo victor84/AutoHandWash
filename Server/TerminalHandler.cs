@@ -74,6 +74,9 @@ namespace Server
                 case e_packet_type.settings:
                     WriteSettings((SettingsTerminal)serverPacket.Data);
                     break;
+                case e_packet_type.refill_cache:
+                    WriteCache((UInt16)serverPacket.Data);
+                    break;
             }
         }
 
@@ -209,6 +212,22 @@ namespace Server
             tag_transport_packet transport_packet = new tag_transport_packet();
             transport_packet.type = e_packet_type.settings;
             packetToRawData.CreateSettingsPacketRawData(settings_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
+        private void WriteCache(UInt16 cache)
+        {
+            tag_refill_cache_packet cache_packet;
+            cache_packet.cache = (UInt16)cache;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.refill_cache;
+            packetToRawData.CreateRefillCachePacketRawData(cache_packet, out transport_packet.data);
             transport_packet.set_missing_values();
 
             byte[] bytes;

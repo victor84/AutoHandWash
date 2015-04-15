@@ -15,7 +15,7 @@
         content += '<td>' + counters.Vacuum + '</td>';
         content += '<td>' + counters.Osmose + '</td>';
         content += '<td>' + counters.Air + '</td>';
-        content += '<td class="col-md-2 text-center"><a href="terminals/fillbalance/' + counters.TerminalId + ' role="button" class="btn btn-success btn-xs"><i class="fa fa-rub"></i>Пополнить счет</a></td>';
+        content += '<td class="col-md-2 text-center"><a href="terminals/fillbalance/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-rub"></i>Пополнить счет</a></td>';
         content += "</tr>";
         $("#" + counters.TerminalId).replaceWith(content);
     };
