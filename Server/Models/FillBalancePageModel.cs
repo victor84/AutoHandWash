@@ -11,5 +11,11 @@ namespace Server.Models
     {
         public Group Group { get; set; }
         public Terminal Terminal { get; set; }
+        public uint ImpulseBillAcceptor { get; set; }
+
+        public FillBalancePageModel()
+        {
+            ImpulseBillAcceptor = 10;
+        }
     }
 }

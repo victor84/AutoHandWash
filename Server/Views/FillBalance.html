@@ -29,10 +29,9 @@
                 <div class="control-group form-group">
                     <div class="controls">
                         <label>Сумма:</label>
-                        <input type="number" min="10" max="1000" name="Cache" class="form-control">
+                        <input type="number" min="@Model.FillBalancePage.ImpulseBillAcceptor" max="1000" step="@Model.FillBalancePage.ImpulseBillAcceptor" name="Cache" class="form-control">
                     </div>
                 </div>
-
 
                 <div id="success"></div>
                 <button type="submit" class="btn btn-primary btnproperties">Применить</button>

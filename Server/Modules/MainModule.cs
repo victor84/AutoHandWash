@@ -94,6 +94,12 @@ namespace Server.Modules
                             Model.FillBalancePage = new FillBalancePageModel();
                             Model.FillBalancePage.Group = group;
                             Model.FillBalancePage.Terminal = terminal;
+
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            if (settingsTerminal != null)
+                            {
+                                Model.FillBalancePage.ImpulseBillAcceptor = settingsTerminal.ImpulseBillAcceptor;
+                            }
                             return View["FillBalance", Model];
                         }
                     }
