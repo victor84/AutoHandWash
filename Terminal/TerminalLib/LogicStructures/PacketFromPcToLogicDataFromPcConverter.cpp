@@ -83,7 +83,7 @@ tools::data_wrappers::_tag_data_managed CPacketFromPcToLogicDataFromPcConverter:
 	tag_write_eeprom result;
 
 	result.cell_number	= packet.data0;
-	result.value		= *(uint32_t*)packet.data1;
+	result.value = *((uint32_t*)&packet.data1);
 
 	return result;
 }
