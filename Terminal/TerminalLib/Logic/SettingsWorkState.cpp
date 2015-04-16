@@ -149,3 +149,8 @@ void logic::CSettingsWorkState::write_settings()
 
 	_logic.write_eeprom(_write_cell_number, *_p_settings);
 }
+
+void logic::CSettingsWorkState::device_error(logic_structures::e_device_error_code code)
+{
+
+}

@@ -88,3 +88,7 @@ void logic::CAdvertisingIdleState::device_confirm()
 
 }
 
+void logic::CAdvertisingIdleState::device_error(logic_structures::e_device_error_code code)
+{
+
+}

@@ -249,4 +249,7 @@ void logic::CExecutingServiceState::device_confirm()
 	}
 }
 
+void logic::CExecutingServiceState::device_error(logic_structures::e_device_error_code code)
+{
 
+}

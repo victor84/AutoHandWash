@@ -79,3 +79,8 @@ void logic::CRefillCacheState::set_on_cache_refilled_fn(std::function<void(uint1
 {
 	_on_cache_refilled = fn;
 }
+
+void logic::CRefillCacheState::device_error(logic_structures::e_device_error_code code)
+{
+
+}

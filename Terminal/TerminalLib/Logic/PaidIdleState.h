@@ -42,17 +42,19 @@ public:
 	CPaidIdleState(CLogicAbstract& logic);
 	virtual ~CPaidIdleState();
 
-	virtual void refilled_cache() override;
+	virtual void refilled_cache() final;
 
-	virtual void service_button_press(e_service_name service_name) override;
+	virtual void service_button_press(e_service_name service_name) final;
 
-	virtual void stop_button_press() override;
+	virtual void stop_button_press() final;
 
-	virtual void time_out() override;
+	virtual void time_out() final;
 
-	virtual void out_of_money() override;
+	virtual void out_of_money() final;
 
-	virtual void device_confirm() override;
+	virtual void device_confirm() final;
+
+	virtual void device_error(logic_structures::e_device_error_code code) final;
 
 };
 }

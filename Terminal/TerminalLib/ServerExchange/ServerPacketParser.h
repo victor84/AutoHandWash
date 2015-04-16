@@ -75,6 +75,13 @@ public:
 		return ParseCommonPacket(data, result_packet);
 	}
 
+	// парсинг пакета приза
+	e_convert_result ParsePrizePacket(IN const tag_transport_packet& data,
+											OUT tag_prize_packet& result_packet)
+	{
+		return ParseCommonPacket(data, result_packet);
+	}
+
 };
 
 }

@@ -7,6 +7,7 @@
 #include "SettingsWorkState.h"
 #include "FreeEdleState.h"
 #include "PaidIdleState.h"
+#include "DistributionOfPrizeState.h"
 
 void logic::CLogic::fill_states()
 {
@@ -18,6 +19,7 @@ void logic::CLogic::fill_states()
 	_states.insert(std::make_pair(e_state::settings_work, std::make_shared<CSettingsWorkState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::free_idle, std::make_shared<CFreeEdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 	_states.insert(std::make_pair(e_state::paid_idle, std::make_shared<CPaidIdleState>(*(dynamic_cast<CLogicAbstract*>(this)))));
+	_states.insert(std::make_pair(e_state::distribution_of_prize, std::make_shared<CDistributionOfPrizeState>(*(dynamic_cast<CLogicAbstract*>(this)))));
 }
 
 void logic::CLogic::thread_fn()
@@ -201,6 +203,15 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::send_issue_coins_packet_to_device(byte count)
+{
+	std::shared_ptr<logic_structures::tag_issue_coins> issue_coins_packet = std::make_shared<logic_structures::tag_issue_coins>();
+
+	issue_coins_packet->number = count;
+
+	_packets_to_device.push_back(issue_coins_packet);
 }
 
 void logic::CLogic::on_counters_changed()

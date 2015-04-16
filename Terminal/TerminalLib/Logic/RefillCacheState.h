@@ -31,5 +31,7 @@ public:
 
 	void set_on_cache_refilled_fn(std::function<void(uint16_t) > fn);
 
+	virtual void device_error(logic_structures::e_device_error_code code) final;
+
 };
 }

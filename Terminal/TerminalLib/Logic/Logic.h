@@ -120,6 +120,8 @@ class CLogic : CLogicAbstract, public ILogic
 	// установить состояние
 	virtual void set_state(e_state state) final;
 
+	virtual void send_issue_coins_packet_to_device(byte count) final;
+
 	// чтение и обработка сообщений от устройства
 	void process_messages_from_device();
 

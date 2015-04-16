@@ -29,12 +29,13 @@ enum class e_service_name
 // состояние работы логики
 enum class e_state
 {
-	advertising_idle,	// рекламный простой
-	refill_cache,		// денежный баланс пополнен
-	executing_service,	// выполнение службы (услуги)
-	free_idle,			// бесплатный простой
-	paid_idle,			// платный простой
-	settings_work,		// работа с настройками
+	advertising_idle,		// рекламный простой
+	refill_cache,			// денежный баланс пополнен
+	executing_service,		// выполнение службы (услуги)
+	free_idle,				// бесплатный простой
+	paid_idle,				// платный простой
+	settings_work,			// работа с настройками
+	distribution_of_prize	// выдача приза
 };
 
 // информация об услуге

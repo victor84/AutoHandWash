@@ -99,3 +99,8 @@ void logic::CFreeEdleState::device_confirm()
 {
 
 }
+
+void logic::CFreeEdleState::device_error(logic_structures::e_device_error_code code)
+{
+
+}

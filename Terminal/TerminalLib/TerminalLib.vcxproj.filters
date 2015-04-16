@@ -141,6 +141,9 @@
     <ClInclude Include="Logic\ILogic.h">
       <Filter>Заголовочные файлы\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="Logic\DistributionOfPrizeState.h">
+      <Filter>Заголовочные файлы\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerExchange\PacketToRawData.cpp">
@@ -198,6 +201,9 @@
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
     <ClCompile Include="Logic\PaidIdleState.cpp">
+      <Filter>Файлы исходного кода\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\DistributionOfPrizeState.cpp">
       <Filter>Файлы исходного кода\Logic</Filter>
     </ClCompile>
   </ItemGroup>

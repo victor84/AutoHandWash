@@ -106,6 +106,7 @@
     <ClInclude Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.h" />
     <ClInclude Include="LogicStructures\server_structures.h" />
     <ClInclude Include="Logic\AdvertisingIdleState.h" />
+    <ClInclude Include="Logic\DistributionOfPrizeState.h" />
     <ClInclude Include="Logic\ExecutingServiceState.h" />
     <ClInclude Include="Logic\FreeEdleState.h" />
     <ClInclude Include="Logic\ILogic.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="LogicStructures\PacketFromDeviceToLogicDataFromDeviceConverter.cpp" />
     <ClCompile Include="LogicStructures\PacketFromPcToLogicDataFromPcConverter.cpp" />
     <ClCompile Include="Logic\AdvertisingIdleState.cpp" />
+    <ClCompile Include="Logic\DistributionOfPrizeState.cpp" />
     <ClCompile Include="Logic\ExecutingServiceState.cpp" />
     <ClCompile Include="Logic\FreeEdleState.cpp" />
     <ClCompile Include="Logic\Logic.cpp" />

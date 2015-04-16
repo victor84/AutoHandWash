@@ -3,6 +3,7 @@
 #include "ILogic.h"
 #include "ServicesNames.h"
 #include "protocol_structures.h"
+#include "data_from_device.h"
 
 /*!
  * \file state.h
@@ -77,6 +78,9 @@ public:
 	// подтверждение устройством
 	virtual void device_confirm() = 0;
 
+	// ошибка от устройства
+	virtual void device_error(logic_structures::e_device_error_code code) = 0;
+
 };
 
 
@@ -88,6 +92,7 @@ protected:
 	std::shared_ptr<IState>  _state;
 
 public:
+
 	// установить текущее состояние
 	virtual void set_state(e_state state) = 0;
 
@@ -115,6 +120,9 @@ public:
 
 	// вызывать при изменении настроек
 	virtual void on_counters_changed() = 0;
+
+	// выдать монетки
+	virtual void send_issue_coins_packet_to_device(byte count) = 0;
 };
 
 #pragma pack(push, 4)

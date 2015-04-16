@@ -2,29 +2,6 @@
 #include "tools.h"
 #include <iomanip>
 
-void tools::remove_extra_backslash( CString& str )
-{
-	// удаляем двойные "\\"
-	INT pos = -1;
-	while (-1 != (pos = str.Find(_T("\\\\"))))
-	{
-		str.Delete(pos);
-		pos = str.Find(_T("\\\\"));
-	} while (-1 != pos);
-
-	// удаляем начальные и конечные "\\"
-	if ( _T('\\') == str.GetAt(0))
-		str.Delete(0);
-	if ((FALSE == str.IsEmpty()) && (_T('\\') == str.GetAt(str.GetLength() - 1)))
-		str.Delete(str.GetLength() - 1);
-}
-
-void tools::remove_extra_backslash( std::wstring& str )
-{
-	CString cstr = str.c_str();
-	remove_extra_backslash(cstr);
-	str = cstr.GetString();
-}
 
 void tools::insert_double_backslash( std::wstring& str )
 {

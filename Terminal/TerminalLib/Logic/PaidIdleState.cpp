@@ -123,3 +123,8 @@ void logic::CPaidIdleState::device_confirm()
 {
 	
 }
+
+void logic::CPaidIdleState::device_error(logic_structures::e_device_error_code code)
+{
+
+}

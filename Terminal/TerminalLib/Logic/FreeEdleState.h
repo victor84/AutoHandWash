@@ -39,6 +39,8 @@ public:
 
 	virtual void device_confirm() final;
 
+	virtual void device_error(logic_structures::e_device_error_code code) final;
+
 };
 }
 

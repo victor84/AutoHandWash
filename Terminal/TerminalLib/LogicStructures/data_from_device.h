@@ -242,7 +242,10 @@ enum class e_device_error_code : byte
 	error = 0x00,						// неизвестна€ ошибка
 	empty_hopper = 0x03,				// нет денег в хоппере, DATA0 = кол - во невыданных монет
 	discount_card_not_issued = 0x04,	// дисконтна€ карта не выдана
-	error_write_eeprom = 0x0B			// ошибка записи в EEPROM
+	error_write_eeprom = 0x0B,			// ошибка записи в EEPROM
+	eeprom_unkhown_address = 0x0A,		// ошибка записи / чтени€ EEPROM(неверный адрес €чейки)
+	incorrect_data = 0x0E,				// некорректна€ посылка
+	unknown_command = 0x0F				// неверна€ команда
 };
 
 // ошибка

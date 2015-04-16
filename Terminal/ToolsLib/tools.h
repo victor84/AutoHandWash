@@ -9,10 +9,6 @@
 
 namespace tools
 {
-	// удаление из указанной строки двойных, начальных и конечных бэкслэшей
-	void remove_extra_backslash(CString& str);
-	void remove_extra_backslash(std::wstring& str);
-
 	// вставка в строку двойных бэкслэшей туда где вставлен один
 	void insert_double_backslash(std::wstring& str);
 
