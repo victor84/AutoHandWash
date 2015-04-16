@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Server.Prize;
 
 namespace Server
 {
@@ -47,6 +48,7 @@ namespace Server
                     TcpClient client = server.AcceptTcpClient();
                     TerminalHandler terminal = new TerminalHandler(client, hubClient);
                     terminal.CloseConnection += new EventHandler(OnRemoveTerminal);
+                    terminal.ReceivedCounters += new EventHandler<CountersArgs>(OnReceivedCounters);
                     terminal.Run();
                     AddTerminal(terminal);
                 }
@@ -86,6 +88,12 @@ namespace Server
         private void OnRemoveTerminal(object sender, EventArgs e)
         {
             RemoveTerminal((TerminalHandler)sender);
+        }
+
+        private void OnReceivedCounters(object sender, CountersArgs e)
+        {
+            var terminalHandler = (TerminalHandler)sender;
+            var counters = e.Counters;
         }
 
         public void ServerPacketReceived(ServerPacket serverPacket)

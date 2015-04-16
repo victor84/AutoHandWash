@@ -9,6 +9,7 @@ using System.Threading;
 using Server.Hubs;
 using System.IO;
 using System.Collections.Concurrent;
+using Server.Prize;
 
 namespace Server
 {
@@ -27,6 +28,7 @@ namespace Server
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
         public event EventHandler CloseConnection;
+        public event EventHandler<CountersArgs> ReceivedCounters;
 
         private bool SocketConnected()
         {
@@ -317,6 +319,12 @@ namespace Server
                 return e_processing_result.failed;
 
             RefreshCounters(Terminal.TerminalName, counters);
+
+            EventHandler<CountersArgs> handler = ReceivedCounters;
+            if (handler != null)
+            {
+                handler(this, new CountersArgs(counters));
+            }
 
             return e_processing_result.success;
         }

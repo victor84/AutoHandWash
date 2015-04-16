@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\FillBalancePageModel.cs" />
+    <Compile Include="Prize\CountersArgs.cs" />
     <Compile Include="ServerPacket.cs" />
     <Compile Include="Data\TerminalLog.cs" />
     <Compile Include="Data\UserGroups.cs" />
