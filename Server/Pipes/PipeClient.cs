@@ -29,7 +29,7 @@ namespace Server.Pipes
             }
             catch (Exception e)
             {
-                Console.WriteLine("PipeClient -> Write: {0}", e);
+                ServerLogger.Error(string.Format("PipeClient -> Write: {0}", e.Message));
             }
         }
     }

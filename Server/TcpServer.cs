@@ -55,7 +55,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("TcpServer -> Main: {0}", e);
+                ServerLogger.Error(string.Format("TcpServer -> Main: {0}", e.Message));
             }
         }
 

@@ -32,7 +32,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SettingsGroup -> GetSettingsGroupById: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsGroup -> GetSettingsGroupById: {0}", ex.Message));
             }
             return settingsGroup;
         }
@@ -50,7 +50,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("SettingsGroup -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsGroup -> Insert: {0}", ex.Message));
             }
             return result;
         }
@@ -68,7 +68,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("SettingsGroup -> Update: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsGroup -> Update: {0}", ex.Message));
             }
             return result;
         }

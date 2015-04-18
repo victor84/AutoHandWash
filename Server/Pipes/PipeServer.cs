@@ -53,7 +53,7 @@ namespace Server.Pipes
             }
             catch (Exception e)
             {
-                Console.WriteLine("PipeServer -> Read: {0}", e);
+                ServerLogger.Error(string.Format("PipeServer -> Read: {0}", e.Message));
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Terminal -> GetTerminals: {0}", ex);
+                ServerLogger.Error(string.Format("Terminal -> GetTerminals: {0}", ex.Message));
             }
             return terminals;
         }
@@ -48,7 +48,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Terminal -> GetTerminalsByGroup: {0}", ex);
+                ServerLogger.Error(string.Format("Terminal -> GetTerminalsByGroup: {0}", ex.Message));
             }
             return terminals;
         }
@@ -65,7 +65,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetTerminalsByName: {0}", ex);
+                ServerLogger.Error(string.Format("Terminal -> GetTerminalsByName: {0}", ex.Message));
             }
             return terminals;
         }
@@ -82,7 +82,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetTerminalById: {0}", ex);
+                ServerLogger.Error(string.Format("Terminal -> GetTerminalById: {0}", ex.Message));
             }
             return terminal;
         }
@@ -100,7 +100,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("Terminal -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("Terminal -> Insert: {0}", ex.Message));
             }
             return result;
         }

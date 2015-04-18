@@ -156,7 +156,7 @@ namespace Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("ClientHandler -> Handle -> Loop: {0}", e);
+                        ServerLogger.Error(string.Format("ClientHandler -> Handle -> Loop: {0}", e.Message));
                         break;
                     }
                 }
@@ -164,7 +164,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("ClientHandler -> Handle: {0}", e);
+                ServerLogger.Error(string.Format("ClientHandler -> Handle: {0}", e.Message));
             }
             finally
             {
