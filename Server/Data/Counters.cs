@@ -54,7 +54,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("Counters -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("Counters -> Insert: {0}", ex.Message));
             }
             return result;
         }
@@ -96,7 +96,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Counters -> GetCounters: {0}", ex);
+                ServerLogger.Error(string.Format("Counters -> GetCounters: {0}", ex.Message));
             }
             return counters;
         }

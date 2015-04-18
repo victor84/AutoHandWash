@@ -55,7 +55,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SettingsTerminal -> GetSettingsTerminalById: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsTerminal -> GetSettingsTerminalById: {0}", ex.Message));
             }
             return settingsTerminal;
         }
@@ -73,7 +73,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("SettingsTerminal -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsTerminal -> Insert: {0}", ex.Message));
             }
             return result;
         }
@@ -91,7 +91,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("SettingsTerminal -> Update: {0}", ex);
+                ServerLogger.Error(string.Format("SettingsTerminal -> Update: {0}", ex.Message));
             }
             return result;
         }

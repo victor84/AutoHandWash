@@ -6,12 +6,12 @@ namespace Server
     [Serializable]
     public class ServerPacket
     {
-        public Guid TerminalId { get; set; }
-        public e_packet_type PacketType { get; set; }
+        public Guid Id { get; set; }
+        public ServerPacketType PacketType { get; set; }
         public object Data { get; set; }
-        public ServerPacket(Guid terminalId, e_packet_type packetType, object data)
+        public ServerPacket(Guid id, ServerPacketType packetType, object data)
         {
-            TerminalId = terminalId;
+            Id = id;
             PacketType = packetType;
             Data = data;
         }

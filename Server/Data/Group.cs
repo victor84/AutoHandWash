@@ -28,7 +28,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Group -> GetGroups: {0}", ex);
+                ServerLogger.Error(string.Format("Group -> GetGroups: {0}", ex.Message));
             }
             return groups;
         }
@@ -46,7 +46,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Group -> GetGroups: {0}", ex);
+                ServerLogger.Error(string.Format("Group -> GetGroups: {0}", ex.Message));
             }
             return groups;
         }
@@ -63,7 +63,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Group -> GetGroupByName: {0}", ex);
+                ServerLogger.Error(string.Format("Group -> GetGroupByName: {0}", ex.Message));
             }
             return group;
         }
@@ -80,7 +80,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Group -> GetGroupById: {0}", ex);
+                ServerLogger.Error(string.Format("Group -> GetGroupById: {0}", ex.Message));
             }
             return group;
         }
@@ -98,7 +98,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("Group -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("Group -> Insert: {0}", ex.Message));
             }
             return result;
         }

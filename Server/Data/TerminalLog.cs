@@ -32,7 +32,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("TerminalLog -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("TerminalLog -> Insert: {0}", ex.Message));
             }
             return result;
         }

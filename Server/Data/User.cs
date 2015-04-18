@@ -49,7 +49,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("User -> GetUserById: {0}", ex);
+                ServerLogger.Error(string.Format("User -> GetUserById: {0}", ex.Message));
             }
             return user;
         }
@@ -66,7 +66,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("User -> GetUserByName: {0}", ex);
+                ServerLogger.Error(string.Format("User -> GetUserByName: {0}", ex.Message));
             }
             return user;
         }
@@ -84,7 +84,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("User -> GetUsers: {0}", ex);
+                ServerLogger.Error(string.Format("User -> GetUsers: {0}", ex.Message));
             }
             return users;
         }
@@ -102,7 +102,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("User -> Insert: {0}", ex);
+                ServerLogger.Error(string.Format("User -> Insert: {0}", ex.Message));
             }
             return result;
         }
@@ -120,7 +120,7 @@ namespace Server.Data
             catch (Exception ex)
             {
                 result = false;
-                Console.WriteLine("User -> Delete: {0}", ex);
+                ServerLogger.Error(string.Format("User -> Delete: {0}", ex.Message));
             }
             return result;
         }

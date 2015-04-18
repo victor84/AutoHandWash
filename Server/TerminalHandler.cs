@@ -9,6 +9,7 @@ using System.Threading;
 using Server.Hubs;
 using System.IO;
 using System.Collections.Concurrent;
+using Server.Prize;
 
 namespace Server
 {
@@ -27,6 +28,7 @@ namespace Server
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
         public event EventHandler CloseConnection;
+        public event EventHandler<CountersArgs> ReceivedCounters;
 
         private bool SocketConnected()
         {
@@ -71,8 +73,11 @@ namespace Server
             var packetType = serverPacket.PacketType;
             switch(packetType)
             {
-                case e_packet_type.settings:
+                case ServerPacketType.settingsTerminal:
                     WriteSettings((SettingsTerminal)serverPacket.Data);
+                    break;
+                case ServerPacketType.fillcache:
+                    WriteCache((UInt16)serverPacket.Data);
                     break;
             }
         }
@@ -151,7 +156,7 @@ namespace Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("ClientHandler -> Handle -> Loop: {0}", e);
+                        ServerLogger.Error(string.Format("ClientHandler -> Handle -> Loop: {0}", e.Message));
                         break;
                     }
                 }
@@ -159,7 +164,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine("ClientHandler -> Handle: {0}", e);
+                ServerLogger.Error(string.Format("ClientHandler -> Handle: {0}", e.Message));
             }
             finally
             {
@@ -209,6 +214,22 @@ namespace Server
             tag_transport_packet transport_packet = new tag_transport_packet();
             transport_packet.type = e_packet_type.settings;
             packetToRawData.CreateSettingsPacketRawData(settings_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
+        private void WriteCache(UInt16 cache)
+        {
+            tag_refill_cache_packet cache_packet;
+            cache_packet.cache = (UInt16)cache;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.refill_cache;
+            packetToRawData.CreateRefillCachePacketRawData(cache_packet, out transport_packet.data);
             transport_packet.set_missing_values();
 
             byte[] bytes;
@@ -298,6 +319,12 @@ namespace Server
                 return e_processing_result.failed;
 
             RefreshCounters(Terminal.TerminalName, counters);
+
+            EventHandler<CountersArgs> handler = ReceivedCounters;
+            if (handler != null)
+            {
+                handler(this, new CountersArgs(counters));
+            }
 
             return e_processing_result.success;
         }

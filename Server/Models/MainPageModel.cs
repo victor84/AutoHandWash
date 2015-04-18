@@ -6,6 +6,7 @@ namespace Server.Models
     {
         NotGroups,
         ErrorTerminals,
+        ErrorFillBalance
     };
 
     public class MainError
@@ -24,6 +25,9 @@ namespace Server.Models
                     case MainErrors.ErrorTerminals:
                         result = "Не удалось прочитать счетчики терминалов";
                         break;
+                    case MainErrors.ErrorFillBalance:
+                        result = "Не удалось найти терминал или группу";
+                        break;  
                     default:
                         break;
                 }
@@ -35,6 +39,22 @@ namespace Server.Models
     public class TerminalCounters
     {
         public string TerminalName { get; set; }
+        public double CommonInput
+        {
+            get
+            {
+                double result = Counters.CommonInput / 100;
+                return result;
+            }
+        }
+        public double Balance 
+        {
+            get
+            {
+                double result = Counters.Balance / 100;
+                return result;
+            }    
+        }
         public Counters Counters { get; set; }
 
         public TerminalCounters()

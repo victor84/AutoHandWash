@@ -1,7 +1,9 @@
 ﻿using Nancy;
 using Nancy.Security;
+using Parsing;
 using Server.Data;
 using Server.Models;
+using Server.Pipes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace Server.Modules
             this.RequiresAuthentication();
             Get["/terminals"] = Terminals;
             Get["/terminals/fillbalance/{terminalId}"] = ViewFillBalance;
+            Post["/terminals/fillbalance"] = FillBalance;
             Get["/error/{type}"] = ViewError;
         }
 
@@ -87,13 +90,39 @@ namespace Server.Modules
                     {
                         var group = Group.GetGroupById(terminal.GroupId);
                         if (group != null)
-                        { 
-                            //TODO
+                        {
+                            Model.FillBalancePage = new FillBalancePageModel();
+                            Model.FillBalancePage.Group = group;
+                            Model.FillBalancePage.Terminal = terminal;
+
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            if (settingsTerminal != null)
+                            {
+                                Model.FillBalancePage.ImpulseBillAcceptor = settingsTerminal.ImpulseBillAcceptor;
+                            }
+                            return View["FillBalance", Model];
                         }
                     }
                 }
             }
-            return View["FillBalance", Model];
+            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorFillBalance);
+        }
+
+        private dynamic FillBalance(dynamic parameters)
+        {
+            var terminalIdString = (string)this.Request.Form.TerminalId;
+            var cache = (UInt16)this.Request.Form.Cache;
+            if (!string.IsNullOrEmpty(terminalIdString))
+            { 
+                Guid terminalId;
+                bool success = Guid.TryParse(terminalIdString, out terminalId);
+                if (success)
+                {
+                    PipeClient pipeClient = new PipeClient();
+                    pipeClient.Write(new ServerPacket(terminalId, ServerPacketType.fillcache, cache));
+                }
+            }
+            return Response.AsRedirect("~/terminals");
         }
 
         private dynamic ViewError(dynamic parameters)

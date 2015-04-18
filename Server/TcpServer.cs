@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Server.Prize;
+using Server.Data;
 
 namespace Server
 {
@@ -47,13 +49,14 @@ namespace Server
                     TcpClient client = server.AcceptTcpClient();
                     TerminalHandler terminal = new TerminalHandler(client, hubClient);
                     terminal.CloseConnection += new EventHandler(OnRemoveTerminal);
+                    terminal.ReceivedCounters += new EventHandler<CountersArgs>(OnReceivedCounters);
                     terminal.Run();
                     AddTerminal(terminal);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("TcpServer -> Main: {0}", e);
+                ServerLogger.Error(string.Format("TcpServer -> Main: {0}", e.Message));
             }
         }
 
@@ -88,12 +91,25 @@ namespace Server
             RemoveTerminal((TerminalHandler)sender);
         }
 
+        private void OnReceivedCounters(object sender, CountersArgs e)
+        {
+            var terminalHandler = (TerminalHandler)sender;
+            var counters = e.Counters;
+        }
+
         public void ServerPacketReceived(ServerPacket serverPacket)
         {
-            var terminal = GetTerminal(serverPacket.TerminalId);
-            if (terminal != null)
+            if (serverPacket.PacketType == ServerPacketType.settingsGroup)
             {
-                terminal.EnqueueServerPacket(serverPacket);
+                // TODO обработать пакет изменения настроек группы
+            }
+            else
+            {
+                var terminal = GetTerminal(serverPacket.Id);
+                if (terminal != null)
+                {
+                    terminal.EnqueueServerPacket(serverPacket);
+                }
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Server.Hubs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("HubClient -> Invoke: {0}", e);
+                    ServerLogger.Error(string.Format("HubClient -> Invoke: {0}", e.Message));
                 }
             }
             return task;
@@ -54,7 +54,7 @@ namespace Server.Hubs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("HubClient -> Invoke<T>: {0}", e);
+                    ServerLogger.Error(string.Format("HubClient -> Invoke<T>: {0}", e.Message));
                 }
             }
             return task;
