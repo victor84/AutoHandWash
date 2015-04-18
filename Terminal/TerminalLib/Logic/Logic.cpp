@@ -333,6 +333,8 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 		{
 			_current_state->refilled_cache();
 		}
+
+		processing_result = server_exchange::e_processing_result::success;
 		return true;
 	}
 	else if (server_exchange::e_packet_type::prize == message->type)
@@ -344,11 +346,14 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 		{
 			distribute_prize();
 		}
+
+		processing_result = server_exchange::e_processing_result::success;
+		return true;
 	}
 	else
 	{
 		processing_result = server_exchange::e_processing_result::success;
-		return false;
+		return true;
 	}
 }
 
