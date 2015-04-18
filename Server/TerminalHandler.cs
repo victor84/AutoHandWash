@@ -73,10 +73,10 @@ namespace Server
             var packetType = serverPacket.PacketType;
             switch(packetType)
             {
-                case e_packet_type.settings:
+                case ServerPacketType.settingsTerminal:
                     WriteSettings((SettingsTerminal)serverPacket.Data);
                     break;
-                case e_packet_type.refill_cache:
+                case ServerPacketType.fillcache:
                     WriteCache((UInt16)serverPacket.Data);
                     break;
             }

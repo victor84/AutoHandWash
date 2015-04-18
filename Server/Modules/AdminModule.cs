@@ -273,6 +273,8 @@ namespace Server.Modules
                         {
                             return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.CreateSettingsGroup);
                         }
+                        PipeClient pipeClient = new PipeClient();
+                        pipeClient.Write(new ServerPacket(newSettingsGroup.GroupId, ServerPacketType.settingsGroup, newSettingsGroup));
                     }
                     else
                     {
@@ -281,6 +283,8 @@ namespace Server.Modules
                         {
                             return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.UpdateSettingsGroup);
                         }
+                        PipeClient pipeClient = new PipeClient();
+                        pipeClient.Write(new ServerPacket(settingsGroup.GroupId, ServerPacketType.settingsGroup, settingsGroup));
                     }
                 }
             }
@@ -397,7 +401,7 @@ namespace Server.Modules
                             {
                                 SettingsTerminal.Update(newSettingsTerminal);
                                 PipeClient pipeClient = new PipeClient();
-                                pipeClient.Write(new ServerPacket(settingsTerminal.TerminalId, e_packet_type.settings, newSettingsTerminal));
+                                pipeClient.Write(new ServerPacket(settingsTerminal.TerminalId, ServerPacketType.settingsTerminal, newSettingsTerminal));
                             }
                         }
                     }

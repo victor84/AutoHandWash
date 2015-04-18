@@ -119,7 +119,7 @@ namespace Server.Modules
                 if (success)
                 {
                     PipeClient pipeClient = new PipeClient();
-                    pipeClient.Write(new ServerPacket(terminalId, e_packet_type.refill_cache, cache));
+                    pipeClient.Write(new ServerPacket(terminalId, ServerPacketType.fillcache, cache));
                 }
             }
             return Response.AsRedirect("~/terminals");

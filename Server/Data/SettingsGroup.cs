@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Server.Data
 {
+    [Serializable]
     [Table("SettingsGroups")]
     public class SettingsGroup
     {

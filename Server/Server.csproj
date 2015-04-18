@@ -131,6 +131,7 @@
     <Compile Include="Pipes\PipeClient.cs" />
     <Compile Include="Pipes\PipeServer.cs" />
     <Compile Include="Pipes\PipeSettings.cs" />
+    <Compile Include="ServerPacketType.cs" />
     <Compile Include="TerminalHandler.cs" />
     <Compile Include="Hubs\IHubClient.cs" />
     <Compile Include="Hubs\MainHub.cs" />

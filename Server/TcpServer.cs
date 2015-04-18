@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Server.Prize;
+using Server.Data;
 
 namespace Server
 {
@@ -98,10 +99,17 @@ namespace Server
 
         public void ServerPacketReceived(ServerPacket serverPacket)
         {
-            var terminal = GetTerminal(serverPacket.TerminalId);
-            if (terminal != null)
+            if (serverPacket.PacketType == ServerPacketType.settingsGroup)
             {
-                terminal.EnqueueServerPacket(serverPacket);
+                // TODO обработать пакет изменения настроек группы
+            }
+            else
+            {
+                var terminal = GetTerminal(serverPacket.Id);
+                if (terminal != null)
+                {
+                    terminal.EnqueueServerPacket(serverPacket);
+                }
             }
         }
     }
