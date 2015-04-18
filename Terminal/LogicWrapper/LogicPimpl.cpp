@@ -8,6 +8,8 @@ typedef void(__stdcall *OnServiceChangedPtr)(logic::e_service_name, const wchar_
 typedef void(__stdcall *OnStateChangedPtr)(logic::e_state);
 typedef void(__stdcall *OnCacheRefilledPtr)(uint16_t);
 typedef void(__stdcall *OnServiceInfoReadedPtr)(std::vector<logic::tag_service_info>);
+typedef void(__stdcall *OnDistributionPrizePtr)(int16_t, byte);
+typedef void(__stdcall *OnEmptyHopperPtr)(void);
 
 class CLogicPimpl::CLogicIntern
 {
@@ -21,6 +23,8 @@ class CLogicPimpl::CLogicIntern
 	OnStateChangedPtr _on_state_changed_ptr;
 	OnCacheRefilledPtr _on_cache_refilled_ptr;
 	OnServiceInfoReadedPtr _on_service_info_readed_ptr;
+	OnDistributionPrizePtr _on_distribution_prize_ptr;
+	OnEmptyHopperPtr _on_empty_hopper_ptr;
 
 public:
 	CLogicIntern()
@@ -28,6 +32,9 @@ public:
 		, _on_service_changed_ptr(nullptr)
 		, _on_state_changed_ptr(nullptr)
 		, _on_cache_refilled_ptr(nullptr)
+		, _on_service_info_readed_ptr(nullptr)
+		, _on_distribution_prize_ptr(nullptr)
+		, _on_empty_hopper_ptr(nullptr)
 		, _logic(new logic::CLogic())
 	{
 		setlocale(LC_ALL, "Russian");
@@ -62,6 +69,19 @@ public:
 		{
 			if (nullptr != _on_service_info_readed_ptr)
 				_on_service_info_readed_ptr(collection);
+		});
+
+		_logic->SetOnDistributionPrizeFn([this](int16_t prize_size, byte balance)
+		{
+			if (nullptr != _on_distribution_prize_ptr)
+				_on_distribution_prize_ptr(prize_size, balance);
+		}
+		);
+
+		_logic->SetOnEmptyHopperFn([this]()
+		{
+			if (nullptr != _on_empty_hopper_ptr)
+				_on_empty_hopper_ptr();
 		});
 	}
 
@@ -107,6 +127,16 @@ public:
 	{
 		_on_service_info_readed_ptr = static_cast<OnServiceInfoReadedPtr>(ptr);
 	}
+
+	void SetOnDistributionPrize(void* ptr)
+	{
+		_on_distribution_prize_ptr = static_cast<OnDistributionPrizePtr>(ptr);
+	}
+
+	void SetOnEmptyHopper(void* ptr)
+	{
+		_on_empty_hopper_ptr = static_cast<OnEmptyHopperPtr>(ptr);
+	}
 };
 
 CLogicPimpl::CLogicPimpl()
@@ -151,5 +181,15 @@ void CLogicPimpl::SetOnCacheRefilledFn(void* pointer)
 void CLogicPimpl::SetOnServiceInfoReadedFn(void* pointer)
 {
 	_impl->SetOnServiceInfoReaded(pointer);
+}
+
+void CLogicPimpl::SetOnDistributionPrizeFn(void* pointer)
+{
+	_impl->SetOnDistributionPrize(pointer);
+}
+
+void CLogicPimpl::SetOnEmptyHopperFn(void* ptr)
+{
+	_impl->SetOnEmptyHopper(ptr);
 }
 

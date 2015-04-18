@@ -123,6 +123,12 @@ public:
 
 	// выдать монетки
 	virtual void send_issue_coins_packet_to_device(byte count) = 0;
+
+	// монетка выдана, осталось выдать balance
+	virtual void coin_issued(byte rest_of_coins) = 0;
+
+	// хоппер опустел
+	virtual void on_empty_hopper() = 0;
 };
 
 #pragma pack(push, 4)

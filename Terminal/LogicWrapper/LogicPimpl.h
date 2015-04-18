@@ -31,4 +31,10 @@ public:
 
 	// установка указателя на функцию, вызываемую при чтении информации об услугах
 	void SetOnServiceInfoReadedFn(void* pointer);
+
+	// установка указателя на функцию, вызываемую при выдаче приза
+	void SetOnDistributionPrizeFn(void* pointer);
+
+	// установка указателя на функцию, вызываемую при опустении хоппера
+	void SetOnEmptyHopperFn(void* ptr);
 };

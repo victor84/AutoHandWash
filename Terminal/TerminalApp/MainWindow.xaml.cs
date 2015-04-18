@@ -44,6 +44,9 @@ namespace TerminalApp
             _logic.SetDelegate(servicePage.OnCacheRefilled);
             _logic.SetDelegate(servicePage.OnServicesInfoReaded);
 
+            _logic.SetDelegate(servicePage.OnDistributionPrizeDelegate);
+            _logic.SetDelegate(servicePage.OnEmptyHopper);
+
             _logic.Start();
         }
 

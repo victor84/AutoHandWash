@@ -26,12 +26,13 @@ namespace LogicWrapper
 
 	public enum class e_state_id
 	{
-		advertising_idle,	// рекламный простой
-		refill_cache,		// денежный баланс пополнен
-		executing_service,	// выполнение службы (услуги)
-		free_idle,			// бесплатный простой
-		paid_idle,			// платный простой
-		settings_work,		// работа с настройками
+		advertising_idle,		// рекламный простой
+		refill_cache,			// денежный баланс пополнен
+		executing_service,		// выполнение службы (услуги)
+		free_idle,				// бесплатный простой
+		paid_idle,				// платный простой
+		settings_work,			// работа с настройками
+		distribution_of_prize	// выдача приза
 	};
 
 	public ref struct tag_service_info
@@ -57,6 +58,13 @@ namespace LogicWrapper
 	// делегат, вызываемый при чтении информации об услугах
 	public delegate void OnServiceInfoReadedDelegate(System::Collections::Generic::IEnumerable<tag_service_info^>^ collection);
 
+	// делегат, вызываемый при выдаче приза
+	public delegate void OnDistributionPrizeDelegate(Int16 prize_size, Byte balance);
+
+	// делегат, вызываемый при опустевшем хоппере
+	public delegate void OnEmptyHopperDelegate(void);
+
+
 	// Логика
 	public ref class Logic
 	{
@@ -81,11 +89,17 @@ namespace LogicWrapper
 		OnServiceInfoReadedDelegate^ _on_service_info_readed;
 		OnServiceInfoReadedDelegateInner^ _on_service_info_readed_inner;
 
+		OnDistributionPrizeDelegate^ _on_distribution_prize;
+
+		OnEmptyHopperDelegate^ _on_empty_hopper;
+
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
 		GCHandle _stc_handle;
 		GCHandle _cr_handle;
 		GCHandle _sir_handle;
+		GCHandle _dp_handle;
+		GCHandle _eh_handle;
 
 		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
@@ -108,6 +122,10 @@ namespace LogicWrapper
 		void SetDelegate(OnCacheRefilledDelegate^ on_cache_refilled);
 
 		void SetDelegate(OnServiceInfoReadedDelegate^ on_service_info_readed);
+
+		void SetDelegate(OnDistributionPrizeDelegate^ on_distribution_prize);
+
+		void SetDelegate(OnEmptyHopperDelegate^ on_empty_hopper);
 
 		bool Start();
 

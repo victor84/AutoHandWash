@@ -6,6 +6,9 @@ namespace logic
 {
 class CDistributionOfPrizeState : public IState
 {
+	byte _rest_coins;
+	bool _hopper_empty;
+
 public:
 	CDistributionOfPrizeState(CLogicAbstract& logic);
 	virtual ~CDistributionOfPrizeState();
@@ -26,6 +29,10 @@ public:
 
 	// выдать приз
 	void distribute(uint16_t size);
+
+	// выдына монетка
+	void coin_issued(byte balance);
+
 };
 }
 

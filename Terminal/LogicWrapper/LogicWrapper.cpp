@@ -76,6 +76,26 @@ void LogicWrapper::Logic::SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and
 	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
 }
 
+void LogicWrapper::Logic::SetDelegate(OnEmptyHopperDelegate^ on_empty_hopper)
+{
+	_on_empty_hopper = on_empty_hopper;
+
+	if (false == _eh_handle.IsAllocated)
+		_eh_handle = GCHandle::Alloc(_on_empty_hopper);
+
+	_logic->SetOnEmptyHopperFn(Marshal::GetFunctionPointerForDelegate(_on_empty_hopper).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnDistributionPrizeDelegate^ on_distribution_prize)
+{
+	_on_distribution_prize = on_distribution_prize;
+
+	if (false == _dp_handle.IsAllocated)
+		_dp_handle = GCHandle::Alloc(_on_distribution_prize);
+
+	_logic->SetOnDistributionPrizeFn(Marshal::GetFunctionPointerForDelegate(_on_distribution_prize).ToPointer());
+}
+
 void LogicWrapper::Logic::SetDelegate(OnServiceInfoReadedDelegate^ on_service_info_readed)
 {
 	_on_service_info_readed = on_service_info_readed;

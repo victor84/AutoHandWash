@@ -90,6 +90,11 @@ namespace TerminalApp
                 OnServiceChanged(LogicWrapper.e_service_id.stop, "");
                 ShowHint("Подождите...");
             }
+            else if (LogicWrapper.e_state_id.distribution_of_prize == state_id)
+            {
+                stateText = "Выдача приза";
+                ShowHint("Приз");
+            }
             
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
@@ -110,6 +115,23 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 UpdateServicesNames(collection);
+            });
+        }
+
+        public void OnDistributionPrizeDelegate(Int16 prize_size, Byte balance)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                CurrentServiceNameTextBlock.Text = String.Format("Вы выиграли приз {0} рублей", prize_size);
+                ShowHint(String.Format("Осталось {0} монет", balance));
+            });
+        }
+
+        public void OnEmptyHopper()
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                ShowHint("Монеты закончились.\nОбратитесь к оператору");
             });
         }
 

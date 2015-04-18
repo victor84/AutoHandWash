@@ -196,6 +196,7 @@ logic::CLogic::CLogic()
 						std::bind(std::mem_fn(&CLogic::on_connected_to_server), this), 
 						std::bind(std::mem_fn(&CLogic::on_disconnected_from_derver), this))
 	, _need_update_device_settings(false)
+	, _need_distribute_prize(false)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	fill_states();
@@ -203,6 +204,28 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::SetOnEmptyHopperFn(std::function<void(void) > fn)
+{
+	_on_empty_hopper = fn;
+}
+
+void logic::CLogic::on_empty_hopper()
+{
+	if (_on_empty_hopper)
+		_on_empty_hopper();
+}
+
+void logic::CLogic::SetOnDistributionPrizeFn(std::function<void(int16_t, byte) > fn)
+{
+	_on_distribute_prize = fn;
+}
+
+void logic::CLogic::coin_issued(byte rest_of_coins)
+{
+	if (_on_distribute_prize)
+		_on_distribute_prize(_prize_packet.prize_size, rest_of_coins);
 }
 
 void logic::CLogic::send_issue_coins_packet_to_device(byte count)
@@ -311,6 +334,16 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 			_current_state->refilled_cache();
 		}
 		return true;
+	}
+	else if (server_exchange::e_packet_type::prize == message->type)
+	{
+		_prize_packet = get_server_message<server_exchange::tag_prize_packet, server_exchange::e_packet_type::prize>(message);
+
+		_need_distribute_prize = true;
+		if (e_state::advertising_idle == _current_state->get_this_state())
+		{
+			distribute_prize();
+		}
 	}
 	else
 	{
@@ -428,8 +461,19 @@ void logic::CLogic::update_device_settings_from_server()
 	}
 
 	_need_update_device_settings = false;
+}
 
-#undef UPDATE_COST
+void logic::CLogic::distribute_prize()
+{
+	if (false == _need_distribute_prize)
+		return;
+
+	CDistributionOfPrizeState* dps = get_implemented_state<CDistributionOfPrizeState>(e_state::distribution_of_prize);
+	dps->distribute(_prize_packet.prize_size);
+
+	set_state(e_state::distribution_of_prize);
+
+	_need_distribute_prize = false;
 }
 
 void logic::CLogic::open_valve(byte number)
@@ -506,6 +550,7 @@ void logic::CLogic::set_state(e_state state)
 	if (e_state::advertising_idle == _current_state->get_this_state())
 	{
 		update_device_settings_from_server();
+		distribute_prize();
 	}
 
 	if (_on_state_changed_fn)
@@ -529,6 +574,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	e_service_name service = e_service_name::stop;
 	CSettingsWorkState* sws = nullptr;
 	logic_structures::tag_data_from_eeprom* dfe = nullptr;
+	CDistributionOfPrizeState* dws = nullptr;
+	logic_structures::tag_hopper_issue_coin* hic = nullptr;
 
 	switch (message->command_id)
 	{
@@ -552,6 +599,12 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			dfe = get_device_message_pointer<logic_structures::tag_data_from_eeprom>(message);
 			sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 			sws->data_from_eeprom(dfe->cell_number, dfe->value);
+			break;
+
+		case(device_exchange::e_command_from_device::hopper_issue_coin) :
+			hic = get_device_message_pointer<logic_structures::tag_hopper_issue_coin>(message);
+			dws = get_implemented_state<CDistributionOfPrizeState>(e_state::distribution_of_prize);
+			dws->coin_issued(hic->balance);
 			break;
 
 		case(device_exchange::e_command_from_device::command_confirmation) :

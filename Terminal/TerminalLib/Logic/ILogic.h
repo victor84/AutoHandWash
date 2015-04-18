@@ -36,6 +36,14 @@ struct ILogic
 	// передачи названий услуг и их стоимости
 	virtual void SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_service_info>)> fn) = 0;
 
+	// назначение функтора, вызываемого при
+	// выдаче приза
+	virtual void SetOnDistributionPrizeFn(std::function<void(int16_t, byte)> fn) = 0;
+
+	// назначение функтора, вызываемого при
+	// опустевшем хоппере
+	virtual void SetOnEmptyHopperFn(std::function<void(void)> fn) = 0;
+
 	virtual ~ILogic()
 	{
 

@@ -72,6 +72,12 @@ class CLogic : CLogicAbstract, public ILogic
 	// флаг, что получены настройки с сервера и их нужно обновить
 	bool _need_update_device_settings;
 
+	// приз, который необходимо выдать
+	server_exchange::tag_prize_packet _prize_packet;
+
+	// флаг, что нужно выдать приз
+	bool _need_distribute_prize;
+
 	// вызывается при изменении денег и времени
 	std::function<void(int16_t, int16_t)> _on_change_time_and_money_fn;
 
@@ -83,6 +89,12 @@ class CLogic : CLogicAbstract, public ILogic
 
 	// вызывается после прочтения настроек услуг
 	std::function<void(std::vector<tag_service_info>)> _on_service_info_readed;
+
+	// вызывается при выдаче приза (общий выигрыш, сеолько монеток выдать осталось)
+	std::function<void(int16_t, byte)> _on_distribute_prize;
+
+	// вызывается при опустевшем хоппере
+	std::function<void(void)> _on_empty_hopper;
 
 	// заполнить состояния
 	void fill_states();
@@ -121,6 +133,10 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void set_state(e_state state) final;
 
 	virtual void send_issue_coins_packet_to_device(byte count) final;
+
+	virtual void coin_issued(byte rest_of_coins) final;
+
+	virtual void on_empty_hopper() final;
 
 	// чтение и обработка сообщений от устройства
 	void process_messages_from_device();
@@ -175,6 +191,9 @@ class CLogic : CLogicAbstract, public ILogic
 	// обновить настройки устройства настройками с сервера
 	void update_device_settings_from_server();
 
+	// выдать с приз
+	void distribute_prize();
+
 	virtual void open_valve(byte number) final;
 
 	virtual void read_eeprom(byte cell_number) final;
@@ -204,6 +223,10 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void SetOnCacheRefilledFn(std::function<void(uint16_t) > fn) final;
 
 	virtual void SetOnServiceInfoReadedFn(std::function<void(std::vector<tag_service_info>) > fn) final;
+
+	virtual void SetOnDistributionPrizeFn(std::function<void(int16_t, byte) > fn) final;
+
+	virtual void SetOnEmptyHopperFn(std::function<void(void) > fn) final;
 
 public:
 	CLogic();
