@@ -10,6 +10,8 @@ namespace Server.Data
     [Table("Counters")]
     public class Counters
     {
+        private byte state;
+        
         [Column]
         public Guid Id { get; set; }
         [Column]
@@ -19,7 +21,40 @@ namespace Server.Data
         [Column]
         public DateTime DateTimeTerminalEvent { get; set; }
         [Column]
-        public byte State { get; set; }
+        public byte State
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                state = value;
+            }
+        }
+        public string ViewState
+        {
+            get
+            {
+                string result = string.Empty;
+                switch (state)
+                {
+                    case 0:
+                        result = "Работает";
+                        break;
+                    case 1:
+                        result = "Простаивает";
+                        break;
+                    case 2:
+                        result = "Сломан";
+                        break;
+                    case 3:
+                        result = "Заблокирован";
+                        break;
+                }
+                return result;
+            }
+        }
         [Column]
         public uint CommonInput { get; set; }
         [Column]
