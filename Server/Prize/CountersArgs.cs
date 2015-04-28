@@ -3,12 +3,12 @@ using System;
 
 namespace Server.Prize
 {
-    public class CountersArgs : EventArgs
+    public class InputArgs : EventArgs
     {
-        public Counters Counters { get; set; }
-        public CountersArgs(Counters counters)
+        public uint Input { get; set; }
+        public InputArgs(uint input)
         {
-            Counters = counters;
+            Input = input;
         }
     }
 }

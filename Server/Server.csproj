@@ -121,6 +121,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Prize\GroupPrize.cs" />
+    <Compile Include="Prize\ServerPrize.cs" />
     <Compile Include="ServerLogger.cs" />
     <Compile Include="Models\FillBalancePageModel.cs" />
     <Compile Include="Prize\CountersArgs.cs" />

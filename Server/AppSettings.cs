@@ -25,7 +25,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                ServerLogger.Error(string.Format("AppSettings -> Read", e.Message));
+                ServerLogger.Error(string.Format("AppSettings -> Read -> {0}", e.Message));
             }
             return appSettings;
         }

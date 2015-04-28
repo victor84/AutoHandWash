@@ -16,12 +16,14 @@ namespace Server
         private string ipString = "127.0.0.1";
         private volatile bool running;
         private Task task;
-        private List<TerminalHandler> listTerminals; 
-
+        private List<TerminalHandler> listTerminalHandlers;
+        private ServerPrize serverPrize;
+       
         public TcpServer(int port, IHubClient hubClient)
         {
             lockList = new object();
-            listTerminals = new List<TerminalHandler>();
+            listTerminalHandlers = new List<TerminalHandler>();
+            serverPrize = new ServerPrize();
             task = new Task(() => Main(port, hubClient));
         }
 
@@ -48,10 +50,12 @@ namespace Server
                 {
                     TcpClient client = server.AcceptTcpClient();
                     TerminalHandler terminal = new TerminalHandler(client, hubClient);
-                    terminal.CloseConnection += new EventHandler(OnRemoveTerminal);
-                    terminal.ReceivedCounters += new EventHandler<CountersArgs>(OnReceivedCounters);
+                    terminal.ConnectionClosed += new EventHandler(OnRemoveTerminal);
+                    terminal.CommonInputExtended += new EventHandler<InputArgs>(OnCommonInputExtended);
+                    terminal.PrizeConfirmed += new EventHandler(OnPrizeConfirmed);
+                    terminal.PrizeNoConfirmed += new EventHandler(OnPrizeNoConfirmed);
                     terminal.Run();
-                    AddTerminal(terminal);
+                    AddTerminalHandler(terminal);
                 }
             }
             catch (Exception e)
@@ -60,52 +64,76 @@ namespace Server
             }
         }
 
-        private void AddTerminal(TerminalHandler terminalHandler)
+        private void AddTerminalHandler(TerminalHandler terminalHandler)
         {
             lock (lockList)
             {
-                listTerminals.Add(terminalHandler);
+                listTerminalHandlers.Add(terminalHandler);
             }
         }
 
-        private TerminalHandler GetTerminal(Guid terminalId)
+        private TerminalHandler GetTerminalHandler(Guid terminalId)
         {
             TerminalHandler terminalHandler = null;
             lock (lockList)
             {
-                terminalHandler = listTerminals.Where(x => x.Terminal != null && x.Terminal.Id == terminalId).FirstOrDefault();
+                terminalHandler = listTerminalHandlers.Where(x => x.Terminal != null && x.Terminal.Id == terminalId).FirstOrDefault();
             }
             return terminalHandler;
         }
 
-        private void RemoveTerminal(TerminalHandler terminalHandler)
+        private void RemoveTerminalHandler(TerminalHandler terminalHandler)
         {
             lock (lockList)
             {
-                listTerminals.RemoveAll(x => x.Id == terminalHandler.Id);
+                listTerminalHandlers.RemoveAll(x => x.Id == terminalHandler.Id);
             }
         }
 
         private void OnRemoveTerminal(object sender, EventArgs e)
         {
-            RemoveTerminal((TerminalHandler)sender);
+            RemoveTerminalHandler((TerminalHandler)sender);
         }
 
-        private void OnReceivedCounters(object sender, CountersArgs e)
+        private void OnCommonInputExtended(object sender, InputArgs e)
         {
             var terminalHandler = (TerminalHandler)sender;
-            var counters = e.Counters;
+            var terminal = terminalHandler.Terminal;
+            if (terminal != null)
+            {
+                serverPrize.CommonInputExtended(terminal, e.Input);
+            }
+        }
+
+        private void OnPrizeNoConfirmed(object sender, EventArgs e)
+        {
+            var terminalHandler = (TerminalHandler)sender;
+            var terminal = terminalHandler.Terminal;
+            if (terminal != null)
+            {
+                serverPrize.PrizeNotConfirmed(terminal);
+            }
+        }
+
+        private void OnPrizeConfirmed(object sender, EventArgs e)
+        {
+            var terminalHandler = (TerminalHandler)sender;
+            var terminal = terminalHandler.Terminal;
+            if (terminal != null)
+            {
+                serverPrize.PrizeConfirmed(terminal.GroupId);
+            }
         }
 
         public void ServerPacketReceived(ServerPacket serverPacket)
         {
             if (serverPacket.PacketType == ServerPacketType.settingsGroup)
             {
-                // TODO обработать пакет изменения настроек группы
+                serverPrize.ChangeSettingsGroup((SettingsGroup)serverPacket.Data);
             }
             else
             {
-                var terminal = GetTerminal(serverPacket.Id);
+                var terminal = GetTerminalHandler(serverPacket.Id);
                 if (terminal != null)
                 {
                     terminal.EnqueueServerPacket(serverPacket);

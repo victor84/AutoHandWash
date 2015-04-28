@@ -5,5 +5,6 @@
         settingsTerminal, // настройки терминала
         settingsGroup,    // настойки группы
         fillcache,	      // пополнить баланс
+        prize,            // приз
     };
 }

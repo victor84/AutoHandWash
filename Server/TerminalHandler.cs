@@ -25,10 +25,13 @@ namespace Server
         private e_packet_type lastPacket;
         private ConcurrentQueue<ServerPacket> queueServerPacket = new ConcurrentQueue<ServerPacket>();
 
+        private uint commonInput;
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
-        public event EventHandler CloseConnection;
-        public event EventHandler<CountersArgs> ReceivedCounters;
+        public event EventHandler ConnectionClosed;
+        public event EventHandler<InputArgs> CommonInputExtended;
+        public event EventHandler PrizeConfirmed;
+        public event EventHandler PrizeNoConfirmed;
 
         private bool SocketConnected()
         {
@@ -71,13 +74,16 @@ namespace Server
         private void WriteServerPacket(ServerPacket serverPacket)
         {
             var packetType = serverPacket.PacketType;
-            switch(packetType)
+            switch (packetType)
             {
                 case ServerPacketType.settingsTerminal:
                     WriteSettings((SettingsTerminal)serverPacket.Data);
                     break;
                 case ServerPacketType.fillcache:
                     WriteCache((UInt16)serverPacket.Data);
+                    break;
+                case ServerPacketType.prize:
+                    WritePrize((UInt16)serverPacket.Data);
                     break;
             }
         }
@@ -146,7 +152,7 @@ namespace Server
                             if (serverPacket != null)
                             {
                                 WriteServerPacket(serverPacket);
-                            }   
+                            }
                         }
                         Thread.Sleep(1000);
                     }
@@ -168,7 +174,7 @@ namespace Server
             }
             finally
             {
-                EventHandler handler = CloseConnection;
+                EventHandler handler = ConnectionClosed;
                 if (handler != null)
                 {
                     handler(this, new EventArgs());
@@ -220,6 +226,8 @@ namespace Server
             packetToRawData.CreateRawData(transport_packet, out bytes);
 
             stream.Write(bytes, 0, bytes.Length);
+
+            lastPacket = e_packet_type.settings;
         }
 
         private void WriteCache(UInt16 cache)
@@ -236,6 +244,26 @@ namespace Server
             packetToRawData.CreateRawData(transport_packet, out bytes);
 
             stream.Write(bytes, 0, bytes.Length);
+
+            lastPacket = e_packet_type.refill_cache;
+        }
+
+        private void WritePrize(UInt16 prize_size)
+        {
+            tag_prize_packet prize_packet;
+            prize_packet.prize_size = (UInt16)prize_size;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.prize;
+            packetToRawData.CreatePrizePacketRawData(prize_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+
+            lastPacket = e_packet_type.prize;
         }
 
         private e_processing_result HandleId(tag_transport_packet packet)
@@ -286,6 +314,12 @@ namespace Server
                 Terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
             }
 
+            var counters = Counters.GetCountersByTerminal(Terminal.Id);
+            if (counters != null)
+            {
+                commonInput = counters.CommonInput;
+            }
+
             return e_processing_result.success;
         }
 
@@ -296,7 +330,7 @@ namespace Server
             if (e_convert_result.success != parser.ParseCountersPacket(packet, out countersPacket))
                 return e_processing_result.failed;
 
-            Counters counters = new Counters()
+            Counters newCounters = new Counters()
             {
                 Id = Guid.NewGuid(),
                 TerminalId = Terminal.Id,
@@ -315,15 +349,20 @@ namespace Server
                 Wax = countersPacket.wax
             };
 
-            if (!Counters.Insert(counters))
+            if (!Counters.Insert(newCounters))
                 return e_processing_result.failed;
 
-            RefreshCounters(Terminal.TerminalName, counters);
+            RefreshCounters(Terminal.TerminalName, newCounters);
 
-            EventHandler<CountersArgs> handler = ReceivedCounters;
-            if (handler != null)
+            if (newCounters.CommonInput > commonInput)
             {
-                handler(this, new CountersArgs(counters));
+                EventHandler<InputArgs> handler = CommonInputExtended;
+                if (handler != null)
+                {
+                    var input = newCounters.CommonInput - commonInput;
+                    commonInput = newCounters.CommonInput;
+                    handler(this, new InputArgs(input));
+                }
             }
 
             return e_processing_result.success;
@@ -416,7 +455,6 @@ namespace Server
                     if (null != settingsTerminal)
                     {
                         WriteSettings(settingsTerminal);
-                        lastPacket = e_packet_type.settings;
                     }
                 }
             }
@@ -431,6 +469,13 @@ namespace Server
                             settingsTerminal.DataSent = true;
                             SettingsTerminal.Update(settingsTerminal);
                             break;
+                        case e_packet_type.prize:
+                            EventHandler handler = PrizeConfirmed;
+                            if (handler != null)
+                            {
+                                handler(this, new EventArgs());
+                            }
+                            break;
                     }
                     lastPacket = e_packet_type.unknown;
                 }
@@ -441,6 +486,13 @@ namespace Server
                         case e_packet_type.settings:
                             var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(Terminal.Id);
                             WriteSettings(settingsTerminal);
+                            break;
+                        case e_packet_type.prize:
+                            EventHandler handler = PrizeNoConfirmed;
+                            if (handler != null)
+                            {
+                                handler(this, new EventArgs());
+                            }
                             break;
                     }
                 }
