@@ -206,6 +206,17 @@ logic::CLogic::~CLogic()
 {
 }
 
+void logic::CLogic::show_advertising()
+{
+	if (_on_show_advertising)
+		_on_show_advertising();
+}
+
+void logic::CLogic::SetOnShowAdvertisingFn(std::function<void(void) > fn)
+{
+	_on_show_advertising = fn;
+}
+
 void logic::CLogic::SetOnEmptyHopperFn(std::function<void(void) > fn)
 {
 	_on_empty_hopper = fn;
@@ -283,7 +294,7 @@ void logic::CLogic::Stop()
 
 	_init_state = tools::e_init_state::not_init;
 
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 void logic::CLogic::process_messages_from_server()
@@ -560,6 +571,8 @@ void logic::CLogic::set_state(e_state state)
 
 	if (_on_state_changed_fn)
 		_on_state_changed_fn(state);
+
+	_current_state->activate();
 }
 
 void logic::CLogic::process_messages_from_device()

@@ -10,6 +10,7 @@ typedef void(__stdcall *OnCacheRefilledPtr)(uint16_t);
 typedef void(__stdcall *OnServiceInfoReadedPtr)(std::vector<logic::tag_service_info>);
 typedef void(__stdcall *OnDistributionPrizePtr)(int16_t, byte);
 typedef void(__stdcall *OnEmptyHopperPtr)(void);
+typedef void(__stdcall *OnShowAdvertising)(void);
 
 class CLogicPimpl::CLogicIntern
 {
@@ -25,6 +26,7 @@ class CLogicPimpl::CLogicIntern
 	OnServiceInfoReadedPtr _on_service_info_readed_ptr;
 	OnDistributionPrizePtr _on_distribution_prize_ptr;
 	OnEmptyHopperPtr _on_empty_hopper_ptr;
+	OnShowAdvertising _on_show_advertising_ptr;
 
 public:
 	CLogicIntern()
@@ -35,6 +37,7 @@ public:
 		, _on_service_info_readed_ptr(nullptr)
 		, _on_distribution_prize_ptr(nullptr)
 		, _on_empty_hopper_ptr(nullptr)
+		, _on_show_advertising_ptr(nullptr)
 		, _logic(new logic::CLogic())
 	{
 		setlocale(LC_ALL, "Russian");
@@ -82,6 +85,12 @@ public:
 		{
 			if (nullptr != _on_empty_hopper_ptr)
 				_on_empty_hopper_ptr();
+		});
+
+		_logic->SetOnShowAdvertisingFn([this]()
+		{
+			if (nullptr != _on_show_advertising_ptr)
+				_on_show_advertising_ptr();
 		});
 	}
 
@@ -137,6 +146,11 @@ public:
 	{
 		_on_empty_hopper_ptr = static_cast<OnEmptyHopperPtr>(ptr);
 	}
+
+	void SetOnShowAdvertising(void* ptr)
+	{
+		_on_show_advertising_ptr = static_cast<OnShowAdvertising>(ptr);
+	}
 };
 
 CLogicPimpl::CLogicPimpl()
@@ -191,5 +205,10 @@ void CLogicPimpl::SetOnDistributionPrizeFn(void* pointer)
 void CLogicPimpl::SetOnEmptyHopperFn(void* ptr)
 {
 	_impl->SetOnEmptyHopper(ptr);
+}
+
+void CLogicPimpl::SetOnShowAdvertisingFn(void* ptr)
+{
+	_impl->SetOnShowAdvertising(ptr);
 }
 

@@ -76,6 +76,16 @@ void LogicWrapper::Logic::SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and
 	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
 }
 
+void LogicWrapper::Logic::SetDelegate(OnShowAdvertisingDelegate^ on_show_advertising)
+{
+	_on_show_advertising = on_show_advertising;
+
+	if (false == _sa_handle.IsAllocated)
+		_sa_handle = GCHandle::Alloc(_on_show_advertising);
+
+	_logic->SetOnShowAdvertisingFn(Marshal::GetFunctionPointerForDelegate(_on_show_advertising).ToPointer());
+}
+
 void LogicWrapper::Logic::SetDelegate(OnEmptyHopperDelegate^ on_empty_hopper)
 {
 	_on_empty_hopper = on_empty_hopper;

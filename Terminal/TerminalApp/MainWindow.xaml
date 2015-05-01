@@ -9,6 +9,11 @@
                     <Frame x:Name="ServicePageFrame" Content="Frame" Margin="10" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="VideoTab" Header="Реклама">
+                <Grid>
+                    <MediaElement x:Name="VideoPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop"/>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>

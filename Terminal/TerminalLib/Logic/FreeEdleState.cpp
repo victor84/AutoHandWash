@@ -28,13 +28,12 @@ void logic::CFreeEdleState::go_to_paid_idle_state()
 	CPaidIdleState* pis = get_implemented_state<CPaidIdleState>(e_state::paid_idle);
 
 	_logic.set_state(e_state::paid_idle);
-	pis->time_out();
 }
 
 logic::CFreeEdleState::CFreeEdleState(CLogicAbstract& logic)
 	: IState(logic, e_state::free_idle)
 	,_timer(nullptr)
-	, _on_timer_call(std::bind(std::mem_fn(&CFreeEdleState::on_timer), this, std::placeholders::_1))
+	,_on_timer_call(std::bind(std::mem_fn(&CFreeEdleState::on_timer), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -103,4 +102,9 @@ void logic::CFreeEdleState::device_confirm()
 void logic::CFreeEdleState::device_error(logic_structures::e_device_error_code code)
 {
 
+}
+
+void logic::CFreeEdleState::activate()
+{
+	
 }

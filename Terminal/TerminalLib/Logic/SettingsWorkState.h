@@ -44,6 +44,9 @@ public:
 	void set_settings(const tag_device_settings& settings);
 
 	void write_settings();
+
+	virtual void activate() override;
+
 };
 }
 

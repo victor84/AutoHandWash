@@ -96,6 +96,9 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при опустевшем хоппере
 	std::function<void(void)> _on_empty_hopper;
 
+	// вызывается для показа рекламы
+	std::function<void(void)> _on_show_advertising;
+
 	// заполнить состояния
 	void fill_states();
 
@@ -208,6 +211,8 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void on_counters_changed() final;
 
+	virtual void show_advertising() final;
+
 	// запуск в работу
 	virtual bool Start() final;
 
@@ -227,6 +232,8 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void SetOnDistributionPrizeFn(std::function<void(int16_t, byte) > fn) final;
 
 	virtual void SetOnEmptyHopperFn(std::function<void(void) > fn) final;
+
+	virtual void SetOnShowAdvertisingFn(std::function<void(void) > fn) final;
 
 public:
 	CLogic();

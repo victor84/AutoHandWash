@@ -33,6 +33,8 @@ public:
 	// выдына монетка
 	void coin_issued(byte balance);
 
+	virtual void activate() override;
+
 };
 }
 

@@ -60,6 +60,9 @@ public:
 		return _this_state;
 	}
 
+	// вызывать при активации состояния
+	virtual void activate() = 0;
+
 	// пополнен счёт
 	virtual void refilled_cache() = 0;
 
@@ -129,6 +132,9 @@ public:
 
 	// хоппер опустел
 	virtual void on_empty_hopper() = 0;
+
+	// показать рекламный ролик
+	virtual void show_advertising() = 0;
 };
 
 #pragma pack(push, 4)

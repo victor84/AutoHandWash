@@ -118,7 +118,7 @@ namespace TerminalApp
             });
         }
 
-        public void OnDistributionPrizeDelegate(Int16 prize_size, Byte balance)
+        public void OnDistributionPrize(Int16 prize_size, Byte balance)
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {

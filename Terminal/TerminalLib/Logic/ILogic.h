@@ -44,6 +44,10 @@ struct ILogic
 	// опустевшем хоппере
 	virtual void SetOnEmptyHopperFn(std::function<void(void)> fn) = 0;
 
+	// назначение функтора, вызываемого для
+	// показа рекламы
+	virtual void SetOnShowAdvertisingFn(std::function<void(void)> fn) = 0;
+
 	virtual ~ILogic()
 	{
 

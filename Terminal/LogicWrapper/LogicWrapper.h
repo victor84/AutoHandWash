@@ -64,6 +64,9 @@ namespace LogicWrapper
 	// делегат, вызываемый при опустевшем хоппере
 	public delegate void OnEmptyHopperDelegate(void);
 
+	// делегат, вызываемы для показа рекламы
+	public delegate void OnShowAdvertisingDelegate(void);
+
 
 	// Логика
 	public ref class Logic
@@ -93,6 +96,8 @@ namespace LogicWrapper
 
 		OnEmptyHopperDelegate^ _on_empty_hopper;
 
+		OnShowAdvertisingDelegate^ _on_show_advertising;
+
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
 		GCHandle _stc_handle;
@@ -100,6 +105,7 @@ namespace LogicWrapper
 		GCHandle _sir_handle;
 		GCHandle _dp_handle;
 		GCHandle _eh_handle;
+		GCHandle _sa_handle;
 
 		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
@@ -126,6 +132,8 @@ namespace LogicWrapper
 		void SetDelegate(OnDistributionPrizeDelegate^ on_distribution_prize);
 
 		void SetDelegate(OnEmptyHopperDelegate^ on_empty_hopper);
+
+		void SetDelegate(OnShowAdvertisingDelegate^ on_show_advertising);
 
 		bool Start();
 

@@ -99,19 +99,7 @@ void logic::CPaidIdleState::stop_button_press()
 
 void logic::CPaidIdleState::time_out()
 {
-	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
-	_device_settings = sws->get_settings();
-	
-	calc_time_and_money();
 
-	if (nullptr == _timer)
-	{
-		_timer = new Concurrency::timer<int32_t>(1000, 0, &_on_timer_call, true);
-	}
-
-	_timer->start();
-
-	_tr_error->trace_message(_T("Начало платного простоя"));
 }
 
 void logic::CPaidIdleState::out_of_money()
@@ -127,4 +115,21 @@ void logic::CPaidIdleState::device_confirm()
 void logic::CPaidIdleState::device_error(logic_structures::e_device_error_code code)
 {
 
+}
+
+void logic::CPaidIdleState::activate()
+{
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	_device_settings = sws->get_settings();
+	
+	calc_time_and_money();
+
+	if (nullptr == _timer)
+	{
+		_timer = new Concurrency::timer<int32_t>(1000, 0, &_on_timer_call, true);
+	}
+
+	_timer->start();
+
+	_tr_error->trace_message(_T("Начало платного простоя"));
 }
