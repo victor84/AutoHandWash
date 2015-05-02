@@ -17,6 +17,12 @@ using System.IO;
 namespace TerminalApp
 {
     /// <summary>
+    /// Вызывать для смены отображаемой страницы
+    /// </summary>
+    /// <param name="number"></param>
+    public delegate void ShowPageDelegate(Int32 number);
+
+    /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
@@ -36,13 +42,16 @@ namespace TerminalApp
         /// </summary>
         LogicWrapper.e_state_id _previousState;
 
-
         public MainWindow()
         {
             InitializeComponent();
 
             _logic = new LogicWrapper.Logic();
+        }
 
+        public void ShowPage(Int32 number)
+        {
+            MainTabControl.SelectedIndex = number;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -57,6 +66,8 @@ namespace TerminalApp
             }
 
             ServicesPage servicePage = (ServicesPage)ServicePageFrame.Content;
+            PrizePage prizePage = (PrizePage)PrizePageFrame.Content;
+            prizePage.SetShowPageFn(ShowPage);
 
             _logic.SetDelegate(servicePage.OnTimeAndMoneyChanged);
             _logic.SetDelegate(servicePage.OnServiceChanged);
@@ -68,8 +79,8 @@ namespace TerminalApp
             _logic.SetDelegate(servicePage.OnCacheRefilled);
             _logic.SetDelegate(servicePage.OnServicesInfoReaded);
 
-            _logic.SetDelegate(servicePage.OnDistributionPrize);
-            _logic.SetDelegate((LogicWrapper.OnEmptyHopperDelegate)servicePage.OnEmptyHopper);
+            _logic.SetDelegate(prizePage.OnDistributionPrize);
+            _logic.SetDelegate((LogicWrapper.OnEmptyHopperDelegate)prizePage.OnEmptyHopper);
 
             _logic.SetDelegate((LogicWrapper.OnShowAdvertisingDelegate)OnShowAdvertising);
 
@@ -87,21 +98,26 @@ namespace TerminalApp
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            VideoPlayer.Close();
+
             _logic.Stop();
             _logic.Dispose();
         }
 
         private void StateChangingWork()
         {
-            if (LogicWrapper.e_state_id.distribution_of_prize == _previousState)
+            if (LogicWrapper.e_state_id.distribution_of_prize == _currentState)
             {
-
+                this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+                {
+                    ShowPage(2);
+                });
             }
             else if (LogicWrapper.e_state_id.advertising_idle == _previousState)
             {
                 this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
                 {
-                    MainTabControl.SelectedIndex = 0;
+                    ShowPage(0);
                 });
             }
         }

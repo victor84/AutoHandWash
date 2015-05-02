@@ -118,23 +118,6 @@ namespace TerminalApp
             });
         }
 
-        public void OnDistributionPrize(Int16 prize_size, Byte balance)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                CurrentServiceNameTextBlock.Text = String.Format("Вы выиграли приз {0} рублей", prize_size);
-                ShowHint(String.Format("Осталось {0} монет", balance));
-            });
-        }
-
-        public void OnEmptyHopper()
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                ShowHint("Монеты закончились.\nОбратитесь к оператору");
-            });
-        }
-
         private void UpdateServicesNames(IEnumerable<LogicWrapper.tag_service_info> collection)
         {
             _services_info = collection;
