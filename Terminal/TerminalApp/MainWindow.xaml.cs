@@ -100,6 +100,24 @@ namespace TerminalApp
             _logic.SetDelegate(OnTerminalStateChanged);
 
             _logic.Start();
+
+#if DEBUG
+            ShowFullScreen();
+#endif
+
+        }
+
+        private void ShowFullScreen()
+        {
+            ServiceTab.Visibility = System.Windows.Visibility.Collapsed;
+            VideoTab.Visibility = System.Windows.Visibility.Collapsed;
+            PrizeTab.Visibility = System.Windows.Visibility.Collapsed;
+            TerminalBrokenTab.Visibility = System.Windows.Visibility.Collapsed;
+
+            WindowStyle = System.Windows.WindowStyle.None;
+            ResizeMode = System.Windows.ResizeMode.NoResize;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            WindowState = System.Windows.WindowState.Maximized;
         }
 
         private void OnTerminalStateChanged(LogicWrapper.e_terminal_state state)

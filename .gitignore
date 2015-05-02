@@ -16,6 +16,7 @@
 /Terminal/SimpleDeviceEmulator/Debug
 *.aps
 *.log
+*.suo
 /Terminal/Release
 /Terminal/Release_Static
 /Terminal/Release_Static_XP
