@@ -42,6 +42,16 @@ namespace TerminalApp
         /// </summary>
         LogicWrapper.e_state_id _previousState;
 
+        /// <summary>
+        /// Предыдущее состояние терминала
+        /// </summary>
+        LogicWrapper.e_terminal_state _previousTerminalState;
+
+        /// <summary>
+        /// Текущее состояние терминала
+        /// </summary>
+        LogicWrapper.e_terminal_state _currentTerminalState;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -51,7 +61,10 @@ namespace TerminalApp
 
         public void ShowPage(Int32 number)
         {
-            MainTabControl.SelectedIndex = number;
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                MainTabControl.SelectedIndex = number;
+            });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -84,7 +97,28 @@ namespace TerminalApp
 
             _logic.SetDelegate((LogicWrapper.OnShowAdvertisingDelegate)OnShowAdvertising);
 
+            _logic.SetDelegate(OnTerminalStateChanged);
+
             _logic.Start();
+        }
+
+        private void OnTerminalStateChanged(LogicWrapper.e_terminal_state state)
+        {
+            _currentTerminalState = state;
+
+            if (_currentTerminalState != LogicWrapper.e_terminal_state.work)
+            {
+                ShowPage(3);
+            }
+            else
+            {
+                if (LogicWrapper.e_terminal_state.work != _previousTerminalState)
+                {
+                    ShowPage(0);
+                }
+            }
+
+            _previousTerminalState = _currentTerminalState;
         }
 
         private void OnStateChanged(LogicWrapper.e_state_id state_id)
@@ -108,22 +142,19 @@ namespace TerminalApp
         {
             if (LogicWrapper.e_state_id.distribution_of_prize == _currentState)
             {
-                this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-                {
-                    ShowPage(2);
-                });
+                ShowPage(2);
             }
             else if (LogicWrapper.e_state_id.advertising_idle == _previousState)
             {
-                this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-                {
-                    ShowPage(0);
-                });
+                ShowPage(0);
             }
         }
 
         private void OnShowAdvertising()
         {
+            if (_currentTerminalState != LogicWrapper.e_terminal_state.work)
+                return;
+
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 MainTabControl.SelectedIndex = 1;

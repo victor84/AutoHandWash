@@ -99,6 +99,9 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызываетс€ дл€ показа рекламы
 	std::function<void(void)> _on_show_advertising;
 
+	// вызываетс€ при изменении состо€ни€ терминала
+	std::function<void(logic::e_terminal_state)> _on_terminal_state_changed;
+
 	// заполнить состо€ни€
 	void fill_states();
 
@@ -234,6 +237,8 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void SetOnEmptyHopperFn(std::function<void(void) > fn) final;
 
 	virtual void SetOnShowAdvertisingFn(std::function<void(void) > fn) final;
+
+	virtual void SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state) > fn) final;
 
 public:
 	CLogic();

@@ -127,7 +127,7 @@ bool CTestLogic::send_settings_packet()
 	settings_packet.osmosis = 60;
 	settings_packet.pause_before_advertising = 1;
 	settings_packet.pressurized_water = 5;
-	settings_packet.state = e_terminal_state::work;
+	settings_packet.state = logic::e_terminal_state::work;
 	settings_packet.vacuum_cleaner = 35;
 	settings_packet.water_without_pressure = 3;
 	settings_packet.wax = 50;
@@ -158,7 +158,7 @@ bool CTestLogic::send_counters_packet()
 	counters_packet.foam = 11;
 	counters_packet.osmosis = 7;
 	counters_packet.pressurized_water = 50;
-	counters_packet.state = e_terminal_state::work;
+	counters_packet.state = logic::e_terminal_state::work;
 	counters_packet.total_cache = 2000;
 	counters_packet.vacuum_cleaner = 12;
 	counters_packet.water_without_pressure = 55;

@@ -48,6 +48,16 @@ void LogicWrapper::Logic::OnServiceInfoReadedInner(std::vector<logic::tag_servic
 	_on_service_info_readed(result);
 }
 
+void LogicWrapper::Logic::OnTerminalStateChangedInner(logic::e_terminal_state state)
+{
+	if (nullptr == _on_terminal_state_changed)
+		return;
+
+	e_terminal_state terminal_state = static_cast<e_terminal_state>(state);
+
+	_on_terminal_state_changed(terminal_state);
+}
+
 LogicWrapper::Logic::Logic()
 	: _on_service_changed(nullptr)
 	, _on_time_and_money_changed(nullptr)
@@ -59,6 +69,7 @@ LogicWrapper::Logic::Logic()
 	_on_service_changed_inner = gcnew OnServiceChangedDelegateInner(this, &Logic::OnServiceChangedInner);
 	_on_state_changed_inner = gcnew OnStateChangedDelegateInner(this, &Logic::OnStateChangedInner);
 	_on_service_info_readed_inner = gcnew OnServiceInfoReadedDelegateInner(this, &Logic::OnServiceInfoReadedInner);
+	_on_terminal_state_changed_inner = gcnew OnTerminalStateChangedDelegateInner(this, &Logic::OnTerminalStateChangedInner);
 }
 
 LogicWrapper::Logic::~Logic()
@@ -74,6 +85,16 @@ void LogicWrapper::Logic::SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and
 		_tmc_handle = GCHandle::Alloc(_on_time_and_money_changed);
 
 	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnTerminalStateChangedDelegate^ on_terminal_state_changed)
+{
+	_on_terminal_state_changed = on_terminal_state_changed;
+
+	if (false == _tsc_handle.IsAllocated)
+		_tsc_handle = GCHandle::Alloc(_on_terminal_state_changed_inner);
+
+	_logic->SetOnTerminalStateChangedFn(Marshal::GetFunctionPointerForDelegate(_on_terminal_state_changed_inner).ToPointer());
 }
 
 void LogicWrapper::Logic::SetDelegate(OnShowAdvertisingDelegate^ on_show_advertising)

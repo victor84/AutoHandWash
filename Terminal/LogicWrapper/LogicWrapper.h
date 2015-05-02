@@ -24,6 +24,7 @@ namespace LogicWrapper
 		stop					// —топ
 	};
 
+	// состо€ние логики
 	public enum class e_state_id
 	{
 		advertising_idle,		// рекламный простой
@@ -33,6 +34,15 @@ namespace LogicWrapper
 		paid_idle,				// платный простой
 		settings_work,			// работа с настройками
 		distribution_of_prize	// выдача приза
+	};
+
+	// состо€ние терминала
+	public enum class e_terminal_state
+	{
+		work = 0,				// терминал в работе
+		idle = 1,				// простаивает
+		broken = 2,				// сломан
+		blocked = 3				// заблокирован
 	};
 
 	public ref struct tag_service_info
@@ -67,6 +77,8 @@ namespace LogicWrapper
 	// делегат, вызываемы дл€ показа рекламы
 	public delegate void OnShowAdvertisingDelegate(void);
 
+	// делегат, вызываемый при изменении состо€ни€ терминала
+	public delegate void OnTerminalStateChangedDelegate(e_terminal_state state);
 
 	// Ћогика
 	public ref class Logic
@@ -76,6 +88,8 @@ namespace LogicWrapper
 		delegate void OnStateChangedDelegateInner(logic::e_state state);
 
 		delegate void OnServiceInfoReadedDelegateInner(std::vector<logic::tag_service_info> collection);
+
+		delegate void OnTerminalStateChangedDelegateInner(logic::e_terminal_state state);
 
 		CLogicPimpl* _logic;
 		
@@ -98,6 +112,9 @@ namespace LogicWrapper
 
 		OnShowAdvertisingDelegate^ _on_show_advertising;
 
+		OnTerminalStateChangedDelegate^ _on_terminal_state_changed;
+		OnTerminalStateChangedDelegateInner^ _on_terminal_state_changed_inner;
+
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
 		GCHandle _stc_handle;
@@ -106,6 +123,7 @@ namespace LogicWrapper
 		GCHandle _dp_handle;
 		GCHandle _eh_handle;
 		GCHandle _sa_handle;
+		GCHandle _tsc_handle;
 
 		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
@@ -113,6 +131,7 @@ namespace LogicWrapper
 
 		void OnServiceInfoReadedInner(std::vector<logic::tag_service_info> collection);
 
+		void OnTerminalStateChangedInner(logic::e_terminal_state state);
 
 	public:
 		Logic();
@@ -134,6 +153,8 @@ namespace LogicWrapper
 		void SetDelegate(OnEmptyHopperDelegate^ on_empty_hopper);
 
 		void SetDelegate(OnShowAdvertisingDelegate^ on_show_advertising);
+
+		void SetDelegate(OnTerminalStateChangedDelegate^ on_terminal_state_changed);
 
 		bool Start();
 

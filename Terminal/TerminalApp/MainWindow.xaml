@@ -19,6 +19,13 @@
                     <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
+                <Grid>
+                    <Viewbox>
+                        <TextBlock Text="Терминал не работает"/>
+                    </Viewbox>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>
