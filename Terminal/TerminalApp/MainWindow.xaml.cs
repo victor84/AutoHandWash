@@ -76,6 +76,7 @@ namespace TerminalApp
             if ((null != files) && (0 != files.Length))
             {
                 VideoPlayer.Source = new Uri(files[0], UriKind.Absolute);
+                VideoPlayer.MediaEnded += VideoPlayer_MediaEnded;
             }
 
             ServicesPage servicePage = (ServicesPage)ServicePageFrame.Content;
@@ -101,10 +102,19 @@ namespace TerminalApp
 
             _logic.Start();
 
-#if DEBUG
+#if !DEBUG
             ShowFullScreen();
 #endif
 
+        }
+
+        void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                VideoPlayer.Position = TimeSpan.Zero;
+                VideoPlayer.Play();
+            });
         }
 
         private void ShowFullScreen()
