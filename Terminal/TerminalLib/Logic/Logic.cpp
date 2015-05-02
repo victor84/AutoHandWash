@@ -124,8 +124,8 @@ void logic::CLogic::send_settings_packet()
 	logic::tag_device_settings device_settings = sws->get_settings();
 
 	settings_packet.state = ((0 == device_settings.state) ? 
-							 server_exchange::e_terminal_state::broken : 
-							 server_exchange::e_terminal_state::work);
+							 logic::e_terminal_state::broken : 
+							 logic::e_terminal_state::work);
 
 	settings_packet.bill_acceptor_impulse = static_cast<byte>(device_settings.bill_acceptor_impulse);
 	settings_packet.coin_acceptor_impulse = static_cast<byte>(device_settings.coin_acceptor_impulse);
@@ -156,8 +156,8 @@ void logic::CLogic::send_counters_packet()
 	logic::tag_device_settings device_settings = sws->get_settings();
 
 	counters_packet.state =  ((0 == device_settings.state) ? 
-							 server_exchange::e_terminal_state::broken : 
-							 server_exchange::e_terminal_state::work);
+							 logic::e_terminal_state::broken : 
+							 logic::e_terminal_state::work);
 
 	counters_packet.date_time = std::time(0);
 	counters_packet.total_cache = device_settings.total_cache;
@@ -204,6 +204,22 @@ logic::CLogic::CLogic()
 
 logic::CLogic::~CLogic()
 {
+}
+
+void logic::CLogic::SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state) > fn)
+{
+	_on_terminal_state_changed = fn;
+}
+
+void logic::CLogic::show_advertising()
+{
+	if (_on_show_advertising)
+		_on_show_advertising();
+}
+
+void logic::CLogic::SetOnShowAdvertisingFn(std::function<void(void) > fn)
+{
+	_on_show_advertising = fn;
 }
 
 void logic::CLogic::SetOnEmptyHopperFn(std::function<void(void) > fn)
@@ -283,7 +299,7 @@ void logic::CLogic::Stop()
 
 	_init_state = tools::e_init_state::not_init;
 
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 void logic::CLogic::process_messages_from_server()
@@ -350,6 +366,16 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 		processing_result = server_exchange::e_processing_result::success;
 		return true;
 	}
+	else if (server_exchange::e_packet_type::terminal_state == message->type)
+	{
+		server_exchange::tag_terminal_state_packet termianl_state_packet = get_server_message<server_exchange::tag_terminal_state_packet, server_exchange::e_packet_type::terminal_state>(message);
+
+		if (_on_terminal_state_changed)
+			_on_terminal_state_changed(termianl_state_packet.state);
+
+		processing_result = server_exchange::e_processing_result::success;
+		return true;
+	}
 	else
 	{
 		processing_result = server_exchange::e_processing_result::success;
@@ -396,11 +422,14 @@ void logic::CLogic::update_device_settings_from_server()
 		_common_settings.SetPauseBeforeAdvertising(_settings_from_server.pause_before_advertising);
 		changed = true;
 	}
-	if (work_settings.state != ((server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1u : 0u))
+	if (work_settings.state != ((logic::e_terminal_state::work == _settings_from_server.state) ? 1u : 0u))
 	{
-		work_settings.state = (server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1 : 0;
-		_common_settings.SetState((server_exchange::e_terminal_state::work == _settings_from_server.state) ? 1 : 0);
+		work_settings.state = (logic::e_terminal_state::work == _settings_from_server.state) ? 1 : 0;
+		_common_settings.SetState((logic::e_terminal_state::work == _settings_from_server.state) ? 1 : 0);
 		changed = true;
+
+		if (_on_terminal_state_changed)
+			_on_terminal_state_changed(_settings_from_server.state);
 	}
 
 	if (work_settings.cost_against_midges != _settings_from_server.against_midges)
@@ -560,6 +589,8 @@ void logic::CLogic::set_state(e_state state)
 
 	if (_on_state_changed_fn)
 		_on_state_changed_fn(state);
+
+	_current_state->activate();
 }
 
 void logic::CLogic::process_messages_from_device()

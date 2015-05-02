@@ -84,3 +84,8 @@ void logic::CRefillCacheState::device_error(logic_structures::e_device_error_cod
 {
 
 }
+
+void logic::CRefillCacheState::activate()
+{
+	
+}

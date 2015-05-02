@@ -253,3 +253,8 @@ void logic::CExecutingServiceState::device_error(logic_structures::e_device_erro
 {
 
 }
+
+void logic::CExecutingServiceState::activate()
+{
+	
+}

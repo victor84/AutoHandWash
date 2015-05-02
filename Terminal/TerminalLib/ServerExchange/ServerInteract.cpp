@@ -43,6 +43,7 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 	tag_confirmation_packet confirmation_packet;
 	tag_refill_cache_packet refill_cache_packet;
 	tag_prize_packet prize_packet;
+	tag_terminal_state_packet terminal_state_packet;
 	logic_structures::tag_base_server_logic_struct* pointer = nullptr;
 	std::shared_ptr<logic_structures::tag_base_server_logic_struct> shared_pointer;
 
@@ -74,6 +75,13 @@ bool server_exchange::CServerInteract::parse_transport_packet(const tag_transpor
 			{
 				logic_structures::tag_server_logic_packet<tag_prize_packet, e_packet_type::prize> pp(prize_packet);
 				pointer = new logic_structures::tag_server_logic_packet<tag_prize_packet, e_packet_type::prize>(pp);
+			}
+			break;
+		case (e_packet_type::terminal_state) :
+			if (e_convert_result::success == _parser.ParseTerminalStatePacket(transport_packet, terminal_state_packet))
+			{
+				logic_structures::tag_server_logic_packet<tag_terminal_state_packet, e_packet_type::terminal_state> tsp(terminal_state_packet);
+				pointer = new logic_structures::tag_server_logic_packet<tag_terminal_state_packet, e_packet_type::terminal_state>(tsp);
 			}
 			break;
 		default:

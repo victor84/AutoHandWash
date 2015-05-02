@@ -12,27 +12,76 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace TerminalApp
 {
+    /// <summary>
+    /// Вызывать для смены отображаемой страницы
+    /// </summary>
+    /// <param name="number"></param>
+    public delegate void ShowPageDelegate(Int32 number);
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Экземпляр логики
+        /// </summary>
         LogicWrapper.Logic _logic;
+
+        /// <summary>
+        /// Текущее состояние
+        /// </summary>
+        LogicWrapper.e_state_id _currentState;
+
+        /// <summary>
+        /// Предыдущее состояние
+        /// </summary>
+        LogicWrapper.e_state_id _previousState;
+
+        /// <summary>
+        /// Предыдущее состояние терминала
+        /// </summary>
+        LogicWrapper.e_terminal_state _previousTerminalState;
+
+        /// <summary>
+        /// Текущее состояние терминала
+        /// </summary>
+        LogicWrapper.e_terminal_state _currentTerminalState;
 
         public MainWindow()
         {
             InitializeComponent();
 
             _logic = new LogicWrapper.Logic();
+        }
 
+        public void ShowPage(Int32 number)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                MainTabControl.SelectedIndex = number;
+            });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            String currentFolder = Directory.GetCurrentDirectory();
+
+            String[] files = Directory.GetFiles(currentFolder, "advertising.*", SearchOption.AllDirectories);
+
+            if ((null != files) && (0 != files.Length))
+            {
+                VideoPlayer.Source = new Uri(files[0], UriKind.Absolute);
+                VideoPlayer.MediaEnded += VideoPlayer_MediaEnded;
+            }
+
             ServicesPage servicePage = (ServicesPage)ServicePageFrame.Content;
+            PrizePage prizePage = (PrizePage)PrizePageFrame.Content;
+            prizePage.SetShowPageFn(ShowPage);
 
             _logic.SetDelegate(servicePage.OnTimeAndMoneyChanged);
             _logic.SetDelegate(servicePage.OnServiceChanged);
@@ -44,21 +93,101 @@ namespace TerminalApp
             _logic.SetDelegate(servicePage.OnCacheRefilled);
             _logic.SetDelegate(servicePage.OnServicesInfoReaded);
 
-            _logic.SetDelegate(servicePage.OnDistributionPrizeDelegate);
-            _logic.SetDelegate(servicePage.OnEmptyHopper);
+            _logic.SetDelegate(prizePage.OnDistributionPrize);
+            _logic.SetDelegate((LogicWrapper.OnEmptyHopperDelegate)prizePage.OnEmptyHopper);
+
+            _logic.SetDelegate((LogicWrapper.OnShowAdvertisingDelegate)OnShowAdvertising);
+
+            _logic.SetDelegate(OnTerminalStateChanged);
 
             _logic.Start();
+
+#if !DEBUG
+            ShowFullScreen();
+#endif
+
+        }
+
+        void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                VideoPlayer.Position = TimeSpan.Zero;
+                VideoPlayer.Play();
+            });
+        }
+
+        private void ShowFullScreen()
+        {
+            ServiceTab.Visibility = System.Windows.Visibility.Collapsed;
+            VideoTab.Visibility = System.Windows.Visibility.Collapsed;
+            PrizeTab.Visibility = System.Windows.Visibility.Collapsed;
+            TerminalBrokenTab.Visibility = System.Windows.Visibility.Collapsed;
+
+            WindowStyle = System.Windows.WindowStyle.None;
+            ResizeMode = System.Windows.ResizeMode.NoResize;
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            WindowState = System.Windows.WindowState.Maximized;
+        }
+
+        private void OnTerminalStateChanged(LogicWrapper.e_terminal_state state)
+        {
+            _currentTerminalState = state;
+
+            if (_currentTerminalState != LogicWrapper.e_terminal_state.work)
+            {
+                ShowPage(3);
+            }
+            else
+            {
+                if (LogicWrapper.e_terminal_state.work != _previousTerminalState)
+                {
+                    ShowPage(0);
+                }
+            }
+
+            _previousTerminalState = _currentTerminalState;
         }
 
         private void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
+            _currentState = state_id;
 
+            StateChangingWork();
+
+            _previousState = _currentState;
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            VideoPlayer.Close();
+
             _logic.Stop();
             _logic.Dispose();
+        }
+
+        private void StateChangingWork()
+        {
+            if (LogicWrapper.e_state_id.distribution_of_prize == _currentState)
+            {
+                ShowPage(2);
+            }
+            else if (LogicWrapper.e_state_id.advertising_idle == _previousState)
+            {
+                ShowPage(0);
+            }
+        }
+
+        private void OnShowAdvertising()
+        {
+            if (_currentTerminalState != LogicWrapper.e_terminal_state.work)
+                return;
+
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                MainTabControl.SelectedIndex = 1;
+                VideoPlayer.Play();
+            });
         }
     }
 }

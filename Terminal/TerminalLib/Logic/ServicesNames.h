@@ -38,6 +38,15 @@ enum class e_state
 	distribution_of_prize	// выдача приза
 };
 
+// состояние терминала
+enum class e_terminal_state : byte
+{
+	work = 0,	// терминал в работе
+	idle = 1,	// простаивает
+	broken = 2,	// сломан
+	blocked = 3	// заблокирован
+};
+
 // информация об услуге
 struct tag_service_info
 {

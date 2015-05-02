@@ -82,6 +82,13 @@ public:
 		return ParseCommonPacket(data, result_packet);
 	}
 
+	// парсинг пакета состояния
+	e_convert_result ParseTerminalStatePacket(IN const tag_transport_packet& data,
+											  OUT tag_terminal_state_packet& result_packet)
+	{
+		return ParseCommonPacket(data, result_packet);
+	}
+
 };
 
 }

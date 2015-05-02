@@ -168,7 +168,7 @@ void TestServerMessages()
 	data.current_cache = 100;
 	data.foam = 3;
 	data.pressurized_water = 4;
-	data.state = server_exchange::e_terminal_state::work;
+	data.state = logic::e_terminal_state::work;
 	data.total_cache = 1000;
 	data.vacuum_cleaner = 5;
 	data.water_without_pressure = 6;

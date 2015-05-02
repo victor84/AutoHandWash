@@ -16,11 +16,23 @@ class CAdvertisingIdleState : public IState
 	// модуль общих настроек терминала
 	logic_settings::CCommonSettings& _common_settings;
 
+	// таймер перед показом рекламы
+	Concurrency::timer<int32_t>* _timer;
+
+	// вызывается при срабатывании таймера
+	Concurrency::call<int32_t> _on_timer_call;
+
 	// прочитать и записать настройки по-умолчанию стоимости услуг
 	bool read_services_cost(tag_device_settings& settings);
 
 	// чтение настроек терминала
 	bool read_terminal_settings(tag_device_settings& settings);
+
+	// таймер сработал
+	void on_timer(uint32_t);
+
+	// остановка таймера
+	void stop_timer();
 
 public:
 	CAdvertisingIdleState(CLogicAbstract& logic, 
@@ -41,6 +53,8 @@ public:
 	virtual void device_confirm() final;
 
 	virtual void device_error(logic_structures::e_device_error_code code) final;
+
+	virtual void activate() override;
 
 };
 }

@@ -37,4 +37,10 @@ public:
 
 	// установка указателя на функцию, вызываемую при опустении хоппера
 	void SetOnEmptyHopperFn(void* ptr);
+
+	// установка указателя на функцию, вызываемую для показа рекламы
+	void SetOnShowAdvertisingFn(void* ptr);
+
+	// установка указателя на функцию, вызываемую при изменении состояния терминала
+	void SetOnTerminalStateChangedFn(void* ptr);
 };

@@ -31,12 +31,31 @@ bool logic::CAdvertisingIdleState::read_terminal_settings(tag_device_settings& s
 	return true;
 }
 
-logic::CAdvertisingIdleState::CAdvertisingIdleState(CLogicAbstract& logic, 
+void logic::CAdvertisingIdleState::on_timer(uint32_t)
+{
+	stop_timer();
+
+	_logic.show_advertising();
+}
+
+void logic::CAdvertisingIdleState::stop_timer()
+{
+	if (nullptr != _timer)
+	{
+		_timer->stop();
+		delete _timer;
+		_timer = nullptr;
+	}
+}
+
+logic::CAdvertisingIdleState::CAdvertisingIdleState(CLogicAbstract& logic,
 													logic_settings::CCorrespondSettings& correspond_settings,
 													logic_settings::CCommonSettings& common_settings)
 	: IState(logic, e_state::advertising_idle)
 	, _correspond_settings(correspond_settings)
 	, _common_settings(common_settings)
+	, _timer(nullptr)
+	, _on_timer_call(std::bind(std::mem_fn(&CAdvertisingIdleState::on_timer), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -47,6 +66,8 @@ logic::CAdvertisingIdleState::~CAdvertisingIdleState()
 
 void logic::CAdvertisingIdleState::refilled_cache()
 {
+	stop_timer();
+
 	CRefillCacheState* refill_cache_state = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
 
 	refill_cache_state->refilled_cache();
@@ -91,4 +112,22 @@ void logic::CAdvertisingIdleState::device_confirm()
 void logic::CAdvertisingIdleState::device_error(logic_structures::e_device_error_code code)
 {
 
+}
+
+void logic::CAdvertisingIdleState::activate()
+{
+	stop_timer();
+
+	uint32_t period = _common_settings.GetPauseBeforeAdvertising();
+
+	if (0 != period)
+	{
+		period = period * 60 * 1000;
+		_timer = new Concurrency::timer<int32_t>(period, 0, &_on_timer_call, false);
+		_timer->start();
+	}
+	else
+	{
+		_logic.show_advertising();
+	}
 }

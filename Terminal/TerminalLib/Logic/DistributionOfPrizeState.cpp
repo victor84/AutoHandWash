@@ -80,3 +80,8 @@ void logic::CDistributionOfPrizeState::coin_issued(byte balance)
 		_logic.set_state(e_state::advertising_idle);
 	}
 }
+
+void logic::CDistributionOfPrizeState::activate()
+{
+	
+}

@@ -266,6 +266,24 @@ namespace Server
             lastPacket = e_packet_type.prize;
         }
 
+        private void WriteTerminalState(e_terminal_state state)
+        {
+            tag_terminal_state_packet terminal_state_packet;
+            terminal_state_packet.state = state;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.terminal_state;
+            packetToRawData.CreateTerminalStatePacketRawData(terminal_state_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+
+            lastPacket = e_packet_type.terminal_state;
+        }
+
         private e_processing_result HandleId(tag_transport_packet packet)
         {
             tag_identification_packet identificationPacket;

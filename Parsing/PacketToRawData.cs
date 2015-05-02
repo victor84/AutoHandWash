@@ -110,6 +110,14 @@ namespace Parsing
             return e_convert_result.success;
         }
 
+        // создание данных для отправки из пакета изменения состояния
+        public e_convert_result CreateTerminalStatePacketRawData(tag_terminal_state_packet packet, out Byte[] result_data)
+        {
+            result_data = new Byte[]{ (Byte)packet.state };
+
+            return e_convert_result.success;
+        }
+
         // создание данных для отправки из пакета настроек
         public e_convert_result CreateLogRecordPacketRawData(tag_log_record_packet packet, out Byte[] result_data)
         {

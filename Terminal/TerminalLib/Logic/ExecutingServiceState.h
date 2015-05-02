@@ -74,6 +74,8 @@ public:
 
 	virtual void device_error(logic_structures::e_device_error_code code) final;
 
+	virtual void activate() override;
+
 };
 }
 
