@@ -2,6 +2,7 @@
 using LinqToDB.Data;
 using LinqToDB.Mapping;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Server.Data
@@ -36,6 +37,24 @@ namespace Server.Data
                 ServerLogger.Error(string.Format("SettingsGroup -> GetSettingsGroupById: {0}", ex.Message));
             }
             return settingsGroup;
+        }
+
+        public static List<SettingsGroup> GetSettingsGroups()
+        {
+            List<SettingsGroup> settingsGroups = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<SettingsGroup>();
+                    settingsGroups = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ServerLogger.Error(string.Format("SettingsGroup -> GetSettingsGroupById: {0}", ex.Message));
+            }
+            return settingsGroups;
         }
 
         public static bool Insert(SettingsGroup settingsGroup)

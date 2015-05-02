@@ -1,9 +1,9 @@
 ﻿using Nancy;
 using Nancy.Security;
-using Parsing;
 using Server.Data;
 using Server.Models;
 using Server.Pipes;
+using Server.Prize;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,16 @@ namespace Server.Modules
 {
     public class MainModule : BaseModule
     {
+        private ServerPrizeCache serverPrizeCache;
+        
         public MainModule()
         {
             this.RequiresAuthentication();
+
+            serverPrizeCache = new ServerPrizeCache();
+
             Get["/terminals"] = Terminals;
+            Get["/prizefund"] = PrizeFund;
             Get["/terminals/fillbalance/{terminalId}"] = ViewFillBalance;
             Post["/terminals/fillbalance"] = FillBalance;
             Get["/error/{type}"] = ViewError;
@@ -74,6 +80,67 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorTerminals);
+        }
+
+        private dynamic PrizeFund(dynamic parameters)
+        {
+            string userName = Model.MasterPage.UserName;
+            var user = User.GetUserByName(userName);
+            if (user != null)
+            {
+                List<Group> groups = null;
+                if (user.Claim == User.adminClaim)
+                {
+                    groups = Group.GetGroups();
+                }
+                else
+                {
+                    var idGroups = UserGroups.GetGroupsByUser(user.Id);
+                    if (idGroups != null)
+                    {
+                        groups = Group.GetGroups(idGroups);
+                    }
+                }
+                if (groups != null && groups.Any())
+                {
+                    var idGroups = groups.Select(x => x.Id);
+                    var terminals = Terminal.GetTerminalsByGroup(idGroups);
+                    if (terminals != null && terminals.Any())
+                    {
+                        var groupsPrizes = serverPrizeCache.Load();
+                        if (groupsPrizes.Any())
+                        {
+                            List<ViewGroupPrize> listViewGroupPrize = new List<ViewGroupPrize>();
+                            foreach (var group in groups)
+                            {
+                                var id = group.Id;
+                                if (groupsPrizes.ContainsKey(id))
+                                {
+                                    ViewGroupPrize viewGroupPrize = new ViewGroupPrize();
+                                    viewGroupPrize.GroupId = id;
+                                    viewGroupPrize.GroupName = group.GroupName;
+                                    var groupPrize = groupsPrizes[id];
+                                    if (groupPrize != null)
+                                    {
+                                        viewGroupPrize.Status = true;
+                                        viewGroupPrize.ValuePrize = groupPrize.ValuePrize;
+                                        viewGroupPrize.Fund = groupPrize.Fund;
+                                    }
+                                    listViewGroupPrize.Add(viewGroupPrize);
+                                }
+                            }
+                            Model.PrizeFundPage = new PrizeFundPageModel();
+                            Model.PrizeFundPage.Groups = listViewGroupPrize;
+                            return View["PrizeFund", Model];
+                        }
+                    }
+                }
+                else
+                {
+                    return Response.AsRedirect("~/error/" + (byte)MainErrors.NotGroups);
+                }
+            }
+            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorPrizeFund);
         }
 
         private dynamic ViewFillBalance(dynamic parameters)

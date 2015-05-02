@@ -1,6 +1,7 @@
 ﻿using Server.Data;
 using Server.Pipes;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Server.Prize
@@ -8,11 +9,15 @@ namespace Server.Prize
     public class ServerPrize
     {
         private object _lock;
+        private ServerPrizeCache cache;
         private Dictionary<Guid, GroupPrize> groups;
         public ServerPrize()
         {
             _lock = new object();
+            cache = new ServerPrizeCache();
             groups = new Dictionary<Guid, GroupPrize>();
+            InitGroups();
+            SaveGroups();
         }
 
         public void CommonInputExtended(Terminal terminal, uint input)
@@ -47,6 +52,7 @@ namespace Server.Prize
                         groupPrize.AddInFund(value);
                     }
                 }
+                SaveGroups();
             }
         }
 
@@ -59,6 +65,7 @@ namespace Server.Prize
                     var groupPrize = groups[groupId];
                     groupPrize = null;
                     groups.Remove(groupId);
+                    SaveGroups();
                 }
             }
         }
@@ -75,8 +82,51 @@ namespace Server.Prize
                     {
                         groupPrize.WaitConfirm = false;
                     }
+                    SaveGroups();
                 }
             }
+        }
+
+        public void ChangeSettingsGroup(SettingsGroup settingsGroup)
+        {
+            lock (_lock)
+            {
+                var groupId = settingsGroup.GroupId;
+                if (groups.ContainsKey(groupId))
+                {
+                    if (settingsGroup.HasPresent)
+                    {
+                        groups[groupId] = CreateGroupPrize(settingsGroup);
+                    }
+                    else
+                    {
+                        groups[groupId] = null;
+                    }
+                    SaveGroups();
+                }
+            }
+        }
+
+        private void InitGroups()
+        {
+            var settingsGroups = SettingsGroup.GetSettingsGroups();
+            if (settingsGroups != null && settingsGroups.Any())
+            {
+                foreach (var s in settingsGroups)
+                {
+                    GroupPrize groupPrize = null;
+                    if (s.HasPresent)
+                    {
+                        groupPrize = CreateGroupPrize(s);
+                    }
+                    groups.Add(s.GroupId, groupPrize);
+                }
+            }
+        }
+
+        private void SaveGroups()
+        {
+            cache.Save(groups);
         }
 
         private GroupPrize CreateGroupPrize(SettingsGroup settingsGroup)
@@ -96,22 +146,6 @@ namespace Server.Prize
             var groupPrize = (GroupPrize)sender;
             PipeClient pipeClient = new PipeClient();
             pipeClient.Write(new ServerPacket(groupPrize.LastTerminalId, ServerPacketType.prize, groupPrize.ValuePrize));
-        }
-
-        public void ChangeSettingsGroup(SettingsGroup settingsGroup)
-        {
-            lock (_lock)
-            {
-                var groupId = settingsGroup.GroupId;
-                if (groups.ContainsKey(groupId))
-                {
-                    if (settingsGroup.HasPresent)
-                    {
-                        var groupPrize = groups[groupId];
-                        groupPrize = CreateGroupPrize(settingsGroup);
-                    }
-                }
-            }
         }
     }
 }

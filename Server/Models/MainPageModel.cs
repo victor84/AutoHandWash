@@ -6,7 +6,8 @@ namespace Server.Models
     {
         NotGroups,
         ErrorTerminals,
-        ErrorFillBalance
+        ErrorFillBalance,
+        ErrorPrizeFund,
     };
 
     public class MainError
@@ -27,7 +28,10 @@ namespace Server.Models
                         break;
                     case MainErrors.ErrorFillBalance:
                         result = "Не удалось найти терминал или группу";
-                        break;  
+                        break;
+                    case MainErrors.ErrorPrizeFund:
+                        result = "Не удалось прочитать призовой фонд";
+                        break;
                     default:
                         break;
                 }

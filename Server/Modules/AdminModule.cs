@@ -284,7 +284,7 @@ namespace Server.Modules
                             return Response.AsRedirect("~/admin/error/" + (byte)AdminErrors.UpdateSettingsGroup);
                         }
                         PipeClient pipeClient = new PipeClient();
-                        pipeClient.Write(new ServerPacket(settingsGroup.GroupId, ServerPacketType.settingsGroup, settingsGroup));
+                        pipeClient.Write(new ServerPacket(settingsGroup.GroupId, ServerPacketType.settingsGroup, newSettingsGroup));
                     }
                 }
             }

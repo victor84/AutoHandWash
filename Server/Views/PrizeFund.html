@@ -6,51 +6,50 @@
 <script src="/Scripts/jquery.signalR-2.2.0.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.signalR-2.2.0.min.js" type="text/javascript"></script>
 <script src="/signalr/hubs"></script>
-<script src="/Scripts/Terminals.js"></script>
+<script src="/Scripts/PrizeFund.js"></script>
 <script>
     $(function () {
-        RefreshCounters();
+        //RefreshCounters();
     });
 </script>
 
 @EndSection
 @Section['Content']
 <script type="text/javascript">
-    ActivateLI("terminals");
+    ActivateLI("prizefund");
 </script>
 
-@Each.MainPage.DictionaryTerminalCounters
-            
 <div class="panel panel-default">
     <div class="panel-heading">
-        @Current.Key.GroupName
+        Группы
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>№</th>
+                    <th>Название группы</th>
                     <th>Статус</th>
-                    <th>Общий вход</th>
-                    <th>Текущий баланс</th>
-                    <th>Вода под давлением</th>
-                    <th>Вода без давления</th>
-                    <th>Пена</th>
-                    <th>Воск</th>
-                    <th>От мошек</th>
-                    <th>Пылесос</th>
-                    <th>Осмос</th>
-                    <th>Воздух</th>
-                    <th></th>
+                    <th>Сумма приза</th>
+                    <th>Фонд</th>
                 </tr>
             </thead>
             <tbody>
-                @Partial['TerminalsCounters', Current.Value]
+                @Each.PrizeFundPage.Groups
+                <tr id="@Current.GroupId">
+                    <td>@Current.GroupName</td>
+                    @If.Status
+                    <td>Разыгрывается</td>
+                    @EndIf
+                    @IfNot.Status
+                    <td>Не разыгрывается</td>
+                    @EndIf
+                    <td>@Current.ValuePrize</td>
+                    <td>@Current.Fund</td>
+                </tr>
+                @EndEach
             </tbody>
         </table>
     </div>
 </div>
-
-@EndEach
 
 @EndSection

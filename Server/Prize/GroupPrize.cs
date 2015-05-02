@@ -5,16 +5,24 @@ namespace Server.Prize
     public class GroupPrize
     {
         public event EventHandler ValuePrizeReached;
-        private ushort valuePrize;
+        private uint valuePrize;
         private uint fund;
 
         public volatile bool WaitConfirm;
 
         public Guid LastTerminalId { get; set; }
 
+        public uint Fund 
+        {
+            get
+            {
+                return fund;
+            }
+        }
+
         public byte Percent { get; set; }
 
-        public ushort ValuePrize
+        public uint ValuePrize
         {
             get 
             {
