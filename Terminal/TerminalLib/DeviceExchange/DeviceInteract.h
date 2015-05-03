@@ -58,8 +58,31 @@ class CDeviceInteract
 	// создатель пакетов для устройства
 	device_exchange::CDevicePacketConvertor<device_exchange::tag_packet_from_pc> _device_packet_creator;
 
-	// описатель пакета от устройства
-	// device_exchange::CDeviceMessageDescription _device_message_description;
+#pragma region Проверка, что устройство на связи
+	// время отправки сообщения
+	uint64_t _send_packet_time;
+
+	// вызывается при срабатывании таймера
+	Concurrency::call<int32_t> _on_timer_call;
+
+	// таймер проверки
+	Concurrency::timer<int32_t> _timer;
+
+	Concurrency::critical_section _check_device_cs;
+
+	std::function<void(void)> _on_device_not_available_fn;
+
+	// таймер сработал
+	void on_timer(uint32_t);
+
+	// установка времени отправки пакета на устройство
+	void set_send_packet_time(time_t t);
+
+	// получение времени отправки пакета на устройство
+	time_t get_send_packet_time();
+
+#pragma endregion
+
 
 	// функция потока
 	void thread_fn();
@@ -75,7 +98,8 @@ class CDeviceInteract
 public:
 	CDeviceInteract(const logic_settings::CCommonSettings& settings_module,
 					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_device>>& packets_to_logic,
-					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device);
+					tools::lock_vector<std::shared_ptr<logic_structures::tag_base_data_from_pc>>& packets_to_device,
+					std::function<void(void)> on_device_not_available_fn);
 	virtual ~CDeviceInteract();
 
 	bool Start();

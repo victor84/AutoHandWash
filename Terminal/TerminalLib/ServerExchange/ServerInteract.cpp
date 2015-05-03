@@ -121,6 +121,7 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 	server_exchange::tag_counters_packet coup;
 	server_exchange::tag_log_record_packet lrp;
 	server_exchange::tag_settings_packet sp;
+	server_exchange::tag_terminal_state_packet tsp;
 
 	switch (packet->type)
 	{
@@ -154,7 +155,11 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 			transport_packet.length = sizeof(sp);
 			transport_packet.type = e_packet_type::settings;
 			break;
-
+		case (e_packet_type::terminal_state) :
+			tsp = get_server_logic_packet<server_exchange::tag_terminal_state_packet, server_exchange::e_packet_type::terminal_state>(packet);
+			_packet_to_raw_data.CreateTerminalStatePacketRawData(tsp, transport_packet.data);
+			transport_packet.length = sizeof(tsp);
+			transport_packet.type = e_packet_type::terminal_state;
 		default:
 			_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
 			break;

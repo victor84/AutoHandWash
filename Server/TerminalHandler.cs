@@ -455,6 +455,16 @@ namespace Server
             return e_processing_result.success;
         }
 
+        private e_processing_result HandleTerminalStatePacket(tag_transport_packet packet)
+        {
+            tag_terminal_state_packet terminal_state_packet;
+
+            if (e_convert_result.success != parser.ParseTerminalStatePacket(packet, out terminal_state_packet))
+                return e_processing_result.failed;
+
+            return e_processing_result.success;
+        }
+
         private void RefreshCounters(string terminalName, Counters counters)
         {
             _hubClient.Invoke("RefreshCounters", terminalName, counters);

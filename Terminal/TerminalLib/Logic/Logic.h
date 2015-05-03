@@ -102,6 +102,12 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при изменении состояния терминала
 	std::function<void(logic::e_terminal_state)> _on_terminal_state_changed;
 
+	// флаг, что устройство недоступно
+	volatile bool _device_not_available;
+
+	// флаг, что об изменении состояния терминала абоненты были уведомлены
+	volatile bool _terminal_state_changed_sended;
+
 	// заполнить состояния
 	void fill_states();
 
@@ -131,6 +137,15 @@ class CLogic : CLogicAbstract, public ILogic
 
 	// отпрака пакета с подтверждением
 	void send_confirmation_packet(server_exchange::e_packet_type packet_type, server_exchange::e_processing_result result);
+
+	// отправка пакета изменения состояния
+	void send_terminal_state_packet(const e_terminal_state& state);
+
+	// изменение состояния терминала
+	void change_terminal_state(const e_terminal_state& state, bool send_to_server = false, bool write_to_file = false);
+
+	// вызывается, если устройство стало недоступно
+	void on_device_not_available();
 
 	// получить состояние
 	virtual std::shared_ptr<IState> get_state(e_state state) final;

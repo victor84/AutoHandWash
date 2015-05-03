@@ -29,11 +29,19 @@ void logic::CLogic::thread_fn()
 	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_current_state.get());
 	sws->read_settings();
 
+	if (0 == _common_settings.GetState())
+		_device_not_available = true;
+
 	while (tools::e_work_loop_status::ok == _work_loop_status)
 	{
 		process_messages_from_device();
 
 		process_messages_from_server();
+
+		if (true == _device_not_available)
+		{
+			change_terminal_state(e_terminal_state::broken, true);
+		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
@@ -54,6 +62,8 @@ tools::e_init_state logic::CLogic::init()
 		send_services_info();
 
 	_device_interact.Start();
+
+	_server_interact.Start();
 
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
@@ -190,13 +200,59 @@ void logic::CLogic::send_confirmation_packet(server_exchange::e_packet_type pack
 	_server_interact.PushBackToSend(packet);
 }
 
+void logic::CLogic::send_terminal_state_packet(const e_terminal_state& state)
+{
+	server_exchange::tag_terminal_state_packet terminal_state_packet;
+
+	terminal_state_packet.state = state;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_terminal_state_packet, server_exchange::e_packet_type::terminal_state>(terminal_state_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
+void logic::CLogic::change_terminal_state(const e_terminal_state& state, bool send_to_server /*= false*/, bool write_to_file /*= false*/)
+{
+	if (true == _terminal_state_changed_sended)
+		return;
+
+	if (_common_settings.GetState() == ((logic::e_terminal_state::work == state) ? 1u : 0u))
+		return;
+
+	if (_on_terminal_state_changed)
+		_on_terminal_state_changed(state);
+
+	if (true == send_to_server)
+		send_terminal_state_packet(state);
+
+	if (true == write_to_file)
+	{
+		_common_settings.SetState((logic::e_terminal_state::work == state) ? 1 : 0);
+		_common_settings.ReadSettings();
+	}
+
+	_terminal_state_changed_sended = true;
+}
+
+void logic::CLogic::on_device_not_available()
+{
+	_device_not_available = true;
+	_terminal_state_changed_sended = false;
+}
+
 logic::CLogic::CLogic()
-	: _device_interact(_common_settings, _packets_from_device, _packets_to_device)
+	: _device_interact(_common_settings, 
+						_packets_from_device, 
+						_packets_to_device, 
+						std::bind(std::mem_fn(&CLogic::on_device_not_available), this))
 	, _server_interact(_common_settings, _packets_from_server, _packets_to_server, 
 						std::bind(std::mem_fn(&CLogic::on_connected_to_server), this), 
 						std::bind(std::mem_fn(&CLogic::on_disconnected_from_derver), this))
 	, _need_update_device_settings(false)
 	, _need_distribute_prize(false)
+	, _device_not_available(false)
+	, _terminal_state_changed_sended(false)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	fill_states();
@@ -370,8 +426,8 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 	{
 		server_exchange::tag_terminal_state_packet termianl_state_packet = get_server_message<server_exchange::tag_terminal_state_packet, server_exchange::e_packet_type::terminal_state>(message);
 
-		if (_on_terminal_state_changed)
-			_on_terminal_state_changed(termianl_state_packet.state);
+		_terminal_state_changed_sended = false;
+		change_terminal_state(termianl_state_packet.state, false, true);
 
 		processing_result = server_exchange::e_processing_result::success;
 		return true;
@@ -428,8 +484,8 @@ void logic::CLogic::update_device_settings_from_server()
 		_common_settings.SetState((logic::e_terminal_state::work == _settings_from_server.state) ? 1 : 0);
 		changed = true;
 
-		if (_on_terminal_state_changed)
-			_on_terminal_state_changed(_settings_from_server.state);
+		_terminal_state_changed_sended = false;
+		change_terminal_state(_settings_from_server.state, false);
 	}
 
 	if (work_settings.cost_against_midges != _settings_from_server.against_midges)

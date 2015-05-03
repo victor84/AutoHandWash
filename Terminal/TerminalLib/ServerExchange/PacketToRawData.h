@@ -63,6 +63,13 @@ public:
 		return CreateCommonPacketRawData(packet, result_data);
 	}
 
+	// создание сырых дфнных пакета состояния терминала
+	e_convert_result CreateTerminalStatePacketRawData(IN const tag_terminal_state_packet& packet,
+													  OUT tools::data_wrappers::_tag_data_managed& result_data)
+	{
+		return CreateCommonPacketRawData(packet, result_data);
+	}
+
 	// создание сырых данных пакета с записью лога
 	e_convert_result CreateLogRecordPacketRawData(IN const tag_log_record_packet& packet,
 												  OUT tools::data_wrappers::_tag_data_managed& result_data);

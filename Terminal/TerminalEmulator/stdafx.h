@@ -39,6 +39,7 @@
 #include <locale>
 #include <thread>
 #include <map>
+#include <iomanip>
 
 // strings
 #include <tchar.h>
@@ -59,4 +60,4 @@
 // подключаем детектор утечек памяти
 #include "vld.h"
 #pragma comment(lib, "vld.lib")
-#endif
+#endif/**/

@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="vld">
-      <UniqueIdentifier>{c4ed6ded-e328-400d-b092-410bc475f72a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -53,19 +50,5 @@
     <ResourceCompile Include="TerminalEmulator.rc">
       <Filter>Файлы ресурсов</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dbghelp.dll">
-      <Filter>vld</Filter>
-    </None>
-    <None Include="vld.ini">
-      <Filter>vld</Filter>
-    </None>
-    <None Include="vld_x86.dll">
-      <Filter>vld</Filter>
-    </None>
-    <None Include="Microsoft.DTfW.DHL.manifest">
-      <Filter>vld</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -222,6 +222,24 @@ namespace Parsing
             return e_convert_result.success;
         }
 
+        // парсинг пакета состояния терминала
+        public e_convert_result ParseTerminalStatePacket(tag_transport_packet data_to_parse, out tag_terminal_state_packet result_packet)
+        {
+            result_packet = new tag_terminal_state_packet();
+
+            if (e_packet_type.terminal_state != data_to_parse.type)
+                return e_convert_result.invalid_data;
+
+            Byte[] data = data_to_parse.data;
+
+            if (1 != data.Length)
+                return e_convert_result.invalid_data;
+
+            result_packet.state = (e_terminal_state)data[0];
+
+            return e_convert_result.success;
+        }
+
         // парсинг пакета со счётчиками
         public e_convert_result ParseLogRecordPacket(tag_transport_packet data_to_parse, out tag_log_record_packet result_packet)
         {

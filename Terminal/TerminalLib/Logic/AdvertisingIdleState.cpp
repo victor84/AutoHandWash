@@ -62,6 +62,7 @@ logic::CAdvertisingIdleState::CAdvertisingIdleState(CLogicAbstract& logic,
 
 logic::CAdvertisingIdleState::~CAdvertisingIdleState()
 {
+	stop_timer();
 }
 
 void logic::CAdvertisingIdleState::refilled_cache()

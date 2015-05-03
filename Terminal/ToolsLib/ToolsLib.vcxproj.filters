@@ -43,6 +43,9 @@
     <Filter Include="Файлы исходного кода\Threading">
       <UniqueIdentifier>{a9397df7-9859-4611-bd1c-9faef7e36c14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vld">
+      <UniqueIdentifier>{60972f04-2f3c-46e4-a9ed-22ed1bfcfac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -152,5 +155,21 @@
     <ClCompile Include="SerialPort\SerialWrapper.cpp">
       <Filter>Файлы исходного кода\SerialPort</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="visual_leak_detector\dbghelp.dll">
+      <Filter>vld</Filter>
+    </None>
+    <None Include="visual_leak_detector\vld.ini">
+      <Filter>vld</Filter>
+    </None>
+    <None Include="visual_leak_detector\vld_x86.dll">
+      <Filter>vld</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="visual_leak_detector\Microsoft.DTfW.DHL.manifest">
+      <Filter>vld</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>

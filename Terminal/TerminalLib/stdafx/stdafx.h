@@ -52,11 +52,20 @@
 #include <agents.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <time.h>
 
 // com
 #include <comdef.h>
 
 // std
 #include <stdlib.h>
+/*#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>*/
 
 
+/*#ifdef DEBUG
+// подключаем детектор утечек памяти
+#include "vld.h"
+#pragma comment(lib, "vld.lib")
+#endif*/

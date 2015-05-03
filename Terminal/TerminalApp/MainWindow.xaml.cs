@@ -63,7 +63,8 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                MainTabControl.SelectedIndex = number;
+                if (MainTabControl.SelectedIndex != number)
+                    MainTabControl.SelectedIndex = number;
             });
         }
 

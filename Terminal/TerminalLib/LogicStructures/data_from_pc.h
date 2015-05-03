@@ -18,10 +18,14 @@ namespace logic_structures
 	// базовая структура
 	struct tag_base_data_from_pc
 	{
-		const device_exchange::e_command_from_pc command_id;	// id команды
+		const device_exchange::e_command_from_pc	command_id;		// id команды
+		const bool									need_answer;	// нужен ответ на это сообщение
 
 	protected:
-		tag_base_data_from_pc(device_exchange::e_command_from_pc cid) : command_id(cid)
+		tag_base_data_from_pc(device_exchange::e_command_from_pc cid,
+							  bool na)
+							  : command_id(cid)
+							  , need_answer(na)
 		{
 
 		}
@@ -30,7 +34,7 @@ namespace logic_structures
 	// пустая команда
 	struct tag_pc_empty : tag_base_data_from_pc
 	{
-		tag_pc_empty() : tag_base_data_from_pc(device_exchange::e_command_from_pc::empty)
+		tag_pc_empty() : tag_base_data_from_pc(device_exchange::e_command_from_pc::empty, false)
 		{
 
 		}
@@ -48,7 +52,7 @@ namespace logic_structures
 	{
 		byte number;	// номер открываемого клапана
 
-		tag_open_valve() : tag_base_data_from_pc(device_exchange::e_command_from_pc::open_valve)
+		tag_open_valve() : tag_base_data_from_pc(device_exchange::e_command_from_pc::open_valve, true)
 			, number(0)
 		{
 
@@ -67,7 +71,7 @@ namespace logic_structures
 	{
 		byte number;	// номер закрываемого клапана
 
-		tag_close_valve() : tag_base_data_from_pc(device_exchange::e_command_from_pc::close_valve)
+		tag_close_valve() : tag_base_data_from_pc(device_exchange::e_command_from_pc::close_valve, true)
 			, number(0)
 		{
 
@@ -86,7 +90,7 @@ namespace logic_structures
 	{
 		byte number;	// количество выдаваемых монет
 
-		tag_issue_coins() : tag_base_data_from_pc(device_exchange::e_command_from_pc::issue_coins)
+		tag_issue_coins() : tag_base_data_from_pc(device_exchange::e_command_from_pc::issue_coins, true)
 			, number(0)
 		{
 
@@ -103,7 +107,7 @@ namespace logic_structures
 	// выдать дисконтную карту
 	struct tag_issue_discount_card : tag_base_data_from_pc
 	{
-		tag_issue_discount_card() : tag_base_data_from_pc(device_exchange::e_command_from_pc::issue_discount_card)
+		tag_issue_discount_card() : tag_base_data_from_pc(device_exchange::e_command_from_pc::issue_discount_card, true)
 		{
 
 		}
@@ -121,7 +125,7 @@ namespace logic_structures
 	{
 		byte cell_number;	// номер ячейки
 
-		tag_read_eeprom() : tag_base_data_from_pc(device_exchange::e_command_from_pc::read_eeprom)
+		tag_read_eeprom() : tag_base_data_from_pc(device_exchange::e_command_from_pc::read_eeprom, true)
 			, cell_number(0)
 		{
 
@@ -141,7 +145,7 @@ namespace logic_structures
 		byte		cell_number;	// номер ячейки
 		uint32_t	value;			// значение
 
-		tag_write_eeprom() : tag_base_data_from_pc(device_exchange::e_command_from_pc::write_eeprom)
+		tag_write_eeprom() : tag_base_data_from_pc(device_exchange::e_command_from_pc::write_eeprom, true)
 			, cell_number(0)
 			, value(0)
 		{
@@ -159,7 +163,7 @@ namespace logic_structures
 	// запросить статус всех кнопок
 	struct tag_buttons_status : tag_base_data_from_pc
 	{
-		tag_buttons_status() : tag_base_data_from_pc(device_exchange::e_command_from_pc::buttons_status)
+		tag_buttons_status() : tag_base_data_from_pc(device_exchange::e_command_from_pc::buttons_status, true)
 		{
 
 		}

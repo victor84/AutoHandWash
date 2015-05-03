@@ -103,14 +103,6 @@
   <ItemGroup>
     <ResourceCompile Include="TerminalTest.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="dbghelp.dll" />
-    <None Include="vld.ini" />
-    <None Include="vld_x86.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.DTfW.DHL.manifest" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -54,13 +54,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;..\TerminalLib\ServerExchange;..\TerminalLib\DeviceExchange;..\TerminalLib\LogicStructures;..\TerminalLib\Settings;..\TerminalLib\Logic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ToolsLib;..\ToolsLib\Logging;..\ToolsLib\Networking;..\ToolsLib\Threading;..\ToolsLib\Settings;..\ToolsLib\SerialPort;..\ToolsLib\visual_leak_detector;..\TerminalLib\ServerExchange;..\TerminalLib\DeviceExchange;..\TerminalLib\LogicStructures;..\TerminalLib\Settings;..\TerminalLib\Logic;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);..\ToolsLib\visual_leak_detector;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TerminalLib.lib;ToolsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ToolsLib.lib;TerminalLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,16 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TerminalEmulator.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dbghelp.dll" />
-    <None Include="vld.ini" />
-    <None Include="vld_x86.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.DTfW.DHL.manifest">
-      <FileType>Document</FileType>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

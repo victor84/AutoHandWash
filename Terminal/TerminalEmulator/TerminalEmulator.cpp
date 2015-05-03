@@ -15,7 +15,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // Единственный объект приложения
 
 CWinApp theApp;
@@ -31,7 +30,7 @@ tools::lock_vector<std::wstring> log_messages;
 CDevicePacketConvertor<tag_packet_from_device> _device_packet_convertor;
 
 // CTestLogic test_logic;
-std::unique_ptr<logic::ILogic> test_logic(new logic::CLogic());
+logic::ILogic* test_logic = new logic::CLogic();
 
 void Initialize();
 void PrepareExit();
@@ -113,6 +112,7 @@ void Initialize()
 void PrepareExit()
 {
 	test_logic->Stop();
+	delete test_logic;
 
 	delete settings_loader;
 	delete tr_error;
