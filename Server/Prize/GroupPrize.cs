@@ -10,6 +10,10 @@ namespace Server.Prize
 
         public volatile bool WaitConfirm;
 
+        public Guid GroupId { get; set; }
+
+        public string GroupName { get; set; }
+
         public Guid LastTerminalId { get; set; }
 
         public uint Fund 

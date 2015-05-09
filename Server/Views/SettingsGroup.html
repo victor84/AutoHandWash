@@ -39,19 +39,19 @@
                     <div class="control-group form-group">
                         <div class="controls">
                             <label>Процент:</label>
-                            <input type="number" min="0" max="100" name="PercentForPresent" class="form-control" value="@Model.AdminPage.SettingsGroup.PercentForPresent">
+                            <input type="number" min="0" max="100" name="PercentForPresent" class="form-control" value="@Model.AdminPage.SettingsGroup.PercentForPresent" required>
                         </div>
                     </div>
                     <div class="control-group form-group">
                         <div class="controls">
-                            <label>Нижняя граница для генерации случайной суммы:</label>
-                            <input type="number" min="0" max="1000000" name="LowerBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.LowerBoundForRandomSum">
+                            <label>Нижняя граница для генерации призовой величины:</label>
+                            <input id="LowerBoundForRandomSum" type="number" min="0" step="10" max="1000" name="LowerBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.LowerBoundForRandomSum" required>
                         </div>
                     </div>
                     <div class="control-group form-group">
                         <div class="controls">
-                            <label>Верхняя граница для генерации случайной суммы:</label>
-                            <input type="number" min="@Model.AdminPage.SettingsGroup.LowerBoundForRandomSum" max="10000000" name="UpperBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.UpperBoundForRandomSum">
+                            <label>Верхняя граница для генерации призовой величины:</label>
+                            <input id="UpperBoundForRandomSum" type="number" min="0" step="10" max="1000" name="UpperBoundForRandomSum" class="form-control" value="@Model.AdminPage.SettingsGroup.UpperBoundForRandomSum" required>
                         </div>
                     </div>
 
