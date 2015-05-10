@@ -12,6 +12,7 @@ typedef void(__stdcall *OnDistributionPrizePtr)(int16_t, byte);
 typedef void(__stdcall *OnEmptyHopperPtr)(void);
 typedef void(__stdcall *OnShowAdvertisingPtr)(void);
 typedef void(__stdcall *OnTermianlStateChangedPtr)(logic::e_terminal_state);
+typedef void(__stdcall *OnShowCountersPtr)(std::vector<logic::tag_service_counter>);
 
 class CLogicPimpl::CLogicIntern
 {
@@ -29,6 +30,7 @@ class CLogicPimpl::CLogicIntern
 	OnEmptyHopperPtr _on_empty_hopper_ptr;
 	OnShowAdvertisingPtr _on_show_advertising_ptr;
 	OnTermianlStateChangedPtr _on_terminal_state_changed_ptr;
+	OnShowCountersPtr _on_show_counters_ptr;
 
 public:
 	CLogicIntern()
@@ -41,6 +43,7 @@ public:
 		, _on_empty_hopper_ptr(nullptr)
 		, _on_show_advertising_ptr(nullptr)
 		, _on_terminal_state_changed_ptr(nullptr)
+		, _on_show_counters_ptr(nullptr)
 		, _logic(new logic::CLogic())
 	{
 		setlocale(LC_ALL, "Russian");
@@ -100,6 +103,12 @@ public:
 		{
 			if (nullptr != _on_terminal_state_changed_ptr)
 				_on_terminal_state_changed_ptr(state);
+		});
+
+		_logic->SetOnShowCountersFn([this](std::vector<logic::tag_service_counter> counters)
+		{
+			if (nullptr != _on_show_counters_ptr)
+				_on_show_counters_ptr(counters);
 		});
 	}
 
@@ -165,6 +174,11 @@ public:
 	{
 		_on_terminal_state_changed_ptr = static_cast<OnTermianlStateChangedPtr>(ptr);
 	}
+
+	void SetOnShowConters(void* ptr)
+	{
+		_on_show_counters_ptr = static_cast<OnShowCountersPtr>(ptr);
+	}
 };
 
 CLogicPimpl::CLogicPimpl()
@@ -229,5 +243,10 @@ void CLogicPimpl::SetOnShowAdvertisingFn(void* ptr)
 void CLogicPimpl::SetOnTerminalStateChangedFn(void* ptr)
 {
 	_impl->SetOnTerminalStateChanged(ptr);
+}
+
+void CLogicPimpl::SetOnShowCountersFn(void* ptr)
+{
+	_impl->SetOnShowConters(ptr);
 }
 

@@ -63,6 +63,9 @@ public:
 	// вызывать при активации состояния
 	virtual void activate() = 0;
 
+	// вызывать при выходе из состояния
+	virtual void deactivate() = 0;
+
 	// пополнен счёт
 	virtual void refilled_cache() = 0;
 
@@ -83,7 +86,6 @@ public:
 
 	// ошибка от устройства
 	virtual void device_error(logic_structures::e_device_error_code code) = 0;
-
 };
 
 
@@ -135,6 +137,12 @@ public:
 
 	// показать рекламный ролик
 	virtual void show_advertising() = 0;
+
+	// запросить состояние всех кнопок
+	virtual void read_buttons_status() = 0;
+
+	// показать значения счётчиков
+	virtual void show_counters() = 0;
 };
 
 #pragma pack(push, 4)

@@ -258,3 +258,8 @@ void logic::CExecutingServiceState::activate()
 {
 	
 }
+
+void logic::CExecutingServiceState::deactivate()
+{
+	
+}

@@ -16,23 +16,39 @@ class CAdvertisingIdleState : public IState
 	// модуль общих настроек терминала
 	logic_settings::CCommonSettings& _common_settings;
 
+#pragma region Показ рекламы
 	// таймер перед показом рекламы
-	Concurrency::timer<int32_t>* _timer;
+	Concurrency::timer<int32_t>* _idle_timer;
 
-	// вызывается при срабатывании таймера
-	Concurrency::call<int32_t> _on_timer_call;
+	// вызывается при срабатывании таймера перед показом рекламы
+	Concurrency::call<int32_t> _on_idle_timer_call;
+
+	// таймер перед показом рекламы сработал
+	void on_idle_timer(uint32_t);
+
+	// остановка таймера перед показом рекламы
+	void stop_idle_timer();
+#pragma endregion
+
+#pragma region Проверка нажатия 2-х кнопок для показа счётчиков
+	// таймер проверки нажатия 2-х кнопок
+	Concurrency::timer<int32_t>* _counters_timer;
+
+	// вызывается при срабатывании таймера проверки нажатия 2-х кнопок
+	Concurrency::call<int32_t> _on_counters_timer_call;
+
+	// таймер проверки нажатия 2-х кнопок сработал
+	void on_counters_timer(uint32_t);
+
+	// остановка таймера проверки нажатия 2-х кнопок сработал
+	void stop_counters_timer();
+#pragma endregion
 
 	// прочитать и записать настройки по-умолчанию стоимости услуг
 	bool read_services_cost(tag_device_settings& settings);
 
 	// чтение настроек терминала
 	bool read_terminal_settings(tag_device_settings& settings);
-
-	// таймер сработал
-	void on_timer(uint32_t);
-
-	// остановка таймера
-	void stop_timer();
 
 public:
 	CAdvertisingIdleState(CLogicAbstract& logic, 
@@ -54,7 +70,11 @@ public:
 
 	virtual void device_error(logic_structures::e_device_error_code code) final;
 
-	virtual void activate() override;
+	virtual void activate() final;
+
+	void buttons_state(const logic_structures::tag_buttons_state& buttons_state);
+
+	virtual void deactivate() final;
 
 };
 }

@@ -26,6 +26,49 @@
                     </Viewbox>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="CountersTab" Header="Показания счётчиков">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>  
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.Row="0">
+                        <TextBlock x:Name="Service1TextBlock" Text="Услуга 1: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="1">
+                        <TextBlock x:Name="Service2TextBlock" Text="Услуга 2: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="2">
+                        <TextBlock x:Name="Service3TextBlock" Text="Услуга 3: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="3">
+                        <TextBlock x:Name="Service4TextBlock" Text="Услуга 4: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="4">
+                        <TextBlock x:Name="Service5TextBlock" Text="Услуга 5: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="5">
+                        <TextBlock x:Name="Service6TextBlock" Text="Услуга 6: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="6">
+                        <TextBlock x:Name="Service7TextBlock" Text="Услуга 7: 1234"/>
+                    </Viewbox>
+                    <Viewbox Grid.Row="7">
+                        <TextBlock x:Name="Service8TextBlock" Text="Услуга 8: 1234"/>
+                    </Viewbox>
+                    
+                    <Viewbox Grid.Row="8">
+                        <TextBlock Text="НАЗАД"/>
+                    </Viewbox>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>

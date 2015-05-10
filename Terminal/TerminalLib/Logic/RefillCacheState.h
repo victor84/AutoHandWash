@@ -35,5 +35,7 @@ public:
 
 	virtual void activate() override;
 
+	virtual void deactivate() override;
+
 };
 }

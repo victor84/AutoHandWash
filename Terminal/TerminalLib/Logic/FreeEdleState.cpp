@@ -108,3 +108,8 @@ void logic::CFreeEdleState::activate()
 {
 	
 }
+
+void logic::CFreeEdleState::deactivate()
+{
+	
+}

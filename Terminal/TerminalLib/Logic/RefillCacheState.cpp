@@ -89,3 +89,8 @@ void logic::CRefillCacheState::activate()
 {
 	
 }
+
+void logic::CRefillCacheState::deactivate()
+{
+	
+}
