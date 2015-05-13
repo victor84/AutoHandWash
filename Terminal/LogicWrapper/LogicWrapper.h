@@ -53,6 +53,13 @@ namespace LogicWrapper
 		e_service_id	id;				// идентификатор услуги
 	};
 
+	// счётчик работы услуги
+	public ref struct tag_service_counter
+	{
+		tag_service_info^	service;	// сервис
+		UInt16				counter;	// значение счётчика
+	};
+
 	// делегат, вызываемый при изменении времени и денег
 	public delegate void OnTimeAndMoneyChangedDelegate(UInt16 time, UInt16 money);
 
@@ -80,6 +87,9 @@ namespace LogicWrapper
 	// делегат, вызываемый при изменении состояния терминала
 	public delegate void OnTerminalStateChangedDelegate(e_terminal_state state);
 
+	// делегат, вызываемы для показа значений счётчиков
+	public delegate void OnShowCountersDelegate(System::Collections::Generic::IEnumerable<tag_service_counter^>^ counters);
+
 	// Логика
 	public ref class Logic
 	{
@@ -91,7 +101,11 @@ namespace LogicWrapper
 
 		delegate void OnTerminalStateChangedDelegateInner(logic::e_terminal_state state);
 
+		delegate void OnShowCountersDelegateInner(std::vector<logic::tag_service_counter> counters);
+
 		CLogicPimpl* _logic;
+
+		System::Collections::Generic::List<tag_service_info^>^ _servicesInfo;
 		
 		OnTimeAndMoneyChangedDelegate^ _on_time_and_money_changed;
 		
@@ -115,6 +129,9 @@ namespace LogicWrapper
 		OnTerminalStateChangedDelegate^ _on_terminal_state_changed;
 		OnTerminalStateChangedDelegateInner^ _on_terminal_state_changed_inner;
 
+		OnShowCountersDelegate^ _on_show_counters;
+		OnShowCountersDelegateInner^ _on_show_counters_inner;
+
 		GCHandle _tmc_handle;
 		GCHandle _sc_handle;
 		GCHandle _stc_handle;
@@ -124,6 +141,7 @@ namespace LogicWrapper
 		GCHandle _eh_handle;
 		GCHandle _sa_handle;
 		GCHandle _tsc_handle;
+		GCHandle _sco_handle;
 
 		void OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name);
 
@@ -131,7 +149,11 @@ namespace LogicWrapper
 
 		void OnServiceInfoReadedInner(std::vector<logic::tag_service_info> collection);
 
+		System::Collections::Generic::List<tag_service_info^>^ ConvertServicesInfo(std::vector<logic::tag_service_info> collection);
+
 		void OnTerminalStateChangedInner(logic::e_terminal_state state);
+
+		void OnShowCountersInner(std::vector<logic::tag_service_counter> counters);
 
 	public:
 		Logic();
@@ -155,6 +177,8 @@ namespace LogicWrapper
 		void SetDelegate(OnShowAdvertisingDelegate^ on_show_advertising);
 
 		void SetDelegate(OnTerminalStateChangedDelegate^ on_terminal_state_changed);
+
+		void SetDelegate(OnShowCountersDelegate^ on_show_counters);
 
 		bool Start();
 

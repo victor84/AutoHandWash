@@ -52,6 +52,8 @@ namespace TerminalApp
         /// </summary>
         LogicWrapper.e_terminal_state _currentTerminalState;
 
+        Int32 _currentPageNumber;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -65,7 +67,13 @@ namespace TerminalApp
             {
                 if (MainTabControl.SelectedIndex != number)
                     MainTabControl.SelectedIndex = number;
+                _currentPageNumber = number;
             });
+        }
+
+        Int32 GetCurrentPage()
+        {
+            return _currentPageNumber;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -85,7 +93,9 @@ namespace TerminalApp
             prizePage.SetShowPageFn(ShowPage);
 
             _logic.SetDelegate(servicePage.OnTimeAndMoneyChanged);
-            _logic.SetDelegate(servicePage.OnServiceChanged);
+            LogicWrapper.OnServiceChangedDelegate serviceChangedDelegate = new LogicWrapper.OnServiceChangedDelegate(servicePage.OnServiceChanged);
+            serviceChangedDelegate += ServiceChanged;
+            _logic.SetDelegate(serviceChangedDelegate);
 
             LogicWrapper.OnStateChangedDelegate stateChangedDelegate = new LogicWrapper.OnStateChangedDelegate(OnStateChanged);
             stateChangedDelegate += servicePage.OnStateChanged;
@@ -101,12 +111,53 @@ namespace TerminalApp
 
             _logic.SetDelegate(OnTerminalStateChanged);
 
+            _logic.SetDelegate(ShowCounters);
+
             _logic.Start();
 
 #if !DEBUG
             ShowFullScreen();
 #endif
 
+        }
+
+        void ServiceChanged(LogicWrapper.e_service_id service_id, string service_name)
+        {
+            if (((4 == GetCurrentPage()) || (1 == GetCurrentPage())) 
+                && (service_id == LogicWrapper.e_service_id.stop))
+            {
+                ShowPage(0);
+            }
+        }
+
+        void ShowCounters(IEnumerable<LogicWrapper.tag_service_counter> counters)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                Service1TextBlock.Text = GetServiceCounterInfo(counters, 0);
+                Service2TextBlock.Text = GetServiceCounterInfo(counters, 1);
+                Service3TextBlock.Text = GetServiceCounterInfo(counters, 2);
+                Service4TextBlock.Text = GetServiceCounterInfo(counters, 3);
+                Service5TextBlock.Text = GetServiceCounterInfo(counters, 4);
+                Service6TextBlock.Text = GetServiceCounterInfo(counters, 5);
+                Service7TextBlock.Text = GetServiceCounterInfo(counters, 6);
+                Service8TextBlock.Text = GetServiceCounterInfo(counters, 7);
+            });
+
+            ShowPage(4);
+        }
+
+        String GetServiceCounterInfo(IEnumerable<LogicWrapper.tag_service_counter> counters, Int32 num)
+        {
+            String result = "";
+
+            if (num >= counters.Count())
+                return result;
+
+            LogicWrapper.tag_service_counter service_counter = counters.ElementAt(num);
+
+            result = String.Format("{0}: {1}", service_counter.service.service_name, service_counter.counter.ToString());
+            return result;
         }
 
         void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
@@ -186,7 +237,7 @@ namespace TerminalApp
 
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                MainTabControl.SelectedIndex = 1;
+                ShowPage(1);
                 VideoPlayer.Play();
             });
         }

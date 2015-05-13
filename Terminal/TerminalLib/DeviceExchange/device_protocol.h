@@ -101,7 +101,7 @@ enum class e_command_from_pc : byte
 	write_eeprom = 0xb0,
 
 	// CMD=0xC0 Чтение статуса всех кнопок.
-	buttons_status
+	buttons_status = 0xc0
 };
 
 /******************************************************************************************

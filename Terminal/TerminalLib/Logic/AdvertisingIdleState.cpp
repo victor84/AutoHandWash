@@ -3,7 +3,6 @@
 #include "RefillCacheState.h"
 #include "SettingsWorkState.h"
 
-
 bool logic::CAdvertisingIdleState::read_services_cost(tag_device_settings& settings)
 {
 	settings.cost_against_midges = _correspond_settings.GetServiceCost(e_service_name::against_midges);
@@ -31,20 +30,35 @@ bool logic::CAdvertisingIdleState::read_terminal_settings(tag_device_settings& s
 	return true;
 }
 
-void logic::CAdvertisingIdleState::on_timer(uint32_t)
+void logic::CAdvertisingIdleState::on_idle_timer(uint32_t)
 {
-	stop_timer();
+	stop_idle_timer();
 
 	_logic.show_advertising();
 }
 
-void logic::CAdvertisingIdleState::stop_timer()
+void logic::CAdvertisingIdleState::stop_idle_timer()
 {
-	if (nullptr != _timer)
+	if (nullptr != _idle_timer)
 	{
-		_timer->stop();
-		delete _timer;
-		_timer = nullptr;
+		_idle_timer->stop();
+		delete _idle_timer;
+		_idle_timer = nullptr;
+	}
+}
+
+void logic::CAdvertisingIdleState::on_counters_timer(uint32_t)
+{
+	_logic.read_buttons_status();
+}
+
+void logic::CAdvertisingIdleState::stop_counters_timer()
+{
+	if (nullptr != _counters_timer)
+	{
+		_counters_timer->stop();
+		delete _counters_timer;
+		_counters_timer = nullptr;
 	}
 }
 
@@ -54,20 +68,23 @@ logic::CAdvertisingIdleState::CAdvertisingIdleState(CLogicAbstract& logic,
 	: IState(logic, e_state::advertising_idle)
 	, _correspond_settings(correspond_settings)
 	, _common_settings(common_settings)
-	, _timer(nullptr)
-	, _on_timer_call(std::bind(std::mem_fn(&CAdvertisingIdleState::on_timer), this, std::placeholders::_1))
+	, _idle_timer(nullptr)
+	, _on_idle_timer_call(std::bind(std::mem_fn(&CAdvertisingIdleState::on_idle_timer), this, std::placeholders::_1))
+	, _counters_timer(nullptr)
+	, _on_counters_timer_call(std::bind(std::mem_fn(&CAdvertisingIdleState::on_counters_timer), this, std::placeholders::_1))
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 logic::CAdvertisingIdleState::~CAdvertisingIdleState()
 {
-	stop_timer();
+	stop_idle_timer();
+	stop_counters_timer();
 }
 
 void logic::CAdvertisingIdleState::refilled_cache()
 {
-	stop_timer();
+	stop_idle_timer();
 
 	CRefillCacheState* refill_cache_state = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
 
@@ -117,18 +134,46 @@ void logic::CAdvertisingIdleState::device_error(logic_structures::e_device_error
 
 void logic::CAdvertisingIdleState::activate()
 {
-	stop_timer();
+	stop_idle_timer();
 
 	uint32_t period = _common_settings.GetPauseBeforeAdvertising();
 
 	if (0 != period)
 	{
 		period = period * 60 * 1000;
-		_timer = new Concurrency::timer<int32_t>(period, 0, &_on_timer_call, false);
-		_timer->start();
+		_idle_timer = new Concurrency::timer<int32_t>(period, 0, &_on_idle_timer_call, false);
+		_idle_timer->start();
 	}
 	else
 	{
 		_logic.show_advertising();
 	}
+
+	stop_counters_timer();
+
+	_counters_timer = new Concurrency::timer<int32_t>(3 * 1000, 0, &_on_counters_timer_call, true);
+	_counters_timer->start();
+}
+
+void logic::CAdvertisingIdleState::buttons_state(const logic_structures::tag_buttons_state& buttons_state)
+{
+	byte sum = static_cast<byte>(buttons_state.button0) +
+				static_cast<byte>(buttons_state.button1) +
+				static_cast<byte>(buttons_state.button2) +
+				static_cast<byte>(buttons_state.button3) +
+				static_cast<byte>(buttons_state.button4) +
+				static_cast<byte>(buttons_state.button5) +
+				static_cast<byte>(buttons_state.button6) +
+				static_cast<byte>(buttons_state.button7);
+
+	if (sum > 1)
+	{
+		stop_idle_timer();
+		_logic.show_counters();
+	}
+}
+
+void logic::CAdvertisingIdleState::deactivate()
+{
+	stop_counters_timer();
 }

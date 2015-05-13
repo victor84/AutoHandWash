@@ -155,6 +155,11 @@ void logic::CSettingsWorkState::activate()
 	
 }
 
+void logic::CSettingsWorkState::deactivate()
+{
+	
+}
+
 void logic::CSettingsWorkState::device_error(logic_structures::e_device_error_code code)
 {
 

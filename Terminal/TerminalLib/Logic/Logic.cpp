@@ -72,7 +72,7 @@ tools::e_init_state logic::CLogic::init()
 	return _init_state;
 }
 
-void logic::CLogic::send_services_info()
+std::vector<logic::tag_service_info> logic::CLogic::get_services_info()
 {
 	std::vector<tag_service_info> result;
 
@@ -92,6 +92,13 @@ void logic::CLogic::send_services_info()
 			result.push_back(si);
 		}
 	}
+
+	return result;
+}
+
+void logic::CLogic::send_services_info()
+{
+	std::vector<tag_service_info> result = get_services_info();
 
 	if (false == result.empty())
 	{
@@ -262,6 +269,51 @@ logic::CLogic::~CLogic()
 {
 }
 
+void logic::CLogic::SetOnShowCountersFn(std::function<void(std::vector<logic::tag_service_counter>) > fn)
+{
+	_on_show_counters = fn;
+}
+
+void logic::CLogic::show_counters()
+{
+	if (!_on_show_counters)
+		return;
+
+	std::vector<logic::tag_service_counter> counters;
+
+	std::vector<tag_service_info> services = get_services_info();
+
+	if (true == services.empty())
+		return;
+
+	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
+	logic::tag_device_settings settings = sws->get_settings();
+
+	for (tag_service_info si : services)
+	{
+		tag_service_counter sc;
+
+		sc.service = si;
+
+		switch (si.id)
+		{
+			case e_service_name::against_midges:			sc.counter = static_cast<uint16_t>(settings.time_against_midges);			break;
+			case e_service_name::air:						sc.counter = static_cast<uint16_t>(settings.time_air);						break;
+			case e_service_name::foam:						sc.counter = static_cast<uint16_t>(settings.time_foam);						break;
+			case e_service_name::osmosis:					sc.counter = static_cast<uint16_t>(settings.time_osmosis);					break;
+			case e_service_name::pressurized_water:			sc.counter = static_cast<uint16_t>(settings.time_pressurized_water);		break;
+			case e_service_name::vacuum_cleaner:			sc.counter = static_cast<uint16_t>(settings.time_vacuum_cleaner);			break;
+			case e_service_name::water_without_pressure:	sc.counter = static_cast<uint16_t>(settings.time_water_without_pressure);	break;
+			case e_service_name::wax:						sc.counter = static_cast<uint16_t>(settings.time_wax);						break;
+			default: continue;
+		}
+
+		counters.push_back(sc);
+	}
+
+	_on_show_counters(counters);
+}
+
 void logic::CLogic::SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state) > fn)
 {
 	_on_terminal_state_changed = fn;
@@ -271,6 +323,13 @@ void logic::CLogic::show_advertising()
 {
 	if (_on_show_advertising)
 		_on_show_advertising();
+}
+
+void logic::CLogic::read_buttons_status()
+{
+	std::shared_ptr<logic_structures::tag_buttons_status> bs_message = std::make_shared<logic_structures::tag_buttons_status>();
+
+	_packets_to_device.push_back(bs_message);
 }
 
 void logic::CLogic::SetOnShowAdvertisingFn(std::function<void(void) > fn)
@@ -633,6 +692,9 @@ void logic::CLogic::time_and_money(int16_t time, int16_t money)
 
 void logic::CLogic::set_state(e_state state)
 {
+	if (_current_state)
+		_current_state->deactivate();
+
 	_current_state = get_state(state);
 
 	// если переходим в режим рекламного простоя и 
@@ -668,6 +730,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	logic_structures::tag_data_from_eeprom* dfe = nullptr;
 	CDistributionOfPrizeState* dws = nullptr;
 	logic_structures::tag_hopper_issue_coin* hic = nullptr;
+	logic_structures::tag_buttons_state* bs = nullptr;
+	CAdvertisingIdleState* ais = nullptr;
 
 	switch (message->command_id)
 	{
@@ -701,6 +765,15 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 
 		case(device_exchange::e_command_from_device::command_confirmation) :
 			_current_state->device_confirm();
+			break;
+
+		case(device_exchange::e_command_from_device::buttons_state) :
+			bs = get_device_message_pointer<logic_structures::tag_buttons_state>(message);
+			if (e_state::advertising_idle == _current_state->get_this_state())
+			{
+				ais = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);
+				ais->buttons_state(*bs);
+			}
 			break;
 	}
 }

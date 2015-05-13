@@ -4,6 +4,7 @@
 
 #include "LogicWrapper.h"
 
+using namespace System::Collections::Generic;
 
 void LogicWrapper::Logic::OnServiceChangedInner(logic::e_service_name service_id, const wchar_t* service_name)
 {
@@ -31,7 +32,14 @@ void LogicWrapper::Logic::OnServiceInfoReadedInner(std::vector<logic::tag_servic
 	if (nullptr == _on_service_info_readed)
 		return;
 
-	System::Collections::Generic::List<tag_service_info^>^ result = gcnew System::Collections::Generic::List<tag_service_info^>();
+	_servicesInfo = ConvertServicesInfo(collection);
+
+	_on_service_info_readed(_servicesInfo);
+}
+
+List<LogicWrapper::tag_service_info^>^ LogicWrapper::Logic::ConvertServicesInfo(std::vector<logic::tag_service_info> collection)
+{
+	List<tag_service_info^>^ result = gcnew List<tag_service_info^>();
 
 	for (logic::tag_service_info elem : collection)
 	{
@@ -45,7 +53,7 @@ void LogicWrapper::Logic::OnServiceInfoReadedInner(std::vector<logic::tag_servic
 		result->Add(man_elem);
 	}
 
-	_on_service_info_readed(result);
+	return result;
 }
 
 void LogicWrapper::Logic::OnTerminalStateChangedInner(logic::e_terminal_state state)
@@ -53,9 +61,44 @@ void LogicWrapper::Logic::OnTerminalStateChangedInner(logic::e_terminal_state st
 	if (nullptr == _on_terminal_state_changed)
 		return;
 
+	if (nullptr == _servicesInfo)
+		return;
+
 	e_terminal_state terminal_state = static_cast<e_terminal_state>(state);
 
 	_on_terminal_state_changed(terminal_state);
+}
+
+void LogicWrapper::Logic::OnShowCountersInner(std::vector<logic::tag_service_counter> counters)
+{
+	if (nullptr == _on_show_counters)
+		return;
+
+	List<tag_service_counter^>^ result = gcnew List < tag_service_counter^ >();
+
+	for (logic::tag_service_counter counter : counters)
+	{
+		tag_service_info^ si = nullptr;
+
+		for each (tag_service_info^ s in _servicesInfo)
+		{
+			if (s->id == static_cast<e_service_id>(counter.service.id))
+			{
+				si = s;
+				break;
+			}
+		} 
+
+		if (nullptr == si)
+			break;
+
+		tag_service_counter^ c = gcnew tag_service_counter();
+		c->service = si;
+		c->counter = counter.counter;
+		result->Add(c);
+	}
+
+	_on_show_counters(result);
 }
 
 LogicWrapper::Logic::Logic()
@@ -64,12 +107,14 @@ LogicWrapper::Logic::Logic()
 	, _on_state_changed(nullptr)
 	, _on_cache_refilled(nullptr)
 	, _on_service_info_readed(nullptr)
+	, _servicesInfo(nullptr)
 {
 	_logic = new CLogicPimpl();
 	_on_service_changed_inner = gcnew OnServiceChangedDelegateInner(this, &Logic::OnServiceChangedInner);
 	_on_state_changed_inner = gcnew OnStateChangedDelegateInner(this, &Logic::OnStateChangedInner);
 	_on_service_info_readed_inner = gcnew OnServiceInfoReadedDelegateInner(this, &Logic::OnServiceInfoReadedInner);
 	_on_terminal_state_changed_inner = gcnew OnTerminalStateChangedDelegateInner(this, &Logic::OnTerminalStateChangedInner);
+	_on_show_counters_inner = gcnew OnShowCountersDelegateInner(this, &Logic::OnShowCountersInner);
 }
 
 LogicWrapper::Logic::~Logic()
@@ -85,6 +130,16 @@ void LogicWrapper::Logic::SetDelegate(OnTimeAndMoneyChangedDelegate^ on_time_and
 		_tmc_handle = GCHandle::Alloc(_on_time_and_money_changed);
 
 	_logic->SetOnTimeAndMoneyFn(Marshal::GetFunctionPointerForDelegate(_on_time_and_money_changed).ToPointer());
+}
+
+void LogicWrapper::Logic::SetDelegate(OnShowCountersDelegate^ on_show_counters)
+{
+	_on_show_counters = on_show_counters;
+
+	if (false == _sco_handle.IsAllocated)
+		_sco_handle = GCHandle::Alloc(_on_show_counters_inner);
+
+	_logic->SetOnShowCountersFn(Marshal::GetFunctionPointerForDelegate(_on_show_counters_inner).ToPointer());
 }
 
 void LogicWrapper::Logic::SetDelegate(OnTerminalStateChangedDelegate^ on_terminal_state_changed)

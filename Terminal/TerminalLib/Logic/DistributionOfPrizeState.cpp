@@ -85,3 +85,8 @@ void logic::CDistributionOfPrizeState::activate()
 {
 	
 }
+
+void logic::CDistributionOfPrizeState::deactivate()
+{
+
+}

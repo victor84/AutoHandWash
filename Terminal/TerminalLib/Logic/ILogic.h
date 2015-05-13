@@ -52,6 +52,10 @@ struct ILogic
 	// изменении состояние терминала
 	virtual void SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state)> fn) = 0;
 
+	// назначение функтора, вызываемого при
+	// необходимости отображения счётчиков
+	virtual void SetOnShowCountersFn(std::function<void(std::vector<tag_service_counter>)> fn) = 0;
+
 	virtual ~ILogic()
 	{
 

@@ -102,6 +102,9 @@ class CLogic : CLogicAbstract, public ILogic
 	// вызывается при изменении состояния терминала
 	std::function<void(logic::e_terminal_state)> _on_terminal_state_changed;
 
+	// вызывается для показа счётчиков
+	std::function<void(std::vector<logic::tag_service_counter>)> _on_show_counters;
+
 	// флаг, что устройство недоступно
 	volatile bool _device_not_available;
 
@@ -116,6 +119,9 @@ class CLogic : CLogicAbstract, public ILogic
 
 	// инициализация
 	tools::e_init_state init();
+
+	// получить информацию об услугах
+	std::vector<tag_service_info> get_services_info();
 
 	// отправка получателю информации об услугах
 	void send_services_info();
@@ -231,6 +237,10 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void show_advertising() final;
 
+	virtual void read_buttons_status() final;
+
+	virtual void show_counters() final;
+
 	// запуск в работу
 	virtual bool Start() final;
 
@@ -254,6 +264,8 @@ class CLogic : CLogicAbstract, public ILogic
 	virtual void SetOnShowAdvertisingFn(std::function<void(void) > fn) final;
 
 	virtual void SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state) > fn) final;
+
+	virtual void SetOnShowCountersFn(std::function<void(std::vector<logic::tag_service_counter>) > fn) final;
 
 public:
 	CLogic();

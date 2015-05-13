@@ -133,3 +133,8 @@ void logic::CPaidIdleState::activate()
 
 	_tr_error->trace_message(_T("Начало платного простоя"));
 }
+
+void logic::CPaidIdleState::deactivate()
+{
+	
+}

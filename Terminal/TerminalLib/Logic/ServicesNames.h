@@ -56,4 +56,11 @@ struct tag_service_info
 	e_service_name	id;				// идентификатор услуги
 };
 
+// счётчик работы услуги
+struct tag_service_counter
+{
+	tag_service_info	service;	// сервис
+	uint16_t			counter;	// значение счётчика
+};
+
 }
