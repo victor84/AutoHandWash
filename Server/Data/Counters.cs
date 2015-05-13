@@ -51,6 +51,9 @@ namespace Server.Data
                     case 3:
                         result = "Заблокирован";
                         break;
+                    default:
+                        result = "Неизвестно";
+                        break;
                 }
                 return result;
             }

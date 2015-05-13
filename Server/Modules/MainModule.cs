@@ -59,13 +59,17 @@ namespace Server.Modules
                             foreach (var terminal in terminalsOfGroup)
                             {
                                 var counters = Counters.GetCountersByTerminal(terminal.Id);
+                                TerminalCounters terminalCounters = new TerminalCounters();
+                                terminalCounters.TerminalName = terminal.TerminalName;
                                 if (counters != null)
                                 {
-                                    TerminalCounters terminalCounters = new TerminalCounters();
-                                    terminalCounters.TerminalName = terminal.TerminalName;
                                     terminalCounters.Counters = counters;
-                                    listTerminalCounters.Add(terminalCounters);
                                 }
+                                else
+                                {
+                                    terminalCounters.Counters = new Counters() { TerminalId = terminal.Id, State = 255 };
+                                }
+                                listTerminalCounters.Add(terminalCounters);
                             }
                             dictionaryTerminalCounters.Add(group, listTerminalCounters);
                         }
