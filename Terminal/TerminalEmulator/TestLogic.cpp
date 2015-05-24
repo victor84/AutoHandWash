@@ -30,15 +30,16 @@ void CTestLogic::on_server_data_received(tools::data_wrappers::_tag_data_managed
 
 void CTestLogic::on_device_data_received(tools::data_wrappers::_tag_data_managed data)
 {
-	tag_packet_from_device packet;
+	std::vector<tag_packet_from_device> packets;
 
-	_device_packet_from_device_convertor.Parse(data, packet);
+	_device_packet_from_device_convertor.Parse(data, packets);
 
-	_tr_error->trace_message(_device_message_descriptor.describe_message(packet));
-
-	_received_device_packet = _device_structures_converter.Convert(packet, static_cast<e_command_from_device>(packet.command));
-
-	process_device_packet();
+	for (tag_packet_from_device packet : packets)
+	{
+		_tr_error->trace_message(_device_message_descriptor.describe_message(packet));
+		_received_device_packet = _device_structures_converter.Convert(packet, static_cast<e_command_from_device>(packet.command));
+		process_device_packet();
+	}
 }
 
 void CTestLogic::process_device_packet()

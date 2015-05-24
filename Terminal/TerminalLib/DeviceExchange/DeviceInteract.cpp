@@ -56,10 +56,13 @@ void device_exchange::CDeviceInteract::device_to_logic()
 
 	for (tools::data_wrappers::_tag_data_const data : packets_to_logic)
 	{
-		device_exchange::tag_packet_from_device packet;
-		if (device_exchange::e_convert_result::success == _device_packet_parser.Parse(data, packet))
+		std::vector<device_exchange::tag_packet_from_device> packets;
+		if (device_exchange::e_convert_result::success == _device_packet_parser.Parse(data, packets))
 		{
-			_packets_to_logic.push_back(_packet_from_device_to_packet_to_logic.Convert(packet, packet.command));
+			for (device_exchange::tag_packet_from_device packet : packets)
+			{
+				_packets_to_logic.push_back(_packet_from_device_to_packet_to_logic.Convert(packet, packet.command));
+			}
 
 			if (0 != get_send_packet_time())
 			{

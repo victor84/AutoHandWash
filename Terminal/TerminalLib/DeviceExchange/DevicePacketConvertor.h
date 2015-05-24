@@ -1,6 +1,7 @@
 #pragma once
 #include "device_protocol.h"
 #include "raw_data_warappers.h"
+#include "TraceError.h"
 
 namespace device_exchange
 {
@@ -8,10 +9,12 @@ namespace device_exchange
 template<typename _PacketType>
 class CDevicePacketConvertor
 {
+	tools::logging::CTraceError* _tr_error;
+
 public:
 	CDevicePacketConvertor()
 	{
-
+		_tr_error = tools::logging::CTraceError::get_instance();
 	}
 	virtual ~CDevicePacketConvertor()
 	{
@@ -32,15 +35,30 @@ public:
 
 	// парсинг пакета с устройства
 	e_convert_result Parse(IN const tools::data_wrappers::_tag_data_const& data,
-						   OUT _PacketType& packet)
+						   OUT std::vector<_PacketType>& packets)
 	{
-		if (data.data_size != sizeof(tag_packet_from_device))
-			return e_convert_result::invalid_data;
+		const int16_t packet_size = sizeof(tag_packet_from_device);
 
-		packet = *(reinterpret_cast<const tag_packet_from_device*>(data.p_data));
-
-		if (packet.crc != CalcCheckSum(packet))
+		if (data.data_size >= packet_size)
+		{
+			_tr_error->trace_error(_T("Неполные данные от устройства"));
 			return e_convert_result::invalid_data;
+		}
+
+		packets.clear();
+		const int16_t count = static_cast<int16_t>(data.data_size / packet_size);
+
+		for (int16_t i = 0; i < count; ++i)
+		{
+			const tag_packet_from_device* p_packet = reinterpret_cast<const tag_packet_from_device*>(data.p_data + (packet_size * i));
+
+			if (p_packet->crc != CalcCheckSum(*p_packet))
+			{
+				_tr_error->trace_error(_T("Неверная контрольная сумма в паркете"));
+				continue;
+			}
+			packets.push_back(*p_packet);
+		}
 
 		return e_convert_result::success;
 	}

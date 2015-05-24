@@ -155,7 +155,8 @@ void TestDeviceMessages()
 
 	ZeroMemory(&command_from_device, sizeof(command_from_device));
 
-	device_packet_convertor.Parse(out_data, command_from_device);
+	std::vector<tag_packet_from_device> result;
+	device_packet_convertor.Parse(out_data, result);
 }
 
 void TestServerMessages()
