@@ -39,7 +39,7 @@ public:
 	{
 		const int16_t packet_size = sizeof(tag_packet_from_device);
 
-		if (data.data_size >= packet_size)
+		if (data.data_size > packet_size)
 		{
 			_tr_error->trace_error(_T("Неполные данные от устройства"));
 			return e_convert_result::invalid_data;
