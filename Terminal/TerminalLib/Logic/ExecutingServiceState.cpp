@@ -162,6 +162,9 @@ void logic::CExecutingServiceState::refilled_cache()
 
 void logic::CExecutingServiceState::service_button_press(e_service_name service_name)
 {
+	if (_current_service == service_name)
+		return;
+
 	if (e_service_name::stop != _current_service)
 	{
 		stop_service();
