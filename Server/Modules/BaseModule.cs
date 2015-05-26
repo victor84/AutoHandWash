@@ -1,6 +1,7 @@
 ﻿using Nancy;
 using Server.Data;
 using Server.Models;
+using System;
 using System.Dynamic;
 using System.Linq;
 
@@ -28,6 +29,7 @@ namespace Server.Modules
                 Model.MasterPage = new MasterPageModel();
                 Model.MasterPage.Title = "Автомойки";
                 Model.MasterPage.ProjectName = "Автомойки";
+                Model.MasterPage.Year = DateTime.Now.Year;
                 bool isAuthenticated = (ctx.CurrentUser != null);
                 Model.MasterPage.IsAuthenticated = isAuthenticated;
                 if (isAuthenticated)

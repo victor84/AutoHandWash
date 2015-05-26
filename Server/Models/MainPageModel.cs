@@ -43,14 +43,6 @@ namespace Server.Models
     public class TerminalCounters
     {
         public string TerminalName { get; set; }
-        public double CommonInput
-        {
-            get
-            {
-                double result = Counters.CommonInput / 100;
-                return result;
-            }
-        }
         public double Balance 
         {
             get

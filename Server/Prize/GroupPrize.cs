@@ -5,14 +5,18 @@ namespace Server.Prize
     public class GroupPrize
     {
         public event EventHandler ValuePrizeReached;
-        private uint valuePrize;
-        private uint fund;
+        private ushort valuePrize;
+        private double fund;
 
         public volatile bool WaitConfirm;
 
+        public Guid GroupId { get; set; }
+
+        public string GroupName { get; set; }
+
         public Guid LastTerminalId { get; set; }
 
-        public uint Fund 
+        public double Fund 
         {
             get
             {
@@ -22,7 +26,7 @@ namespace Server.Prize
 
         public byte Percent { get; set; }
 
-        public uint ValuePrize
+        public ushort ValuePrize
         {
             get 
             {
@@ -34,7 +38,7 @@ namespace Server.Prize
             }
         }
 
-        public void AddInFund(uint value)
+        public void AddInFund(double value)
         {
             fund += value;
             if (fund > valuePrize)

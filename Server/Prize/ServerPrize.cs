@@ -29,12 +29,13 @@ namespace Server.Prize
                 GroupPrize groupPrize = null;
                 if (!groups.ContainsKey(groupId))
                 {
+                    var group = Group.GetGroupById(groupId);
                     var settingsGroups = SettingsGroup.GetSettingsGroupById(groupId);
-                    if (settingsGroups != null)
+                    if (group != null && settingsGroups != null)
                     {
                         if (settingsGroups.HasPresent)
                         {
-                            groupPrize = CreateGroupPrize(settingsGroups);
+                            groupPrize = CreateGroupPrize(group, settingsGroups);
                         }
                         groups.Add(groupId, groupPrize);
                     }
@@ -48,7 +49,7 @@ namespace Server.Prize
                     if (!groupPrize.WaitConfirm)
                     {
                         groupPrize.LastTerminalId = terminalId;
-                        var value = input * groupPrize.Percent;
+                        var value = input * groupPrize.Percent / 100;
                         groupPrize.AddInFund(value);
                     }
                 }
@@ -96,7 +97,11 @@ namespace Server.Prize
                 {
                     if (settingsGroup.HasPresent)
                     {
-                        groups[groupId] = CreateGroupPrize(settingsGroup);
+                        var group = Group.GetGroupById(groupId);
+                        if (group != null)
+                        {
+                            groups[groupId] = CreateGroupPrize(group, settingsGroup);
+                        }
                     }
                     else
                     {
@@ -117,7 +122,11 @@ namespace Server.Prize
                     GroupPrize groupPrize = null;
                     if (s.HasPresent)
                     {
-                        groupPrize = CreateGroupPrize(s);
+                        var group = Group.GetGroupById(s.GroupId);
+                        if (group != null)
+                        {
+                            groupPrize = CreateGroupPrize(group, s);
+                        }
                     }
                     groups.Add(s.GroupId, groupPrize);
                 }
@@ -129,9 +138,11 @@ namespace Server.Prize
             cache.Save(groups);
         }
 
-        private GroupPrize CreateGroupPrize(SettingsGroup settingsGroup)
+        private GroupPrize CreateGroupPrize(Group group, SettingsGroup settingsGroup)
         {
             GroupPrize groupPrize = new GroupPrize();
+            groupPrize.GroupId = group.Id;
+            groupPrize.GroupName = group.GroupName;
             groupPrize.Percent = settingsGroup.PercentForPresent;
             Random rnd = new Random();
             int minValue = (int)(settingsGroup.LowerBoundForRandomSum / 10);
