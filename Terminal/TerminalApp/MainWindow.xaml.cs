@@ -175,6 +175,7 @@ namespace TerminalApp
             VideoTab.Visibility = System.Windows.Visibility.Collapsed;
             PrizeTab.Visibility = System.Windows.Visibility.Collapsed;
             TerminalBrokenTab.Visibility = System.Windows.Visibility.Collapsed;
+            CountersTab.Visibility = System.Windows.Visibility.Collapsed;
 
             WindowStyle = System.Windows.WindowStyle.None;
             ResizeMode = System.Windows.ResizeMode.NoResize;

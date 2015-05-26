@@ -58,6 +58,11 @@ class CDeviceInteract
 	// создатель пакетов для устройства
 	device_exchange::CDevicePacketConvertor<device_exchange::tag_packet_from_pc> _device_packet_creator;
 
+// TODO: Убрать в релизе!
+// #ifdef DEBUG
+	CDeviceMessageDescription _message_description;
+// #endif // DEBUG
+
 #pragma region Проверка, что устройство на связи
 	// время отправки сообщения
 	uint64_t _send_packet_time;
