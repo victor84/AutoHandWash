@@ -18,11 +18,11 @@ enum class e_service_name
 	water_without_pressure,	// Вода без давления
 	foam,					// Пена	
 	wax,					// Воск	
-	against_midges,			// От мошек
 	vacuum_cleaner,			// Пылесос	
 	air,					// Воздух
 	osmosis,				// Осмос
-	stop					// Стоп
+	stop,					// Стоп
+	error = -1				// Ошибочный сервис
 };
 
 

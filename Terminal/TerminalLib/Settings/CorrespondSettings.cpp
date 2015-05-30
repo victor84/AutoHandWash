@@ -24,8 +24,6 @@ void logic_settings::CCorrespondSettings::fill_service_settings_name()
 	_service_settings_name.insert(std::pair<e_service_name, const wchar_t*>
 								  (e_service_name::wax, service_wax));
 	_service_settings_name.insert(std::pair<e_service_name, const wchar_t*>
-								  (e_service_name::against_midges, service_against_midges));
-	_service_settings_name.insert(std::pair<e_service_name, const wchar_t*>
 								  (e_service_name::vacuum_cleaner, service_vacuum_cleaner));
 	_service_settings_name.insert(std::pair<e_service_name, const wchar_t*>
 								  (e_service_name::air, service_air));
@@ -250,6 +248,9 @@ byte logic_settings::CCorrespondSettings::GetValveNumber(const logic::e_service_
 
 logic::e_service_name logic_settings::CCorrespondSettings::GetServiceByButtonNumber(const byte& button_number)
 {
+	if (button_number > _button_number_valve_number.size())
+		return e_service_name::error;
+
 	return _button_number_service[button_number];
 }
 

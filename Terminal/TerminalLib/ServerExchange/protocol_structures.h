@@ -136,7 +136,6 @@ struct tag_counters_packet
 	uint32_t			water_without_pressure;	// Вода без давления
 	uint32_t			foam;					// Пена	
 	uint32_t			wax;					// Воск	
-	uint32_t			against_midges;			// От мошек
 	uint32_t			vacuum_cleaner;			// Пылесос	
 	uint32_t			air;					// Воздух
 	uint32_t			osmosis;				// Осмос
@@ -172,7 +171,6 @@ struct tag_counters_packet
 Вода без давления					|	  4		|	UINT	|							|
 Пена								|	  4		|	UINT	|							|
 Воск								|	  4		|	UINT	|							|
-От мошек							|	  4		|	UINT	|							|
 Пылесос								|	  4		|	UINT	|							|
 Воздух								|	  4		|	UINT	|							|
 Осмос								|	  4		|	UINT	|							|
@@ -195,7 +193,6 @@ struct tag_settings_packet
 	uint32_t			water_without_pressure;		// Вода без давления
 	uint32_t			foam;						// Пена	
 	uint32_t			wax;						// Воск	
-	uint32_t			against_midges;				// От мошек
 	uint32_t			vacuum_cleaner;				// Пылесос	
 	uint32_t			air;						// Воздух
 	uint32_t			osmosis;					// Осмос

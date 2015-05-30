@@ -25,7 +25,6 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right"/>
@@ -42,8 +41,6 @@
             <TextBlock Grid.Row="5" x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right"/>
 
             <TextBlock Grid.Row="6" x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right"/>
-
-            <TextBlock Grid.Row="7" x:Name="Service8TextBlock" TextWrapping="Wrap" Text="Услуга №8 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right"/>
 
         </Grid>
         <Grid Grid.Row="0" Grid.Column="0">

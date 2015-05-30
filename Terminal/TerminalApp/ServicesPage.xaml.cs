@@ -153,7 +153,6 @@ namespace TerminalApp
             Service5TextBlock.Text = GetServiceInfo(4);
             Service6TextBlock.Text = GetServiceInfo(5);
             Service7TextBlock.Text = GetServiceInfo(6);
-            Service8TextBlock.Text = GetServiceInfo(7);
         }
 
         void ResizeServicesInfo()
@@ -173,7 +172,6 @@ namespace TerminalApp
             Service5TextBlock.FontSize = newFontSizeDouble;
             Service6TextBlock.FontSize = newFontSizeDouble;
             Service7TextBlock.FontSize = newFontSizeDouble;
-            Service8TextBlock.FontSize = newFontSizeDouble;
         }
 
         private Size MeasureString(string candidate, TextBlock textBlock)
@@ -205,8 +203,6 @@ namespace TerminalApp
                 return Service6TextBlock;
             if (true == Service7TextBlock.Text.StartsWith(text))
                 return Service7TextBlock;
-            if (true == Service8TextBlock.Text.StartsWith(text))
-                return Service8TextBlock;
 
             return null;
         }

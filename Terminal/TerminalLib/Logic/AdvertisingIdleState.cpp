@@ -5,7 +5,6 @@
 
 bool logic::CAdvertisingIdleState::read_services_cost(tag_device_settings& settings)
 {
-	settings.cost_against_midges = _correspond_settings.GetServiceCost(e_service_name::against_midges);
 	settings.cost_air = _correspond_settings.GetServiceCost(e_service_name::air);
 	settings.cost_foam = _correspond_settings.GetServiceCost(e_service_name::foam);
 	settings.cost_osmosis = _correspond_settings.GetServiceCost(e_service_name::osmosis);

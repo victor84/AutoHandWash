@@ -118,7 +118,6 @@ bool CTestLogic::send_settings_packet()
 {
 	tag_settings_packet settings_packet;
 
-	settings_packet.against_midges = 10;
 	settings_packet.air = 5;
 	settings_packet.bill_acceptor_impulse = 10;
 	settings_packet.coin_acceptor_impulse = 11;
@@ -152,7 +151,6 @@ bool CTestLogic::send_counters_packet()
 {
 	tag_counters_packet counters_packet;
 
-	counters_packet.against_midges = 10;
 	counters_packet.air = 30;
 	counters_packet.current_cache = 50;
 	counters_packet.date_time = std::time(0);

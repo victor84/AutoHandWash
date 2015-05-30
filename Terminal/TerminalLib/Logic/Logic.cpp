@@ -156,7 +156,6 @@ void logic::CLogic::send_settings_packet()
 	settings_packet.water_without_pressure = device_settings.cost_water_without_pressure;
 	settings_packet.foam = device_settings.cost_foam;
 	settings_packet.wax = device_settings.cost_wax;
-	settings_packet.against_midges = device_settings.cost_against_midges;
 	settings_packet.vacuum_cleaner = device_settings.cost_vacuum_cleaner;
 	settings_packet.air = device_settings.cost_air;
 	settings_packet.osmosis = device_settings.cost_osmosis;
@@ -185,7 +184,6 @@ void logic::CLogic::send_counters_packet()
 	counters_packet.water_without_pressure = device_settings.time_water_without_pressure;
 	counters_packet.foam = device_settings.time_foam;
 	counters_packet.wax = device_settings.time_wax;
-	counters_packet.against_midges = device_settings.time_against_midges;
 	counters_packet.vacuum_cleaner = device_settings.time_vacuum_cleaner;
 	counters_packet.air = device_settings.time_air;
 	counters_packet.osmosis = device_settings.time_osmosis;
@@ -321,7 +319,6 @@ void logic::CLogic::show_counters()
 
 		switch (si.id)
 		{
-			case e_service_name::against_midges:			sc.counter = static_cast<uint16_t>(settings.time_against_midges);			break;
 			case e_service_name::air:						sc.counter = static_cast<uint16_t>(settings.time_air);						break;
 			case e_service_name::foam:						sc.counter = static_cast<uint16_t>(settings.time_foam);						break;
 			case e_service_name::osmosis:					sc.counter = static_cast<uint16_t>(settings.time_osmosis);					break;
@@ -587,12 +584,6 @@ void logic::CLogic::update_device_settings_from_server()
 		changed = true;
 	}
 
-	if (work_settings.cost_against_midges != _settings_from_server.against_midges)
-	{
-		work_settings.cost_against_midges = _settings_from_server.against_midges;
-		_correspond_settings.SetServiceCost(e_service_name::against_midges, static_cast<uint16_t>(_settings_from_server.against_midges));
-		changed = true;
-	}
 	if (work_settings.cost_air != _settings_from_server.air)
 	{
 		work_settings.cost_air = _settings_from_server.air;
@@ -785,6 +776,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 		case(device_exchange::e_command_from_device::button_press) :
 			button_number = get_device_message_pointer<logic_structures::tag_button_press>(message)->button_number;
 			service = _correspond_settings.GetServiceByButtonNumber(button_number);
+			if (e_service_name::error == service)
+				break;
 			if (_on_service_changed_fn)
 				_on_service_changed_fn(service, _correspond_settings.GetServiceName(service));
 			if (e_service_name::stop == service)

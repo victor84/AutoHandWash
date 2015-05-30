@@ -31,7 +31,6 @@ class CCorrespondSettings
 	const wchar_t* service_water_without_pressure = _T("water_without_pressure");
 	const wchar_t* service_foam = _T("foam");
 	const wchar_t* service_wax = _T("wax");
-	const wchar_t* service_against_midges = _T("against_midges");
 	const wchar_t* service_vacuum_cleaner = _T("vacuum_cleaner");
 	const wchar_t* service_air = _T("air");
 	const wchar_t* service_osmosis = _T("osmosis");

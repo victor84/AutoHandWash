@@ -141,7 +141,6 @@ namespace TerminalApp
                 Service5TextBlock.Text = GetServiceCounterInfo(counters, 4);
                 Service6TextBlock.Text = GetServiceCounterInfo(counters, 5);
                 Service7TextBlock.Text = GetServiceCounterInfo(counters, 6);
-                Service8TextBlock.Text = GetServiceCounterInfo(counters, 7);
             });
 
             ShowPage(4);

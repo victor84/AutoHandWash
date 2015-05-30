@@ -17,7 +17,6 @@ namespace LogicWrapper
 		water_without_pressure,	// Вода без давления
 		foam,					// Пена	
 		wax,					// Воск	
-		against_midges,			// От мошек
 		vacuum_cleaner,			// Пылесос	
 		air,					// Воздух
 		osmosis,				// Осмос

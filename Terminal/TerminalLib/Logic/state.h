@@ -169,7 +169,6 @@ struct tag_device_settings
 	uint32_t	cost_water_without_pressure;// Стоимость вода без давления
 	uint32_t	cost_foam;					// Стоимость пена	
 	uint32_t	cost_wax;					// Стоимость воск	
-	uint32_t	cost_against_midges;		// Стоимость от мошек
 	uint32_t	cost_vacuum_cleaner;		// Стоимость пылесос	
 	uint32_t	cost_air;					// Стоимость воздух
 	uint32_t	cost_osmosis;				// Стоимость осмос
@@ -177,7 +176,6 @@ struct tag_device_settings
 	uint32_t	time_water_without_pressure;// Время работы вода без давления
 	uint32_t	time_foam;					// Время работы пена	
 	uint32_t	time_wax;					// Время работы воск	
-	uint32_t	time_against_midges;		// Время работы от мошек
 	uint32_t	time_vacuum_cleaner;		// Время работы пылесос	
 	uint32_t	time_air;					// Время работы воздух
 	uint32_t	time_osmosis;				// Время работы осмос
@@ -208,7 +206,6 @@ struct tag_device_settings
 		(cost_water_without_pressure == settings.cost_water_without_pressure) &&
 		(cost_foam == settings.cost_foam) &&
 		(cost_wax == settings.cost_wax) &&
-		(cost_against_midges == settings.cost_against_midges) &&
 		(cost_vacuum_cleaner == settings.cost_vacuum_cleaner) &&
 		(cost_air == settings.cost_air) &&
 		(cost_osmosis == settings.cost_osmosis) &&
@@ -216,7 +213,6 @@ struct tag_device_settings
 		(time_water_without_pressure == settings.time_water_without_pressure) &&
 		(time_foam == settings.time_foam) &&
 		(time_wax == settings.time_wax) &&
-		(time_against_midges == settings.time_against_midges) &&
 		(time_vacuum_cleaner == settings.time_vacuum_cleaner) &&
 		(time_air == settings.time_air) &&
 		(time_osmosis == settings.time_osmosis));

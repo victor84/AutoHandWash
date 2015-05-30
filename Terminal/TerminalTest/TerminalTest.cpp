@@ -164,7 +164,6 @@ void TestServerMessages()
 	server_exchange::CPacketToRawData pack_to_raw;
 	server_exchange::tag_transport_packet transport_packet;
 	server_exchange::tag_counters_packet data;
-	data.against_midges = 1;
 	data.air = 2;
 	data.current_cache = 100;
 	data.foam = 3;

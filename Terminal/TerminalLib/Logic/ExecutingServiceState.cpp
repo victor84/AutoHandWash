@@ -42,9 +42,6 @@ void logic::CExecutingServiceState::calc_time_and_money()
 		case logic::e_service_name::wax:
 			_current_service_cost = static_cast<int16_t>(_device_settings.cost_wax);
 			break;
-		case logic::e_service_name::against_midges:
-			_current_service_cost = static_cast<int16_t>(_device_settings.cost_against_midges);
-			break;
 		case logic::e_service_name::vacuum_cleaner:
 			_current_service_cost = static_cast<int16_t>(_device_settings.cost_vacuum_cleaner);
 			break;
@@ -86,9 +83,6 @@ void logic::CExecutingServiceState::increase_current_service_time()
 			break;
 		case logic::e_service_name::wax:
 			++_device_settings.time_wax;
-			break;
-		case logic::e_service_name::against_midges:
-			++_device_settings.time_against_midges;
 			break;
 		case logic::e_service_name::vacuum_cleaner:
 			++_device_settings.time_vacuum_cleaner;
