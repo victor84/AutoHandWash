@@ -65,7 +65,7 @@ void logic::CSettingsWorkState::device_confirm()
 			continue_loop = false;
 		}
 
-		if (0x07 == _write_cell_number)
+		if (0x09 == _write_cell_number)
 			_write_cell_number = 0x10;
 
 		if (0x18 == _write_cell_number)
@@ -78,7 +78,7 @@ void logic::CSettingsWorkState::device_confirm()
 
 void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t value)
 {
-	if (cell_number < 0x08)
+	if (cell_number < 0x10)
 	{
 		*(_p_settings + cell_number) = value;
 

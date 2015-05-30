@@ -28,6 +28,10 @@ void logic_settings::CCommonSettings::fill_settings_values()
 									terminal_block_name, pause_before_advertising_name);
 	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
 									terminal_block_name, state_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, discount_card_condition_name);
+	_settings_module->add_parameter(tools::settings::CSettingsLoader::e_parameter_data_type::type_int,
+									terminal_block_name, frost_protection_value_name);
 }
 
 logic_settings::CCommonSettings::CCommonSettings()
@@ -38,6 +42,8 @@ logic_settings::CCommonSettings::CCommonSettings()
 	, _idle_time_cost(0)
 	, _pause_before_advertising(0)
 	, _state(0)
+	, _discount_card_condition(0)
+	, _frost_protection_value(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 	_settings_module = tools::settings::CSettingsLoader::get_instance();
@@ -87,6 +93,12 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	if (FALSE == _settings_module->read(state_name, terminal_block_name))
 		return false;
 
+	if (FALSE == _settings_module->read(discount_card_condition_name, terminal_block_name))
+		return false;
+
+	if (FALSE == _settings_module->read(frost_protection_value_name, terminal_block_name))
+		return false;
+
 	_device_port_name = _settings_module->get_string(port_name_param_name, device_block_name);
 	_device_speed = _settings_module->get_int(speed_param_name, device_block_name);
 	_server_port = CStringA(_settings_module->get_string(port_param_name, server_block_name)).GetString();
@@ -101,6 +113,8 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	_idle_time_cost = _settings_module->get_int(idle_time_cost_name, terminal_block_name);
 	_pause_before_advertising = _settings_module->get_int(pause_before_advertising_name, terminal_block_name);
 	_state = _settings_module->get_int(state_name, terminal_block_name);
+	_discount_card_condition = _settings_module->get_int(discount_card_condition_name, terminal_block_name);
+	_frost_protection_value = _settings_module->get_int(frost_protection_value_name, terminal_block_name);
 
 	return true;
 }
@@ -193,4 +207,24 @@ uint32_t logic_settings::CCommonSettings::GetState() const
 bool logic_settings::CCommonSettings::SetState(const uint32_t& val)
 {
 	return (TRUE == _settings_module->save_parameter(state_name, terminal_block_name, val));
+}
+
+uint32_t logic_settings::CCommonSettings::GetDiscountCardCondition() const
+{
+	return _discount_card_condition;
+}
+
+bool logic_settings::CCommonSettings::SetDiscountCardCondition(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(discount_card_condition_name, terminal_block_name, val));
+}
+
+uint32_t logic_settings::CCommonSettings::GetFrostProtectionValue() const
+{
+	return _frost_protection_value;
+}
+
+bool logic_settings::CCommonSettings::SetFrostProtectionValue(const uint32_t& val)
+{
+	return (TRUE == _settings_module->save_parameter(frost_protection_value_name, terminal_block_name, val));
 }

@@ -149,6 +149,8 @@ void logic::CLogic::send_settings_packet()
 	settings_packet.free_idle_time = static_cast<byte>(device_settings.free_idle_time);
 	settings_packet.idle_time_cost = static_cast<uint16_t>(device_settings.idle_time_cost);
 	settings_packet.pause_before_advertising = static_cast<byte>(device_settings.pause_before_advertising);
+	settings_packet.frost_protection_value = device_settings.frost_protection_value;
+	settings_packet.discount_card_condition = device_settings.discount_card_condition;
 
 	settings_packet.pressurized_water = device_settings.cost_pressurized_water;
 	settings_packet.water_without_pressure = device_settings.cost_water_without_pressure;
@@ -545,6 +547,20 @@ void logic::CLogic::update_device_settings_from_server()
 
 		_terminal_state_changed_sended = false;
 		change_terminal_state(_settings_from_server.state, false);
+	}
+
+	if (work_settings.frost_protection_value != _settings_from_server.frost_protection_value)
+	{
+		work_settings.frost_protection_value = _settings_from_server.frost_protection_value;
+		_common_settings.SetFrostProtectionValue(_settings_from_server.frost_protection_value);
+		changed = true;
+	}
+
+	if (work_settings.discount_card_condition != _settings_from_server.discount_card_condition)
+	{
+		work_settings.discount_card_condition = _settings_from_server.discount_card_condition;
+		_common_settings.SetDiscountCardCondition(_settings_from_server.discount_card_condition);
+		changed = true;
 	}
 
 	if (work_settings.cost_against_midges != _settings_from_server.against_midges)

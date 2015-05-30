@@ -157,6 +157,8 @@ struct tag_device_settings
 	uint32_t	idle_time_cost;				// Стоимость минуты простоя	
 	uint32_t	pause_before_advertising;	// Пауза перед показом рекламы
 	uint32_t	state;						// Состояние (работает, простой, сломана)
+	uint32_t	frost_protection_value;		// Защита от замерзания
+	uint32_t	discount_card_condition;	// Сумма для выдачи дисконтной карты
 	uint32_t	cost_pressurized_water;		// Стоимость вода под давлением
 	uint32_t	cost_water_without_pressure;// Стоимость вода без давления
 	uint32_t	cost_foam;					// Стоимость пена	
