@@ -94,7 +94,7 @@ void logic::CFreeEdleState::out_of_money()
 
 }
 
-void logic::CFreeEdleState::device_confirm()
+void logic::CFreeEdleState::device_confirm(device_exchange::e_command_from_pc command)
 {
 
 }

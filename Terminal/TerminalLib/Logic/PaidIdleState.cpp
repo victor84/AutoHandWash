@@ -107,7 +107,7 @@ void logic::CPaidIdleState::out_of_money()
 	
 }
 
-void logic::CPaidIdleState::device_confirm()
+void logic::CPaidIdleState::device_confirm(device_exchange::e_command_from_pc command)
 {
 	
 }

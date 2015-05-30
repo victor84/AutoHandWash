@@ -93,10 +93,10 @@ bool logic_settings::CCommonSettings::ReadSettings()
 	if (FALSE == _settings_module->read(state_name, terminal_block_name))
 		return false;
 
-	if (FALSE == _settings_module->read(discount_card_condition_name, terminal_block_name))
+	if (FALSE == _settings_module->read(frost_protection_value_name, terminal_block_name))
 		return false;
 
-	if (FALSE == _settings_module->read(frost_protection_value_name, terminal_block_name))
+	if (FALSE == _settings_module->read(discount_card_condition_name, terminal_block_name))
 		return false;
 
 	_device_port_name = _settings_module->get_string(port_name_param_name, device_block_name);

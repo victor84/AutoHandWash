@@ -37,7 +37,7 @@ public:
 
 	virtual void out_of_money() final;
 
-	virtual void device_confirm() final;
+	virtual void device_confirm(device_exchange::e_command_from_pc command) final;
 
 	virtual void device_error(logic_structures::e_device_error_code code) final;
 

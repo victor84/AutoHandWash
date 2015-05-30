@@ -64,8 +64,11 @@ tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLog
 
 tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLogicDataFromDeviceConverter::convert_discount_card_issued(const device_exchange::tag_packet_from_device& packet)
 {
-	UNREFERENCED_PARAMETER(packet);
-	return tag_discount_card_issued();
+	tag_discount_card_issued result;
+
+	result.status = static_cast<e_discount_card_issue_status>(packet.data0);
+
+	return result;
 }
 
 tools::data_wrappers::_tag_data_managed logic_structures::CPacketFromDeviceToLogicDataFromDeviceConverter::convert_data_from_eeprom(const device_exchange::tag_packet_from_device& packet)

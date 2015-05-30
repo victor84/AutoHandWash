@@ -124,9 +124,19 @@ struct tag_hopper_issue_coin : tag_base_data_from_device
 	}
 };
 
+// статус выдачи дисконтной карты
+enum class e_discount_card_issue_status : byte
+{
+	success = 0,			// карта успешно выдана
+	error = 1,				// ошибка при выдаче
+	previous_card_not_taken	// предыдущую карту не забрали
+};
+
 // выдана дисконтная карта
 struct tag_discount_card_issued : tag_base_data_from_device
 {
+	e_discount_card_issue_status status;	// статус выдачи карты
+
 	tag_discount_card_issued() : tag_base_data_from_device(device_exchange::e_command_from_device::discount_card_issued)
 	{
 
@@ -215,7 +225,7 @@ struct tag_buttons_state : tag_base_data_from_device
 // подтверждение команды
 struct tag_command_confirmation : tag_base_data_from_device
 {
-	device_exchange::e_command_from_pc command;
+	device_exchange::e_command_from_pc command;	// подтверждаемая команда
 
 	tag_command_confirmation() : tag_base_data_from_device(device_exchange::e_command_from_device::command_confirmation)
 		, command(device_exchange::e_command_from_pc::empty)

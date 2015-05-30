@@ -41,8 +41,11 @@ void logic::CSettingsWorkState::out_of_money()
 
 }
 
-void logic::CSettingsWorkState::device_confirm()
+void logic::CSettingsWorkState::device_confirm(device_exchange::e_command_from_pc command)
 {
+	if (command != device_exchange::e_command_from_pc::write_eeprom)
+		return;
+
 	uint32_t* p_ds = reinterpret_cast<uint32_t*>(&_settings_from_device);
 	bool continue_loop = true;
 
@@ -78,18 +81,21 @@ void logic::CSettingsWorkState::device_confirm()
 
 void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t value)
 {
+	if (0xffffffff == value)
+		value = 0;
+
 	if (cell_number < 0x10)
 	{
 		*(_p_settings + cell_number) = value;
 
 		++cell_number;
 
-		if (cell_number > 0x07)
+		if (cell_number > 0x09)
 			cell_number = 0x11;
 	}
 	else if ((cell_number >= 0x11) && (cell_number <= 0x18))
 	{
-		*(_p_settings + (cell_number - 0x09)) = value;
+		*(_p_settings + (cell_number - 0x07)) = value;
 
 		++cell_number;
 
@@ -98,7 +104,7 @@ void logic::CSettingsWorkState::data_from_eeprom(byte cell_number, uint32_t valu
 	}
 	else if ((cell_number >= 0x21) && (cell_number <= 0x28))
 	{
-		*(_p_settings + (cell_number - 0x09 - 0x08)) = value;
+		*(_p_settings + (cell_number - 0x07 - 0x08)) = value;
 
 		++cell_number;
 

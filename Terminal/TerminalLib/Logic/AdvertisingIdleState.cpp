@@ -26,6 +26,8 @@ bool logic::CAdvertisingIdleState::read_terminal_settings(tag_device_settings& s
 	settings.idle_time_cost = _common_settings.GetIdleTimeCost();
 	settings.pause_before_advertising = _common_settings.GetPauseBeforeAdvertising();
 	settings.state = _common_settings.GetState();
+	settings.frost_protection_value = _common_settings.GetFrostProtectionValue();
+	settings.discount_card_condition = _common_settings.GetDiscountCardCondition();
 
 	return true;
 }
@@ -122,7 +124,7 @@ void logic::CAdvertisingIdleState::out_of_money()
 
 }
 
-void logic::CAdvertisingIdleState::device_confirm()
+void logic::CAdvertisingIdleState::device_confirm(device_exchange::e_command_from_pc command)
 {
 
 }

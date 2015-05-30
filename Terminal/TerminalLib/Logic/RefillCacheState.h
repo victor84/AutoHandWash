@@ -27,7 +27,7 @@ public:
 
 	virtual void out_of_money() override;
 
-	virtual void device_confirm() override;
+	virtual void device_confirm(device_exchange::e_command_from_pc command) override;
 
 	void set_on_cache_refilled_fn(std::function<void(uint16_t) > fn);
 

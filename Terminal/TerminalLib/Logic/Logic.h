@@ -241,6 +241,10 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void show_counters() final;
 
+	virtual void issue_discount_card() final;
+
+	virtual void send_log_to_server(server_exchange::e_log_record_type type, const std::wstring& text) final;
+
 	// запуск в работу
 	virtual bool Start() final;
 
@@ -265,7 +269,7 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void SetOnTerminalStateChangedFn(std::function<void(logic::e_terminal_state) > fn) final;
 
-	virtual void SetOnShowCountersFn(std::function<void(std::vector<logic::tag_service_counter>) > fn) final;
+	virtual void SetOnShowCountersFn(std::function<void(std::vector<tag_service_counter>) > fn) final;
 
 public:
 	CLogic();

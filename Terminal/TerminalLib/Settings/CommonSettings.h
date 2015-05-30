@@ -38,8 +38,8 @@ class CCommonSettings
 	const wchar_t* idle_time_cost_name				= _T("idle_time_cost");
 	const wchar_t* pause_before_advertising_name	= _T("pause_before_advertising");
 	const wchar_t* state_name						= _T("state");
-	const wchar_t* discount_card_condition_name		= _T("discount_card_condition");
 	const wchar_t* frost_protection_value_name		= _T("frost_protection_value");
+	const wchar_t* discount_card_condition_name		= _T("discount_card_condition");
 
 	tools::logging::CTraceError* _tr_error;
 	tools::settings::CSettingsLoader* _settings_module;

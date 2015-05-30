@@ -271,6 +271,28 @@ logic::CLogic::~CLogic()
 {
 }
 
+void logic::CLogic::issue_discount_card()
+{
+	std::shared_ptr<logic_structures::tag_issue_discount_card> idc_message = std::make_shared<logic_structures::tag_issue_discount_card>();
+
+	_packets_to_device.push_back(idc_message);
+}
+
+void logic::CLogic::send_log_to_server(server_exchange::e_log_record_type type, const std::wstring& text)
+{
+	server_exchange::tag_log_record_packet log_packet;
+
+	log_packet.date_time = std::time(0);
+	log_packet.type = type;
+	log_packet.text.copy_data_inside(text.c_str(), text.size() * 2);
+	log_packet.length = static_cast<uint16_t>(text.size() * 2);
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_log_record_packet, server_exchange::e_packet_type::log>(log_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
 void logic::CLogic::SetOnShowCountersFn(std::function<void(std::vector<logic::tag_service_counter>) > fn)
 {
 	_on_show_counters = fn;
@@ -348,6 +370,8 @@ void logic::CLogic::on_empty_hopper()
 {
 	if (_on_empty_hopper)
 		_on_empty_hopper();
+
+	send_log_to_server(server_exchange::e_log_record_type::warning, _T("Ошибка выдачи монет."));
 }
 
 void logic::CLogic::SetOnDistributionPrizeFn(std::function<void(int16_t, byte) > fn)
@@ -748,6 +772,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	logic_structures::tag_hopper_issue_coin* hic = nullptr;
 	logic_structures::tag_buttons_state* bs = nullptr;
 	CAdvertisingIdleState* ais = nullptr;
+	logic_structures::tag_command_confirmation* cc = nullptr;
+	logic_structures::tag_discount_card_issued* dci = nullptr;
 
 	switch (message->command_id)
 	{
@@ -780,7 +806,8 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			break;
 
 		case(device_exchange::e_command_from_device::command_confirmation) :
-			_current_state->device_confirm();
+			cc = get_device_message_pointer<logic_structures::tag_command_confirmation>(message);
+			_current_state->device_confirm(cc->command);
 			break;
 
 		case(device_exchange::e_command_from_device::buttons_state) :
@@ -789,6 +816,22 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			{
 				ais = get_implemented_state<CAdvertisingIdleState>(e_state::advertising_idle);
 				ais->buttons_state(*bs);
+			}
+			break;
+
+		case(device_exchange::e_command_from_device::discount_card_issued) :
+			dci = get_device_message_pointer<logic_structures::tag_discount_card_issued>(message);
+			if (logic_structures::e_discount_card_issue_status::previous_card_not_taken == dci->status)
+			{
+				send_log_to_server(server_exchange::e_log_record_type::warning, _T("Дисконтная карта не выдана, т.к. не забрали предыдущую карту"));
+			}
+			else if (logic_structures::e_discount_card_issue_status::error == dci->status)
+			{
+				send_log_to_server(server_exchange::e_log_record_type::warning, _T("Ошибка выдачи дисконтной карты. Возможно, карты закончились."));
+			}
+			else
+			{
+				send_log_to_server(server_exchange::e_log_record_type::message, _T("Дисконтная карта успешно выдана."));
 			}
 			break;
 	}

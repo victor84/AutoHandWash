@@ -210,8 +210,15 @@ void logic::CExecutingServiceState::out_of_money()
 	stop_service();
 }
 
-void logic::CExecutingServiceState::device_confirm()
+void logic::CExecutingServiceState::device_confirm(device_exchange::e_command_from_pc command)
 {
+	if ((device_exchange::e_command_from_pc::open_valve != command) &&
+		(device_exchange::e_command_from_pc::close_valve != command) &&
+		(device_exchange::e_command_from_pc::buttons_status != command))
+	{
+		return;
+	}
+
 	if (e_service_name::stop != _current_service)
 	{
 		calc_time_and_money();

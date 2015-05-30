@@ -146,7 +146,7 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 		case (e_packet_type::log) :
 			lrp = get_server_logic_packet<server_exchange::tag_log_record_packet, server_exchange::e_packet_type::log>(packet);
 			_packet_to_raw_data.CreateLogRecordPacketRawData(lrp, transport_packet.data);
-			transport_packet.length = sizeof(lrp);
+			transport_packet.length = transport_packet.data.data_size;
 			transport_packet.type = e_packet_type::log;
 			break;
 		case (e_packet_type::settings) :

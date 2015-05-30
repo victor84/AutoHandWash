@@ -77,6 +77,7 @@ tag_packet_from_device CLogicDataFromDeviceToPacketFromDeviceConverter::convert_
 	tag_discount_card_issued* p = reinterpret_cast<tag_discount_card_issued*>(packet.get());
 
 	result.command = p->command_id;
+	result.data0 = static_cast<byte>(p->status);
 
 	return result;
 }

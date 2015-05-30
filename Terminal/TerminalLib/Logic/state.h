@@ -82,7 +82,7 @@ public:
 	virtual void out_of_money() = 0;
 
 	// подтверждение устройством
-	virtual void device_confirm() = 0;
+	virtual void device_confirm(device_exchange::e_command_from_pc command) = 0;
 
 	// ошибка от устройства
 	virtual void device_error(logic_structures::e_device_error_code code) = 0;
@@ -143,6 +143,12 @@ public:
 
 	// показать значения счётчиков
 	virtual void show_counters() = 0;
+
+	// выдать дисконтную карту
+	virtual void issue_discount_card() = 0;
+
+	// отправить сообщение лога на сервер
+	virtual void send_log_to_server(server_exchange::e_log_record_type type, const std::wstring& text) = 0;
 };
 
 #pragma pack(push, 4)
@@ -196,6 +202,8 @@ struct tag_device_settings
 		(idle_time_cost == settings.idle_time_cost) &&
 		(pause_before_advertising == settings.pause_before_advertising) &&
 		(state == settings.state) &&
+		(frost_protection_value == settings.frost_protection_value) &&
+		(discount_card_condition == settings.discount_card_condition) &&
 		(cost_pressurized_water == settings.cost_pressurized_water) &&
 		(cost_water_without_pressure == settings.cost_water_without_pressure) &&
 		(cost_foam == settings.cost_foam) &&

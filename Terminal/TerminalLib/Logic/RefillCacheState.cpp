@@ -36,6 +36,14 @@ void logic::CRefillCacheState::refilled_cache()
 
 	if (_on_cache_refilled)
 		_on_cache_refilled(static_cast<uint16_t>(device_settings.current_cache));
+
+	if (0 != device_settings.discount_card_condition)
+	{
+		if (device_settings.discount_card_condition <= (device_settings.current_cache / 100.0))
+		{
+			_logic.issue_discount_card();
+		}
+	}
 }
 
 void logic::CRefillCacheState::service_button_press(e_service_name service_name)
@@ -70,7 +78,7 @@ void logic::CRefillCacheState::out_of_money()
 		_on_cache_refilled(0);
 }
 
-void logic::CRefillCacheState::device_confirm()
+void logic::CRefillCacheState::device_confirm(device_exchange::e_command_from_pc command)
 {
 
 }

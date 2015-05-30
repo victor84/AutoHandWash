@@ -46,7 +46,7 @@ void logic::CDistributionOfPrizeState::out_of_money()
 
 }
 
-void logic::CDistributionOfPrizeState::device_confirm()
+void logic::CDistributionOfPrizeState::device_confirm(device_exchange::e_command_from_pc command)
 {
 
 }
