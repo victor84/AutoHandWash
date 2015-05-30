@@ -248,10 +248,14 @@ byte logic_settings::CCorrespondSettings::GetValveNumber(const logic::e_service_
 
 logic::e_service_name logic_settings::CCorrespondSettings::GetServiceByButtonNumber(const byte& button_number)
 {
-	if (button_number > _button_number_valve_number.size())
-		return e_service_name::error;
+	auto find_result = _button_number_service.find(button_number);
 
-	return _button_number_service[button_number];
+	if (_button_number_service.cend() == find_result)
+	{
+		return e_service_name::error;
+	}
+
+	return find_result->second;
 }
 
 uint16_t logic_settings::CCorrespondSettings::GetServiceCost(const logic::e_service_name& service)
