@@ -50,7 +50,6 @@ namespace Parsing
             collection.AddRange(BitConverter.GetBytes(packet.water_without_pressure));
             collection.AddRange(BitConverter.GetBytes(packet.foam));
             collection.AddRange(BitConverter.GetBytes(packet.wax));
-            collection.AddRange(BitConverter.GetBytes(packet.against_midges));
             collection.AddRange(BitConverter.GetBytes(packet.vacuum_cleaner));
             collection.AddRange(BitConverter.GetBytes(packet.air));
             collection.AddRange(BitConverter.GetBytes(packet.osmosis));
@@ -70,11 +69,12 @@ namespace Parsing
             collection.Add(packet.free_idle_time);
             collection.AddRange(BitConverter.GetBytes(packet.idle_time_cost));
             collection.Add(packet.pause_before_advertising);
+            collection.AddRange(BitConverter.GetBytes(packet.frost_protection_value));
+            collection.AddRange(BitConverter.GetBytes(packet.discount_card_condition));
             collection.AddRange(BitConverter.GetBytes(packet.pressurized_water));
             collection.AddRange(BitConverter.GetBytes(packet.water_without_pressure));
             collection.AddRange(BitConverter.GetBytes(packet.foam));
             collection.AddRange(BitConverter.GetBytes(packet.wax));
-            collection.AddRange(BitConverter.GetBytes(packet.against_midges));
             collection.AddRange(BitConverter.GetBytes(packet.vacuum_cleaner));
             collection.AddRange(BitConverter.GetBytes(packet.air));
             collection.AddRange(BitConverter.GetBytes(packet.osmosis));

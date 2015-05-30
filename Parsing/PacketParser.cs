@@ -137,9 +137,6 @@ namespace Parsing
             result_packet.wax = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
-            result_packet.against_midges = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
-            offset += 4;
-
             result_packet.vacuum_cleaner = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
@@ -162,7 +159,7 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (39 != data.Length)
+            if (47 != data.Length)
                 return e_convert_result.invalid_data;
 
             UInt16 offset = 0;
@@ -176,6 +173,12 @@ namespace Parsing
 
             result_packet.pause_before_advertising = data[offset++];
 
+            result_packet.frost_protection_value = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
+            offset += 4;
+
+            result_packet.discount_card_condition = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
+            offset += 4;
+
             result_packet.pressurized_water = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
@@ -186,9 +189,6 @@ namespace Parsing
             offset += 4;
 
             result_packet.wax = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
-            offset += 4;
-
-            result_packet.against_midges = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);
             offset += 4;
 
             result_packet.vacuum_cleaner = BitConverter.ToUInt32(data.SubArray(offset, 4), 0);

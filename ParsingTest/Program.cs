@@ -38,7 +38,6 @@ namespace ParsingTest
 
             tag_counters_packet counters_packet;
             counters_packet.date_time = (UInt64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            counters_packet.against_midges = 10;
             counters_packet.air = 20;
             counters_packet.current_cache = 100;
             counters_packet.foam = 30;
@@ -70,13 +69,14 @@ namespace ParsingTest
             settings_packet.coin_acceptor_impulse = 11;
             settings_packet.free_idle_time = 3;
             settings_packet.idle_time_cost = 10;
+            settings_packet.frost_protection_value = 10;
+            settings_packet.discount_card_condition = 100;
             settings_packet.osmosis = 80;
             settings_packet.pause_before_advertising = 1;
             settings_packet.pressurized_water = 10;
             settings_packet.water_without_pressure = 20;
             settings_packet.foam = 30;
             settings_packet.wax = 40;
-            settings_packet.against_midges = 50;
             settings_packet.vacuum_cleaner = 60;
             settings_packet.air = 70;
 

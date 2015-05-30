@@ -209,11 +209,15 @@ namespace Server
             settings_packet.idle_time_cost = (byte)settingsTerminal.PriceMinuteInactivity;
             settings_packet.osmosis = settingsTerminal.PriceOsmose;
             settings_packet.pause_before_advertising = (byte)settingsTerminal.PauseBeforeShowingAds;
+
+            // TODO: присвоение новых параметров
+            settings_packet.frost_protection_value = 10;
+            settings_packet.discount_card_condition = 100;
+
             settings_packet.pressurized_water = settingsTerminal.PricePressurizedWater;
             settings_packet.water_without_pressure = settingsTerminal.PriceNoPressurizedWater;
             settings_packet.foam = settingsTerminal.PriceFoam;
             settings_packet.wax = settingsTerminal.PriceWax;
-            settings_packet.against_midges = settingsTerminal.PriceAgainstOfMidges;
             settings_packet.vacuum_cleaner = settingsTerminal.PriceVacuum;
             settings_packet.air = settingsTerminal.PriceAir;
 
@@ -352,7 +356,6 @@ namespace Server
             {
                 Id = Guid.NewGuid(),
                 TerminalId = Terminal.Id,
-                AgainstOfMidges = countersPacket.against_midges,
                 Air = countersPacket.air,
                 Balance = countersPacket.current_cache,
                 CommonInput = countersPacket.total_cache,
@@ -400,7 +403,6 @@ namespace Server
                 ImpulseBillAcceptor = settings_packet.bill_acceptor_impulse,
                 ImpulseCoinAcceptor = settings_packet.coin_acceptor_impulse,
                 PauseBeforeShowingAds = settings_packet.pause_before_advertising,
-                PriceAgainstOfMidges = settings_packet.against_midges,
                 PriceAir = settings_packet.air,
                 PriceFoam = settings_packet.foam,
                 PriceMinuteInactivity = settings_packet.idle_time_cost,
