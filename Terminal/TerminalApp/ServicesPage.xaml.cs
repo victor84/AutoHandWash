@@ -34,8 +34,8 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfTimeTextBlock.Text = String.Format("Осталось времени: {0} сек.", time);
-                RestOfMoneyTextBlock.Text = String.Format("Осталось средств: {0} руб.", ((Double)(money / 100.0)).ToString("F"));
+                RestOfTimeTextBlock.Text = String.Format("{0} сек.", time);
+                RestOfMoneyTextBlock.Text = String.Format("{0} руб.", ((Double)(money / 100.0)).ToString("F"));
             });
         }
 
@@ -106,7 +106,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfMoneyTextBlock.Text = String.Format("Осталось средств: {0} руб.", ((Double)(cache / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0} руб.", ((Double)(cache / 100.0)).ToString("F"));
             });
         }
 
