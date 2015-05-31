@@ -443,6 +443,8 @@ namespace Server
             if (!TerminalLog.Insert(terminalLog))
                 return e_processing_result.failed;
 
+            RefreshStatusBar(Terminal.GroupId, terminalLog.Message);
+
             return e_processing_result.success;
         }
 
@@ -469,6 +471,12 @@ namespace Server
         private void RefreshCounters(string terminalName, Counters counters)
         {
             _hubClient.Invoke("RefreshCounters", terminalName, counters);
+        }
+
+        private void RefreshStatusBar(Guid groupId, string message)
+        {
+            string extMessage = string.Format("{0} Терминал \"{1}\" : {2}", DateTime.Now.ToString(), Terminal.TerminalName, message);
+            _hubClient.Invoke("RefreshStatusBar", groupId, extMessage);
         }
 
         private void HandleResult(tag_transport_packet packet, e_processing_result processing_result)
