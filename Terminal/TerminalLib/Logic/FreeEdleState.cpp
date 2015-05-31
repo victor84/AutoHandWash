@@ -72,7 +72,7 @@ void logic::CFreeEdleState::stop_button_press()
 
 	if (0 != _settings.free_idle_time)
 	{
-		uint32_t period = _settings.free_idle_time * 60 * 1000;
+		uint32_t period = _settings.free_idle_time * 1000;
 		_timer = new Concurrency::timer<int32_t>(period, 0, &_on_timer_call, false);
 		_timer->start();
 

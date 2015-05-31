@@ -141,7 +141,7 @@ void logic::CAdvertisingIdleState::activate()
 
 	if (0 != period)
 	{
-		period = period * 60 * 1000;
+		period = period * 1000;
 		_idle_timer = new Concurrency::timer<int32_t>(period, 0, &_on_idle_timer_call, false);
 		_idle_timer->start();
 	}
