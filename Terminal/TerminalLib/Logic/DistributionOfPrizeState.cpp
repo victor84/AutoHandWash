@@ -77,6 +77,7 @@ void logic::CDistributionOfPrizeState::coin_issued(byte balance)
 
 	if (0 == balance)
 	{
+		_logic.send_log_to_server(server_exchange::e_log_record_type::message, _T("Приз успешно выдан."));
 		_logic.set_state(e_state::advertising_idle);
 	}
 }
