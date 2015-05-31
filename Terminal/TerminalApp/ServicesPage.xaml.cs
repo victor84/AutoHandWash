@@ -36,8 +36,8 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfTimeTextBlock.Text = String.Format("{0} сек.", time);
-                RestOfMoneyTextBlock.Text = String.Format("{0} руб.", ((Double)(money / 100.0)).ToString("F"));
+                RestOfTimeTextBlock.Text = String.Format("{0} сек", time);
+                RestOfMoneyTextBlock.Text = String.Format("{0} руб", ((Double)(money / 100.0)).ToString("F"));
             });
         }
 
@@ -121,7 +121,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfMoneyTextBlock.Text = String.Format("{0} руб.", ((Double)(cache / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0} руб", ((Double)(cache / 100.0)).ToString("F"));
             });
         }
 
@@ -230,7 +230,7 @@ namespace TerminalApp
             {
                 if (si.button_number == buttonNumber)
                 {
-                    result = String.Format("{0}: {1} руб.", si.service_name, si.cost);
+                    result = String.Format("{0}: {1} руб", si.service_name, si.cost);
                     break;
                 }
             }

@@ -71,19 +71,19 @@
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>            
             
             <Viewbox Grid.Row="0">
-                <TextBlock Text="Осталось средств:" FontWeight="Bold"/>
+                <TextBlock Text="Осталось средств" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="1">
-                <TextBlock x:Name="RestOfMoneyTextBlock" Text="00,00 руб." FontWeight="Bold"/>
+                <TextBlock x:Name="RestOfMoneyTextBlock" Text="00,00 руб" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="2">
-                <TextBlock Text="Осталось времени:" FontWeight="Bold"/>
+                <TextBlock Text="Осталось времени" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="3">
-                <TextBlock x:Name="RestOfTimeTextBlock" Text="0 сек." FontWeight="Bold"/>
+                <TextBlock x:Name="RestOfTimeTextBlock" Text="0 сек" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="4">
-                <TextBlock Text="Текущая услуга:" FontWeight="Bold"/>
+                <TextBlock Text="Текущая услуга" FontWeight="Bold"/>
             </Viewbox>            
             <Viewbox Grid.Row="5">
                 <TextBlock x:Name="CurrentServiceNameTextBlock" Text="Название услуги" FontWeight="Bold"/>
