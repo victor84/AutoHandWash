@@ -80,7 +80,7 @@
                 <TextBlock Text="Осталось времени" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="3">
-                <TextBlock x:Name="RestOfTimeTextBlock" Text="0 сек" FontWeight="Bold"/>
+                <TextBlock x:Name="RestOfTimeTextBlock" Text="00:00" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="4">
                 <TextBlock Text="Текущая услуга" FontWeight="Bold"/>

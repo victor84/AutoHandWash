@@ -36,7 +36,8 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfTimeTextBlock.Text = String.Format("{0} сек", time);
+                TimeSpan timeSpan = TimeSpan.FromSeconds(time);
+                RestOfTimeTextBlock.Text = String.Format("{0:mm\\:ss}", timeSpan);
                 RestOfMoneyTextBlock.Text = String.Format("{0} руб", ((Double)(money / 100.0)).ToString("F"));
             });
         }
