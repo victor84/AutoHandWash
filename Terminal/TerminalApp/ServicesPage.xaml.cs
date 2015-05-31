@@ -41,9 +41,14 @@ namespace TerminalApp
 
         public void OnServiceChanged(LogicWrapper.e_service_id service_id, String service_name)
         {
+            SetServiceNameTextBlockText(service_name);
+        }
+
+        private void SetServiceNameTextBlockText(String text)
+        {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                CurrentServiceNameTextBlock.Text = service_name;
+                CurrentServiceNameTextBlock.Text = text;
             });
         }
 
@@ -78,6 +83,7 @@ namespace TerminalApp
             {
                 stateText = "Платный простой";
                 ShowHint("");
+                SetServiceNameTextBlockText("Платный простой");
             }
             else if (LogicWrapper.e_state_id.refill_cache == state_id)
             {
