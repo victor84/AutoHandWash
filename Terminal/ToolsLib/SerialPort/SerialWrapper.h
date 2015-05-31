@@ -17,6 +17,8 @@ class CSerialWrapper
 
 	tag_connection_params _connection_params;
 
+	std::wstringstream _str_str;
+
 	// состояние инициализации
 	tools::e_init_state _init_state;
 

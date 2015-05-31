@@ -61,10 +61,9 @@ void device_exchange::CDeviceInteract::device_to_logic()
 		{
 			for (device_exchange::tag_packet_from_device packet : packets)
 			{
-// TODO: Убрать в релизе!
-// #ifdef DEBUG
+#ifdef DEBUG
 				_tr_error->trace_message(_message_description.describe_message(packet));
-// #endif // DEBUG
+#endif // DEBUG
 				_packets_to_logic.push_back(_packet_from_device_to_packet_to_logic.Convert(packet, packet.command));
 			}
 
@@ -90,10 +89,9 @@ void device_exchange::CDeviceInteract::logic_to_device()
 		tools::data_wrappers::_tag_data_managed raw_data;
 		tag_packet_from_pc packet = _packets_to_device_to_packets_from_logic.Convert(packet_to_device, packet_to_device->command_id);
 
-// TODO: Убрать в релизе!
-// #ifdef DEBUG
+#ifdef DEBUG
 		_tr_error->trace_message(_message_description.describe_message(packet));
-// #endif // DEBUG
+#endif // DEBUG
 
 		if (device_exchange::e_convert_result::success == _device_packet_creator.CreateRawData(packet, raw_data))
 		{
@@ -115,6 +113,8 @@ tools::e_init_state device_exchange::CDeviceInteract::init()
 
 	if (tools::serial_port::e_serial_result::error == _device_connection.Start(connection_params))
 	{
+		_tr_error->trace_error(_T("Не удалось подключиться к COM порту"));
+
 		if (_on_device_not_available_fn)
 			_on_device_not_available_fn();
 

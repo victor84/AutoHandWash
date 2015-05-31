@@ -161,7 +161,10 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 			transport_packet.length = sizeof(tsp);
 			transport_packet.type = e_packet_type::terminal_state;
 		default:
-			_tr_error->trace_error(_T("Попытка отправить на сервер пакет неизвестного типа"));
+			_str_str.str(std::wstring());
+			_str_str << _T("Попытка отправить на сервер пакет неизвестного типа: ") 
+				<< static_cast<int32_t>(packet->type) << std::endl;
+			_tr_error->trace_error(_str_str.str());
 			break;
 	}
 

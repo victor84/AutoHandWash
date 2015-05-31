@@ -17,6 +17,8 @@ class CServerInteract
 {
 	tools::logging::CTraceError* _tr_error;
 
+	std::wstringstream _str_str;
+
 	// сырые данные с сервера
 	tools::lock_vector<tools::data_wrappers::_tag_data_managed> _raw_data_from_server;
 

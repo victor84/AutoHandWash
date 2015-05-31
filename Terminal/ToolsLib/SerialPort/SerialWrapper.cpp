@@ -31,11 +31,18 @@ tools::serial_port::e_serial_result tools::serial_port::CSerialWrapper::init()
 	if (ERROR_SUCCESS != _serial_port.Open(port_name.c_str(), sizeof(_read_buffer), sizeof(_write_buffer)))
 		return e_serial_result::error;
 
-	if (ERROR_SUCCESS != _serial_port.Setup(static_cast<CSerial::EBaudrate>(_connection_params.baud_rate),
-											static_cast<CSerial::EDataBits>(_connection_params.bits_per_byte),
-											CSerial::EParNone,
-											static_cast<CSerial::EStopBits>(_connection_params.stop_bits)))
+	LONG serial_connection_result = _serial_port.Setup(static_cast<CSerial::EBaudrate>(_connection_params.baud_rate),
+													   static_cast<CSerial::EDataBits>(_connection_params.bits_per_byte),
+													   CSerial::EParNone,
+													   static_cast<CSerial::EStopBits>(_connection_params.stop_bits));
+
+	if (ERROR_SUCCESS != serial_connection_result)
+	{
+		_tr_error->trace_error(_tr_error->format_sys_message(serial_connection_result));
+		_tr_error->trace_error(_T("Ошибка подключения к COM порту."));
+
 		return e_serial_result::error;
+	}
 
 	if (ERROR_SUCCESS != _serial_port.Purge())
 		return e_serial_result::error;
