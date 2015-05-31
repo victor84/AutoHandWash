@@ -25,6 +25,8 @@ namespace TerminalApp
 
         private TextBlock _widestTextBlock;
 
+        private LogicWrapper.e_state_id _currentState;
+
         public ServicesPage()
         {
             InitializeComponent();
@@ -41,6 +43,12 @@ namespace TerminalApp
 
         public void OnServiceChanged(LogicWrapper.e_service_id service_id, String service_name)
         {
+            if ((LogicWrapper.e_state_id.paid_idle == _currentState) &&
+                (LogicWrapper.e_service_id.stop == service_id))
+            {
+                return;
+            }
+
             SetServiceNameTextBlockText(service_name);
         }
 
@@ -62,6 +70,7 @@ namespace TerminalApp
 
         public void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
+            _currentState = state_id;
             String stateText = "";
             if (LogicWrapper.e_state_id.advertising_idle == state_id)
             {
