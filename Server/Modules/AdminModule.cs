@@ -361,11 +361,12 @@ namespace Server.Modules
             var priceNoPressurizedWater = (uint)this.Request.Form.PriceNoPressurizedWater;
             var priceFoam = (uint)this.Request.Form.PriceFoam;
             var priceWax = (uint)this.Request.Form.PriceWax;
-            var priceAgainstOfMidges = (uint)this.Request.Form.PriceAgainstOfMidges;
             var priceVacuum = (uint)this.Request.Form.PriceVacuum;
             var priceAir = (uint)this.Request.Form.PriceAir;
             var priceOsmose = (uint)this.Request.Form.PriceOsmose;
-
+            var frostProtection = (uint)this.Request.Form.FrostProtection;
+            var conditionDiscountCard = (uint)this.Request.Form.ConditionDiscountCard;
+            
             if (!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(terminalName))
             {
                 var group = Group.GetGroupByName(groupName);
@@ -385,7 +386,6 @@ namespace Server.Modules
                                 ImpulseBillAcceptor = impulseBillAcceptor,
                                 ImpulseCoinAcceptor = impulseCoinAcceptor,
                                 PauseBeforeShowingAds = pauseBeforeShowingAds,
-                                PriceAgainstOfMidges = priceAgainstOfMidges,
                                 PriceAir = priceAir,
                                 PriceFoam = priceFoam,
                                 PriceMinuteInactivity = priceMinuteInactivity,
@@ -394,7 +394,9 @@ namespace Server.Modules
                                 PricePressurizedWater = pricePressurizedWater,
                                 PriceVacuum = priceVacuum,
                                 PriceWax = priceWax,
-                                TimeInactivity = timeInactivity
+                                TimeInactivity = timeInactivity,
+                                FrostProtection = frostProtection,
+                                ConditionDiscountCard = conditionDiscountCard,
                             };
                             var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
                             if (settingsTerminal != null)

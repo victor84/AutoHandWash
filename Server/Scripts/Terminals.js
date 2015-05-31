@@ -12,7 +12,6 @@
         content += '<td>' + counters.NoPressurizedWater + '</td>';
         content += '<td>' + counters.Foam + '</td>';
         content += '<td>' + counters.Wax + '</td>';
-        content += '<td>' + counters.AgainstOfMidges + '</td>';
         content += '<td>' + counters.Vacuum + '</td>';
         content += '<td>' + counters.Osmose + '</td>';
         content += '<td>' + counters.Air + '</td>';

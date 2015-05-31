@@ -209,17 +209,14 @@ namespace Server
             settings_packet.idle_time_cost = (byte)settingsTerminal.PriceMinuteInactivity;
             settings_packet.osmosis = settingsTerminal.PriceOsmose;
             settings_packet.pause_before_advertising = (byte)settingsTerminal.PauseBeforeShowingAds;
-
-            // TODO: присвоение новых параметров
-            settings_packet.frost_protection_value = 10;
-            settings_packet.discount_card_condition = 100;
-
             settings_packet.pressurized_water = settingsTerminal.PricePressurizedWater;
             settings_packet.water_without_pressure = settingsTerminal.PriceNoPressurizedWater;
             settings_packet.foam = settingsTerminal.PriceFoam;
             settings_packet.wax = settingsTerminal.PriceWax;
             settings_packet.vacuum_cleaner = settingsTerminal.PriceVacuum;
             settings_packet.air = settingsTerminal.PriceAir;
+            settings_packet.frost_protection_value = settingsTerminal.FrostProtection;
+            settings_packet.discount_card_condition = settingsTerminal.ConditionDiscountCard;
 
             tag_transport_packet transport_packet = new tag_transport_packet();
             transport_packet.type = e_packet_type.settings;
@@ -411,6 +408,8 @@ namespace Server
                 PriceVacuum = settings_packet.vacuum_cleaner,
                 PriceWax = settings_packet.wax,
                 PriceOsmose = settings_packet.osmosis,
+                FrostProtection = settings_packet.frost_protection_value,
+                ConditionDiscountCard = settings_packet.discount_card_condition,
                 State = (byte)settings_packet.state,
                 TimeInactivity = settings_packet.free_idle_time
             };
