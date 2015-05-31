@@ -9,7 +9,7 @@
 <script src="/Scripts/Terminals.js"></script>
 <script>
     $(function () {
-        RefreshCounters();
+        Refresh();
     });
 </script>
 
@@ -37,7 +37,6 @@
                     <th>Вода без давления</th>
                     <th>Пена</th>
                     <th>Воск</th>
-                    <th>От мошек</th>
                     <th>Пылесос</th>
                     <th>Осмос</th>
                     <th>Воздух</th>
@@ -49,6 +48,7 @@
             </tbody>
         </table>
     </div>
+    <div id="@Current.Key.Id" class="panel-footer"></div>
 </div>
 
 @EndEach

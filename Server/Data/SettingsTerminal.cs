@@ -35,13 +35,15 @@ namespace Server.Data
         [Column]
         public uint PriceWax { get; set; }
         [Column]
-        public uint PriceAgainstOfMidges { get; set; }
-        [Column]
         public uint PriceVacuum { get; set; }
         [Column]
         public uint PriceAir { get; set; }
         [Column]
         public uint PriceOsmose { get; set; }
+        [Column]
+        public uint FrostProtection { get; set; }
+        [Column]
+        public uint ConditionDiscountCard { get; set; }
 
         public static SettingsTerminal GetSettingsTerminalById(Guid id)
         {

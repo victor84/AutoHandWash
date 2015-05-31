@@ -98,12 +98,6 @@
                 </div>
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label>Цена средства от мошек:</label>
-                        <input type="number" min="0" name="PriceAgainstOfMidges" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceAgainstOfMidges">
-                    </div>
-                </div>
-                <div class="control-group form-group">
-                    <div class="controls">
                         <label>Цена пылесоса:</label>
                         <input type="number" min="0" name="PriceVacuum" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceVacuum">
                     </div>
@@ -120,8 +114,18 @@
                         <input type="number" min="0" name="PriceAir" class="form-control" value="@Model.AdminPage.SettingsTerminal.PriceAir">
                     </div>
                 </div>
-
-
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Температура защиты от замерзания:</label>
+                        <input type="number" min="0" name="FrostProtection" class="form-control" value="@Model.AdminPage.SettingsTerminal.FrostProtection">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Кредит для выдачи дисконтной карты:</label>
+                        <input type="number" min="0" name="ConditionDiscountCard" class="form-control" value="@Model.AdminPage.SettingsTerminal.ConditionDiscountCard">
+                    </div>
+                </div>
                 <div id="success"></div>
                 <button type="submit" class="btn btn-primary btnproperties">Применить</button>
                 <a class="btn btn-default btnproperties" href="/admin/terminals" role="button">Отмена</a>

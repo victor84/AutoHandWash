@@ -71,8 +71,6 @@ namespace Server.Data
         [Column]
         public uint Wax { get; set; }
         [Column]
-        public uint AgainstOfMidges { get; set; }
-        [Column]
         public uint Osmose { get; set; }
         [Column]
         public uint Vacuum { get; set; }

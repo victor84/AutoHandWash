@@ -1,4 +1,4 @@
-﻿function RefreshCounters() {
+﻿function Refresh() {
 
     var mainHub = $.connection.mainHub;
 
@@ -12,13 +12,17 @@
         content += '<td>' + counters.NoPressurizedWater + '</td>';
         content += '<td>' + counters.Foam + '</td>';
         content += '<td>' + counters.Wax + '</td>';
-        content += '<td>' + counters.AgainstOfMidges + '</td>';
         content += '<td>' + counters.Vacuum + '</td>';
         content += '<td>' + counters.Osmose + '</td>';
         content += '<td>' + counters.Air + '</td>';
         content += '<td class="col-md-2 text-center"><a href="terminals/fillbalance/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-rub"></i>Пополнить счет</a></td>';
         content += "</tr>";
         $("#" + counters.TerminalId).replaceWith(content);
+    };
+
+    mainHub.client.refreshStatusBar = function (groupId, message) {
+        var content = "<div id = " + "'" + groupId + "'" + " class = 'panel-footer'>" + message + "</div>";
+        $("#" + groupId).replaceWith(content);
     };
 
     $.connection.hub.start().done();
