@@ -21,7 +21,7 @@
     };
 
     mainHub.client.refreshStatusBar = function (groupId, message) {
-        var content = "<div id = " + "'" + groupId + "'" + " class = 'panel-footer'>" + message + "</div>";
+        var content = "<div id = " + "'" + groupId + "'" + " >" + message + "</div>";
         $("#" + groupId).replaceWith(content);
     };
 
