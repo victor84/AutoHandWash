@@ -62,7 +62,17 @@
                             <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
+                            @IfNot.Value.HasTerminalLogs
+                            <li>
+                                <a href="#">
+                                    <div>Нет сообщений</div>
+                                </a>
+                            </li>
+                            @EndIf
+
+                            @If.Value.HasTerminalLogs
                             @Partial['GroupLogs', Current.Value.TerminalLogs]
+                            @EndIf
                         </ul>
                     </div>
                 </div>
