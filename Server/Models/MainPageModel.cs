@@ -1,5 +1,7 @@
 ﻿using Server.Data;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace Server.Models
 {
     public enum MainErrors
@@ -42,8 +44,16 @@ namespace Server.Models
 
     public class GroupInfo
     {
+        private int count = 10; 
         public List<TerminalCounters> TerminalCounters { get; set; }
-        public List<TerminalLogs> TerminalLogs { get; set; }
+        public List<TerminalLogs> ViewTerminalLogs
+        {
+            get
+            {
+                return TerminalLogs.OrderByDescending(x => x.TerminalLog.DateTimeTerminal).Take(count).ToList();
+            }
+        }
+        public List<TerminalLogs> TerminalLogs;
 
         public GroupInfo()
         {
@@ -66,13 +76,13 @@ namespace Server.Models
     public class TerminalCounters
     {
         public string TerminalName { get; set; }
-        public double Balance 
+        public double Balance
         {
             get
             {
                 double result = Counters.Balance / 100;
                 return result;
-            }    
+            }
         }
         public Counters Counters { get; set; }
 
@@ -81,7 +91,7 @@ namespace Server.Models
             Counters = new Counters();
         }
     }
-    
+
     public class MainPageModel
     {
         public Dictionary<Group, GroupInfo> DictionaryGroupInfo { get; set; }
