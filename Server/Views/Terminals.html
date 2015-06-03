@@ -19,7 +19,7 @@
     ActivateLI("terminals");
 </script>
 
-@Each.MainPage.DictionaryTerminalCounters
+@Each.MainPage.DictionaryGroupInfo
             
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -44,16 +44,16 @@
                 </tr>
             </thead>
             <tbody>
-                @Partial['TerminalsCounters', Current.Value]
+                @Partial['TerminalsCounters', Current.Value.TerminalCounters]
             </tbody>
         </table>
     </div>
     <div class="panel-footer clearfix">
         <div>
-            <div id="@Current.Key.Id" class="pull-left">
-                Сообщение 3
+            <div id="@Current.Key.Id" class="pull-right">
+                <!--Сообщение 3-->
             </div>
-            <div class="pull-right">
+            <div class="pull-left">
                 <div id="messages_@Current.Key.Id">
                     <div class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
@@ -62,41 +62,7 @@
                             <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <strong>Название терминала</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Дата и время</em>
-                                        </span>
-                                    </div>
-                                    <div>Сообщение 1</div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <strong>Название терминала</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Дата и время</em>
-                                        </span>
-                                    </div>
-                                    <div>Сообщение 2</div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <strong>Название терминала</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Дата и время</em>
-                                        </span>
-                                    </div>
-                                    <div>Сообщение 3</div>
-                                </a>
-                            </li>
+                            @Partial['GroupLogs', Current.Value.TerminalLogs]
                         </ul>
                     </div>
                 </div>

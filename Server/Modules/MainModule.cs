@@ -51,11 +51,11 @@ namespace Server.Modules
                     var terminals = Terminal.GetTerminalsByGroup(idGroups);
                     if (terminals != null && terminals.Any())
                     {
-                        Dictionary<Group, List<TerminalCounters>> dictionaryTerminalCounters = new Dictionary<Group, List<TerminalCounters>>();
+                        Dictionary<Group, GroupInfo> dictGroupInfo = new Dictionary<Group, GroupInfo>();
                         foreach (var group in groups)
                         {
                             var terminalsOfGroup = terminals.Where(x => x.GroupId == group.Id);
-                            List<TerminalCounters> listTerminalCounters = new List<TerminalCounters>();
+                            GroupInfo groupInfo = new GroupInfo();
                             foreach (var terminal in terminalsOfGroup)
                             {
                                 var counters = Counters.GetCountersByTerminal(terminal.Id);
@@ -69,12 +69,23 @@ namespace Server.Modules
                                 {
                                     terminalCounters.Counters = new Counters() { TerminalId = terminal.Id, State = 255 };
                                 }
-                                listTerminalCounters.Add(terminalCounters);
+                                groupInfo.TerminalCounters.Add(terminalCounters);
+                                var logs = TerminalLog.GetLogsByTerminal(terminal.Id);
+                                if (logs != null)
+                                {
+                                    foreach (var log in logs)
+                                    {
+                                        TerminalLogs terminalLogs = new TerminalLogs();
+                                        terminalLogs.TerminalName = terminal.TerminalName;
+                                        terminalLogs.TerminalLog = log;
+                                        groupInfo.TerminalLogs.Add(terminalLogs);
+                                    }
+                                }
                             }
-                            dictionaryTerminalCounters.Add(group, listTerminalCounters);
+                            dictGroupInfo.Add(group, groupInfo);
                         }
                         Model.MainPage = new MainPageModel();
-                        Model.MainPage.DictionaryTerminalCounters = dictionaryTerminalCounters;
+                        Model.MainPage.DictionaryGroupInfo = dictGroupInfo;
                         return View["Terminals", Model];
                     }
                 }

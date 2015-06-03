@@ -1,0 +1,14 @@
+﻿@Each
+<li>
+    <a href="#">
+        <div>
+            <strong>@Current.TerminalName</strong>
+            <span class="pull-right text-muted">
+                <em>@Current.TerminalLog.DateTimeTerminal</em>
+            </span>
+        </div>
+        <div>@Current.TerminalLog.Message</div>
+    </a>
+</li>
+<li class="divider"></li>
+@EndEach

@@ -39,7 +39,30 @@ namespace Server.Models
             }
         }
     }
-    
+
+    public class GroupInfo
+    {
+        public List<TerminalCounters> TerminalCounters { get; set; }
+        public List<TerminalLogs> TerminalLogs { get; set; }
+
+        public GroupInfo()
+        {
+            TerminalCounters = new List<TerminalCounters>();
+            TerminalLogs = new List<TerminalLogs>();
+        }
+    }
+
+    public class TerminalLogs
+    {
+        public string TerminalName { get; set; }
+        public TerminalLog TerminalLog { get; set; }
+
+        public TerminalLogs()
+        {
+            TerminalLog = new TerminalLog();
+        }
+    }
+
     public class TerminalCounters
     {
         public string TerminalName { get; set; }
@@ -61,11 +84,11 @@ namespace Server.Models
     
     public class MainPageModel
     {
-        public Dictionary<Group, List<TerminalCounters>> DictionaryTerminalCounters { get; set; }
+        public Dictionary<Group, GroupInfo> DictionaryGroupInfo { get; set; }
         public MainError MainError { get; set; }
         public MainPageModel()
         {
-            DictionaryTerminalCounters = new Dictionary<Group, List<TerminalCounters>>();
+            DictionaryGroupInfo = new Dictionary<Group, GroupInfo>();
         }
     }
 }
