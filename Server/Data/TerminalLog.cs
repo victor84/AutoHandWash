@@ -39,6 +39,24 @@ namespace Server.Data
             return logs;
         }
 
+        public static List<TerminalLog> GetLogs(IEnumerable<Guid> ids)
+        {
+            List<TerminalLog> terminalLogs = null;
+            try
+            {
+                using (var db = new DataConnection())
+                {
+                    var query = db.GetTable<TerminalLog>().Where(x => ids.Contains(x.TerminalId));
+                    terminalLogs = query.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ServerLogger.Error(string.Format("TerminalLog -> GetLogs: {0}", ex.Message));
+            }
+            return terminalLogs;
+        }
+
         public static bool Insert(TerminalLog terminalLog)
         {
             bool result = true;

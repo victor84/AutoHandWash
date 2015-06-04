@@ -8,6 +8,7 @@ namespace Server.Models
     {
         NotGroups,
         ErrorTerminals,
+        ErrorTerminalsLogs,
         ErrorFillBalance,
         ErrorPrizeFund,
     };
@@ -27,6 +28,9 @@ namespace Server.Models
                         break;
                     case MainErrors.ErrorTerminals:
                         result = "Не удалось прочитать счетчики терминалов";
+                        break;
+                    case MainErrors.ErrorTerminalsLogs:
+                        result = "Не удалось прочитать сообщения терминалов";
                         break;
                     case MainErrors.ErrorFillBalance:
                         result = "Не удалось найти терминал или группу";
@@ -65,6 +69,30 @@ namespace Server.Models
     public class TerminalLogs
     {
         public string TerminalName { get; set; }
+        public string GroupName { get; set; }
+        public string ViewMessageType 
+        { 
+            get
+            {
+                string result = string.Empty;
+                switch (TerminalLog.MessageType)
+                {
+                    case 0:
+                        result = "Ошибка";
+                        break;
+                    case 1:
+                        result = "Предупреждение";
+                        break;
+                    case 2:
+                        result = "Сообщение";
+                        break;
+                    default:
+                        result = "Неизвестно";
+                        break;
+                }
+                return result; 
+            }
+        }
         public TerminalLog TerminalLog { get; set; }
 
         public TerminalLogs()
@@ -95,10 +123,12 @@ namespace Server.Models
     public class MainPageModel
     {
         public Dictionary<Group, GroupInfo> DictionaryGroupInfo { get; set; }
+        public List<TerminalLogs> TerminalLogs { get; set; }
         public MainError MainError { get; set; }
         public MainPageModel()
         {
             DictionaryGroupInfo = new Dictionary<Group, GroupInfo>();
+            TerminalLogs = new List<TerminalLogs>();
         }
     }
 }

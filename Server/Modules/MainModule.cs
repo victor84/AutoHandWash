@@ -20,6 +20,7 @@ namespace Server.Modules
             serverPrizeCache = new ServerPrizeCache();
 
             Get["/terminals"] = Terminals;
+            Get["/terminalslogs"] = TerminalsLogs;
             Get["/prizefund"] = PrizeFund;
             Get["/terminals/fillbalance/{terminalId}"] = ViewFillBalance;
             Post["/terminals/fillbalance"] = FillBalance;
@@ -95,6 +96,67 @@ namespace Server.Modules
                 }
             }
             return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorTerminals);
+        }
+
+        private dynamic TerminalsLogs(dynamic parameters)
+        {
+            string userName = Model.MasterPage.UserName;
+            var user = User.GetUserByName(userName);
+            if (user != null)
+            {
+                List<Group> groups = null;
+                if (user.Claim == User.adminClaim)
+                {
+                    groups = Group.GetGroups();
+                }
+                else
+                {
+                    var idGroups = UserGroups.GetGroupsByUser(user.Id);
+                    if (idGroups != null)
+                    {
+                        groups = Group.GetGroups(idGroups);
+                    }
+                }
+                if (groups != null && groups.Any())
+                {
+                    var idGroups = groups.Select(x => x.Id);
+                    var terminals = Terminal.GetTerminalsByGroup(idGroups);
+                    if (terminals != null && terminals.Any())
+                    {
+                        var idTerminals = terminals.Select(x => x.Id);
+                        var logs = TerminalLog.GetLogs(idTerminals);
+                        List<TerminalLogs> TerminalLogs = new List<TerminalLogs>();
+                        if (logs != null)
+                        {
+                            foreach (var log in logs)
+                            {
+                                var terminal = terminals.FirstOrDefault(x => x.Id == log.TerminalId);
+                                if (terminal != null)
+                                {
+                                    var group = groups.FirstOrDefault(x => x.Id == terminal.GroupId);
+                                    if (group != null)
+                                    {
+                                        TerminalLogs terminalLogs = new TerminalLogs();
+                                        terminalLogs.TerminalName = terminal.TerminalName;
+                                        terminalLogs.GroupName = group.GroupName;
+                                        terminalLogs.TerminalLog = log;
+
+                                        TerminalLogs.Add(terminalLogs);
+                                    }
+                                }
+                            }
+                        }
+                        Model.MainPage = new MainPageModel();
+                        Model.MainPage.TerminalLogs = TerminalLogs;
+                        return View["TerminalsLogs", Model];
+                    }
+                }
+                else
+                {
+                    return Response.AsRedirect("~/error/" + (byte)MainErrors.NotGroups);
+                }
+            }
+            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorTerminalsLogs);
         }
 
         private dynamic PrizeFund(dynamic parameters)
