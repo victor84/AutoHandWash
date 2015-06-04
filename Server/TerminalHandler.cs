@@ -475,7 +475,7 @@ namespace Server
 
         private void RefreshStatusBar(Guid groupId, string message)
         {
-            string extMessage = string.Format("{0} Терминал \"{1}\" : {2}", DateTime.Now.ToString(), Terminal.TerminalName, message);
+            string extMessage = string.Format("{0} \"{1}\" : {2}", DateTime.Now.ToString(), Terminal.TerminalName, message);
             _hubClient.Invoke("RefreshStatusBar", groupId, extMessage);
         }
 
