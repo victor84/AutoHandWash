@@ -296,6 +296,9 @@
     <None Include="LinqToDB.Templates\PluralizationService.ttinclude" />
     <None Include="LinqToDB.Templates\T4Model.ttinclude" />
     <None Include="LinqToDB.Templates\Validation.ttinclude" />
+    <Content Include="Content\padding.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
