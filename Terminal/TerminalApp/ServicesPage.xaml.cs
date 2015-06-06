@@ -46,10 +46,11 @@ namespace TerminalApp
             if (true == start)
             {
                 _showServiceName = false;
-                _currentServiceTimer.Change(0, 1000);
+                _currentServiceTimer.Change(0, 500);
             }
             else
             {
+                _showServiceName = true;
                 _currentServiceTimer.Change(0, 0);
                 SetServiceNameTextBlockText(_currentServiceName);
             }

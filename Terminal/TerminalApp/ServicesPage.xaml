@@ -68,7 +68,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>                
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="0"/>
 
             </Grid.RowDefinitions>
 
@@ -103,7 +103,7 @@
                 <TextBlock x:Name="HintTextBlock" Text="Подсказка" FontWeight="Bold"/>
             </Viewbox>            
 
-            <TextBlock Grid.Row="7" x:Name="LogicStateTextBlock" Text="Состояние логики" VerticalAlignment="Center" Margin="0,8"/>
+            <TextBlock Grid.Row="7" x:Name="LogicStateTextBlock" Text="Состояние логики" VerticalAlignment="Center" Margin="0,8" Visibility="Hidden"/>
 
         </Grid>
     </Grid>
