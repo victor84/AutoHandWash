@@ -5,6 +5,7 @@
 
 logic::CRefillCacheState::CRefillCacheState(CLogicAbstract& logic)
 	: IState(logic, e_state::refill_cache)
+	, _discount_card_issued(false)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -41,7 +42,11 @@ void logic::CRefillCacheState::refilled_cache()
 	{
 		if (device_settings.discount_card_condition <= (device_settings.current_cache / 100.0))
 		{
-			_logic.issue_discount_card();
+			if (false == _discount_card_issued)
+			{
+				_logic.issue_discount_card();
+				_discount_card_issued = true;
+			}
 		}
 	}
 }
@@ -76,6 +81,8 @@ void logic::CRefillCacheState::out_of_money()
 
 	if (_on_cache_refilled)
 		_on_cache_refilled(0);
+
+	_discount_card_issued = false;
 }
 
 void logic::CRefillCacheState::device_confirm(device_exchange::e_command_from_pc command)

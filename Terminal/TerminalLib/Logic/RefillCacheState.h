@@ -13,6 +13,9 @@ class CRefillCacheState : public IState
 	// вызывается при пополнении счёта
 	std::function<void(uint16_t)> _on_cache_refilled;
 
+	// флаг, что выдана дисконтная карта
+	bool _discount_card_issued;
+
 public:
 	CRefillCacheState(CLogicAbstract& logic);
 	virtual ~CRefillCacheState();

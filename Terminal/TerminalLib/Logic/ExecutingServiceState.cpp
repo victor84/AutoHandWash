@@ -202,6 +202,9 @@ void logic::CExecutingServiceState::out_of_money()
 	_balance_of_money = 0;
 
 	stop_service();
+
+	CRefillCacheState* rcs = get_implemented_state<CRefillCacheState>(e_state::refill_cache);
+	rcs->out_of_money();
 }
 
 void logic::CExecutingServiceState::device_confirm(device_exchange::e_command_from_pc command)
