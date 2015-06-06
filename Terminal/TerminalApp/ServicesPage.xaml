@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d"
       d:DesignHeight="469" d:DesignWidth="542"
-	  Title="ServicesPage" SizeChanged="Page_SizeChanged" >
+	  Title="ServicesPage" SizeChanged="Page_SizeChanged">
 
     <Grid x:Name="TopGrid">
 
@@ -48,20 +48,13 @@
                 <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-                <TextBlock Grid.Row="0" x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="1" x:Name="Service2TextBlock" TextWrapping="Wrap" Text="Услуга №2 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="2" x:Name="Service3TextBlock" TextWrapping="Wrap" Text="Услуга №3 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="3" x:Name="Service4TextBlock" TextWrapping="Wrap" Text="Услуга №4 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="4" x:Name="Service5TextBlock" TextWrapping="Wrap" Text="Услуга №5 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="5" x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
-                <TextBlock Grid.Row="6" x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7 Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-
+                <TextBlock Grid.Row="0" x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1" x:Name="Service2TextBlock" TextWrapping="Wrap" Text="Услуга №2&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" x:Name="Service3TextBlock" TextWrapping="Wrap" Text="Услуга №3&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="3" x:Name="Service4TextBlock" TextWrapping="Wrap" Text="Услуга №4&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="4" x:Name="Service5TextBlock" TextWrapping="Wrap" Text="Услуга №5&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="5" x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
+                <TextBlock Grid.Row="6" x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
             </Grid>
 
         </Border>

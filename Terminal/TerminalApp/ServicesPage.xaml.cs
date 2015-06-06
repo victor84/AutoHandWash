@@ -237,20 +237,30 @@ namespace TerminalApp
                 return;
 
             Double rowWidth = ServicesGrid.ActualWidth;
+            Double rowHeight = ServicesGrid.RowDefinitions[0].ActualHeight;
 
             Size textSize = MeasureString(_widestTextBlock.Text, _widestTextBlock);
-            Double newFontSizeDouble = (_widestTextBlock.FontSize * (rowWidth / textSize.Width)) - 0.5;
 
-            Service1TextBlock.FontSize = newFontSizeDouble;
-            Service2TextBlock.FontSize = newFontSizeDouble;
-            Service3TextBlock.FontSize = newFontSizeDouble;
-            Service4TextBlock.FontSize = newFontSizeDouble;
-            Service5TextBlock.FontSize = newFontSizeDouble;
-            Service6TextBlock.FontSize = newFontSizeDouble;
-            Service7TextBlock.FontSize = newFontSizeDouble;
+
+            Double newFontSizeByWidth = 0.0;
+            Double newFonSizeByHeigth = 0.0;
+            Double newFontSize = 0.0;
+
+            newFonSizeByHeigth = (_widestTextBlock.FontSize * (rowHeight / textSize.Height)) - 0.5;
+            newFontSizeByWidth = (_widestTextBlock.FontSize * (rowWidth / textSize.Width)) - 0.5;
+
+            newFontSize = newFonSizeByHeigth < newFontSizeByWidth ? newFonSizeByHeigth : newFontSizeByWidth;
+
+            Service1TextBlock.FontSize = newFontSize;
+            Service2TextBlock.FontSize = newFontSize;
+            Service3TextBlock.FontSize = newFontSize;
+            Service4TextBlock.FontSize = newFontSize;
+            Service5TextBlock.FontSize = newFontSize;
+            Service6TextBlock.FontSize = newFontSize;
+            Service7TextBlock.FontSize = newFontSize;
         }
 
-        private Size MeasureString(string candidate, TextBlock textBlock)
+        private Size MeasureString(String candidate, TextBlock textBlock)
         {
             FormattedText formattedText = new FormattedText(
                 candidate,

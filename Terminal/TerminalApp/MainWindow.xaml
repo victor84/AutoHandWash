@@ -1,12 +1,15 @@
 ﻿<Window x:Class="TerminalApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="480" Width="609" Loaded="Window_Loaded" Closed="Window_Closed">
-    <Grid>
-        <TabControl x:Name="MainTabControl" Margin="0,0,0,0">
+        Title="MainWindow" 
+        Height="480" Width="609" 
+        Loaded="Window_Loaded" Closed="Window_Closed" >
+
+    <Grid x:Name="MainWindowGrid">
+        <TabControl x:Name="MainTabControl" Margin="0,0,0,0"  Background="{Binding Source=TerminalApp.Properties.Settings, Path=BackgroundColor}">
             <TabItem x:Name="ServiceTab" Header="Услуги">
                 <Grid>
-                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
+                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" Loaded="ServicePageFrame_Loaded"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="VideoTab" Header="Реклама">
@@ -16,18 +19,18 @@
             </TabItem>
             <TabItem x:Name="PrizeTab" Header="Выдача приза">
                 <Grid>
-                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
+                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" Loaded="PrizePageFrame_Loaded"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
-                <Grid>
+                <Grid x:Name="TerminalBrokenGrid" Loaded="TerminalBrokenGrid_Loaded" >
                     <Viewbox>
                         <TextBlock Text="Терминал не работает"/>
                     </Viewbox>
                 </Grid>
             </TabItem>
             <TabItem x:Name="CountersTab" Header="Показания счётчиков">
-                <Grid>
+                <Grid x:Name="CountersGrid" Loaded="CountersGrid_Loaded">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
@@ -58,7 +61,7 @@
                     </Viewbox>
                     <Viewbox Grid.Row="6">
                         <TextBlock x:Name="Service7TextBlock" Text="Услуга 7: 1234"/>
-                    </Viewbox>                    
+                    </Viewbox>
                     <Viewbox Grid.Row="8">
                         <TextBlock Text="НАЗАД"/>
                     </Viewbox>

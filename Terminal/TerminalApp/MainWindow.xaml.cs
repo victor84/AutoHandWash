@@ -118,7 +118,34 @@ namespace TerminalApp
 #if !DEBUG
             ShowFullScreen();
 #endif
+            System.Drawing.Color settingBackgroundColor = Properties.Settings.Default.BackgroundColor;
+            System.Windows.Media.Color BackgroundColor = new System.Windows.Media.Color();
+            BackgroundColor.A = settingBackgroundColor.A;
+            BackgroundColor.R = settingBackgroundColor.R;
+            BackgroundColor.G = settingBackgroundColor.G;
+            BackgroundColor.B = settingBackgroundColor.B;
 
+            this.Background = new SolidColorBrush(BackgroundColor);
+        }
+
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
         }
 
         void ServiceChanged(LogicWrapper.e_service_id service_id, string service_name)
@@ -240,6 +267,48 @@ namespace TerminalApp
                 ShowPage(1);
                 VideoPlayer.Play();
             });
+        }
+
+        private void SetTextBlocksFontColor(DependencyObject window)
+        {
+            System.Drawing.Color settingFontColor = Properties.Settings.Default.FontColor;
+            System.Windows.Media.Color fontColor = new System.Windows.Media.Color();
+            fontColor.A = settingFontColor.A;
+            fontColor.R = settingFontColor.R;
+            fontColor.G = settingFontColor.G;
+            fontColor.B = settingFontColor.B;
+
+            SolidColorBrush brush = new SolidColorBrush(fontColor);
+
+            foreach (TextBlock tb in FindVisualChildren<TextBlock>(window))
+            {
+                tb.Foreground = brush;
+            }
+        }
+
+        private void TerminalBrokenTab_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBlocksFontColor(TerminalBrokenTab);
+        }
+
+        private void PrizePageFrame_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBlocksFontColor((PrizePage)PrizePageFrame.Content);
+        }
+
+        private void ServicePageFrame_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBlocksFontColor((ServicesPage)ServicePageFrame.Content);
+        }
+
+        private void TerminalBrokenGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBlocksFontColor(TerminalBrokenGrid);
+        }
+
+        private void CountersGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBlocksFontColor(CountersGrid);
         }
     }
 }
