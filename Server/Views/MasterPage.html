@@ -27,10 +27,9 @@
                     @Model.MasterPage.UserName (@Model.MasterPage.Claim)
                     <i class="fa fa-caret-down"></i>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="min-width: 150px">
                     <li>
-                        <form id="logoutform" method="post" action="/logout">
-                        </form>
+                        <form id="logoutform" method="post" action="/logout"></form>
                         <a href="javascript:;" onclick="document.getElementById('logoutform').submit();">
                             <i class="fa fa-sign-out fa-fw"></i>
                             Выйти

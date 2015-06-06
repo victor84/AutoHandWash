@@ -49,7 +49,7 @@ namespace Server.Prize
                     if (!groupPrize.WaitConfirm)
                     {
                         groupPrize.LastTerminalId = terminalId;
-                        var value = input * groupPrize.Percent / 100;
+                        var value = (double)(input * groupPrize.Percent / 100);
                         groupPrize.AddInFund(value);
                     }
                 }
