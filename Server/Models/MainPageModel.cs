@@ -70,29 +70,6 @@ namespace Server.Models
     {
         public string TerminalName { get; set; }
         public string GroupName { get; set; }
-        public string ViewMessageType 
-        { 
-            get
-            {
-                string result = string.Empty;
-                switch (TerminalLog.MessageType)
-                {
-                    case 0:
-                        result = "Ошибка";
-                        break;
-                    case 1:
-                        result = "Предупреждение";
-                        break;
-                    case 2:
-                        result = "Сообщение";
-                        break;
-                    default:
-                        result = "Неизвестно";
-                        break;
-                }
-                return result; 
-            }
-        }
         public TerminalLog TerminalLog { get; set; }
 
         public TerminalLogs()

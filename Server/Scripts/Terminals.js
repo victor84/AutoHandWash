@@ -25,5 +25,9 @@
         $("#" + groupId).replaceWith(content);
     };
 
+    mainHub.client.refreshMessages = function (groupId, terminalLog) {
+        //$("#" + "messages_" + groupId).replaceWith(content);
+    };
+
     $.connection.hub.start().done();
 }
