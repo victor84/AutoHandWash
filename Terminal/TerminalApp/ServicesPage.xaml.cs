@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,9 +28,45 @@ namespace TerminalApp
 
         private LogicWrapper.e_state_id _currentState;
 
+        private Timer _currentServiceTimer;
+
+        private String _currentServiceName;
+
+        private bool _showServiceName;
+
         public ServicesPage()
         {
+            _currentServiceTimer = new Timer(OnCurrentServiceTimer, null, 0, 0);
+
             InitializeComponent();
+        }
+
+        private void SetStateCurrentServiceTimer(bool start)
+        {
+            if (true == start)
+            {
+                _showServiceName = false;
+                _currentServiceTimer.Change(0, 1000);
+            }
+            else
+            {
+                _currentServiceTimer.Change(0, 0);
+                SetServiceNameTextBlockText(_currentServiceName);
+            }
+        }
+
+        private void OnCurrentServiceTimer(object state)
+        {
+            if (true == _showServiceName)
+            {
+                SetServiceNameTextBlockText(_currentServiceName);
+            }
+            else
+            {
+                SetServiceNameTextBlockText("");
+            }
+
+            _showServiceName = !_showServiceName;
         }
 
         public void OnTimeAndMoneyChanged(UInt16 time, UInt16 money)
@@ -44,10 +81,23 @@ namespace TerminalApp
 
         public void OnServiceChanged(LogicWrapper.e_service_id service_id, String service_name)
         {
+            _currentServiceName = service_name;
+
             if ((LogicWrapper.e_state_id.paid_idle == _currentState) &&
                 (LogicWrapper.e_service_id.stop == service_id))
             {
                 return;
+            }
+
+            if (LogicWrapper.e_service_id.stop == service_id)
+            {
+                SetServiceNameTextBlockColor(Brushes.Red);
+                SetStateCurrentServiceTimer(false);
+            }
+            else
+            {
+                SetServiceNameTextBlockColor(Brushes.Black);
+                SetStateCurrentServiceTimer(true);
             }
 
             SetServiceNameTextBlockText(service_name);
@@ -58,6 +108,14 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 CurrentServiceNameTextBlock.Text = text;
+            });
+        }
+
+        private void SetServiceNameTextBlockColor(Brush color)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                CurrentServiceNameTextBlock.Foreground = color;
             });
         }
 
@@ -93,7 +151,9 @@ namespace TerminalApp
             {
                 stateText = "Платный простой";
                 ShowHint("");
-                SetServiceNameTextBlockText("Платный простой");
+                SetServiceNameTextBlockText("Стоп");
+                SetServiceNameTextBlockColor(Brushes.Red);
+                SetStateCurrentServiceTimer(true);
             }
             else if (LogicWrapper.e_state_id.refill_cache == state_id)
             {
@@ -231,7 +291,7 @@ namespace TerminalApp
             {
                 if (si.button_number == buttonNumber)
                 {
-                    result = String.Format("{0}: {1} руб", si.service_name, si.cost);
+                    result = String.Format("{0}:\r\n{1} руб", si.service_name, si.cost);
                     break;
                 }
             }
@@ -243,6 +303,5 @@ namespace TerminalApp
         {
             ResizeServicesInfo();
         }
-
     }
 }
