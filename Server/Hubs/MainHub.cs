@@ -15,5 +15,10 @@ namespace Server.Hubs
         {
             Clients.All.RefreshStatusBar(groupId, message);
         }
+
+        public void RefreshMessages(Guid groupId, TerminalLog terminalLog)
+        {
+            Clients.All.RefreshMessages(groupId, terminalLog);
+        }
     }
 }

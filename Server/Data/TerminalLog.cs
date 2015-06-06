@@ -16,6 +16,30 @@ namespace Server.Data
         public Guid TerminalId { get; set; }
         [Column]
         public byte MessageType { get; set; }
+        [NotColumn]
+        public string ViewMessageType
+        {
+            get
+            {
+                string result = string.Empty;
+                switch (MessageType)
+                {
+                    case 0:
+                        result = "Ошибка";
+                        break;
+                    case 1:
+                        result = "Предупреждение";
+                        break;
+                    case 2:
+                        result = "Сообщение";
+                        break;
+                    default:
+                        result = "Неизвестно";
+                        break;
+                }
+                return result;
+            }
+        }
         [Column]
         public DateTime DateTimeTerminal { get; set; }
         [Column]
