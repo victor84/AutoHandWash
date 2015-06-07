@@ -42,6 +42,14 @@ namespace Server.Data
         }
         [Column]
         public DateTime DateTimeTerminal { get; set; }
+        [NotColumn]
+        public string ViewDateTimeTerminal
+        {
+            get
+            {
+                return DateTimeTerminal.ToString();
+            }
+        }
         [Column]
         public string Message { get; set; }
 

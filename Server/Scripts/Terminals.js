@@ -27,7 +27,7 @@
 
     mainHub.client.refreshMessages = function (groupId, terminalName, terminalLog) {
 
-        var newMessage = "<li><a href='#'><div><strong>" + terminalName + "</strong><span class='pull-right text-muted'><em>" + terminalLog.DateTimeTerminal + "</em></span></div><div>" + terminalLog.Message + "</div></a></li><li class='divider'></li>";
+        var newMessage = "<li><a href='#'><div><strong>" + terminalName + "</strong><span class='pull-right text-muted'><em>" + terminalLog.ViewDateTimeTerminal + "</em></span></div><div>" + terminalLog.Message + "</div></a></li><li class='divider'></li>";
         var allMessage = "<li id='allmessages_" + groupId + "'><a href='/terminalslogs'><div>Все сообщения</div></a></li>";
         var limitMessages = 10;
         var content = "";
