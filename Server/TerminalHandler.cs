@@ -444,7 +444,7 @@ namespace Server
                 return e_processing_result.failed;
 
             RefreshStatusBar(Terminal.GroupId, terminalLog);
-            RefreshMessages(Terminal.GroupId, terminalLog);
+            RefreshMessages(Terminal.GroupId, Terminal.TerminalName, terminalLog);
 
             return e_processing_result.success;
         }
@@ -480,9 +480,9 @@ namespace Server
             _hubClient.Invoke("RefreshStatusBar", groupId, extMessage);
         }
 
-        private void RefreshMessages(Guid groupId, TerminalLog terminalLog)
+        private void RefreshMessages(Guid groupId, string terminalName, TerminalLog terminalLog)
         {
-            _hubClient.Invoke("RefreshMessages", groupId, terminalLog);
+            _hubClient.Invoke("RefreshMessages", groupId, terminalName, terminalLog);
         }
 
         private void HandleResult(tag_transport_packet packet, e_processing_result processing_result)

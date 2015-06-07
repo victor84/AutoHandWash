@@ -63,7 +63,7 @@
                         </a>
                         <ul id="messages_@Current.Key.Id" class="dropdown-menu dropdown-messages">
                             @IfNot.Value.HasTerminalLogs
-                            <li id="notmessages">
+                            <li id="notmessages_@Current.Key.Id">
                                 <a href="#">
                                     <div>Нет сообщений</div>
                                 </a>
@@ -72,7 +72,7 @@
 
                             @If.Value.HasTerminalLogs
                             @Partial['GroupLogs', Current.Value.ViewTerminalLogs]
-                            <li id="allmessages">
+                            <li id="allmessages_@Current.Key.Id">
                                 <a href="/terminalslogs">
                                     <div>Все сообщения</div>
                                 </a>
