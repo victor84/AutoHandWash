@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d"
       d:DesignHeight="469" d:DesignWidth="542"
-	  Title="ServicesPage" SizeChanged="Page_SizeChanged">
+	  Title="ServicesPage" SizeChanged="Page_SizeChanged" Loaded="Page_Loaded">
 
     <Grid x:Name="TopGrid">
 

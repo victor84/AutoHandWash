@@ -34,6 +34,8 @@ namespace TerminalApp
 
         private bool _showServiceName;
 
+        private Brush _defaultFontBrush;
+
         public ServicesPage()
         {
             _currentServiceTimer = new Timer(OnCurrentServiceTimer, null, 0, 0);
@@ -97,7 +99,7 @@ namespace TerminalApp
             }
             else
             {
-                SetServiceNameTextBlockColor(Brushes.Black);
+                SetServiceNameTextBlockColor(_defaultFontBrush);
                 SetStateCurrentServiceTimer(true);
             }
 
@@ -313,6 +315,11 @@ namespace TerminalApp
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ResizeServicesInfo();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            _defaultFontBrush = CurrentServiceNameTextBlock.Foreground;
         }
     }
 }
