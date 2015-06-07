@@ -32,6 +32,27 @@ namespace Server.Data
                 state = value;
             }
         }
+        [Column]
+        public uint CommonInput { get; set; }
+        [Column]
+        public uint Balance { get; set; }
+        [Column]
+        public uint PressurizedWater { get; set; }
+        [Column]
+        public uint NoPressurizedWater { get; set; }
+        [Column]
+        public uint Foam { get; set; }
+        [Column]
+        public uint Wax { get; set; }
+        [Column]
+        public uint Osmose { get; set; }
+        [Column]
+        public uint Vacuum { get; set; }
+        [Column]
+        public uint Air { get; set; }
+
+        #region Для отображения в интерфейсе сервера
+
         public string ViewState
         {
             get
@@ -58,24 +79,78 @@ namespace Server.Data
                 return result;
             }
         }
-        [Column]
-        public uint CommonInput { get; set; }
-        [Column]
-        public uint Balance { get; set; }
-        [Column]
-        public uint PressurizedWater { get; set; }
-        [Column]
-        public uint NoPressurizedWater { get; set; }
-        [Column]
-        public uint Foam { get; set; }
-        [Column]
-        public uint Wax { get; set; }
-        [Column]
-        public uint Osmose { get; set; }
-        [Column]
-        public uint Vacuum { get; set; }
-        [Column]
-        public uint Air { get; set; }
+
+        public string ViewPressurizedWater 
+        { 
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(PressurizedWater);
+                string result = timeSpan.ToString();
+                return result;
+            } 
+        }
+
+        public string ViewNoPressurizedWater
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(NoPressurizedWater);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        public string ViewFoam
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Foam);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        public string ViewWax
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Wax);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        public string ViewOsmose
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Osmose);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        public string ViewVacuum
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Vacuum);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        public string ViewAir
+        {
+            get
+            {
+                TimeSpan timeSpan = TimeSpan.FromSeconds(Air);
+                string result = timeSpan.ToString();
+                return result;
+            }
+        }
+
+        #endregion
 
         public static bool Insert(Counters counters)
         {
@@ -95,28 +170,6 @@ namespace Server.Data
             return result;
         }
 
-        //public static List<Counters> GetCountersByTerminal(IEnumerable<Guid> ids)
-        //{
-        //    List<Counters> counters = null;
-        //    try
-        //    {
-        //        using (var db = new DataConnection())
-        //        {
-        //            var query = db.GetTable<Counters>().
-        //                Where(x => ids.Contains(x.TerminalId)).
-        //                GroupBy(x => x.TerminalId).
-        //                Select(x => x.OrderByDescending(y => y.DateTimeServerEvent).First());
-                    
-        //            counters = query.ToList();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Counters -> GetCounters: {0}", ex);
-        //    }
-        //    return counters;
-        //}
-
         public static Counters GetCountersByTerminal(Guid id)
         {
             Counters counters = null;
@@ -125,7 +178,8 @@ namespace Server.Data
                 using (var db = new DataConnection())
                 {
                     var table = db.GetTable<Counters>();
-                    counters = table.Where(s => s.DateTimeServerEvent == table.Max(x => x.DateTimeServerEvent) 
+                    counters = table.Where(s => s.TerminalId == id 
+                                                && s.DateTimeServerEvent == table.Max(x => x.DateTimeServerEvent) 
                                                 && s.CommonInput == table.Max(x => x.CommonInput)).
                                                 FirstOrDefault();
                 }
