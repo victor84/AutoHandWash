@@ -4,22 +4,27 @@ namespace Server
 {
     public class AppSettings
     {
-        public string BaseUri { get; set; }
-        public int Port { get; set; }
+        public ushort HostPort { get; set; }
+        public ushort Port { get; set; }
 
         public static AppSettings Read()
         {
             AppSettings appSettings = null;
             try
             {
-                string baseUri = ConfigurationManager.AppSettings["BaseUri"];
+                string hostPortString = ConfigurationManager.AppSettings["HostPort"];
+                ushort hostPort = ushort.Parse(hostPortString);
+                if (!(hostPort >= 1 && hostPort <= 65535))
+                    throw new FormatException("Порт вне диапазона от 1 до 65535");
+
                 string portString = ConfigurationManager.AppSettings["Port"];
-                int port = int.Parse(portString);
+                ushort port = ushort.Parse(portString);
                 if (!(port >= 1 && port <= 65535))
                     throw new FormatException("Порт вне диапазона от 1 до 65535");
+
                 appSettings = new AppSettings() 
                 { 
-                    BaseUri = baseUri,
+                    HostPort = hostPort,
                     Port = port
                 };
             }

@@ -159,7 +159,7 @@ namespace Parsing
 
             Byte[] data = data_to_parse.data;
 
-            if (47 != data.Length)
+            if (43 != data.Length)
                 return e_convert_result.invalid_data;
 
             UInt16 offset = 0;
