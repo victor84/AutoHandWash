@@ -13,7 +13,6 @@ namespace Server
     public class TcpServer
     {
         private object lockList;
-        private string ipString = "127.0.0.1";
         private volatile bool running;
         private Task task;
         private List<TerminalHandler> listTerminalHandlers;
@@ -43,8 +42,7 @@ namespace Server
             TcpListener server = null;
             try
             {
-                IPAddress localAddr = IPAddress.Parse(ipString);
-                server = new TcpListener(localAddr, port);
+                server = new TcpListener(IPAddress.Any, port);
                 server.Start();
                 while (running)
                 {
