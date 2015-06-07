@@ -124,10 +124,10 @@ namespace Server.Data
             {
                 using (var db = new DataConnection())
                 {
-                    counters = db.GetTable<Counters>().
-                                Where(x => x.TerminalId == id).
-                                OrderByDescending(i => i.DateTimeServerEvent).
-                                FirstOrDefault();
+                    var table = db.GetTable<Counters>();
+                    counters = table.Where(s => s.DateTimeServerEvent == table.Max(x => x.DateTimeServerEvent) 
+                                                && s.CommonInput == table.Max(x => x.CommonInput)).
+                                                FirstOrDefault();
                 }
             }
             catch (Exception ex)
