@@ -128,6 +128,7 @@ namespace TerminalApp
             this.Background = new SolidColorBrush(BackgroundColor);
         }
 
+
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
