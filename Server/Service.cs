@@ -16,14 +16,15 @@ namespace Server
         public Service(AppSettings appSettings)
         {
             this.appSettings = appSettings;
-            hubClient = new HubClient(appSettings.BaseUri);
+            hubClient = new HubClient(appSettings.HostPort);
             tcpServer = new TcpServer(appSettings.Port, hubClient);
             pipeServer = new PipeServer(tcpServer.ServerPacketReceived);
         }
 
         public void Start()
         {
-            webApp = WebApp.Start<Startup>(appSettings.BaseUri);
+            string url = "http://*:" + appSettings.HostPort.ToString();
+            webApp = WebApp.Start<Startup>(url);
             tcpServer.Start();
             pipeServer.Start();
         }

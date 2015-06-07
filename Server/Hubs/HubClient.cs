@@ -11,9 +11,10 @@ namespace Server.Hubs
         private HubConnection Connection { get; set; }
         private IHubProxy Proxy { get; set; }
         
-        public HubClient(string url)
+        public HubClient(ushort port)
         {
             lockInvoke = new object();
+            string url = "http://localhost:" + port.ToString();
             Connection = new HubConnection(url);
             Proxy = Connection.CreateHubProxy(hubName);
         }
