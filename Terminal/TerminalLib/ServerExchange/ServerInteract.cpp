@@ -160,6 +160,7 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 			_packet_to_raw_data.CreateTerminalStatePacketRawData(tsp, transport_packet.data);
 			transport_packet.length = sizeof(tsp);
 			transport_packet.type = e_packet_type::terminal_state;
+			break;
 		default:
 			_str_str.str(std::wstring());
 			_str_str << _T("Попытка отправить на сервер пакет неизвестного типа: ") 

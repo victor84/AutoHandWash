@@ -232,7 +232,10 @@ void logic::CLogic::change_terminal_state(const e_terminal_state& state, bool se
 		_on_terminal_state_changed(state);
 
 	if (true == send_to_server)
+	{
 		send_terminal_state_packet(state);
+		send_counters_packet();
+	}
 
 	if (true == write_to_file)
 	{
