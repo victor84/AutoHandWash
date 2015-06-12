@@ -514,6 +514,7 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 
 		_terminal_state_changed_sended = false;
 		change_terminal_state(termianl_state_packet.state, false, true);
+		send_counters_packet();
 
 		processing_result = server_exchange::e_processing_result::success;
 		return true;
