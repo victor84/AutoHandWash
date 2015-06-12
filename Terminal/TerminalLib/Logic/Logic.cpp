@@ -141,9 +141,7 @@ void logic::CLogic::send_settings_packet()
 
 	logic::tag_device_settings device_settings = sws->get_settings();
 
-	settings_packet.state = ((0 == device_settings.state) ? 
-							 logic::e_terminal_state::broken : 
-							 logic::e_terminal_state::work);
+	settings_packet.state = static_cast<logic::e_terminal_state>(device_settings.state);
 
 	settings_packet.bill_acceptor_impulse = static_cast<byte>(device_settings.bill_acceptor_impulse);
 	settings_packet.coin_acceptor_impulse = static_cast<byte>(device_settings.coin_acceptor_impulse);
@@ -174,9 +172,7 @@ void logic::CLogic::send_counters_packet()
 
 	logic::tag_device_settings device_settings = sws->get_settings();
 
-	counters_packet.state =  ((0 == device_settings.state) ? 
-							 logic::e_terminal_state::broken : 
-							 logic::e_terminal_state::work);
+	counters_packet.state = static_cast<logic::e_terminal_state>(device_settings.state);
 
 	counters_packet.date_time = std::time(0);
 	counters_packet.total_cache = device_settings.total_cache;
@@ -225,7 +221,7 @@ void logic::CLogic::change_terminal_state(const e_terminal_state& state, bool se
 	if (true == _terminal_state_changed_sended)
 		return;
 
-	if (_common_settings.GetState() == ((logic::e_terminal_state::work == state) ? 1u : 0u))
+	if (_common_settings.GetState() == static_cast<uint32_t>(state))
 		return;
 
 	if (_on_terminal_state_changed)
@@ -239,7 +235,7 @@ void logic::CLogic::change_terminal_state(const e_terminal_state& state, bool se
 
 	if (true == write_to_file)
 	{
-		_common_settings.SetState((logic::e_terminal_state::work == state) ? 1 : 0);
+		_common_settings.SetState(static_cast<uint32_t>(state));
 		_common_settings.ReadSettings();
 	}
 
@@ -565,14 +561,14 @@ void logic::CLogic::update_device_settings_from_server()
 		_common_settings.SetPauseBeforeAdvertising(_settings_from_server.pause_before_advertising);
 		changed = true;
 	}
-	if (work_settings.state != ((logic::e_terminal_state::work == _settings_from_server.state) ? 1u : 0u))
+	if (work_settings.state != static_cast<uint32_t>(_settings_from_server.state))
 	{
-		work_settings.state = (logic::e_terminal_state::work == _settings_from_server.state) ? 1 : 0;
-		_common_settings.SetState((logic::e_terminal_state::work == _settings_from_server.state) ? 1 : 0);
+		work_settings.state = static_cast<uint32_t>(_settings_from_server.state);
+		_common_settings.SetState(static_cast<uint32_t>(_settings_from_server.state));
 		changed = true;
 
 		_terminal_state_changed_sended = false;
-		change_terminal_state(_settings_from_server.state, false);
+		change_terminal_state(_settings_from_server.state, true);
 	}
 
 	if (work_settings.frost_protection_value != _settings_from_server.frost_protection_value)
