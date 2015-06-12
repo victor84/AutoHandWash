@@ -29,9 +29,6 @@ void logic::CLogic::thread_fn()
 	CSettingsWorkState* sws = dynamic_cast<CSettingsWorkState*>(_current_state.get());
 	sws->read_settings();
 
-	if (0 == _common_settings.GetState())
-		_device_not_available = true;
-
 	while (tools::e_work_loop_status::ok == _work_loop_status)
 	{
 		process_messages_from_device();
@@ -66,7 +63,11 @@ tools::e_init_state logic::CLogic::init()
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
 
+#ifdef DEBUG
+	std::this_thread::sleep_for(std::chrono::milliseconds(10000));	
+#else
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+#endif
 	_server_interact.Start();
 
 	_init_state = tools::e_init_state::was_init;
@@ -221,8 +222,8 @@ void logic::CLogic::change_terminal_state(const e_terminal_state& state, bool se
 	if (true == _terminal_state_changed_sended)
 		return;
 
-	if (_common_settings.GetState() == static_cast<uint32_t>(state))
-		return;
+	/*if (_common_settings.GetState() == static_cast<uint32_t>(state))
+		return;*/
 
 	if (_on_terminal_state_changed)
 		_on_terminal_state_changed(state);
@@ -465,6 +466,9 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 		if (e_state::advertising_idle == _current_state->get_this_state())
 		{
 			update_device_settings_from_server();
+
+			if (_on_terminal_state_changed)
+				_on_terminal_state_changed(_settings_from_server.state);
 		}
 
 		return true;
@@ -507,7 +511,13 @@ bool logic::CLogic::process_server_message(std::shared_ptr<logic_structures::tag
 	else if (server_exchange::e_packet_type::terminal_state == message->type)
 	{
 		server_exchange::tag_terminal_state_packet termianl_state_packet = get_server_message<server_exchange::tag_terminal_state_packet, server_exchange::e_packet_type::terminal_state>(message);
+		_settings_from_server.state = termianl_state_packet.state;
 
+		if (e_state::advertising_idle == _current_state->get_this_state())
+		{
+			_need_update_device_settings = true;
+			update_device_settings_from_server();
+		}
 		_terminal_state_changed_sended = false;
 		change_terminal_state(termianl_state_packet.state, false, true);
 		send_counters_packet();
@@ -530,6 +540,7 @@ void logic::CLogic::update_device_settings_from_server()
 	CSettingsWorkState* sws = get_implemented_state<CSettingsWorkState>(e_state::settings_work);
 	logic::tag_device_settings work_settings = sws->get_settings();
 	bool changed = false;
+	bool state_changed = false;
 
 	if (work_settings.bill_acceptor_impulse != _settings_from_server.bill_acceptor_impulse)
 	{
@@ -566,9 +577,7 @@ void logic::CLogic::update_device_settings_from_server()
 		work_settings.state = static_cast<uint32_t>(_settings_from_server.state);
 		_common_settings.SetState(static_cast<uint32_t>(_settings_from_server.state));
 		changed = true;
-
-		_terminal_state_changed_sended = false;
-		change_terminal_state(_settings_from_server.state, true);
+		state_changed = true;
 	}
 
 	if (work_settings.frost_protection_value != _settings_from_server.frost_protection_value)
@@ -639,6 +648,12 @@ void logic::CLogic::update_device_settings_from_server()
 
 		if (_on_service_info_readed)
 			send_services_info();
+
+		if (true == state_changed)
+		{
+			_terminal_state_changed_sended = false;
+			change_terminal_state(_settings_from_server.state, true);
+		}
 	}
 
 	_need_update_device_settings = false;
