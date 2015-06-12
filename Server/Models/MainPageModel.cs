@@ -10,6 +10,7 @@ namespace Server.Models
         ErrorTerminals,
         ErrorTerminalsLogs,
         ErrorFillBalance,
+        ErrorChangeStatus,
         ErrorPrizeFund,
     };
 
@@ -33,6 +34,9 @@ namespace Server.Models
                         result = "Не удалось прочитать сообщения терминалов";
                         break;
                     case MainErrors.ErrorFillBalance:
+                        result = "Не удалось найти терминал или группу";
+                        break;
+                    case MainErrors.ErrorChangeStatus:
                         result = "Не удалось найти терминал или группу";
                         break;
                     case MainErrors.ErrorPrizeFund:

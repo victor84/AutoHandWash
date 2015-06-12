@@ -24,6 +24,8 @@ namespace Server.Modules
             Get["/prizefund"] = PrizeFund;
             Get["/terminals/fillbalance/{terminalId}"] = ViewFillBalance;
             Post["/terminals/fillbalance"] = FillBalance;
+            Get["/terminals/changestatus/{terminalId}"] = ViewChangeStatus;
+            Post["/terminals/changestatus"] = ChangeStatus;
             Get["/error/{type}"] = ViewError;
         }
 
@@ -264,6 +266,61 @@ namespace Server.Modules
                 {
                     PipeClient pipeClient = new PipeClient();
                     pipeClient.Write(new ServerPacket(terminalId, ServerPacketType.fillcache, cache));
+                }
+            }
+            return Response.AsRedirect("~/terminals");
+        }
+
+        private dynamic ViewChangeStatus(dynamic parameters)
+        {
+            var terminalIdString = (string)parameters.terminalId;
+            if (!string.IsNullOrEmpty(terminalIdString))
+            {
+                Guid terminalId;
+                bool success = Guid.TryParse(terminalIdString, out terminalId);
+                if (success)
+                {
+                    var terminal = Terminal.GetTerminalById(terminalId);
+                    if (terminal != null)
+                    {
+                        var group = Group.GetGroupById(terminal.GroupId);
+                        if (group != null)
+                        {
+                            Model.ChangeStatusPage = new ChangeStatusPageModel();
+                            Model.ChangeStatusPage.Group = group;
+                            Model.ChangeStatusPage.Terminal = terminal;
+
+                            var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminal.Id);
+                            if (settingsTerminal != null)
+                            {
+                                Model.ChangeStatusPage.State = settingsTerminal.State;
+                            }
+                            return View["ChangeStatus", Model];
+                        }
+                    }
+                }
+            }
+            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorChangeStatus);
+        }
+
+        private dynamic ChangeStatus(dynamic parameters)
+        {
+            var terminalIdString = (string)this.Request.Form.TerminalId;
+            var state = (byte)this.Request.Form.State;
+            if (!string.IsNullOrEmpty(terminalIdString))
+            {
+                Guid terminalId;
+                bool success = Guid.TryParse(terminalIdString, out terminalId);
+                if (success)
+                {
+                    var settingsTerminal = SettingsTerminal.GetSettingsTerminalById(terminalId);
+                    if (settingsTerminal != null)
+                    {
+                        settingsTerminal.State = state;
+                        SettingsTerminal.Update(settingsTerminal);
+                        PipeClient pipeClient = new PipeClient();
+                        pipeClient.Write(new ServerPacket(terminalId, ServerPacketType.changeStatus, state));
+                    }
                 }
             }
             return Response.AsRedirect("~/terminals");
