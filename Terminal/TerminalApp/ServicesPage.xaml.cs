@@ -33,63 +33,79 @@ namespace TerminalApp
 
         private String _currentServiceName;
 
-        private bool _showServiceName;
+        private volatile bool _showServiceName;
 
         private Brush _defaultFontBrush;
+
+        private volatile bool _timerStarted;
 
         private LogicWrapper.e_service_id _currentService;
 
         public ServicesPage()
         {
             _currentServiceTimer = new Timer(OnCurrentServiceTimer, null, 0, 0);
+            _timerStarted = false;
 
             InitializeComponent();
         }
 
         private void SetStateCurrentServiceTimer(bool start)
         {
+            if (_timerStarted == start)
+                return;
+
             if (true == start)
             {
                 _showServiceName = false;
-                _currentServiceTimer.Change(0, 500);
+                _currentServiceTimer.Change(500, 0);
+                _timerStarted = true;
             }
             else
             {
                 _showServiceName = true;
                 _currentServiceTimer.Change(0, 0);
+                _timerStarted = false;
                 SetCurrentServiceNameTextBlockText(_currentServiceName);
             }
         }
 
         private void OnCurrentServiceTimer(object state)
         {
-            if (LogicWrapper.e_state_id.refill_cache == _currentState)
+            try
             {
+                if (LogicWrapper.e_state_id.refill_cache == _currentState)
+                {
+                    if (true == _showServiceName)
+                    {
+                        SetServiceNameTextBlockText("Выберите");
+                        SetCurrentServiceNameTextBlockText("услугу");
+                    }
+                    else
+                    {
+                        SetServiceNameTextBlockText("");
+                        SetCurrentServiceNameTextBlockText("");
+                    }
+
+                    _showServiceName = !_showServiceName;
+                    return;
+                }
+
                 if (true == _showServiceName)
                 {
-                    SetServiceNameTextBlockText("Выберите");
-                    SetCurrentServiceNameTextBlockText("услугу");
+                    SetCurrentServiceNameTextBlockText(_currentServiceName);
                 }
                 else
                 {
-                    SetServiceNameTextBlockText("");
                     SetCurrentServiceNameTextBlockText("");
                 }
 
                 _showServiceName = !_showServiceName;
-                return;
             }
-
-            if (true == _showServiceName)
+            finally
             {
-                SetCurrentServiceNameTextBlockText(_currentServiceName);
+                if (true == _timerStarted)
+                    _currentServiceTimer.Change(500, 0);
             }
-            else
-            {
-                SetCurrentServiceNameTextBlockText("");
-            }
-
-            _showServiceName = !_showServiceName;
         }
 
         public void OnTimeAndMoneyChanged(UInt16 time, UInt16 money)
@@ -113,7 +129,7 @@ namespace TerminalApp
                 return;
             }
 
-            if (LogicWrapper.e_service_id.stop == service_id)
+            if ((LogicWrapper.e_state_id.refill_cache != _currentState) && (LogicWrapper.e_service_id.stop == service_id))
             {
                 SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(false);
