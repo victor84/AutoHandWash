@@ -46,6 +46,7 @@
 /ParsingTest/obj/Release
 /Terminal/TerminalLib/Debug
 /Terminal/TerminalTest/Debug
+/Terminal/TerminalApp/TerminalApp.csproj.user
 /Terminal/TerminalApp/Debug
 /Terminal/TerminalApp/Release
 /Terminal/TerminalApp/Release_Static

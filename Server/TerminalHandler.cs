@@ -82,6 +82,9 @@ namespace Server
                 case ServerPacketType.fillcache:
                     WriteCache((UInt16)serverPacket.Data);
                     break;
+                case ServerPacketType.changeStatus:
+                    WriteStatus((byte)serverPacket.Data);
+                    break;
                 case ServerPacketType.prize:
                     WritePrize((UInt16)serverPacket.Data);
                     break;
@@ -247,6 +250,24 @@ namespace Server
             stream.Write(bytes, 0, bytes.Length);
 
             lastPacket = e_packet_type.refill_cache;
+        }
+
+        private void WriteStatus(byte state)
+        {
+            tag_terminal_state_packet state_packet;
+            state_packet.state = (e_terminal_state)state;
+
+            tag_transport_packet transport_packet = new tag_transport_packet();
+            transport_packet.type = e_packet_type.terminal_state;
+            packetToRawData.CreateTerminalStatePacketRawData(state_packet, out transport_packet.data);
+            transport_packet.set_missing_values();
+
+            byte[] bytes;
+            packetToRawData.CreateRawData(transport_packet, out bytes);
+
+            stream.Write(bytes, 0, bytes.Length);
+
+            lastPacket = e_packet_type.terminal_state;
         }
 
         private void WritePrize(UInt16 prize_size)

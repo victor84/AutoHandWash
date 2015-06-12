@@ -178,10 +178,10 @@ namespace Server.Data
                 using (var db = new DataConnection())
                 {
                     var table = db.GetTable<Counters>();
-                    counters = table.Where(s => s.TerminalId == id 
-                                                && s.DateTimeServerEvent == table.Max(x => x.DateTimeServerEvent) 
-                                                && s.CommonInput == table.Max(x => x.CommonInput)).
-                                                FirstOrDefault();
+                    var query = table.Where(x => x.TerminalId == id);
+                    var queryMaxDateTime = query.Where(x => x.DateTimeServerEvent == query.Max(s => s.DateTimeServerEvent));
+                    var queryCommonInput = queryMaxDateTime.Where(x => x.CommonInput == queryMaxDateTime.Max(s => s.CommonInput));
+                    counters = queryCommonInput.FirstOrDefault();
                 }
             }
             catch (Exception ex)

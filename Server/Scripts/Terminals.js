@@ -16,6 +16,7 @@
         content += '<td>' + counters.ViewOsmose + '</td>';
         content += '<td>' + counters.ViewAir + '</td>';
         content += '<td class="col-md-2 text-center"><a href="terminals/fillbalance/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-rub"></i>Пополнить счет</a></td>';
+        content += '<td class="col-md-2 text-center"><a href="terminals/changestatus/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-gear fa-fw"></i>Изменить статус</a></td>';
         content += "</tr>";
         $("#" + counters.TerminalId).replaceWith(content);
     };
