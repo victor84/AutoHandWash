@@ -10,54 +10,105 @@
     <Grid x:Name="TopGrid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="12*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
-        <Border  Grid.Column="1" 
-                 BorderBrush="#FFB6B6B6" 
-                 BorderThickness="2, 0, 0, 0"
-                 Margin="0,0,0,0">
+        <Line Grid.Column="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" HorizontalAlignment="Right"
+                  X1="0" Y1="1" X2="0"  Y2="0"></Line>
 
-            <Grid x:Name="ServicesGrid" Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <Grid x:Name="ServicesNumbersGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <Line Grid.Row="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
-                  X1="1" Y1="0" X2="0"  Y2="0"></Line>
-                
-                <Line Grid.Row="1" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
-                  X1="1" Y1="0" X2="0"  Y2="0"></Line>
-                
-                <Line Grid.Row="2" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+            <Line Grid.Row="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-                <Line Grid.Row="3" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+            <Line Grid.Row="1" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-                <Line Grid.Row="4" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+            <Line Grid.Row="2" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-                <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+            <Line Grid.Row="3" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-                <TextBlock Grid.Row="0" x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="1" x:Name="Service2TextBlock" TextWrapping="Wrap" Text="Услуга №2&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="2" x:Name="Service3TextBlock" TextWrapping="Wrap" Text="Услуга №3&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="3" x:Name="Service4TextBlock" TextWrapping="Wrap" Text="Услуга №4&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="4" x:Name="Service5TextBlock" TextWrapping="Wrap" Text="Услуга №5&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="5" x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-                <TextBlock Grid.Row="6" x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Right" FontWeight="Bold"/>
-            </Grid>
+            <Line Grid.Row="4" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                  X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
-        </Border>
+            <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                  X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Viewbox Grid.Row="0" >
+                <TextBlock Text="1" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <TextBlock Text="2" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="2">
+                <TextBlock Text="3" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="3">
+                <TextBlock Text="4" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="4">
+                <TextBlock Text="5" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="5">
+                <TextBlock Text="6" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="6">
+                <TextBlock Text="7" FontWeight="Bold"/>
+            </Viewbox>
+
+        </Grid>
+
+        <Grid x:Name="ServicesGrid" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Line Grid.Row="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Line Grid.Row="1" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Line Grid.Row="2" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Line Grid.Row="3" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Line Grid.Row="4" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
+                X1="1" Y1="0" X2="0"  Y2="0"></Line>
+
+            <TextBlock Grid.Row="0" x:Name="Service1TextBlock" TextWrapping="Wrap" Text="Услуга №1&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="1" x:Name="Service2TextBlock" TextWrapping="Wrap" Text="Услуга №2&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="2" x:Name="Service3TextBlock" TextWrapping="Wrap" Text="Услуга №3&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="3" x:Name="Service4TextBlock" TextWrapping="Wrap" Text="Услуга №4&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="4" x:Name="Service5TextBlock" TextWrapping="Wrap" Text="Услуга №5&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="5" x:Name="Service6TextBlock" TextWrapping="Wrap" Text="Услуга №6&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+            <TextBlock Grid.Row="6" x:Name="Service7TextBlock" TextWrapping="Wrap" Text="Услуга №7&#x0a;Цена:NNN руб." VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold"/>
+        </Grid>
+
 
         <Grid x:Name="InfoGrid" Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -67,20 +118,20 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>                
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="0"/>
 
             </Grid.RowDefinitions>
 
             <Line Grid.Row="1" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
-            
+
             <Line Grid.Row="3" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
-            
+
             <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
-                  X1="1" Y1="0" X2="0"  Y2="0" Visibility="Hidden"></Line>            
-            
+                  X1="1" Y1="0" X2="0"  Y2="0" Visibility="Hidden"></Line>
+
             <Viewbox Grid.Row="0">
                 <TextBlock Text="Баланс:" FontWeight="Bold"/>
             </Viewbox>
@@ -95,13 +146,13 @@
             </Viewbox>
             <Viewbox Grid.Row="4">
                 <TextBlock x:Name="ServiceNameTextBlock" Text="Услуга:" FontWeight="Bold"/>
-            </Viewbox>            
+            </Viewbox>
             <Viewbox Grid.Row="5">
                 <TextBlock x:Name="CurrentServiceNameTextBlock" Text="Название услуги" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="6">
                 <TextBlock x:Name="HintTextBlock" Text="Подсказка" FontWeight="Bold" Visibility="Hidden"/>
-            </Viewbox>            
+            </Viewbox>
 
             <TextBlock Grid.Row="7" x:Name="LogicStateTextBlock" Text="Состояние логики" VerticalAlignment="Center" Margin="0,8" Visibility="Hidden"/>
 

@@ -348,12 +348,40 @@ namespace TerminalApp
             {
                 if (si.button_number == buttonNumber)
                 {
-                    result = String.Format("{0}:\r\n{1} руб", si.service_name, si.cost);
+                    result = String.Format("{0}\r\n{1} руб", FormatServiceName(si.service_name), si.cost);
                     break;
                 }
             }
 
             return result;
+        }
+
+        private String FormatServiceName(String serviceName)
+        {
+            String[] words = serviceName.Split(' ');
+
+            if (words.Length < 3)
+                return serviceName + ":\r\n";
+
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < words.Length; ++i)
+            {
+                sb.Append(words[i]);
+
+                if (1 == i)
+                {
+                    sb.Append("\r\n");
+                }
+                else
+                {
+                    if (i < (words.Length - 1))
+                        sb.Append(" ");
+                }
+            }
+            sb.Append(":");
+
+            return sb.ToString();
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
