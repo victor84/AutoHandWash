@@ -79,7 +79,7 @@
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
             
             <Line Grid.Row="5" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" VerticalAlignment="Bottom"
-                  X1="1" Y1="0" X2="0"  Y2="0"></Line>            
+                  X1="1" Y1="0" X2="0"  Y2="0" Visibility="Hidden"></Line>            
             
             <Viewbox Grid.Row="0">
                 <TextBlock Text="Баланс:" FontWeight="Bold"/>
@@ -94,13 +94,13 @@
                 <TextBlock x:Name="RestOfTimeTextBlock" Text="00:00" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="4">
-                <TextBlock Text="Услуга:" FontWeight="Bold"/>
+                <TextBlock x:Name="ServiceNameTextBlock" Text="Услуга:" FontWeight="Bold"/>
             </Viewbox>            
             <Viewbox Grid.Row="5">
                 <TextBlock x:Name="CurrentServiceNameTextBlock" Text="Название услуги" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="6">
-                <TextBlock x:Name="HintTextBlock" Text="Подсказка" FontWeight="Bold"/>
+                <TextBlock x:Name="HintTextBlock" Text="Подсказка" FontWeight="Bold" Visibility="Hidden"/>
             </Viewbox>            
 
             <TextBlock Grid.Row="7" x:Name="LogicStateTextBlock" Text="Состояние логики" VerticalAlignment="Center" Margin="0,8" Visibility="Hidden"/>

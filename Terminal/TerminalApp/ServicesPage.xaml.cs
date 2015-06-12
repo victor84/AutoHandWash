@@ -27,6 +27,7 @@ namespace TerminalApp
         private TextBlock _widestTextBlock;
 
         private LogicWrapper.e_state_id _currentState;
+        private LogicWrapper.e_state_id _previousState;
 
         private Timer _currentServiceTimer;
 
@@ -35,6 +36,8 @@ namespace TerminalApp
         private bool _showServiceName;
 
         private Brush _defaultFontBrush;
+
+        private LogicWrapper.e_service_id _currentService;
 
         public ServicesPage()
         {
@@ -54,19 +57,36 @@ namespace TerminalApp
             {
                 _showServiceName = true;
                 _currentServiceTimer.Change(0, 0);
-                SetServiceNameTextBlockText(_currentServiceName);
+                SetCurrentServiceNameTextBlockText(_currentServiceName);
             }
         }
 
         private void OnCurrentServiceTimer(object state)
         {
+            if (LogicWrapper.e_state_id.refill_cache == _currentState)
+            {
+                if (true == _showServiceName)
+                {
+                    SetServiceNameTextBlockText("Выберите");
+                    SetCurrentServiceNameTextBlockText("услугу");
+                }
+                else
+                {
+                    SetServiceNameTextBlockText("");
+                    SetCurrentServiceNameTextBlockText("");
+                }
+
+                _showServiceName = !_showServiceName;
+                return;
+            }
+
             if (true == _showServiceName)
             {
-                SetServiceNameTextBlockText(_currentServiceName);
+                SetCurrentServiceNameTextBlockText(_currentServiceName);
             }
             else
             {
-                SetServiceNameTextBlockText("");
+                SetCurrentServiceNameTextBlockText("");
             }
 
             _showServiceName = !_showServiceName;
@@ -85,6 +105,7 @@ namespace TerminalApp
         public void OnServiceChanged(LogicWrapper.e_service_id service_id, String service_name)
         {
             _currentServiceName = service_name;
+            _currentService = service_id;
 
             if ((LogicWrapper.e_state_id.paid_idle == _currentState) &&
                 (LogicWrapper.e_service_id.stop == service_id))
@@ -94,19 +115,19 @@ namespace TerminalApp
 
             if (LogicWrapper.e_service_id.stop == service_id)
             {
-                SetServiceNameTextBlockColor(Brushes.Red);
+                SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(false);
             }
             else
             {
-                SetServiceNameTextBlockColor(_defaultFontBrush);
+                SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
                 SetStateCurrentServiceTimer(true);
             }
 
-            SetServiceNameTextBlockText(service_name);
+            SetCurrentServiceNameTextBlockText(service_name);
         }
 
-        private void SetServiceNameTextBlockText(String text)
+        private void SetCurrentServiceNameTextBlockText(String text)
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
@@ -114,7 +135,15 @@ namespace TerminalApp
             });
         }
 
-        private void SetServiceNameTextBlockColor(Brush color)
+        private void SetServiceNameTextBlockText(String text)
+        {
+            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+            {
+                ServiceNameTextBlock.Text = text;
+            });
+        }
+
+        private void SetCurrentServiceNameTextBlockColor(Brush color)
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
@@ -132,8 +161,16 @@ namespace TerminalApp
 
         public void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
+            if (LogicWrapper.e_state_id.refill_cache == _previousState)
+            {
+                SetStateCurrentServiceTimer(false);
+            }
+
             _currentState = state_id;
             String stateText = "";
+            SetServiceNameTextBlockText("Услуга:");
+
+
             if (LogicWrapper.e_state_id.advertising_idle == state_id)
             {
                 ShowHint("Внесите деньги");
@@ -154,14 +191,19 @@ namespace TerminalApp
             {
                 stateText = "Платный простой";
                 ShowHint("");
-                SetServiceNameTextBlockText("Стоп");
-                SetServiceNameTextBlockColor(Brushes.Red);
+                SetCurrentServiceNameTextBlockText("Стоп");
+                SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(true);
             }
             else if (LogicWrapper.e_state_id.refill_cache == state_id)
             {
                 stateText = "Пополнение счёта";
                 ShowHint("Выберите услугу");
+
+                SetServiceNameTextBlockText("Выберите");
+                SetCurrentServiceNameTextBlockText("услугу");
+                SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
+                SetStateCurrentServiceTimer(true);
             }
             else if (LogicWrapper.e_state_id.settings_work == state_id)
             {
@@ -179,6 +221,8 @@ namespace TerminalApp
             {
                 LogicStateTextBlock.Text = stateText;
             });
+
+            _previousState = state_id;
         }
 
         public void OnCacheRefilled(UInt16 cache)
