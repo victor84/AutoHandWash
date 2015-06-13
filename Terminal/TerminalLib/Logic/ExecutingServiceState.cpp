@@ -26,7 +26,7 @@ void logic::CExecutingServiceState::on_timer(int32_t)
 
 void logic::CExecutingServiceState::calc_time_and_money()
 {
-	_balance_of_money = static_cast<int16_t>(_device_settings.current_cache);
+	_balance_of_money = _device_settings.current_cache;
 
 	switch (_current_service)
 	{
@@ -64,7 +64,7 @@ void logic::CExecutingServiceState::calc_time_and_money()
 
 void logic::CExecutingServiceState::calc_money_balance_by_time_left()
 {
-	_balance_of_money = static_cast<int16_t>((_service_time_left / 60.0) * (_current_service_cost));
+	_balance_of_money = static_cast<int32_t>((_service_time_left / 60.0) * (_current_service_cost));
 	_device_settings.current_cache = _balance_of_money;
 }
 

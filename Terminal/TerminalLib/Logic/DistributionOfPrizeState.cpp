@@ -8,6 +8,7 @@ logic::CDistributionOfPrizeState::CDistributionOfPrizeState(CLogicAbstract& logi
 															, _rest_coins(0)
 															, _hopper_empty(false)
 {
+	_tr_error = tools::logging::CTraceError::get_instance();
 }
 
 logic::CDistributionOfPrizeState::~CDistributionOfPrizeState()
@@ -58,6 +59,11 @@ void logic::CDistributionOfPrizeState::device_error(logic_structures::e_device_e
 		_hopper_empty = true;
 		_logic.on_empty_hopper();
 	}
+
+	_str_str.str(std::wstring());
+
+	_str_str << _T("Ошибка при выдаче приза №") << static_cast<byte>(code);
+	_tr_error->trace_error(_str_str.str());
 }
 
 void logic::CDistributionOfPrizeState::distribute(uint16_t size)

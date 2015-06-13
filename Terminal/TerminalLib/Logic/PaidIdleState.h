@@ -21,7 +21,7 @@ class CPaidIdleState : public IState
 	int16_t _time_left;
 
 	// оставшиеся деньги (в копейках)
-	int16_t _balance_of_money;
+	int32_t _balance_of_money;
 
 	// стоимость простоя (в копейках)
 	int16_t _current_cost;

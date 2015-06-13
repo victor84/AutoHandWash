@@ -724,7 +724,7 @@ void logic::CLogic::write_eeprom(byte cell_number, uint32_t value)
 	_packets_to_device.push_back(we_message);
 }
 
-void logic::CLogic::time_and_money(int16_t time, int16_t money)
+void logic::CLogic::time_and_money(int16_t time, int32_t money)
 {
 	_str_str.str(std::wstring());
 
@@ -781,6 +781,7 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 	CAdvertisingIdleState* ais = nullptr;
 	logic_structures::tag_command_confirmation* cc = nullptr;
 	logic_structures::tag_discount_card_issued* dci = nullptr;
+	logic_structures::tag_error* err = nullptr;
 
 	switch (message->command_id)
 	{
@@ -842,6 +843,11 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			{
 				send_log_to_server(server_exchange::e_log_record_type::message, _T("Дисконтная карта успешно выдана."));
 			}
+			break;
+
+		case(device_exchange::e_command_from_device::error) :
+			err = get_device_message_pointer<logic_structures::tag_error>(message);
+			_current_state->device_error(err->code);
 			break;
 	}
 }

@@ -10,9 +10,9 @@
     <Grid x:Name="TopGrid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="12*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
         <Line Grid.Column="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" HorizontalAlignment="Right"

@@ -21,7 +21,7 @@ class CExecutingServiceState : public IState
 	 int16_t _service_time_left;
 
 	 // оставшиеся деньги (в копейках)
-	 int16_t _balance_of_money;
+	 int32_t _balance_of_money;
 
 	 // стоимость текущей услуги (в копейках)
 	 int16_t _current_service_cost;

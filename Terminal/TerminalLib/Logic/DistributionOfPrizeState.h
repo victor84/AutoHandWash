@@ -9,6 +9,10 @@ class CDistributionOfPrizeState : public IState
 	byte _rest_coins;
 	bool _hopper_empty;
 
+	std::wstringstream _str_str;
+
+	tools::logging::CTraceError* _tr_error;
+
 public:
 	CDistributionOfPrizeState(CLogicAbstract& logic);
 	virtual ~CDistributionOfPrizeState();
