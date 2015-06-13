@@ -12,7 +12,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="12*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="11*"/>
         </Grid.ColumnDefinitions>
 
         <Line Grid.Column="0" Stroke="#FFB6B6B6" StrokeThickness="2" Stretch="Fill" HorizontalAlignment="Right"
@@ -48,25 +48,25 @@
                   X1="1" Y1="0" X2="0"  Y2="0"></Line>
 
             <Viewbox Grid.Row="0" >
-                <TextBlock Text="1" FontWeight="Bold" />
+                <TextBlock Text="1." FontWeight="Bold" />
             </Viewbox>
             <Viewbox Grid.Row="1">
-                <TextBlock Text="2" FontWeight="Bold"/>
+                <TextBlock Text="2." FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="2">
-                <TextBlock Text="3" FontWeight="Bold"/>
+                <TextBlock Text="3." FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="3">
-                <TextBlock Text="4" FontWeight="Bold"/>
+                <TextBlock Text="4." FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="4">
-                <TextBlock Text="5" FontWeight="Bold"/>
+                <TextBlock Text="5." FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="5">
-                <TextBlock Text="6" FontWeight="Bold"/>
+                <TextBlock Text="6." FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="6">
-                <TextBlock Text="7" FontWeight="Bold"/>
+                <TextBlock Text="7." FontWeight="Bold"/>
             </Viewbox>
 
         </Grid>

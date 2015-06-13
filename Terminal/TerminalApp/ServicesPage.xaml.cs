@@ -377,7 +377,7 @@ namespace TerminalApp
             String[] words = serviceName.Split(' ');
 
             if (words.Length < 3)
-                return serviceName + ":\r\n";
+                return serviceName + ":";
 
             StringBuilder sb = new StringBuilder();
 
