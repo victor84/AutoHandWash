@@ -734,7 +734,7 @@ void logic::CLogic::time_and_money(int16_t time, int32_t money)
 	_tr_error->trace_message(_str_str.str());
 
 	if (_on_change_time_and_money_fn)
-		_on_change_time_and_money_fn(time, money);
+		_on_change_time_and_money_fn(time, static_cast<int16_t>(money));
 }
 
 void logic::CLogic::set_state(e_state state)
