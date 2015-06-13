@@ -59,11 +59,6 @@ void logic::CDistributionOfPrizeState::device_error(logic_structures::e_device_e
 		_hopper_empty = true;
 		_logic.on_empty_hopper();
 	}
-
-	_str_str.str(std::wstring());
-
-	_str_str << _T("Ошибка при выдаче приза №") << static_cast<byte>(code);
-	_tr_error->trace_error(_str_str.str());
 }
 
 void logic::CDistributionOfPrizeState::distribute(uint16_t size)

@@ -57,7 +57,7 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 PrizeSizeTextBlock.Text = prize_size.ToString();
-                CoinBalanceTextBlock.Text = String.Format("Осталось получть {0} монет", balance);
+                CoinBalanceTextBlock.Text = String.Format("Осталось получить {0} монет", balance);
 
                 if (0 == balance)
                 {

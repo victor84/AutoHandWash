@@ -27,7 +27,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3">
-            <TextBlock x:Name="CoinBalanceTextBlock" Text="Осталось получть 10 монет" />
+            <TextBlock x:Name="CoinBalanceTextBlock" Text="Осталось получить 10 монет" />
         </Viewbox>
         
     </Grid>
