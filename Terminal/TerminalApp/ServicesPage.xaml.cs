@@ -37,13 +37,34 @@ namespace TerminalApp
 
         private Brush _defaultFontBrush;
 
-        private volatile bool _timerStarted;
+        private volatile bool _timerStartedReal;
+
+        private object _timerStartedLock;
+        private bool _timerStarted
+        {
+            get
+            {
+                lock(_timerStartedLock)
+                {
+                    return _timerStartedReal;
+                }
+            }
+
+            set
+            {
+                lock(_timerStartedLock)
+                {
+                    _timerStartedReal = value;
+                }
+            }
+        }
 
         private LogicWrapper.e_service_id _currentService;
 
         public ServicesPage()
         {
             _currentServiceTimer = new Timer(OnCurrentServiceTimer, null, 0, 0);
+            _timerStartedLock = new object();
             _timerStarted = false;
 
             InitializeComponent();
@@ -51,6 +72,7 @@ namespace TerminalApp
 
         private void SetStateCurrentServiceTimer(bool start)
         {
+            //if (Interlocked.CompareExchange(ref _timerStarted, 1, 1) == start)
             if (_timerStarted == start)
                 return;
 
@@ -177,11 +199,6 @@ namespace TerminalApp
 
         public void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
-            if (LogicWrapper.e_state_id.refill_cache == _previousState)
-            {
-                SetStateCurrentServiceTimer(false);
-            }
-
             _currentState = state_id;
             String stateText = "";
             SetServiceNameTextBlockText("Услуга:");
