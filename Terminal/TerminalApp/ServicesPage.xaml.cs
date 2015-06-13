@@ -39,6 +39,8 @@ namespace TerminalApp
 
         private volatile bool _timerStartedReal;
 
+        private String _stopServiceName;
+
         private object _timerStartedLock;
         private bool _timerStarted
         {
@@ -162,6 +164,11 @@ namespace TerminalApp
                 SetStateCurrentServiceTimer(true);
             }
 
+            if (LogicWrapper.e_service_id.stop == service_id)
+            {
+                _stopServiceName = service_name;
+            }
+
             SetCurrentServiceNameTextBlockText(service_name);
         }
 
@@ -224,7 +231,7 @@ namespace TerminalApp
             {
                 stateText = "Платный простой";
                 ShowHint("");
-                SetCurrentServiceNameTextBlockText("Стоп");
+                SetCurrentServiceNameTextBlockText(_stopServiceName);
                 SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(true);
             }
