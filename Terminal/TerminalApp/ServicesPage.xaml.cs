@@ -160,7 +160,8 @@ namespace TerminalApp
             }
             else
             {
-                SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
+                // SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
+                SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(true);
             }
 
@@ -176,6 +177,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
+                CurrentServiceNameTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                 CurrentServiceNameTextBlock.Text = text;
             });
         }
@@ -184,6 +186,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
+                ServiceNameTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                 ServiceNameTextBlock.Text = text;
             });
         }
@@ -242,7 +245,8 @@ namespace TerminalApp
 
                 SetServiceNameTextBlockText("Выберите");
                 SetCurrentServiceNameTextBlockText("услугу");
-                SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
+                // SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
+                SetCurrentServiceNameTextBlockColor(Brushes.Red);
                 SetStateCurrentServiceTimer(true);
             }
             else if (LogicWrapper.e_state_id.settings_work == state_id)
@@ -388,7 +392,7 @@ namespace TerminalApp
             {
                 if (si.button_number == buttonNumber)
                 {
-                    result = String.Format("{0}\r\n{1} руб", FormatServiceName(si.service_name), si.cost);
+                    result = String.Format("{0}", FormatServiceName(si.service_name), si.cost);
                     break;
                 }
             }
@@ -401,7 +405,7 @@ namespace TerminalApp
             String[] words = serviceName.Split(' ');
 
             if (words.Length < 3)
-                return serviceName + ":";
+                return serviceName;
 
             StringBuilder sb = new StringBuilder();
 
@@ -419,7 +423,6 @@ namespace TerminalApp
                         sb.Append(" ");
                 }
             }
-            sb.Append(":");
 
             return sb.ToString();
         }
