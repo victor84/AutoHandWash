@@ -5,12 +5,15 @@
 @Section['Scripts']
 <script src="/Scripts/jquery.signalR-2.2.0.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.signalR-2.2.0.min.js" type="text/javascript"></script>
+<script src="/Scripts/moment.js" type="text/javascript"></script>
+<script src="/Scripts/moment.min.js" type="text/javascript"></script>
 <script src="/signalr/hubs"></script>
 <script src="/Scripts/Terminals.js"></script>
 <script>
     $(function () {
         Refresh();
     });
+    window.onload = TotalValues;
 </script>
 
 @EndSection
@@ -46,13 +49,27 @@
             </thead>
             <tbody>
                 @Partial['TerminalsCounters', Current.Value.TerminalCounters]
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
     <div class="panel-footer clearfix">
         <div>
             <div id="@Current.Key.Id" class="pull-right">
-                <!--Сообщение 3-->
             </div>
             <div class="pull-left">
                 <div>
