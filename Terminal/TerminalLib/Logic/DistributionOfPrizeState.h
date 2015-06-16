@@ -6,7 +6,13 @@ namespace logic
 {
 class CDistributionOfPrizeState : public IState
 {
+	// остаток монеток
 	byte _rest_coins;
+
+	// размер приза
+	uint16_t _prize_size;
+
+
 	bool _hopper_empty;
 
 	std::wstringstream _str_str;

@@ -245,6 +245,10 @@ class CLogic : CLogicAbstract, public ILogic
 
 	virtual void send_log_to_server(server_exchange::e_log_record_type type, const std::wstring& text) final;
 
+	virtual void send_distribute_prize_packet_to_server(server_exchange::e_distribute_element_status status, uint16_t size) final;
+
+	virtual void send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status status) final;
+
 	// запуск в работу
 	virtual bool Start() final;
 
@@ -274,6 +278,7 @@ class CLogic : CLogicAbstract, public ILogic
 public:
 	CLogic();
 	~CLogic();
+
 };
 }
 

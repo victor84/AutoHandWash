@@ -63,7 +63,7 @@ public:
 		return CreateCommonPacketRawData(packet, result_data);
 	}
 
-	// создание сырых дфнных пакета состояния терминала
+	// создание сырых данных пакета состояния терминала
 	e_convert_result CreateTerminalStatePacketRawData(IN const tag_terminal_state_packet& packet,
 													  OUT tools::data_wrappers::_tag_data_managed& result_data)
 	{
@@ -74,6 +74,19 @@ public:
 	e_convert_result CreateLogRecordPacketRawData(IN const tag_log_record_packet& packet,
 												  OUT tools::data_wrappers::_tag_data_managed& result_data);
 
+	// создание сырых данных пакета выданного приза
+	e_convert_result CreateDistributePrizePacketRawData(IN const tag_distribute_prize_packet& packet,
+														OUT tools::data_wrappers::_tag_data_managed& result_data)
+	{
+		return CreateCommonPacketRawData(packet, result_data);
+	}
+
+	// создание сырых данных пакета выдачи дисконтной карты
+	e_convert_result CreateDistributeDiscountCardPacketRawData(IN const tag_distribute_discount_card_packet& packet,
+														OUT tools::data_wrappers::_tag_data_managed& result_data)
+	{
+		return CreateCommonPacketRawData(packet, result_data);
+	}
 };
 }
 

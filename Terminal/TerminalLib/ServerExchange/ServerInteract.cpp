@@ -122,6 +122,8 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 	server_exchange::tag_log_record_packet lrp;
 	server_exchange::tag_settings_packet sp;
 	server_exchange::tag_terminal_state_packet tsp;
+	server_exchange::tag_distribute_prize_packet dp;
+	server_exchange::tag_distribute_discount_card_packet ddc;
 
 	switch (packet->type)
 	{
@@ -160,6 +162,18 @@ bool server_exchange::CServerInteract::send_packet_to_server(std::shared_ptr<log
 			_packet_to_raw_data.CreateTerminalStatePacketRawData(tsp, transport_packet.data);
 			transport_packet.length = sizeof(tsp);
 			transport_packet.type = e_packet_type::terminal_state;
+			break;
+		case (e_packet_type::distribute_prize) :
+			dp = get_server_logic_packet<server_exchange::tag_distribute_prize_packet, server_exchange::e_packet_type::distribute_prize>(packet);
+			_packet_to_raw_data.CreateDistributePrizePacketRawData(dp, transport_packet.data);
+			transport_packet.length = sizeof(dp);
+			transport_packet.type = e_packet_type::distribute_prize;
+			break;
+		case (e_packet_type::distribute_discount_card) :
+			ddc = get_server_logic_packet<server_exchange::tag_distribute_discount_card_packet, server_exchange::e_packet_type::distribute_discount_card>(packet);
+			_packet_to_raw_data.CreateDistributeDiscountCardPacketRawData(ddc, transport_packet.data);
+			transport_packet.length = sizeof(ddc);
+			transport_packet.type = e_packet_type::distribute_discount_card;
 			break;
 		default:
 			_str_str.str(std::wstring());

@@ -7,6 +7,7 @@ logic::CDistributionOfPrizeState::CDistributionOfPrizeState(CLogicAbstract& logi
 															: IState(logic, e_state::distribution_of_prize)
 															, _rest_coins(0)
 															, _hopper_empty(false)
+															, _prize_size(0)
 {
 	_tr_error = tools::logging::CTraceError::get_instance();
 }
@@ -33,6 +34,7 @@ void logic::CDistributionOfPrizeState::stop_button_press()
 {
 	if (true == _hopper_empty)
 	{
+		_prize_size = _rest_coins * 10;
 		_logic.send_issue_coins_packet_to_device(_rest_coins);
 	}
 }
@@ -56,6 +58,8 @@ void logic::CDistributionOfPrizeState::device_error(logic_structures::e_device_e
 {
 	if (logic_structures::e_device_error_code::empty_hopper == code)
 	{
+		_prize_size = _prize_size - (_rest_coins * 10);
+		_logic.send_distribute_prize_packet_to_server(server_exchange::e_distribute_element_status::empty_device, _prize_size);
 		_hopper_empty = true;
 		_logic.on_empty_hopper();
 	}
@@ -64,6 +68,7 @@ void logic::CDistributionOfPrizeState::device_error(logic_structures::e_device_e
 void logic::CDistributionOfPrizeState::distribute(uint16_t size)
 {
 	byte count = static_cast<byte>(size / 10);
+	_prize_size = size;
 
 	_rest_coins = count;
 	
@@ -78,6 +83,7 @@ void logic::CDistributionOfPrizeState::coin_issued(byte balance)
 
 	if (0 == balance)
 	{
+		_logic.send_distribute_prize_packet_to_server(server_exchange::e_distribute_element_status::success, _prize_size);
 		_logic.send_log_to_server(server_exchange::e_log_record_type::message, _T("Приз успешно выдан."));
 		_logic.set_state(e_state::advertising_idle);
 	}

@@ -206,6 +206,31 @@ void logic::CLogic::send_confirmation_packet(server_exchange::e_packet_type pack
 	_server_interact.PushBackToSend(packet);
 }
 
+void logic::CLogic::send_distribute_prize_packet_to_server(server_exchange::e_distribute_element_status status, uint16_t size)
+{
+	server_exchange::tag_distribute_prize_packet distribution_prize_packet;
+
+	distribution_prize_packet.status = status;
+	distribution_prize_packet.size = size;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_distribute_prize_packet, server_exchange::e_packet_type::distribute_prize>(distribution_prize_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
+void logic::CLogic::send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status status)
+{
+	server_exchange::tag_distribute_discount_card_packet distribute_discount_card_packet;
+
+	distribute_discount_card_packet.status = status;
+
+	std::shared_ptr<logic_structures::tag_base_server_logic_struct> packet =
+		create_server_packet<server_exchange::tag_distribute_discount_card_packet, server_exchange::e_packet_type::distribute_discount_card>(distribute_discount_card_packet);
+
+	_server_interact.PushBackToSend(packet);
+}
+
 void logic::CLogic::send_terminal_state_packet(const e_terminal_state& state)
 {
 	server_exchange::tag_terminal_state_packet terminal_state_packet;
@@ -834,14 +859,17 @@ void logic::CLogic::process_device_message(std::shared_ptr<logic_structures::tag
 			dci = get_device_message_pointer<logic_structures::tag_discount_card_issued>(message);
 			if (logic_structures::e_discount_card_issue_status::previous_card_not_taken == dci->status)
 			{
+				send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status::error);
 				send_log_to_server(server_exchange::e_log_record_type::warning, _T("Дисконтная карта не выдана, т.к. не забрали предыдущую карту"));
 			}
 			else if (logic_structures::e_discount_card_issue_status::error == dci->status)
 			{
+				send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status::empty_device);
 				send_log_to_server(server_exchange::e_log_record_type::warning, _T("Ошибка выдачи дисконтной карты. Возможно, карты закончились."));
 			}
 			else
 			{
+				send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status::success);
 				send_log_to_server(server_exchange::e_log_record_type::message, _T("Дисконтная карта успешно выдана."));
 			}
 			break;

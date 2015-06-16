@@ -149,6 +149,12 @@ public:
 
 	// отправить сообщение лога на сервер
 	virtual void send_log_to_server(server_exchange::e_log_record_type type, const std::wstring& text) = 0;
+
+	// отправить пакет выдачи приза на сервер
+	virtual void send_distribute_prize_packet_to_server(server_exchange::e_distribute_element_status status, uint16_t size) = 0;
+
+	// отправить пакет выдачи дисконтной карты на сервер
+	virtual void send_distribute_discount_card_packet_to_server(server_exchange::e_distribute_element_status status) = 0;
 };
 
 #pragma pack(push, 4)
