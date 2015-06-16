@@ -63,12 +63,13 @@ tools::e_init_state logic::CLogic::init()
 	_work_loop_status = tools::e_work_loop_status::ok;
 	_this_thread = std::thread(&CLogic::thread_fn, this);
 
-#ifdef DEBUG
+	// задержка для чтения параметров
+	// костыль, чтобы не бросили деньгу во время чтения настроек
+/*#ifdef DEBUG
 	std::this_thread::sleep_for(std::chrono::milliseconds(10000));	
 #else
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-#endif
-	_server_interact.Start();
+#endif*/
 
 	_init_state = tools::e_init_state::was_init;
 	return _init_state;
