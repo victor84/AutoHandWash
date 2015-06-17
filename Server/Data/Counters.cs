@@ -186,7 +186,7 @@ namespace Server.Data
             }
             catch (Exception ex)
             {
-                ServerLogger.Error(string.Format("Counters -> GetCounters: {0}", ex.Message));
+                ServerLogger.Error(string.Format("Counters -> GetCountersByTerminal: {0}", ex.Message));
             }
             return counters;
         }

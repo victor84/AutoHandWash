@@ -124,6 +124,8 @@
   <ItemGroup>
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
+    <Compile Include="Data\DiscountCardCounters.cs" />
+    <Compile Include="Data\PrizeCounters.cs" />
     <Compile Include="Models\ChangeStatusPageModel.cs" />
     <Compile Include="Models\PrizeFundPageModel.cs" />
     <Compile Include="Prize\GroupPrize.cs" />
