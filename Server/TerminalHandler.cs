@@ -141,6 +141,12 @@ namespace Server
                                             case e_packet_type.confirmation:
                                                 processing_result = HandleConfirmationPacket(packet);
                                                 break;
+                                            case e_packet_type.distribute_prize:
+                                                processing_result = HandleDistributePrizePacket(packet);
+                                                break;
+                                            case e_packet_type.distribute_discount_card:
+                                                processing_result = HandleDistributeDiscountCardPacket(packet);
+                                                break;
                                             case e_packet_type.unknown:
                                                 break;
                                         }
@@ -485,6 +491,26 @@ namespace Server
             tag_terminal_state_packet terminal_state_packet;
 
             if (e_convert_result.success != parser.ParseTerminalStatePacket(packet, out terminal_state_packet))
+                return e_processing_result.failed;
+
+            return e_processing_result.success;
+        }
+
+        private e_processing_result HandleDistributePrizePacket(tag_transport_packet packet)
+        {
+            tag_distribute_prize_packet distribute_prize_packet;
+
+            if (e_convert_result.success != parser.ParseDistributePrizePacket(packet, out distribute_prize_packet))
+                return e_processing_result.failed;
+
+            return e_processing_result.success;
+        }
+
+        private e_processing_result HandleDistributeDiscountCardPacket(tag_transport_packet packet)
+        {
+            tag_distribute_discount_card_packet distribute_discount_card;
+
+            if (e_convert_result.success != parser.ParseDistributeDiscountCardPacket(packet, out distribute_discount_card))
                 return e_processing_result.failed;
 
             return e_processing_result.success;

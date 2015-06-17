@@ -165,7 +165,7 @@ bool logic_settings::CCorrespondSettings::fill_services_cost()
 	for (int i = 0; i < 8; ++i)
 	{
 		e_service_name service = static_cast<e_service_name>(i);
-		uint16_t cost = static_cast<byte>(_settings_module->get_int(_service_settings_name[service], service_cost));
+		uint16_t cost = static_cast<uint16_t>(_settings_module->get_int(_service_settings_name[service], service_cost));
 
 		if (_service_cost[service] != 0)
 		{

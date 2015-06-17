@@ -271,6 +271,43 @@ namespace Parsing
             return e_convert_result.success;
         }
 
+        // парсинг пакета выдачи приза
+        public e_convert_result ParseDistributePrizePacket(tag_transport_packet data_to_parse, out tag_distribute_prize_packet result_packet)
+        {
+            result_packet = new tag_distribute_prize_packet();
+
+            if (e_packet_type.distribute_prize != data_to_parse.type)
+                return e_convert_result.invalid_data;
+
+            Byte[] data = data_to_parse.data;
+
+            if (3 != data.Length)
+                return e_convert_result.invalid_data;
+
+            result_packet.status = (e_distribute_element_status)data[0];
+            result_packet.size = BitConverter.ToUInt16(new Byte[] { data[1], data[2] }, 0);
+
+            return e_convert_result.success;
+        }
+
+        // парсинг пакета выдачи дисконтной карты
+        public e_convert_result ParseDistributeDiscountCardPacket(tag_transport_packet data_to_parse, out tag_distribute_discount_card_packet result_packet)
+        {
+            result_packet = new tag_distribute_discount_card_packet();
+
+            if (e_packet_type.distribute_discount_card != data_to_parse.type)
+                return e_convert_result.invalid_data;
+
+            Byte[] data = data_to_parse.data;
+
+            if (1 != data.Length)
+                return e_convert_result.invalid_data;
+
+            result_packet.status = (e_distribute_element_status)data[0];
+
+            return e_convert_result.success;
+        }
+
         private Char[] UnicodeByteArrayToCharArray(Byte[] text_bytes)
         {
             Char[] text_chars = new Char[text_bytes.Length / 2];
