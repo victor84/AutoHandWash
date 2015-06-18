@@ -2,7 +2,7 @@
 
     var mainHub = $.connection.mainHub;
 
-    mainHub.client.refreshCounters = function (terminalName, counters) {
+    mainHub.client.refreshCounters = function (terminalName, counters, prizeCounters, discountCardCounters) {
 
         var tr = document.getElementById(counters.TerminalId);
         var parentElement = tr.parentElement;
@@ -213,11 +213,11 @@ function ChangeTotalValues(trs, values)
 }
 
 function secondsToTime(totalSec)
-    {
-        var hours = parseInt(totalSec / 3600) % 24;
-        var minutes = parseInt(totalSec / 60) % 60;
-        var seconds = totalSec % 60;
+{
+    var hours = parseInt(totalSec / 3600) % 24;
+    var minutes = parseInt(totalSec / 60) % 60;
+    var seconds = totalSec % 60;
 
-        var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-        return result;
-    }
+    var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    return result;
+}

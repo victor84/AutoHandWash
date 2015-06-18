@@ -149,7 +149,7 @@ namespace Parsing
             return e_convert_result.success;
         }
 
-        // парсинг пакета со счётчиками
+        // парсинг пакета с настройками
         public e_convert_result ParseSettingsPacket(tag_transport_packet data_to_parse, out tag_settings_packet result_packet)
         {
             result_packet = new tag_settings_packet();
@@ -203,7 +203,7 @@ namespace Parsing
             return e_convert_result.success;
         }
 
-        // парсинг пакета со счётчиками
+        // парсинг пакета с подтверждением
         public e_convert_result ParseConfirmationPacket(tag_transport_packet data_to_parse, out tag_confirmation_packet result_packet)
         {
             result_packet = new tag_confirmation_packet();
@@ -240,7 +240,7 @@ namespace Parsing
             return e_convert_result.success;
         }
 
-        // парсинг пакета со счётчиками
+        // парсинг пакета с логом
         public e_convert_result ParseLogRecordPacket(tag_transport_packet data_to_parse, out tag_log_record_packet result_packet)
         {
             result_packet = new tag_log_record_packet();

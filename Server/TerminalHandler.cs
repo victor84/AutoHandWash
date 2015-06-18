@@ -25,6 +25,9 @@ namespace Server
         private e_packet_type lastPacket;
         private ConcurrentQueue<ServerPacket> queueServerPacket = new ConcurrentQueue<ServerPacket>();
 
+        private Counters lastCounters;
+        private PrizeCounters lastPrizeCounters;
+        private DiscountCardCounters lastDiscountCardCounters;
         private uint commonInput;
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
@@ -376,7 +379,7 @@ namespace Server
             if (e_convert_result.success != parser.ParseCountersPacket(packet, out countersPacket))
                 return e_processing_result.failed;
 
-            Counters newCounters = new Counters()
+            lastCounters = new Counters()
             {
                 Id = Guid.NewGuid(),
                 TerminalId = Terminal.Id,
@@ -394,18 +397,18 @@ namespace Server
                 Wax = countersPacket.wax
             };
 
-            if (!Counters.Insert(newCounters))
+            if (!Counters.Insert(lastCounters))
                 return e_processing_result.failed;
 
-            RefreshCounters(Terminal.TerminalName, newCounters);
+            RefreshCounters();
 
-            if (newCounters.CommonInput > commonInput)
+            if (lastCounters.CommonInput > commonInput)
             {
                 EventHandler<InputArgs> handler = CommonInputExtended;
                 if (handler != null)
                 {
-                    var input = newCounters.CommonInput - commonInput;
-                    commonInput = newCounters.CommonInput;
+                    var input = lastCounters.CommonInput - commonInput;
+                    commonInput = lastCounters.CommonInput;
                     handler(this, new InputArgs(input));
                 }
             }
@@ -503,6 +506,20 @@ namespace Server
             if (e_convert_result.success != parser.ParseDistributePrizePacket(packet, out distribute_prize_packet))
                 return e_processing_result.failed;
 
+            lastPrizeCounters = new PrizeCounters()
+            {
+                Id = Guid.NewGuid(),
+                TerminalId = Terminal.Id,
+                DateTimeServerEvent = DateTime.Now,
+                Status = (byte)distribute_prize_packet.status,
+                Size = distribute_prize_packet.size
+            };
+
+            if (!PrizeCounters.Insert(lastPrizeCounters))
+                return e_processing_result.failed;
+
+            RefreshCounters();
+
             return e_processing_result.success;
         }
 
@@ -513,12 +530,25 @@ namespace Server
             if (e_convert_result.success != parser.ParseDistributeDiscountCardPacket(packet, out distribute_discount_card))
                 return e_processing_result.failed;
 
+            lastDiscountCardCounters = new DiscountCardCounters()
+            {
+                Id = Guid.NewGuid(),
+                TerminalId = Terminal.Id,
+                DateTimeServerEvent = DateTime.Now,
+                Status = (byte)distribute_discount_card.status,
+            };
+
+            if (!DiscountCardCounters.Insert(lastDiscountCardCounters))
+                return e_processing_result.failed;
+
+            RefreshCounters();
+
             return e_processing_result.success;
         }
 
-        private void RefreshCounters(string terminalName, Counters counters)
+        private void RefreshCounters()
         {
-            _hubClient.Invoke("RefreshCounters", terminalName, counters);
+            _hubClient.Invoke("RefreshCounters", Terminal.TerminalName, lastCounters, lastPrizeCounters, lastDiscountCardCounters);
         }
 
         private void RefreshStatusBar(Guid groupId, TerminalLog terminalLog)

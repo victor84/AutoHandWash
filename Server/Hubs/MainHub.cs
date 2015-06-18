@@ -6,7 +6,7 @@ namespace Server.Hubs
 {
     public class MainHub : Hub
     {
-        public void RefreshCounters(string terminalName, Counters counters)
+        public void RefreshCounters(string terminalName, Counters counters, PrizeCounters prizeCounters, DiscountCardCounters discountCardCounters)
         {
             Clients.All.RefreshCounters(terminalName, counters);
         }
