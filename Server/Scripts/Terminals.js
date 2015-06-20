@@ -21,7 +21,7 @@
         
         var values = [];
         values[0] = "";
-        values[1] = "";
+        values[1] = "Итого";
         values[2] = counters.CommonInput;
         values[3] = counters.Balance / 100;
         values[4] = counters.PressurizedWater;
@@ -146,7 +146,7 @@ function TotalValues()
             }
         }
 
-        var totals = ["", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""];
+        var totals = ["", "Итого", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""];
         for (var k = 0; k < 15; k++)
         {
             for (var j = 1; j < trs.length - 1; j++)
