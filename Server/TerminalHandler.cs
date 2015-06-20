@@ -26,8 +26,8 @@ namespace Server
         private ConcurrentQueue<ServerPacket> queueServerPacket = new ConcurrentQueue<ServerPacket>();
 
         private Counters lastCounters;
-        private PrizeCounters lastPrizeCounters;
-        private DiscountCardCounters lastDiscountCardCounters;
+        private long sumPrizeCounters;
+        private int sumDiscountCardCounters;
         private uint commonInput;
         public Guid Id { get; set; }
         public Terminal Terminal { get; set; }
@@ -506,7 +506,7 @@ namespace Server
             if (e_convert_result.success != parser.ParseDistributePrizePacket(packet, out distribute_prize_packet))
                 return e_processing_result.failed;
 
-            lastPrizeCounters = new PrizeCounters()
+            PrizeCounters lastPrizeCounters = new PrizeCounters()
             {
                 Id = Guid.NewGuid(),
                 TerminalId = Terminal.Id,
@@ -517,6 +517,8 @@ namespace Server
 
             if (!PrizeCounters.Insert(lastPrizeCounters))
                 return e_processing_result.failed;
+
+            sumPrizeCounters = PrizeCounters.GetSumPrizeCountersByTerminal(Terminal.Id);
 
             RefreshCounters();
 
@@ -530,7 +532,7 @@ namespace Server
             if (e_convert_result.success != parser.ParseDistributeDiscountCardPacket(packet, out distribute_discount_card))
                 return e_processing_result.failed;
 
-            lastDiscountCardCounters = new DiscountCardCounters()
+            DiscountCardCounters lastDiscountCardCounters = new DiscountCardCounters()
             {
                 Id = Guid.NewGuid(),
                 TerminalId = Terminal.Id,
@@ -541,6 +543,8 @@ namespace Server
             if (!DiscountCardCounters.Insert(lastDiscountCardCounters))
                 return e_processing_result.failed;
 
+            sumDiscountCardCounters = DiscountCardCounters.GetSumDiscountCardCountersByTerminal(Terminal.Id);
+
             RefreshCounters();
 
             return e_processing_result.success;
@@ -548,7 +552,7 @@ namespace Server
 
         private void RefreshCounters()
         {
-            _hubClient.Invoke("RefreshCounters", Terminal.TerminalName, lastCounters, lastPrizeCounters, lastDiscountCardCounters);
+            _hubClient.Invoke("RefreshCounters", Terminal.TerminalName, lastCounters, sumPrizeCounters, sumDiscountCardCounters);
         }
 
         private void RefreshStatusBar(Guid groupId, TerminalLog terminalLog)

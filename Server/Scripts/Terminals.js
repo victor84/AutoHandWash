@@ -2,7 +2,7 @@
 
     var mainHub = $.connection.mainHub;
 
-    mainHub.client.refreshCounters = function (terminalName, counters, prizeCounters, discountCardCounters) {
+    mainHub.client.refreshCounters = function (terminalName, counters, sumPrizeCounters, sumDiscountCardCounters) {
 
         var tr = document.getElementById(counters.TerminalId);
         var parentElement = tr.parentElement;
@@ -31,8 +31,10 @@
         values[8] = counters.Vacuum;
         values[9] = counters.Osmose;
         values[10] = counters.Air;
-        values[11] = "";
-        values[12] = "";
+        values[11] = sumPrizeCounters;
+        values[12] = sumDiscountCardCounters;
+        values[13] = "";
+        values[14] = "";
 
         var content = "<tr id = " + "'" + counters.TerminalId + "'" + ">";
         content += '<td>' + terminalName + '</td>';
@@ -46,6 +48,8 @@
         content += '<td>' + counters.ViewVacuum + '</td>';
         content += '<td>' + counters.ViewOsmose + '</td>';
         content += '<td>' + counters.ViewAir + '</td>';
+        content += '<td>' + sumPrizeCounters + '</td>';
+        content += '<td>' + sumDiscountCardCounters + '</td>';
         content += '<td class="col-md-2 text-center"><a href="terminals/fillbalance/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-rub"></i> Пополнить счет</a></td>';
         content += '<td class="col-md-2 text-center"><a href="terminals/changestatus/' + counters.TerminalId + '" role="button" class="btn btn-success btn-xs"><i class="fa fa-gear fa-fw"></i> Изменить статус</a></td>';
         content += "</tr>";
@@ -142,8 +146,8 @@ function TotalValues()
             }
         }
 
-        var totals = ["", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""];
-        for (var k = 0; k < 13; k++)
+        var totals = ["", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", ""];
+        for (var k = 0; k < 15; k++)
         {
             for (var j = 1; j < trs.length - 1; j++)
             {
@@ -158,7 +162,7 @@ function TotalValues()
         }
 
         var tds = "";
-        for (var k = 0; k < 13; k++) {
+        for (var k = 0; k < 15; k++) {
             var td = '<td>' + totals[k] + '</td>';
             tds += td;
         }
@@ -192,7 +196,7 @@ function ChangeTotalValues(trs, values)
     }
 
     var totals = values;
-    for (var k = 0; k < 13; k++) {
+    for (var k = 0; k < 15; k++) {
         for (var j = 0; j < trs.length - 1; j++) {
             var text = matrixValues[j][k];
             totals[k] += text;
@@ -205,7 +209,7 @@ function ChangeTotalValues(trs, values)
     }
 
     var tds = "";
-    for (var k = 0; k < 13; k++) {
+    for (var k = 0; k < 15; k++) {
         var td = '<td>' + totals[k] + '</td>';
         tds += td;
     }

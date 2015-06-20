@@ -94,6 +94,8 @@ namespace Server.Models
             }
         }
         public Counters Counters { get; set; }
+        public long SumPrizeCounters { get; set; }
+        public int SumDiscountCardCounters { get; set; }
 
         public TerminalCounters()
         {

@@ -38,24 +38,23 @@ namespace Server.Data
             return result;
         }
 
-        public static PrizeCounters GetPrizeCountersByTerminal(Guid id)
+        public static long GetSumPrizeCountersByTerminal(Guid id)
         {
-            PrizeCounters prizeCounters = null;
+            long result = 0;
             try
             {
                 using (var db = new DataConnection())
                 {
                     var table = db.GetTable<PrizeCounters>();
-                    var query = table.Where(x => x.TerminalId == id);
-                    var queryMaxDateTime = query.Where(x => x.DateTimeServerEvent == query.Max(s => s.DateTimeServerEvent));
-                    prizeCounters = queryMaxDateTime.FirstOrDefault();
+                    var query = table.Where(x => x.TerminalId == id && x.Status == 0).ToList();
+                    result = query.Sum(x => x.Size);
                 }
             }
             catch (Exception ex)
             {
-                ServerLogger.Error(string.Format("PrizeCounters -> GetPrizeCountersByTerminal: {0}", ex.Message));
+                ServerLogger.Error(string.Format("PrizeCounters -> GetSumPrizeCountersByTerminal: {0}", ex.Message));
             }
-            return prizeCounters;
+            return result;
         }
     }
 }

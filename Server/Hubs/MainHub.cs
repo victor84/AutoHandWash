@@ -6,9 +6,9 @@ namespace Server.Hubs
 {
     public class MainHub : Hub
     {
-        public void RefreshCounters(string terminalName, Counters counters, PrizeCounters prizeCounters, DiscountCardCounters discountCardCounters)
+        public void RefreshCounters(string terminalName, Counters counters, long sumPrizeCounters, int sumDiscountCardCounters)
         {
-            Clients.All.RefreshCounters(terminalName, counters);
+            Clients.All.RefreshCounters(terminalName, counters, sumPrizeCounters, sumDiscountCardCounters);
         }
 
         public void RefreshStatusBar(Guid groupId, string message)

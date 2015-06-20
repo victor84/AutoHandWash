@@ -64,6 +64,8 @@ namespace Server.Modules
                                 var counters = Counters.GetCountersByTerminal(terminal.Id);
                                 TerminalCounters terminalCounters = new TerminalCounters();
                                 terminalCounters.TerminalName = terminal.TerminalName;
+                                terminalCounters.SumPrizeCounters = PrizeCounters.GetSumPrizeCountersByTerminal(terminal.Id);
+                                terminalCounters.SumDiscountCardCounters = DiscountCardCounters.GetSumDiscountCardCountersByTerminal(terminal.Id);
                                 if (counters != null)
                                 {
                                     terminalCounters.Counters = counters;

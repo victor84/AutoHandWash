@@ -36,24 +36,22 @@ namespace Server.Data
             return result;
         }
 
-        public static DiscountCardCounters GetDiscountCardCountersByTerminal(Guid id)
+        public static int GetSumDiscountCardCountersByTerminal(Guid id)
         {
-            DiscountCardCounters discountCardCounters = null;
+            int result = 0;
             try
             {
                 using (var db = new DataConnection())
                 {
                     var table = db.GetTable<DiscountCardCounters>();
-                    var query = table.Where(x => x.TerminalId == id);
-                    var queryMaxDateTime = query.Where(x => x.DateTimeServerEvent == query.Max(s => s.DateTimeServerEvent));
-                    discountCardCounters = queryMaxDateTime.FirstOrDefault();
+                    result = table.Where(x => x.TerminalId == id && x.Status == 0).Count();
                 }
             }
             catch (Exception ex)
             {
-                ServerLogger.Error(string.Format("DiscountCardCounters -> GetDiscountCardCountersByTerminal: {0}", ex.Message));
+                ServerLogger.Error(string.Format("DiscountCardCounters -> GetSumDiscountCardCountersByTerminal: {0}", ex.Message));
             }
-            return discountCardCounters;
+            return result;
         }
     }
 }
