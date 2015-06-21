@@ -46,7 +46,7 @@ namespace Server.Data
                 using (var db = new DataConnection())
                 {
                     var table = db.GetTable<PrizeCounters>();
-                    var query = table.Where(x => x.TerminalId == id && x.Status == 0).ToList();
+                    var query = table.Where(x => x.TerminalId == id).ToList();
                     result = query.Sum(x => x.Size);
                 }
             }
