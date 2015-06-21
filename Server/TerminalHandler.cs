@@ -363,6 +363,8 @@ namespace Server
                 Terminal = terminals.Where(x => x.GroupId == group.Id).FirstOrDefault();
             }
 
+            sumPrizeCounters = PrizeCounters.GetSumPrizeCountersByTerminal(Terminal.Id);
+            sumDiscountCardCounters = DiscountCardCounters.GetSumDiscountCardCountersByTerminal(Terminal.Id);
             var counters = Counters.GetCountersByTerminal(Terminal.Id);
             if (counters != null)
             {
