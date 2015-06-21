@@ -214,6 +214,10 @@ namespace Server.Modules
                             Model.PrizeFundPage.Groups = listViewGroupPrize;
                             return View["PrizeFund", Model];
                         }
+                        else
+                        {
+                            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorPrizeGroup);
+                        }
                     }
                 }
                 else

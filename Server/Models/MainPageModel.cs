@@ -12,6 +12,7 @@ namespace Server.Models
         ErrorFillBalance,
         ErrorChangeStatus,
         ErrorPrizeFund,
+        ErrorPrizeGroup,
     };
 
     public class MainError
@@ -34,13 +35,16 @@ namespace Server.Models
                         result = "Не удалось прочитать сообщения терминалов";
                         break;
                     case MainErrors.ErrorFillBalance:
-                        result = "Не удалось найти терминал или группу";
+                        result = "Ошибка при пополнении баланса терминала";
                         break;
                     case MainErrors.ErrorChangeStatus:
-                        result = "Не удалось найти терминал или группу";
+                        result = "Не удалось изменить статус терминала";
                         break;
                     case MainErrors.ErrorPrizeFund:
                         result = "Не удалось прочитать призовой фонд";
+                        break;
+                    case MainErrors.ErrorPrizeGroup:
+                        result = "Все призовые суммы разыграны, новый призовой фонд будет сформирован при пополнении баланса";
                         break;
                     default:
                         break;
