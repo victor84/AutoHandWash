@@ -12,7 +12,11 @@ namespace Server.Models
         ErrorFillBalance,
         ErrorChangeStatus,
         ErrorPrizeFund,
-        ErrorPrizeGroup,
+    };
+
+    public enum MainInfos
+    {
+        InfoPrizeGroup,
     };
 
     public class MainError
@@ -43,7 +47,25 @@ namespace Server.Models
                     case MainErrors.ErrorPrizeFund:
                         result = "Не удалось прочитать призовой фонд";
                         break;
-                    case MainErrors.ErrorPrizeGroup:
+                    default:
+                        break;
+                }
+                return result;
+            }
+        }
+    }
+
+    public class MainInfo
+    {
+        public MainInfos Type { get; set; }
+        public string Message
+        {
+            get
+            {
+                string result = string.Empty;
+                switch (Type)
+                {
+                    case MainInfos.InfoPrizeGroup:
                         result = "Все призовые суммы разыграны, новый призовой фонд будет сформирован при пополнении баланса";
                         break;
                     default:
@@ -112,6 +134,7 @@ namespace Server.Models
         public Dictionary<Group, GroupInfo> DictionaryGroupInfo { get; set; }
         public List<TerminalLogs> TerminalLogs { get; set; }
         public MainError MainError { get; set; }
+        public MainInfo MainInfo { get; set; }
         public MainPageModel()
         {
             DictionaryGroupInfo = new Dictionary<Group, GroupInfo>();

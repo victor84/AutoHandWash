@@ -27,6 +27,7 @@ namespace Server.Modules
             Get["/terminals/changestatus/{terminalId}"] = ViewChangeStatus;
             Post["/terminals/changestatus"] = ChangeStatus;
             Get["/error/{type}"] = ViewError;
+            Get["/info/{type}"] = ViewInfo;
         }
 
         private dynamic Terminals(dynamic parameters)
@@ -216,7 +217,7 @@ namespace Server.Modules
                         }
                         else
                         {
-                            return Response.AsRedirect("~/error/" + (byte)MainErrors.ErrorPrizeGroup);
+                            return Response.AsRedirect("~/info/" + (byte)MainInfos.InfoPrizeGroup);
                         }
                     }
                 }
@@ -339,6 +340,15 @@ namespace Server.Modules
             Model.MainPage.MainError = new MainError();
             Model.MainPage.MainError.Type = (MainErrors)type;
             return View["MainError", Model];
+        }
+
+        private dynamic ViewInfo(dynamic parameters)
+        {
+            var type = (byte)parameters.type;
+            Model.MainPage = new MainPageModel();
+            Model.MainPage.MainInfo = new MainInfo();
+            Model.MainPage.MainInfo.Type = (MainInfos)type;
+            return View["MainInfo", Model];
         }
     }
 }
