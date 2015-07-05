@@ -269,47 +269,5 @@ namespace TerminalApp
                 VideoPlayer.Play();
             });
         }
-
-        private void SetTextBlocksFontColor(DependencyObject window)
-        {
-            System.Drawing.Color settingFontColor = Properties.Settings.Default.FontColor;
-            System.Windows.Media.Color fontColor = new System.Windows.Media.Color();
-            fontColor.A = settingFontColor.A;
-            fontColor.R = settingFontColor.R;
-            fontColor.G = settingFontColor.G;
-            fontColor.B = settingFontColor.B;
-
-            SolidColorBrush brush = new SolidColorBrush(fontColor);
-
-            foreach (TextBlock tb in FindVisualChildren<TextBlock>(window))
-            {
-                tb.Foreground = brush;
-            }
-        }
-
-        private void TerminalBrokenTab_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetTextBlocksFontColor(TerminalBrokenTab);
-        }
-
-        private void PrizePageFrame_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetTextBlocksFontColor((PrizePage)PrizePageFrame.Content);
-        }
-
-        private void ServicePageFrame_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetTextBlocksFontColor((ServicesPage)ServicePageFrame.Content);
-        }
-
-        private void TerminalBrokenGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetTextBlocksFontColor(TerminalBrokenGrid);
-        }
-
-        private void CountersGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetTextBlocksFontColor(CountersGrid);
-        }
     }
 }

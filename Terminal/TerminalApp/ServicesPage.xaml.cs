@@ -29,107 +29,16 @@ namespace TerminalApp
         private LogicWrapper.e_state_id _currentState;
         private LogicWrapper.e_state_id _previousState;
 
-        private Timer _currentServiceTimer;
-
         private String _currentServiceName;
 
-        private volatile bool _showServiceName;
-
-        private Brush _defaultFontBrush;
-
-        private volatile bool _timerStartedReal;
-
         private String _stopServiceName;
-
-        private object _timerStartedLock;
-        private bool _timerStarted
-        {
-            get
-            {
-                lock(_timerStartedLock)
-                {
-                    return _timerStartedReal;
-                }
-            }
-
-            set
-            {
-                lock(_timerStartedLock)
-                {
-                    _timerStartedReal = value;
-                }
-            }
-        }
 
         private LogicWrapper.e_service_id _currentService;
 
         public ServicesPage()
         {
-            _currentServiceTimer = new Timer(OnCurrentServiceTimer, null, 0, 0);
-            _timerStartedLock = new object();
-            _timerStarted = false;
 
             InitializeComponent();
-        }
-
-        private void SetStateCurrentServiceTimer(bool start)
-        {
-            //if (Interlocked.CompareExchange(ref _timerStarted, 1, 1) == start)
-            if (_timerStarted == start)
-                return;
-
-            if (true == start)
-            {
-                _showServiceName = false;
-                _currentServiceTimer.Change(500, 0);
-                _timerStarted = true;
-            }
-            else
-            {
-                _showServiceName = true;
-                _currentServiceTimer.Change(0, 0);
-                _timerStarted = false;
-                SetCurrentServiceNameTextBlockText(_currentServiceName);
-            }
-        }
-
-        private void OnCurrentServiceTimer(object state)
-        {
-            try
-            {
-                if (LogicWrapper.e_state_id.refill_cache == _currentState)
-                {
-                    if (true == _showServiceName)
-                    {
-                        SetServiceNameTextBlockText("Выберите");
-                        SetCurrentServiceNameTextBlockText("услугу");
-                    }
-                    else
-                    {
-                        SetServiceNameTextBlockText("");
-                        SetCurrentServiceNameTextBlockText("");
-                    }
-
-                    _showServiceName = !_showServiceName;
-                    return;
-                }
-
-                if (true == _showServiceName)
-                {
-                    SetCurrentServiceNameTextBlockText(_currentServiceName);
-                }
-                else
-                {
-                    SetCurrentServiceNameTextBlockText("");
-                }
-
-                _showServiceName = !_showServiceName;
-            }
-            finally
-            {
-                if (true == _timerStarted)
-                    _currentServiceTimer.Change(500, 0);
-            }
         }
 
         public void OnTimeAndMoneyChanged(UInt16 time, UInt16 money)
@@ -137,8 +46,7 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 TimeSpan timeSpan = TimeSpan.FromSeconds(time);
-                RestOfTimeTextBlock.Text = String.Format("{0:mm\\:ss}", timeSpan);
-                RestOfMoneyTextBlock.Text = String.Format("{0} руб", ((Double)(money / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0}", ((Double)(money / 100.0)).ToString("F"));
             });
         }
 
@@ -153,118 +61,47 @@ namespace TerminalApp
                 return;
             }
 
-            if ((LogicWrapper.e_state_id.refill_cache != _currentState) && (LogicWrapper.e_service_id.stop == service_id))
-            {
-                SetCurrentServiceNameTextBlockColor(Brushes.Red);
-                SetStateCurrentServiceTimer(false);
-            }
-            else
-            {
-                // SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
-                SetCurrentServiceNameTextBlockColor(Brushes.Red);
-                SetStateCurrentServiceTimer(true);
-            }
-
             if (LogicWrapper.e_service_id.stop == service_id)
             {
                 _stopServiceName = service_name;
             }
 
-            SetCurrentServiceNameTextBlockText(service_name);
         }
 
-        private void SetCurrentServiceNameTextBlockText(String text)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                CurrentServiceNameTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                CurrentServiceNameTextBlock.Text = text;
-            });
-        }
-
-        private void SetServiceNameTextBlockText(String text)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                ServiceNameTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                ServiceNameTextBlock.Text = text;
-            });
-        }
-
-        private void SetCurrentServiceNameTextBlockColor(Brush color)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                CurrentServiceNameTextBlock.Foreground = color;
-            });
-        }
-
-        private void ShowHint(String text)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                HintTextBlock.Text = text;
-            });
-        }
 
         public void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
             _currentState = state_id;
-            String stateText = "";
-            SetServiceNameTextBlockText("Услуга:");
-
 
             if (LogicWrapper.e_state_id.advertising_idle == state_id)
             {
-                ShowHint("Внесите деньги");
                 OnServiceChanged(LogicWrapper.e_service_id.stop, "");
-                stateText = "Реклама";
             }
             else if (LogicWrapper.e_state_id.executing_service == state_id)
             {
-                stateText = "Выполнение услуги...";
-                ShowHint("");
+
             }
             else if (LogicWrapper.e_state_id.free_idle == state_id)
             {
-                stateText = "Бесплатный простой";
-                ShowHint("");
+
             }
             else if (LogicWrapper.e_state_id.paid_idle == state_id)
             {
-                stateText = "Платный простой";
-                ShowHint("");
-                SetCurrentServiceNameTextBlockText(_stopServiceName);
-                SetCurrentServiceNameTextBlockColor(Brushes.Red);
-                SetStateCurrentServiceTimer(true);
+
             }
             else if (LogicWrapper.e_state_id.refill_cache == state_id)
             {
-                stateText = "Пополнение счёта";
-                ShowHint("Выберите услугу");
 
-                SetServiceNameTextBlockText("Выберите");
-                SetCurrentServiceNameTextBlockText("услугу");
-                // SetCurrentServiceNameTextBlockColor(_defaultFontBrush);
-                SetCurrentServiceNameTextBlockColor(Brushes.Red);
-                SetStateCurrentServiceTimer(true);
             }
             else if (LogicWrapper.e_state_id.settings_work == state_id)
             {
-                stateText = "Работа с настройками";
+
                 OnServiceChanged(LogicWrapper.e_service_id.stop, "");
-                ShowHint("Подождите...");
             }
             else if (LogicWrapper.e_state_id.distribution_of_prize == state_id)
             {
-                stateText = "Выдача приза";
-                ShowHint("Приз");
+
             }
-            
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                LogicStateTextBlock.Text = stateText;
-            });
 
             _previousState = state_id;
         }
@@ -273,7 +110,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfMoneyTextBlock.Text = String.Format("{0} руб", ((Double)(cache / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0}", ((Double)(cache / 100.0)).ToString("F"));
             });
         }
 
@@ -434,7 +271,7 @@ namespace TerminalApp
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _defaultFontBrush = CurrentServiceNameTextBlock.Foreground;
+
         }
     }
 }
