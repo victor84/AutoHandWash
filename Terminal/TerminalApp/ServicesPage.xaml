@@ -23,9 +23,9 @@
                     <RowDefinition Height="117"/>
                     <RowDefinition Height="117"/>
                     <RowDefinition Height="117"/>
-                    <RowDefinition Height="141"/>
-                    <RowDefinition Height="143"/>
-                    <RowDefinition Height="187"/>
+                    <RowDefinition Height="135"/>
+                    <RowDefinition Height="135"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -51,7 +51,7 @@
                 <Grid Grid.Row="4">
                     <Image Source="Images/5.png" Height="142" VerticalAlignment="Top" />
                     <Image x:Name="Service5SelectedImage" Source="Images/5_pressed.png" Height="142" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303"  Visibility="Hidden"/>
-                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" VerticalAlignment="Center" Height="103" HorizontalAlignment="Center" Width="176"/>
+                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
                 <Grid Grid.Row="5">
                     <Image Source="Images/6.png" Height="144" VerticalAlignment="Top" />
@@ -61,7 +61,7 @@
                 <Grid Grid.Row="6">
                     <Image Source="Images/7.png" Height="188" VerticalAlignment="Top" />
                     <Image x:Name="Service7SelectedImage" Source="Images/7_pressed.png" Height="188" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" Visibility="Hidden" />
-                    <TextBlock x:Name="Service7TextBlock" TextWrapping="Wrap" Text="СРЕДСТВО ОТ НАСЕКОМЫХ" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Height="93" Margin="40,27,0,68" Width="231"/>
+                    <TextBlock x:Name="Service7TextBlock" TextWrapping="Wrap" Text="СРЕДСТВО ОТ НАСЕКОМЫХ" VerticalAlignment="Top" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center" Margin="0,25,0,0" />
                 </Grid>
             </Grid>
 
@@ -69,8 +69,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="178"/>
                     <RowDefinition Height="87"/>
-                    <RowDefinition Height="420"/>
-                    <RowDefinition Height="330"/>
+                    <RowDefinition Height="409"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="1" Text="БАЛАНС" FontWeight="Bold" FontFamily="Hermes" FontSize="72" TextAlignment="Center" Foreground="Red"/>
@@ -81,16 +81,16 @@
 
                 <Grid Grid.Row="3">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="19*"/>
-                        <RowDefinition Height="72*"/>
-                        <RowDefinition Height="71*"/>
-                        <RowDefinition Height="79*"/>
-                        <RowDefinition Height="89*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="1" Text="СТОП" FontWeight="Bold" FontFamily="Hermes" FontSize="72" TextAlignment="Center" Foreground="White"/>
                     <TextBlock Grid.Row="2" Text="ПАУЗА" FontWeight="Bold" FontFamily="Hermes" FontSize="72" TextAlignment="Center" Foreground="White"/>
-                    <TextBlock Grid.Row="3" Text="3 МИНУТЫ" FontWeight="Bold" FontFamily="Hermes" FontSize="50" TextAlignment="Center" Foreground="White" VerticalAlignment="Center" Height="58" Margin="0,12,0,9"/>
+                    <TextBlock Grid.Row="3" Text="3 МИНУТЫ" FontWeight="Bold" FontFamily="Hermes" FontSize="50" TextAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
 
                 </Grid>
 

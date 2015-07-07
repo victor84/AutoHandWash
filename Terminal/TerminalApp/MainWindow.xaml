@@ -24,9 +24,7 @@
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
                 <Grid x:Name="TerminalBrokenGrid" >
-                    <Viewbox>
-                        <TextBlock Text="Терминал не работает"/>
-                    </Viewbox>
+                    <Image Source="Images/background_not_working.jpg" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="CountersTab" Header="Показания счётчиков">
