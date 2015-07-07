@@ -24,8 +24,6 @@ namespace TerminalApp
     {
         private IEnumerable<LogicWrapper.tag_service_info> _services_info;
 
-        private TextBlock _widestTextBlock;
-
         private LogicWrapper.e_state_id _currentState;
         private LogicWrapper.e_state_id _previousState;
 
@@ -128,7 +126,7 @@ namespace TerminalApp
 
             FillServicesInfo();
 
-            int maxStrLength = 0;
+            /*int maxStrLength = 0;
             String maxString = null;
 
             for (byte i = 0; i < 8; ++i)
@@ -143,9 +141,9 @@ namespace TerminalApp
                 }
             }
 
-            _widestTextBlock = GetTextServiceBlock(maxString);
+            _widestTextBlock = GetTextServiceBlock(maxString);*/
 
-            ResizeServicesInfo();
+            // ResizeServicesInfo();
         }
 
         private void FillServicesInfo()
@@ -159,7 +157,7 @@ namespace TerminalApp
             Service7TextBlock.Text = GetServiceInfo(6);
         }
 
-        void ResizeServicesInfo()
+        /*void ResizeServicesInfo()
         {
             if (null == _widestTextBlock)
                 return;
@@ -186,7 +184,7 @@ namespace TerminalApp
             Service5TextBlock.FontSize = newFontSize;
             Service6TextBlock.FontSize = newFontSize;
             Service7TextBlock.FontSize = newFontSize;
-        }
+        }*/
 
         private Size MeasureString(String candidate, TextBlock textBlock)
         {
@@ -262,16 +260,6 @@ namespace TerminalApp
             }
 
             return sb.ToString();
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            ResizeServicesInfo();
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

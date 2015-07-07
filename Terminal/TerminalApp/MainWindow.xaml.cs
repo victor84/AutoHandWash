@@ -78,16 +78,6 @@ namespace TerminalApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            String currentFolder = Directory.GetCurrentDirectory();
-
-            String[] files = Directory.GetFiles(currentFolder, "advertising.*", SearchOption.AllDirectories);
-
-            if ((null != files) && (0 != files.Length))
-            {
-                VideoPlayer.Source = new Uri(files[0], UriKind.Absolute);
-                VideoPlayer.MediaEnded += VideoPlayer_MediaEnded;
-            }
-
             ServicesPage servicePage = (ServicesPage)ServicePageFrame.Content;
             PrizePage prizePage = (PrizePage)PrizePageFrame.Content;
             prizePage.SetShowPageFn(ShowPage);
@@ -187,15 +177,6 @@ namespace TerminalApp
             return result;
         }
 
-        void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
-            {
-                VideoPlayer.Position = TimeSpan.Zero;
-                VideoPlayer.Play();
-            });
-        }
-
         private void ShowFullScreen()
         {
             ServiceTab.Visibility = System.Windows.Visibility.Collapsed;
@@ -207,7 +188,7 @@ namespace TerminalApp
             WindowStyle = System.Windows.WindowStyle.None;
             ResizeMode = System.Windows.ResizeMode.NoResize;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            WindowState = System.Windows.WindowState.Maximized;
+            // WindowState = System.Windows.WindowState.Maximized;
         }
 
         private void OnTerminalStateChanged(LogicWrapper.e_terminal_state state)
@@ -240,8 +221,6 @@ namespace TerminalApp
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            VideoPlayer.Close();
-
             _logic.Stop();
             _logic.Dispose();
         }
@@ -266,7 +245,6 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 ShowPage(1);
-                VideoPlayer.Play();
             });
         }
     }

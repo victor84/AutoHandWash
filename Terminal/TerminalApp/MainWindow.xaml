@@ -3,18 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" 
         Height="1024" Width="605" 
-        Loaded="Window_Loaded" Closed="Window_Closed" >
+        Loaded="Window_Loaded" Closed="Window_Closed" BorderThickness="0">
 
     <Grid x:Name="MainWindowGrid">
-        <TabControl x:Name="MainTabControl" Margin="0,0,0,0"  Background="{Binding Source=TerminalApp.Properties.Settings, Path=BackgroundColor}">
+        <TabControl x:Name="MainTabControl" Margin="0,0,0,0" BorderThickness="0">
             <TabItem x:Name="ServiceTab" Header="Услуги">
                 <Grid>
-                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
+                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" BorderThickness="0"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="VideoTab" Header="Реклама">
                 <Grid>
-                    <MediaElement x:Name="VideoPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop"/>
+                    <Image Source="Images/advertising_idle.jpg" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="PrizeTab" Header="Выдача приза">

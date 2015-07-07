@@ -148,7 +148,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\background.bmp" />
+    <Resource Include="Images\advertising_idle.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\background_services.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1_pressed.png" />
+    <Resource Include="Images\2_pressed.png" />
+    <Resource Include="Images\3_pressed.png" />
+    <Resource Include="Images\4_pressed.png" />
+    <Resource Include="Images\5_pressed.png" />
+    <Resource Include="Images\6_pressed.png" />
+    <Resource Include="Images\7_pressed.png" />
+    <Resource Include="Images\stop_pressed.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
