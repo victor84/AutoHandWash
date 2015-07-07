@@ -7,28 +7,21 @@
 	Title="PrizePage" d:DesignHeight="1024" d:DesignWidth="605">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70*"/>
-            <RowDefinition Height="127*"/>
-            <RowDefinition Height="70*"/>
-            <RowDefinition Height="82*"/>
-        </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="0">
-            <TextBlock Text="Вы выиграли" />
-        </Viewbox>
+        <Image Source="Images/background_prize.png" />
 
-        <Viewbox Grid.Row="1">
-            <TextBlock x:Name="PrizeSizeTextBlock" Text="100" />
-        </Viewbox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="574*"/>
+                <RowDefinition Height="177*"/>
+                <RowDefinition Height="144*"/>
+                <RowDefinition Height="129*"/>
+            </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="2">
-            <TextBlock Text="рублей!" />
-        </Viewbox>
+            <TextBlock x:Name="PrizeSizeTextBlock" Text="100" FontFamily="Hermes" FontSize="200" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red" Height="237" Margin="176,554,176,104" Grid.RowSpan="3" Width="253" />
+            <TextBlock Grid.Row="2" Text="рублей!" FontFamily="Hermes" Foreground="White" FontSize="100" HorizontalAlignment="Center" Margin="156,0,155,0" Width="294" />
+            <TextBlock Grid.Row="3" x:Name="CoinBalanceTextBlock" Text="Осталось получить 10 монет" FontFamily="Hermes" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Height="59" Margin="30,35,31,35" Width="544" />
 
-        <Viewbox Grid.Row="3">
-            <TextBlock x:Name="CoinBalanceTextBlock" Text="Осталось получить 10 монет" />
-        </Viewbox>
-        
+        </Grid>
     </Grid>
 </Page>

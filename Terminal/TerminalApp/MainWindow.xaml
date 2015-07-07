@@ -9,7 +9,7 @@
         <TabControl x:Name="MainTabControl" Margin="0,0,0,0" BorderThickness="0">
             <TabItem x:Name="ServiceTab" Header="Услуги">
                 <Grid>
-                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" BorderThickness="0"/>
+                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" BorderThickness="0" MaxHeight="1024" MaxWidth="605"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="VideoTab" Header="Реклама">
@@ -19,7 +19,7 @@
             </TabItem>
             <TabItem x:Name="PrizeTab" Header="Выдача приза">
                 <Grid>
-                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True"/>
+                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" MaxHeight="1024" MaxWidth="605"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">

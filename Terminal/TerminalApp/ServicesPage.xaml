@@ -51,7 +51,7 @@
                 <Grid Grid.Row="4">
                     <Image Source="Images/5.png" Height="142" VerticalAlignment="Top" />
                     <Image x:Name="Service5SelectedImage" Source="Images/5_pressed.png" Height="142" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303"  Visibility="Hidden"/>
-                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" VerticalAlignment="Center" Height="103" HorizontalAlignment="Center" Width="176"/>
+                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" VerticalAlignment="Center" Height="103" HorizontalAlignment="Center" Width="176"/>
                 </Grid>
                 <Grid Grid.Row="5">
                     <Image Source="Images/6.png" Height="144" VerticalAlignment="Top" />
