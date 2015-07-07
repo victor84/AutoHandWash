@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d"
-	Title="PrizePage" d:DesignHeight="349" d:DesignWidth="443">
+	Title="PrizePage" d:DesignHeight="1024" d:DesignWidth="605">
 
     <Grid>
         <Grid.RowDefinitions>

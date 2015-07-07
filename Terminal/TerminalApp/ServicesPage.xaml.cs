@@ -32,6 +32,7 @@ namespace TerminalApp
         private String _stopServiceName;
 
         private LogicWrapper.e_service_id _currentService;
+        private LogicWrapper.e_service_id _previousService;
 
         public ServicesPage()
         {
@@ -44,7 +45,7 @@ namespace TerminalApp
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
                 TimeSpan timeSpan = TimeSpan.FromSeconds(time);
-                RestOfMoneyTextBlock.Text = String.Format("{0}", ((Double)(money / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0}", ((UInt16)(money / 100.0)).ToString());
             });
         }
 
@@ -53,19 +54,57 @@ namespace TerminalApp
             _currentServiceName = service_name;
             _currentService = service_id;
 
-            if ((LogicWrapper.e_state_id.paid_idle == _currentState) &&
-                (LogicWrapper.e_service_id.stop == service_id))
-            {
-                return;
-            }
+            if (_previousService != _currentService)
+                ShowSelectedService(_previousService, false);
+
+            ShowSelectedService(_currentService, true);
 
             if (LogicWrapper.e_service_id.stop == service_id)
             {
                 _stopServiceName = service_name;
             }
 
+            _previousService = _currentService;
         }
 
+        private void ShowSelectedService(LogicWrapper.e_service_id service_id, bool show)
+        {
+            Image imageButton = GetImageByService(service_id);
+
+            if (null != imageButton)
+            {
+                this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
+                {
+                    if (true == show)
+                        imageButton.Visibility = Visibility.Visible;
+                    else
+                        imageButton.Visibility = Visibility.Hidden;
+                });
+            }
+        }
+
+        private Image GetImageByService(LogicWrapper.e_service_id service_id)
+        {
+            Byte buttonNumber = GetServiceButtonNumber(service_id);
+
+            Image imageButton = null;
+
+            switch(buttonNumber)
+            {
+                case 0: imageButton = Service1SelectedImage; break;
+                case 1: imageButton = Service2SelectedImage; break;
+                case 2: imageButton = Service3SelectedImage; break;
+                case 3: imageButton = Service4SelectedImage; break;
+                case 4: imageButton = Service5SelectedImage; break;
+                case 5: imageButton = Service6SelectedImage; break;
+                case 6: imageButton = Service7SelectedImage; break;
+            }
+
+            if (LogicWrapper.e_service_id.stop == service_id)
+                imageButton = StopSelectedImage;
+
+            return imageButton;
+        }
 
         public void OnStateChanged(LogicWrapper.e_state_id state_id)
         {
@@ -108,7 +147,7 @@ namespace TerminalApp
         {
             this.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate()
             {
-                RestOfMoneyTextBlock.Text = String.Format("{0}", ((Double)(cache / 100.0)).ToString("F"));
+                RestOfMoneyTextBlock.Text = String.Format("{0}", ((UInt16)(cache / 100)).ToString());
             });
         }
 
@@ -125,25 +164,6 @@ namespace TerminalApp
             _services_info = collection;
 
             FillServicesInfo();
-
-            /*int maxStrLength = 0;
-            String maxString = null;
-
-            for (byte i = 0; i < 8; ++i)
-            {
-                String str = GetServiceInfo(i);
-                int length = str.Length;
-                if (length > maxStrLength)
-                {
-                    maxStrLength = length;
-                    maxString = str;
-                    break;
-                }
-            }
-
-            _widestTextBlock = GetTextServiceBlock(maxString);*/
-
-            // ResizeServicesInfo();
         }
 
         private void FillServicesInfo()
@@ -156,35 +176,6 @@ namespace TerminalApp
             Service6TextBlock.Text = GetServiceInfo(5);
             Service7TextBlock.Text = GetServiceInfo(6);
         }
-
-        /*void ResizeServicesInfo()
-        {
-            if (null == _widestTextBlock)
-                return;
-
-            Double rowWidth = ServicesGrid.ActualWidth;
-            Double rowHeight = ServicesGrid.RowDefinitions[0].ActualHeight;
-
-            Size textSize = MeasureString(_widestTextBlock.Text, _widestTextBlock);
-
-
-            Double newFontSizeByWidth = 0.0;
-            Double newFonSizeByHeigth = 0.0;
-            Double newFontSize = 0.0;
-
-            newFonSizeByHeigth = (_widestTextBlock.FontSize * (rowHeight / textSize.Height)) - 0.5;
-            newFontSizeByWidth = (_widestTextBlock.FontSize * (rowWidth / textSize.Width)) - 0.5;
-
-            newFontSize = newFonSizeByHeigth < newFontSizeByWidth ? newFonSizeByHeigth : newFontSizeByWidth;
-
-            Service1TextBlock.FontSize = newFontSize;
-            Service2TextBlock.FontSize = newFontSize;
-            Service3TextBlock.FontSize = newFontSize;
-            Service4TextBlock.FontSize = newFontSize;
-            Service5TextBlock.FontSize = newFontSize;
-            Service6TextBlock.FontSize = newFontSize;
-            Service7TextBlock.FontSize = newFontSize;
-        }*/
 
         private Size MeasureString(String candidate, TextBlock textBlock)
         {
@@ -233,6 +224,23 @@ namespace TerminalApp
             }
 
             return result;
+        }
+
+        private Byte GetServiceButtonNumber(LogicWrapper.e_service_id service_id)
+        {
+            if (null == _services_info)
+                return 255;
+
+            foreach(LogicWrapper.tag_service_info si in _services_info)
+            {
+                if (si.id == service_id)
+                {
+                    return si.button_number;
+                }
+            }
+
+            return 255;
+
         }
 
         private String FormatServiceName(String serviceName)

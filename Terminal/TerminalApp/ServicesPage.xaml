@@ -29,32 +29,39 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <Image Source="Images/1_pressed.png" Height="183" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="303" Margin="0,0,0,7" />
-                    <TextBlock x:Name="Service1TextBlock" TextWrapping="Wrap" Text="ВОДА ПОД ДАВЛЕНИЕМ" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" Foreground="White" FontFamily="Hermes" FontSize="35" Height="83" Margin="46,73,63,37" HorizontalAlignment="Center" Width="194"/>
+                    <Image Source="Images/1.png" Margin="0,0,0,7" Height="183" VerticalAlignment="Bottom" />
+                    <Image x:Name="Service1SelectedImage" Source="Images/1_pressed.png" Height="183" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="303" Margin="0,0,0,7" Visibility="Hidden" />
+                    <TextBlock x:Name="Service1TextBlock" TextWrapping="Wrap" Text="ВОДА ПОД ДАВЛЕНИЕМ" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" Foreground="White" FontFamily="Hermes" FontSize="35" Height="83" Margin="46,73,0,37" HorizontalAlignment="Left" Width="194"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Image Source="Images/2_pressed.png" HorizontalAlignment="Left" Width="303" Height="118" VerticalAlignment="Top" />
-                    <TextBlock x:Name="Service2TextBlock" TextWrapping="Wrap" Text="ПЕНА" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center"/>
+                    <Image Source="Images/2.png" Height="118" VerticalAlignment="Top" />
+                    <Image x:Name="Service2SelectedImage" Source="Images/2_pressed.png" HorizontalAlignment="Left" Width="303" Height="118" VerticalAlignment="Top"  Visibility="Hidden"/>
+                    <TextBlock x:Name="Service2TextBlock" TextWrapping="Wrap" Text="ПЕНА" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Margin="114,38,0,38"/>
                 </Grid>
                 <Grid Grid.Row="2">
-                    <Image Source="Images/3_pressed.png" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" />
-                    <TextBlock x:Name="Service3TextBlock" TextWrapping="Wrap" Text="ВОСК" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center"/>
+                    <Image Source="Images/3.png" Height="118" VerticalAlignment="Top" />
+                    <Image x:Name="Service3SelectedImage" Source="Images/3_pressed.png" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" Visibility="Hidden" />
+                    <TextBlock x:Name="Service3TextBlock" TextWrapping="Wrap" Text="ВОСК" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Margin="114,38,0,38"/>
                 </Grid>
                 <Grid Grid.Row="3">
-                    <Image Source="Images/4_pressed.png" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" />
-                    <TextBlock x:Name="Service4TextBlock" TextWrapping="Wrap" Text="ПЫЛЕСОС" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center"/>
+                    <Image Source="Images/4.png" Height="118" VerticalAlignment="Top" />
+                    <Image x:Name="Service4SelectedImage" Source="Images/4_pressed.png" Height="118" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303"  Visibility="Hidden"/>
+                    <TextBlock x:Name="Service4TextBlock" TextWrapping="Wrap" Text="ПЫЛЕСОС" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Margin="84,38,0,38"/>
                 </Grid>
                 <Grid Grid.Row="4">
-                    <Image Source="Images/5_pressed.png" Height="142" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" />
-                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center"/>
+                    <Image Source="Images/5.png" Height="142" VerticalAlignment="Top" />
+                    <Image x:Name="Service5SelectedImage" Source="Images/5_pressed.png" Height="142" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303"  Visibility="Hidden"/>
+                    <TextBlock x:Name="Service5TextBlock" TextWrapping="Wrap" Text="ОБДУВ ВОЗДУХОМ" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" VerticalAlignment="Center" Height="103" HorizontalAlignment="Center" Width="176"/>
                 </Grid>
                 <Grid Grid.Row="5">
-                    <Image Source="Images/6_pressed.png" Height="144" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" />
-                    <TextBlock x:Name="Service6TextBlock" TextWrapping="Wrap" Text="ВОДА БЕЗ ДАВЛЕНИЯ" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center"/>
+                    <Image Source="Images/6.png" Height="144" VerticalAlignment="Top" />
+                    <Image x:Name="Service6SelectedImage" Source="Images/6_pressed.png" Height="144" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" Visibility="Hidden" />
+                    <TextBlock x:Name="Service6TextBlock" TextWrapping="Wrap" Text="ВОДА БЕЗ ДАВЛЕНИЯ" VerticalAlignment="Center" TextAlignment="Left" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Margin="74,30,0,30"/>
                 </Grid>
                 <Grid Grid.Row="6">
-                    <Image Source="Images/7_pressed.png" Height="188" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" />
-                    <TextBlock x:Name="Service7TextBlock" TextWrapping="Wrap" Text="СРЕДСТВО ОТ НАСЕКОМЫХ" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Center" Height="93" Margin="40,27,32,68" Width="231"/>
+                    <Image Source="Images/7.png" Height="188" VerticalAlignment="Top" />
+                    <Image x:Name="Service7SelectedImage" Source="Images/7_pressed.png" Height="188" VerticalAlignment="Top" HorizontalAlignment="Left" Width="303" Visibility="Hidden" />
+                    <TextBlock x:Name="Service7TextBlock" TextWrapping="Wrap" Text="СРЕДСТВО ОТ НАСЕКОМЫХ" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontFamily="Hermes" Foreground="White" FontSize="35" HorizontalAlignment="Left" Height="93" Margin="40,27,0,68" Width="231"/>
                 </Grid>
             </Grid>
 
@@ -67,9 +74,10 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="1" Text="БАЛАНС" FontWeight="Bold" FontFamily="Hermes" FontSize="72" TextAlignment="Center" Foreground="Red"/>
-                <TextBlock Grid.Row="2" x:Name="RestOfMoneyTextBlock" Text="00,00" FontWeight="Bold" FontFamily="Hermes" FontSize="100" TextAlignment="Center" Foreground="Red"/>
+                <TextBlock Grid.Row="2" x:Name="RestOfMoneyTextBlock" Text="0"  FontFamily="Hermes" FontSize="180" TextAlignment="Center" Foreground="Red"/>
 
-                <Image Grid.Row="3" Source="Images/stop_pressed.png" Height="331" VerticalAlignment="Top" />
+                <Image Grid.Row="3" Source="Images/stop.png" Height="331" VerticalAlignment="Top" />
+                <Image x:Name="StopSelectedImage" Grid.Row="3" Source="Images/stop_pressed.png" Height="331" VerticalAlignment="Top" Visibility="Hidden" />
 
                 <Grid Grid.Row="3">
                     <Grid.RowDefinitions>
