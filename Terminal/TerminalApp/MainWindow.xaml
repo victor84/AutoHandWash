@@ -2,14 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" 
-        Height="1024" Width="605" 
+        Height="1024" Width="768" 
         Loaded="Window_Loaded" Closed="Window_Closed" BorderThickness="0">
 
     <Grid x:Name="MainWindowGrid">
         <TabControl x:Name="MainTabControl" Margin="0,0,0,0" BorderThickness="0">
             <TabItem x:Name="ServiceTab" Header="Услуги">
                 <Grid>
-                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" BorderThickness="0" MaxHeight="1024" MaxWidth="605"/>
+                    <Frame x:Name="ServicePageFrame" Content="Frame" Source="/TerminalApp;component/ServicesPage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" BorderThickness="0" MaxHeight="1024" MaxWidth="768"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="VideoTab" Header="Реклама">
@@ -19,12 +19,12 @@
             </TabItem>
             <TabItem x:Name="PrizeTab" Header="Выдача приза">
                 <Grid>
-                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" MaxHeight="1024" MaxWidth="605"/>
+                    <Frame x:Name="PrizePageFrame" Content="Frame" Source="/TerminalApp;component/PrizePage.xaml" NavigationUIVisibility="Hidden" IsHitTestVisible="True" MaxHeight="1024" MaxWidth="768"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
                 <Grid x:Name="TerminalBrokenGrid" >
-                    <Image Source="Images/background_not_working.jpg" />
+                    <Image Source="Images/background_not_working.jpg" Stretch="UniformToFill" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="CountersTab" Header="Показания счётчиков">

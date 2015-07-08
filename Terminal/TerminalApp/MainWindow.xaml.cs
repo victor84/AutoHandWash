@@ -188,7 +188,7 @@ namespace TerminalApp
             WindowStyle = System.Windows.WindowStyle.None;
             ResizeMode = System.Windows.ResizeMode.NoResize;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            // WindowState = System.Windows.WindowState.Maximized;
+            WindowState = System.Windows.WindowState.Maximized;
         }
 
         private void OnTerminalStateChanged(LogicWrapper.e_terminal_state state)
