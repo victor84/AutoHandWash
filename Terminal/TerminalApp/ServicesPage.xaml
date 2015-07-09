@@ -74,7 +74,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="1" Text="БАЛАНС" FontWeight="Bold" FontFamily="Hermes" FontSize="90" TextAlignment="Center" Foreground="Red"/>
-                <TextBlock Grid.Row="2" x:Name="RestOfMoneyTextBlock" Text="0"  FontFamily="Hermes" FontSize="250" TextAlignment="Center" Foreground="Red"/>
+                <TextBlock Grid.Row="2" x:Name="RestOfMoneyTextBlock" Text="0"  FontFamily="Hermes" FontSize="230" TextAlignment="Center" Foreground="Red"/>
 
                 <Image Grid.Row="3" Source="Images/stop.png" Height="331" VerticalAlignment="Top" />
                 <Image x:Name="StopSelectedImage" Grid.Row="3" Source="Images/stop_pressed.png" Height="331" VerticalAlignment="Top" Visibility="Hidden" />
