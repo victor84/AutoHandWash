@@ -14,7 +14,7 @@
             </TabItem>
             <TabItem x:Name="VideoTab" Header="Реклама">
                 <Grid>
-                    <Image Source="Images/advertising_idle.jpg" />
+                    <Image Source="Images/advertising_idle.png" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="PrizeTab" Header="Выдача приза">
@@ -24,7 +24,7 @@
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
                 <Grid x:Name="TerminalBrokenGrid" >
-                    <Image Source="Images/background_not_working.jpg" Stretch="UniformToFill" />
+                    <Image Source="Images/backgrount_not_working.jpg" Stretch="UniformToFill" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="CountersTab" Header="Показания счётчиков">
