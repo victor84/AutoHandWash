@@ -13,14 +13,14 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="574*"/>
-                <RowDefinition Height="177*"/>
-                <RowDefinition Height="144*"/>
-                <RowDefinition Height="129*"/>
+                <RowDefinition Height="215*"/>
+                <RowDefinition Height="131*"/>
+                <RowDefinition Height="104*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="1" x:Name="PrizeSizeTextBlock" Text="100" FontFamily="Hermes" FontSize="200" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Grid.RowSpan="2" Margin="0,0,0,0" />
-            <TextBlock Grid.Row="2" Text="рублей!" FontFamily="Hermes" Foreground="White" FontSize="100" HorizontalAlignment="Center" />
-            <TextBlock Grid.Row="3" x:Name="CoinBalanceTextBlock" Text="Осталось получить 10 монет" FontFamily="Hermes" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Height="59" />
+            <TextBlock x:Name="PrizeSizeTextBlock" Text="100" FontFamily="Hermes" FontSize="250" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Grid.RowSpan="3" Margin="215,542,236,0" />
+            <TextBlock Grid.Row="2" Text="рублей!" FontFamily="Hermes" Foreground="White" FontSize="100" HorizontalAlignment="Center" Margin="237,0" Width="294" />
+            <TextBlock Grid.Row="3" x:Name="CoinBalanceTextBlock" Text="Осталось получить 10 монет" FontFamily="Hermes" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Height="58" Margin="112,16,112,30" Width="544" />
 
         </Grid>
     </Grid>

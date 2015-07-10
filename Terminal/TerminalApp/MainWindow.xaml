@@ -24,7 +24,7 @@
             </TabItem>
             <TabItem x:Name="TerminalBrokenTab" Header="Терминал сломан">
                 <Grid x:Name="TerminalBrokenGrid" >
-                    <Image Source="Images/backgrount_not_working.jpg" Stretch="UniformToFill" />
+                    <Image Source="Images/backgrount_not_working.png" Stretch="UniformToFill" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="CountersTab" Header="Показания счётчиков">
